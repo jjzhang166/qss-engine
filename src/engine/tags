@@ -1,0 +1,1266 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ABS	../parallel/qss_integrator.c	21;"	d	file:
+ALL	../parallel/qss_data.h	33;"	d
+ALL	../serial/qss_data.h	29;"	d
+BTR_Info	../serial/qss_binary_random.c	/^BTR_info BTR_Info(int mh, int mn)$/;"	f
+BTR_Node	../serial/qss_binary_random.c	/^BTR_node BTR_Node()$/;"	f
+BTR_Tree	../serial/qss_binary_random.c	/^BTR_tree BTR_Tree(int dim, leave leaves, int *weights)$/;"	f
+BTR_free	../serial/qss_binary_random.c	/^void BTR_free()$/;"	f
+BTR_info	../serial/qss_binary_random.h	/^typedef struct BTR_info_ *BTR_info;$/;"	t	typeref:struct:BTR_info_
+BTR_info_	../serial/qss_binary_random.h	/^struct BTR_info_$/;"	s
+BTR_init	../serial/qss_binary_random.c	/^void BTR_init(SD_data simData, SD_time simTime)$/;"	f
+BTR_initTree	../serial/qss_binary_random.c	/^void BTR_initTree(BTR_tree tree)$/;"	f
+BTR_node	../serial/qss_binary_random.h	/^typedef struct BTR_node_ *BTR_node;$/;"	t	typeref:struct:BTR_node_
+BTR_node_	../serial/qss_binary_random.h	/^struct BTR_node_$/;"	s
+BTR_tree	../serial/qss_binary_random.h	/^typedef struct BTR_tree_ *BTR_tree;$/;"	t	typeref:struct:BTR_tree_
+BTR_tree_	../serial/qss_binary_random.h	/^struct BTR_tree_$/;"	s
+BTR_upd	../serial/qss_binary_random.h	/^typedef void (*BTR_upd)(SD_data,SD_time);$/;"	t
+BTR_update	../serial/qss_binary_random.c	/^void BTR_update(SD_data simData, SD_time simTime)$/;"	f
+BTR_updateH	../serial/qss_binary_random.c	/^void BTR_updateH(SD_data simData, SD_time simTime)$/;"	f
+BTR_updateHI	../serial/qss_binary_random.c	/^void BTR_updateHI(SD_data simData, SD_time simTime)$/;"	f
+BTR_updateI	../serial/qss_binary_random.c	/^void BTR_updateI(SD_data simData, SD_time simTime)$/;"	f
+BTR_updateS	../serial/qss_binary_random.c	/^void BTR_updateS(SD_data simData, SD_time simTime)$/;"	f
+BTR_updateTree	../serial/qss_binary_random.c	/^void BTR_updateTree(BTR_tree tree, int *inf, int cant, int idx, double *times)$/;"	f
+BT_Info	../parallel/qss_binary.c	/^BT_info BT_Info(int mh, int mn)$/;"	f
+BT_Info	../serial/qss_binary.c	/^BT_info BT_Info(int mh, int mn)$/;"	f
+BT_Node	../parallel/qss_binary.c	/^BT_node BT_Node()$/;"	f
+BT_Node	../serial/qss_binary.c	/^BT_node BT_Node()$/;"	f
+BT_Tree	../parallel/qss_binary.c	/^BT_tree BT_Tree(int dim, leave leaves, int leaves_size, int *map)$/;"	f
+BT_Tree	../serial/qss_binary.c	/^BT_tree BT_Tree(int dim, leave leaves)$/;"	f
+BT_free	../parallel/qss_binary.c	/^void BT_free(int lp)$/;"	f
+BT_free	../serial/qss_binary.c	/^void BT_free()$/;"	f
+BT_info	../parallel/qss_binary.h	/^typedef struct BT_info_ *BT_info;$/;"	t	typeref:struct:BT_info_
+BT_info	../serial/qss_binary.h	/^typedef struct BT_info_ *BT_info;$/;"	t	typeref:struct:BT_info_
+BT_info_	../parallel/qss_binary.h	/^struct BT_info_$/;"	s
+BT_info_	../serial/qss_binary.h	/^struct BT_info_$/;"	s
+BT_init	../parallel/qss_binary.c	/^void BT_init(SD_data simData, SD_time simTime, SD_LP_data lpData)$/;"	f
+BT_init	../serial/qss_binary.c	/^void BT_init(SD_data simData, SD_time simTime)$/;"	f
+BT_initTree	../parallel/qss_binary.c	/^void BT_initTree(BT_tree tree)$/;"	f
+BT_initTree	../serial/qss_binary.c	/^void BT_initTree(BT_tree tree)$/;"	f
+BT_node	../parallel/qss_binary.h	/^typedef struct BT_node_ *BT_node;$/;"	t	typeref:struct:BT_node_
+BT_node	../serial/qss_binary.h	/^typedef struct BT_node_ *BT_node;$/;"	t	typeref:struct:BT_node_
+BT_node_	../parallel/qss_binary.h	/^struct BT_node_$/;"	s
+BT_node_	../serial/qss_binary.h	/^struct BT_node_$/;"	s
+BT_tree	../parallel/qss_binary.h	/^typedef struct BT_tree_ *BT_tree;$/;"	t	typeref:struct:BT_tree_
+BT_tree	../serial/qss_binary.h	/^typedef struct BT_tree_ *BT_tree;$/;"	t	typeref:struct:BT_tree_
+BT_tree_	../parallel/qss_binary.h	/^struct BT_tree_$/;"	s
+BT_tree_	../serial/qss_binary.h	/^struct BT_tree_$/;"	s
+BT_upd	../parallel/qss_binary.h	/^typedef void (*BT_upd)(SD_data,SD_time,SD_LP_data);$/;"	t
+BT_upd	../serial/qss_binary.h	/^typedef void (*BT_upd)(SD_data,SD_time);$/;"	t
+BT_update	../parallel/qss_binary.c	/^void BT_update(SD_data simData, SD_time simTime, SD_LP_data lpData)$/;"	f
+BT_update	../serial/qss_binary.c	/^void BT_update(SD_data simData, SD_time simTime)$/;"	f
+BT_update	../serial/qss_tree.c	/^void BT_update(SD_data simData, SD_time simTime)$/;"	f
+BT_updateH	../serial/qss_binary.c	/^void BT_updateH(SD_data simData, SD_time simTime)$/;"	f
+BT_updateHI	../serial/qss_binary.c	/^void BT_updateHI(SD_data simData, SD_time simTime)$/;"	f
+BT_updateI	../serial/qss_binary.c	/^void BT_updateI(SD_data simData, SD_time simTime)$/;"	f
+BT_updateS	../serial/qss_binary.c	/^void BT_updateS(SD_data simData, SD_time simTime)$/;"	f
+BT_updateTree	../parallel/qss_binary.c	/^void BT_updateTree(BT_tree tree, int *inf, int cant, int idx, int lp, SD_LP_data lpData,SD_step type)$/;"	f
+BT_updateTree	../serial/qss_binary.c	/^void BT_updateTree(BT_tree tree, int *inf, int cant, int idx)$/;"	f
+BT_update_H	../parallel/qss_binary.c	/^void BT_update_H(SD_data simData, SD_time simTime, SD_LP_data lpData)$/;"	f
+BT_update_HI	../parallel/qss_binary.c	/^void BT_update_HI(SD_data simData, SD_time simTime, SD_LP_data lpData)$/;"	f
+BT_update_I	../parallel/qss_binary.c	/^void BT_update_I(SD_data simData, SD_time simTime, SD_LP_data lpData)$/;"	f
+BT_update_S	../parallel/qss_binary.c	/^void BT_update_S(SD_data simData, SD_time simTime, SD_LP_data lpData)$/;"	f
+CI_Dense	../serial/qss_data.h	/^	CI_Dense,		\/**< In DenseOutput and SampledOutput, everytime the derivative of one of the output variables change, the coefficients of the state polynomials are saved. *\/$/;"	e	enum:__anon9
+CI_Sampled	../serial/qss_data.h	/^	CI_Sampled		\/**< Same as DenseOutput.	*\/$/;"	e	enum:__anon9
+CI_Step	../serial/qss_data.h	/^	CI_Step,         \/**< Save the output values everytime a step in one of the output varaibles is taken. *\/$/;"	e	enum:__anon9
+CQSS	../parallel/qss_data.h	/^	CQSS,$/;"	e	enum:__anon5
+CQSS_H	../parallel/cqss.h	2;"	d
+CQSS_H	../serial/cqss.h	2;"	d
+CQSS_freeQuantizer	../parallel/cqss.c	/^void CQSS_freeQuantizer(int lp)$/;"	f
+CQSS_freeQuantizer	../serial/cqss.c	/^void CQSS_freeQuantizer()$/;"	f
+CQSS_init	../parallel/cqss.c	/^void CQSS_init(SD_data _simData, SD_time _simTime, SD_LP_data _lpData)$/;"	f
+CQSS_init	../serial/cqss.c	/^void CQSS_init(SD_data simData, SD_time simTime)$/;"	f
+CQSS_nextTime	../parallel/cqss.c	/^void CQSS_nextTime(int _var,double t,double *_nTime, double **_x, double *_lqu, int lp)$/;"	f
+CQSS_nextTime	../serial/cqss.c	/^void CQSS_nextTime(int var,double t, double *nTime, double **x, double *lqu)$/;"	f
+CQSS_recomputeNextTime	../parallel/cqss.c	/^void CQSS_recomputeNextTime(int _var, double t,double *_nTime, double **_x, $/;"	f
+CQSS_recomputeNextTime	../serial/cqss.c	/^void CQSS_recomputeNextTime(int var, double t, double *nTime, double **x, double *lqu,double **q)$/;"	f
+CQSS_recomputeNextTimes	../parallel/cqss.c	/^void CQSS_recomputeNextTimes(int _vars, int *_inf, double _t,double *_nTime, $/;"	f
+CQSS_recomputeNextTimes	../serial/cqss.c	/^void CQSS_recomputeNextTimes(int vars, int *inf, double t, double *nTime, double **x, double *lqu,double **q)$/;"	f
+CQSS_updateQuantizedState	../parallel/cqss.c	/^void CQSS_updateQuantizedState(int _var, double **_q, double **_x, double *_lqu, int lp) $/;"	f
+CQSS_updateQuantizedState	../serial/cqss.c	/^void CQSS_updateQuantizedState(int var, double **q, double **x, double *lqu) $/;"	f
+CTE_INF	../parallel/qss_data.h	65;"	d
+DB_InitValues	../serial/qss_data.h	/^	DB_InitValues,$/;"	e	enum:__anon13
+DB_Standard	../serial/qss_data.h	/^	DB_Standard,$/;"	e	enum:__anon13
+DB_StepInfo	../serial/qss_data.h	/^	DB_StepInfo$/;"	e	enum:__anon13
+DB_Timings	../serial/qss_data.h	/^	DB_Timings,$/;"	e	enum:__anon13
+DB_VarSteps	../serial/qss_data.h	/^	DB_VarSteps,$/;"	e	enum:__anon13
+DEFAULT_PERIOD	../serial/qss_data.h	33;"	d
+DEL	../parallel/qss_frw.c	11;"	d	file:
+DELTA	../parallel/qss_data.h	72;"	d
+DELTA	../serial/qss_data.h	51;"	d
+DER_DELTA	../parallel/qss_data.h	49;"	d
+DER_DELTA	../serial/qss_data.h	35;"	d
+DIV2	../parallel/qss_binary.h	7;"	d
+DIV2	../serial/qss_binary.h	7;"	d
+DIV2	../serial/qss_binary_random.h	7;"	d
+DO	../serial/qss_data.h	/^	int 			**DO;	\/**< \\f$ outVars[i] \\f$ is the i-th output variable.						  					*\/$/;"	m	struct:SD_output_
+DS	../serial/qss_data.h	/^	int 	    	**DS;	$/;"	m	struct:SD_data_
+EPSILON	../parallel/qss_data.h	61;"	d
+EPSILON	../serial/qss_data.h	43;"	d
+FALSE	../serial/qss_utils.h	15;"	d
+FOH_freeFramework	../parallel/qss_frw.c	/^void FOH_freeFramework()$/;"	f
+FOH_freeFramework	../serial/qss_frw.c	/^void FOH_freeFramework()$/;"	f
+FOH_nextEventTime	../parallel/qss_frw.c	/^void FOH_nextEventTime(SD_model simModel, SD_data simData, SD_time simTime, int index, SD_LP_data lpData, struct SD_globalEventData_ gbl_event)$/;"	f
+FOH_nextEventTime	../serial/qss_frw.c	/^void FOH_nextEventTime(SD_model simModel, SD_data simData, SD_time simTime, int index)$/;"	f
+FOH_nextInputTime	../parallel/qss_frw.c	/^void FOH_nextInputTime(SD_model model, SD_data data, SD_time time, double elapsed, int var, int index, SD_LP_data lpData)$/;"	f
+FOH_nextInputTime	../serial/qss_frw.c	/^void FOH_nextInputTime(SD_model model, SD_data data, SD_time time, double elapsed, int var, int index)$/;"	f
+FOH_recomputeDerivative	../parallel/qss_frw.c	/^void FOH_recomputeDerivative(SD_model simModel, SD_data simData, SD_time simTime, double elapsed,int stateVar, SD_LP_data lpData)$/;"	f
+FOH_recomputeDerivative	../serial/qss_frw.c	/^void FOH_recomputeDerivative(SD_model simModel, SD_data simData, SD_time simTime, double elapsed,int stateVar)$/;"	f
+FOH_recomputeDerivatives	../parallel/qss_frw.c	/^void FOH_recomputeDerivatives(SD_model simModel, SD_data simData, SD_time simTime, double elapsed, int index, SD_LP_data lpData)$/;"	f
+FOH_recomputeDerivatives	../serial/qss_frw.c	/^void FOH_recomputeDerivatives(SD_model simModel, SD_data simData, SD_time simTime, double elapsed, int index)$/;"	f
+FRW_Framework	../parallel/qss_frw.c	/^FRW_framework FRW_Framework(SD_data simData)$/;"	f
+FRW_Framework	../serial/qss_frw.c	/^FRW_framework FRW_Framework(SD_data simData)$/;"	f
+FRW_framework	../parallel/qss_frw.h	/^typedef struct FRW_framework_ *FRW_framework;$/;"	t	typeref:struct:FRW_framework_
+FRW_framework	../serial/qss_frw.h	/^typedef struct FRW_framework_ *FRW_framework;$/;"	t	typeref:struct:FRW_framework_
+FRW_framework_	../parallel/qss_frw.h	/^struct FRW_framework_$/;"	s
+FRW_framework_	../serial/qss_frw.h	/^struct FRW_framework_$/;"	s
+FRW_freeFramework	../parallel/qss_frw.c	/^void FRW_freeFramework(FRW_framework f)$/;"	f
+FRW_freeFramework	../serial/qss_frw.c	/^void FRW_freeFramework(FRW_framework f)$/;"	f
+FRW_freeFramework_	../parallel/qss_frw.h	/^typedef void (*FRW_freeFramework_)(void);$/;"	t
+FRW_freeFramework_	../serial/qss_frw.h	/^typedef void (*FRW_freeFramework_)(void);$/;"	t
+FRW_initDelta	../parallel/qss_frw.c	/^void FRW_initDelta(double ft, double param)$/;"	f
+FRW_initDelta	../serial/qss_frw.c	/^void FRW_initDelta(double ft, double param)$/;"	f
+FRW_nextEventTime	../parallel/qss_frw.h	/^typedef void (*FRW_nextEventTime)(SD_model,SD_data,SD_time,int,SD_LP_data,struct SD_globalEventData_);$/;"	t
+FRW_nextEventTime	../serial/qss_frw.h	/^typedef void (*FRW_nextEventTime)(SD_model,SD_data,SD_time,int);$/;"	t
+FRW_nextInputTime	../parallel/qss_frw.h	/^typedef void (*FRW_nextInputTime)(SD_model,SD_data,SD_time,double,int,int,SD_LP_data);$/;"	t
+FRW_nextInputTime	../serial/qss_frw.h	/^typedef void (*FRW_nextInputTime)(SD_model,SD_data,SD_time,double,int,int);$/;"	t
+FRW_recomputeDerivative	../parallel/qss_frw.h	/^typedef void (*FRW_recomputeDerivative)(SD_model,SD_data,SD_time,double,int,SD_LP_data);$/;"	t
+FRW_recomputeDerivative	../serial/qss_frw.h	/^typedef void (*FRW_recomputeDerivative)(SD_model,SD_data,SD_time,double,int);$/;"	t
+FRW_recomputeDerivatives	../parallel/qss_frw.h	/^typedef void (*FRW_recomputeDerivatives)(SD_model,SD_data,SD_time,double,int,SD_LP_data);$/;"	t
+FRW_recomputeDerivatives	../serial/qss_frw.h	/^typedef void (*FRW_recomputeDerivatives)(SD_model,SD_data,SD_time,double,int);$/;"	t
+F_free	../parallel/qss_file.c	/^void F_free(int lp)$/;"	f
+F_free	../serial/qss_file.c	/^void F_free()$/;"	f
+F_init	../parallel/qss_file.c	/^void F_init(SD_LP_data simData, SD_output simOutput, int nodesize)$/;"	f
+F_init	../serial/qss_file.c	/^void F_init(SD_data simData, SD_output simOutput)$/;"	f
+F_steps	../serial/qss_file.c	/^int F_steps(int var) { return -1; }$/;"	f
+F_toFile	../parallel/qss_file.c	/^void F_toFile(int lp) { return; }$/;"	f
+F_toFile	../serial/qss_file.c	/^void F_toFile() { return; }$/;"	f
+F_values	../parallel/qss_file.c	/^int *F_values[MAX_THREADS];$/;"	v
+F_values	../serial/qss_file.c	/^int *F_values = NULL;$/;"	v
+F_write	../parallel/qss_file.c	/^void F_write(int i, double time, double value, int lp)$/;"	f
+F_write	../serial/qss_file.c	/^void F_write(int i, double time, double value)$/;"	f
+F_writeLine	../parallel/qss_file.c	/^void F_writeLine(int i, double time, double *value, int lp)$/;"	f
+F_writeLine	../serial/qss_file.c	/^void F_writeLine(int i, double time, double *value)$/;"	f
+HD	../serial/qss_data.h	/^	int 	    	**HD;	$/;"	m	struct:SD_data_
+HZ	../serial/qss_data.h	/^	int 	    	**HZ;	$/;"	m	struct:SD_data_
+I	../parallel/qss_data.h	/^	int 	    	**I;				\/**< Incidence matrix: \\f$ \\forall j \\in [0,nI[i]] \\rightarrow I[i][j] \\f$ is the \\f$ j \\f$ influenced state variable. *\/$/;"	m	struct:SD_data_
+IE	../parallel/qss_data.h	/^	int 	    	**IE;				\/**< Events Incidence Matrix: \\f$ \\forall j \\in [0,nIE[i]] \\rightarrow IE[i][j] \\f$ is the \\f$ j \\f$ influenced event. *\/$/;"	m	struct:SD_data_
+INF	../parallel/qss_data.h	68;"	d
+INF	../serial/qss_data.h	47;"	d
+INT_deInitializeDataStructs	../parallel/qss_integrator.c	/^void INT_deInitializeDataStructs()$/;"	f
+INT_deInitializeDataStructs	../serial/qss_integrator.c	/^void INT_deInitializeDataStructs()$/;"	f
+INT_initializeLP	../parallel/qss_integrator.c	/^SD_mapping INT_initializeLP(int lp, SD_mapping map)$/;"	f
+INT_min	../parallel/qss_integrator.c	/^struct INT_min$/;"	s	file:
+INT_nextStep	../parallel/qss_integrator.c	/^struct INT_min INT_nextStep()$/;"	f
+INT_setGlobalSimulationData	../parallel/qss_integrator.c	/^void INT_setGlobalSimulationData(SD_data mData, SD_output mOutput, SD_model mModel, SD_simulationFlags mFlags)$/;"	f
+INT_setLPSimulationData	../parallel/qss_integrator.c	/^void INT_setLPSimulationData(SD_LP_data mData, SD_time mTime, int lp)$/;"	f
+INT_setSimulationData	../serial/qss_integrator.c	/^void INT_setSimulationData(SD_data modelData, SD_time modelTime, SD_output modelOutput, $/;"	f
+INT_simulate	../parallel/qss_integrator.c	/^void *INT_simulate(void *lpNumber)$/;"	f
+INT_simulate	../serial/qss_integrator.c	/^void INT_simulate()$/;"	f
+IQ	../parallel/qss_data.h	/^	int 	    	**IQ;				\/**< Quantized Variables Incidence Matrix: \\f$ \\forall j \\in [0,nQDeps[i]] \\rightarrow IQ[i][j] \\f$ is the \\f$ j \\f$ influenced quantized variable. *\/$/;"	m	struct:SD_data_
+IT	../parallel/qss_data.h	/^	int 	    	*IT;				\/**< For non autonomous systems this vector contains wich equations are non autonomous.		*\/$/;"	m	struct:SD_data_
+IT	../serial/qss_data.h	/^	int 	    	*IT;				\/**< For non autonomous systems this vector contains wich equations are non autonomous.		*\/$/;"	m	struct:SD_data_
+IVars	../parallel/qss_data.h	/^    int *IVars;			\/**< \\f$ \\forall j \\in [0,nIvars] IVars[j] \\f$ is the jth state variable that influence the zero crossing function. *\/ $/;"	m	struct:SD_eventData_
+LHSDsc	../serial/qss_data.h	/^    int *LHSDsc;			\/**< Number of state variables that influence the zero crossing function.	*\/$/;"	m	struct:SD_eventData_
+LHSSt	../serial/qss_data.h	/^    int *LHSSt;			\/**< Number of state variables that influence the zero crossing function.	*\/$/;"	m	struct:SD_eventData_
+LINE	../parallel/qss_model.h	10;"	d
+LIQSS	../parallel/qss_data.h	/^	LIQSS,$/;"	e	enum:__anon5
+LIQSS2	../parallel/qss_data.h	/^	LIQSS2,$/;"	e	enum:__anon5
+LIQSS2_H	../parallel/liqss2.h	2;"	d
+LIQSS2_H	../serial/liqss2.h	2;"	d
+LIQSS2_freeQuantizer	../parallel/liqss2.c	/^void LIQSS2_freeQuantizer(int lp)$/;"	f
+LIQSS2_freeQuantizer	../serial/liqss2.c	/^void LIQSS2_freeQuantizer()$/;"	f
+LIQSS2_init	../parallel/liqss2.c	/^void LIQSS2_init(SD_data _simData, SD_time _simTime, SD_LP_data _lpData)$/;"	f
+LIQSS2_init	../serial/liqss2.c	/^void LIQSS2_init(SD_data simData, SD_time simTime)$/;"	f
+LIQSS2_nextTime	../parallel/liqss2.c	/^void LIQSS2_nextTime(int var,double _t,double *_nTime, double **_x, double *_lqu, int lp)$/;"	f
+LIQSS2_nextTime	../serial/liqss2.c	/^void LIQSS2_nextTime(int var,double t,double *nTime, double **x, double *lqu)$/;"	f
+LIQSS2_recomputeNextTime	../parallel/liqss2.c	/^void LIQSS2_recomputeNextTime(int var, double _t,double *_nTime, double **_x,$/;"	f
+LIQSS2_recomputeNextTime	../serial/liqss2.c	/^void LIQSS2_recomputeNextTime(int var, double t,double *nTime, double **x, double *lqu,double **q)$/;"	f
+LIQSS2_recomputeNextTimes	../parallel/liqss2.c	/^void LIQSS2_recomputeNextTimes(int _vars, int *_inf, double _t,double *_nTime, $/;"	f
+LIQSS2_recomputeNextTimes	../serial/liqss2.c	/^void LIQSS2_recomputeNextTimes(int vars, int *inf, double t,double *nTime, double **x, double *lqu,double **q)$/;"	f
+LIQSS2_updateQuantizedState	../parallel/liqss2.c	/^void LIQSS2_updateQuantizedState(int var, double **_q, double **_x, double *_lqu, int lp) $/;"	f
+LIQSS2_updateQuantizedState	../serial/liqss2.c	/^void LIQSS2_updateQuantizedState(int var, double **q, double **x, double *lqu) $/;"	f
+LIQSS3	../parallel/qss_data.h	/^	LIQSS3$/;"	e	enum:__anon5
+LIQSS3_H	../parallel/liqss3.h	2;"	d
+LIQSS3_H	../serial/liqss3.h	2;"	d
+LIQSS3_freeQuantizer	../parallel/liqss3.c	/^void LIQSS3_freeQuantizer(int lp)$/;"	f
+LIQSS3_freeQuantizer	../serial/liqss3.c	/^void LIQSS3_freeQuantizer()$/;"	f
+LIQSS3_init	../parallel/liqss3.c	/^void LIQSS3_init(SD_data _simData, SD_time _simTime, SD_LP_data _lpData)$/;"	f
+LIQSS3_init	../serial/liqss3.c	/^void LIQSS3_init(SD_data simData, SD_time simTime)$/;"	f
+LIQSS3_nextTime	../parallel/liqss3.c	/^void LIQSS3_nextTime(int var,double t,double *_nTime, double **_x, double *_lqu, int lp)$/;"	f
+LIQSS3_nextTime	../serial/liqss3.c	/^void LIQSS3_nextTime(int var,double t,double *nTime, double **x, double *lqu)$/;"	f
+LIQSS3_recomputeNextTime	../parallel/liqss3.c	/^void LIQSS3_recomputeNextTime(int var, double t,double *_nTime, double **_x,$/;"	f
+LIQSS3_recomputeNextTime	../serial/liqss3.c	/^void LIQSS3_recomputeNextTime(int var, double t, double *nTime, double **x, double *lqu,double **q)$/;"	f
+LIQSS3_recomputeNextTimes	../parallel/liqss3.c	/^void LIQSS3_recomputeNextTimes(int _vars, int *_inf, double _t,double *_nTime,$/;"	f
+LIQSS3_recomputeNextTimes	../serial/liqss3.c	/^void LIQSS3_recomputeNextTimes(int _vars, int *_inf, double t,double *nTime, double **x, double *lqu,double **q)$/;"	f
+LIQSS3_updateQuantizedState	../parallel/liqss3.c	/^void LIQSS3_updateQuantizedState(int var, double **_q, double **_x, double *_lqu, int lp) $/;"	f
+LIQSS3_updateQuantizedState	../serial/liqss3.c	/^void LIQSS3_updateQuantizedState(int var, double **q, double **x, double *lqu) $/;"	f
+LIQSS_H	../parallel/liqss.h	2;"	d
+LIQSS_H	../serial/liqss.h	2;"	d
+LIQSS_freeQuantizer	../parallel/liqss.c	/^void LIQSS_freeQuantizer(int lp)$/;"	f
+LIQSS_freeQuantizer	../serial/liqss.c	/^void LIQSS_freeQuantizer()$/;"	f
+LIQSS_init	../parallel/liqss.c	/^void LIQSS_init(SD_data _simData, SD_time _simTime, SD_LP_data _lpData)$/;"	f
+LIQSS_init	../serial/liqss.c	/^void LIQSS_init(SD_data simData, SD_time simTime)$/;"	f
+LIQSS_nextTime	../parallel/liqss.c	/^void LIQSS_nextTime(int _var,double _t,double *_nTime, double **_x, double *_lqu, int lp)$/;"	f
+LIQSS_nextTime	../serial/liqss.c	/^void LIQSS_nextTime(int var,double t,double *nTime, double **x, double *lqu)$/;"	f
+LIQSS_recomputeNextTime	../parallel/liqss.c	/^void LIQSS_recomputeNextTime(int _var, double _t,double *_nTime, double **_x, $/;"	f
+LIQSS_recomputeNextTime	../serial/liqss.c	/^void LIQSS_recomputeNextTime(int var, double t,double *nTime, double **x, double *lqu,double **q)$/;"	f
+LIQSS_recomputeNextTimes	../parallel/liqss.c	/^void LIQSS_recomputeNextTimes(int _vars, int *_inf, double _t,double *_nTime, $/;"	f
+LIQSS_recomputeNextTimes	../serial/liqss.c	/^void LIQSS_recomputeNextTimes(int vars, int *inf, double t,double *nTime, double **x, double *lqu,double **q)$/;"	f
+LIQSS_updateQuantizedState	../parallel/liqss.c	/^void LIQSS_updateQuantizedState(int _var, double **_q, double **_x, double *_lqu, int lp) $/;"	f
+LIQSS_updateQuantizedState	../serial/liqss.c	/^void LIQSS_updateQuantizedState(int var, double **q, double **x, double *lqu) $/;"	f
+LN_free	../parallel/qss_linear.c	/^void LN_free(int lp) { return; }$/;"	f
+LN_free	../serial/qss_linear.c	/^void LN_free() { return; }$/;"	f
+LN_init	../parallel/qss_linear.c	/^void LN_init(SD_data simData, SD_time simTime, SD_LP_data lpData)$/;"	f
+LN_init	../serial/qss_linear.c	/^void LN_init(SD_data simData, SD_time simTime)$/;"	f
+LN_update	../parallel/qss_linear.c	/^void LN_update(SD_data simData, SD_time simTime, SD_LP_data lpData)$/;"	f
+LN_update	../serial/qss_linear.c	/^void LN_update(SD_data simData, SD_time simTime)$/;"	f
+LOG2	../parallel/qss_binary.h	6;"	d
+LOG2	../serial/qss_binary.h	6;"	d
+LOG2	../serial/qss_binary_random.h	6;"	d
+LPS	../parallel/qss_data.h	35;"	d
+LP_Data	../parallel/qss_lp.c	/^LP_data LP_Data(int n)$/;"	f
+LP_EV	../parallel/qss_lp.h	/^typedef enum {LP_ST, LP_STINS, LP_EV, LP_EVINS, LP_INPUT} LP_indexType;$/;"	e	enum:__anon7
+LP_EVINS	../parallel/qss_lp.h	/^typedef enum {LP_ST, LP_STINS, LP_EV, LP_EVINS, LP_INPUT} LP_indexType;$/;"	e	enum:__anon7
+LP_INPUT	../parallel/qss_lp.h	/^typedef enum {LP_ST, LP_STINS, LP_EV, LP_EVINS, LP_INPUT} LP_indexType;$/;"	e	enum:__anon7
+LP_InitLP	../parallel/qss_lp.c	/^bool LP_InitLP(char *name, int lps, int nstvars, int nevents)$/;"	f
+LP_Initialize	../parallel/qss_lp.c	/^SD_mapping LP_Initialize(SD_LP_init init, int lpNumber, SD_data data, SD_output simOutput, SD_mapping map)$/;"	f
+LP_Input	../parallel/qss_lp.c	/^struct LP_input_ LP_Input(int idx, SD_step typ, double t)$/;"	f
+LP_ST	../parallel/qss_lp.h	/^typedef enum {LP_ST, LP_STINS, LP_EV, LP_EVINS, LP_INPUT} LP_indexType;$/;"	e	enum:__anon7
+LP_STINS	../parallel/qss_lp.h	/^typedef enum {LP_ST, LP_STINS, LP_EV, LP_EVINS, LP_INPUT} LP_indexType;$/;"	e	enum:__anon7
+LP_add	../parallel/qss_lp.c	/^void LP_add(LST_list ins, int value)$/;"	f
+LP_data	../parallel/qss_lp.h	/^typedef struct LP_data_ *LP_data;$/;"	t	typeref:struct:LP_data_
+LP_data_	../parallel/qss_lp.h	/^struct LP_data_$/;"	s
+LP_deInitialize	../parallel/qss_lp.c	/^void LP_deInitialize(int lpNumber)$/;"	f
+LP_first	../parallel/qss_lp.c	/^LP_data LP_first(LP_list lst)$/;"	f
+LP_in	../parallel/qss_lp.c	/^bool LP_in(int numPart, int *part, int value)$/;"	f
+LP_indexType	../parallel/qss_lp.h	/^typedef enum {LP_ST, LP_STINS, LP_EV, LP_EVINS, LP_INPUT} LP_indexType;$/;"	t	typeref:enum:__anon7
+LP_input	../parallel/qss_lp.h	/^typedef struct LP_input_ *LP_input;$/;"	t	typeref:struct:LP_input_
+LP_input_	../parallel/qss_lp.h	/^struct LP_input_$/;"	s
+LP_ins	../parallel/qss_lp.c	/^void LP_ins(PRT_partition st_part, PRT_partition ev_part, PRT_partition in_part, $/;"	f
+LP_list	../parallel/qss_lp.h	/^typedef LST_list LP_list;$/;"	t
+LP_mapInputs	../parallel/qss_lp.c	/^void LP_mapInputs(SD_data data)$/;"	f
+LP_next	../parallel/qss_lp.c	/^LP_data LP_next(LP_list lst)$/;"	f
+MAX	../parallel/qss_integrator.c	22;"	d	file:
+MAX_NAME_SIZE	../serial/qss_data.h	31;"	d
+MAX_THREADS	../parallel/qss_data.h	47;"	d
+MIN	../parallel/qss_binary.h	9;"	d
+MIN	../parallel/qss_integrator.c	23;"	d	file:
+MIN	../serial/qss_binary.h	9;"	d
+MIN	../serial/qss_binary_random.h	9;"	d
+MIN_STEP	../parallel/qss_data.h	53;"	d
+MIN_STEP	../serial/qss_data.h	39;"	d
+MUL2	../parallel/qss_binary.h	8;"	d
+MUL2	../serial/qss_binary.h	8;"	d
+MUL2	../serial/qss_binary_random.h	8;"	d
+M_List	../parallel/qss_memory.c	/^list M_List(int ns, int ord)$/;"	f
+M_List	../serial/qss_memory.c	/^list M_List(int ns, int ord)$/;"	f
+M_append	../parallel/qss_memory.c	/^void M_append(list l,double t, double *add)$/;"	f
+M_append	../serial/qss_memory.c	/^void M_append(list l,double t, double *add)$/;"	f
+M_free	../parallel/qss_memory.c	/^void M_free(int lp)$/;"	f
+M_free	../serial/qss_memory.c	/^void M_free()$/;"	f
+M_init	../parallel/qss_memory.c	/^void M_init(SD_LP_data _simData, SD_output _simOutput, int nodesize)$/;"	f
+M_init	../serial/qss_memory.c	/^void M_init(SD_data simData, SD_output simOutput)$/;"	f
+M_toFile	../parallel/qss_memory.c	/^void M_toFile(lp)$/;"	f
+M_toFile	../serial/qss_memory.c	/^void M_toFile()$/;"	f
+M_write	../parallel/qss_memory.c	/^void M_write(int i, double time, double value, int lp)$/;"	f
+M_write	../serial/qss_memory.c	/^void M_write(int i, double time, double value)$/;"	f
+M_writeLine	../parallel/qss_memory.c	/^void M_writeLine(int i, double time, double *value, int lp)$/;"	f
+M_writeLine	../serial/qss_memory.c	/^void M_writeLine(int i, double time, double *value)$/;"	f
+NAME_SIZE	../parallel/qss_file.c	7;"	d	file:
+NAME_SIZE	../serial/qss_file.c	7;"	d	file:
+NODESIZE	../parallel/qss_data.h	45;"	d
+NODE_SIZE	../serial/qss_memory.h	6;"	d
+NOT_EQUAL	../serial/qss_utils.h	11;"	d
+NO_CHANGE	../parallel/qss_parallel.h	7;"	d
+NO_INDEX	../serial/qss_utils.h	9;"	d
+NULL_INDEX	../serial/qss_utils.h	7;"	d
+Node	../parallel/qss_memory.c	/^node Node(int ns, int ord)$/;"	f
+Node	../serial/qss_memory.c	/^node Node(int ns, int ord)$/;"	f
+ODD	../parallel/qss_binary.h	10;"	d
+ODD	../serial/qss_binary.h	10;"	d
+ODD	../serial/qss_binary_random.h	10;"	d
+OS	../serial/qss_data.h	/^	int 			**OS;	\/**< \\f$ dscOutVars[i] \\f$ is the i-th discrete output variable.			  					*\/$/;"	m	struct:SD_output_
+OUT_Output	../parallel/qss_output.c	/^OUT_output OUT_Output(SD_data simData, SD_time simTime, SD_output simOutput, SD_LP_data lpData)$/;"	f
+OUT_Output	../serial/qss_output.c	/^OUT_output OUT_Output(SD_data simData, SD_time simTime, SD_output simOutput)$/;"	f
+OUT_freeOutput	../parallel/qss_output.c	/^void OUT_freeOutput(OUT_output o, int lp)$/;"	f
+OUT_freeOutput	../serial/qss_output.c	/^void OUT_freeOutput(OUT_output o)$/;"	f
+OUT_freeOutput_	../parallel/qss_output.h	/^typedef void (*OUT_freeOutput_)(int);$/;"	t
+OUT_freeOutput_	../serial/qss_output.h	/^typedef void (*OUT_freeOutput_)(void);$/;"	t
+OUT_getSteps	../parallel/qss_output.h	/^typedef int	(*OUT_getSteps)(int,int);$/;"	t
+OUT_getSteps	../serial/qss_output.h	/^typedef int	(*OUT_getSteps)(int);$/;"	t
+OUT_output	../parallel/qss_output.h	/^typedef struct OUT_output_ *OUT_output;$/;"	t	typeref:struct:OUT_output_
+OUT_output	../serial/qss_output.h	/^typedef struct OUT_output_ *OUT_output;$/;"	t	typeref:struct:OUT_output_
+OUT_output_	../parallel/qss_output.h	/^struct OUT_output_$/;"	s
+OUT_output_	../serial/qss_output.h	/^struct OUT_output_$/;"	s
+OUT_save	../parallel/qss_output.h	/^typedef void (*OUT_save)(int);$/;"	t
+OUT_save	../serial/qss_output.h	/^typedef void (*OUT_save)(void);$/;"	t
+OUT_write	../parallel/qss_output.h	/^typedef void (*OUT_write)(SD_data,SD_time,SD_output,SD_LP_data);$/;"	t
+OUT_write	../serial/qss_output.h	/^typedef void (*OUT_write)(SD_data,SD_time,SD_output);$/;"	t
+PAR_FINAL_TIME	../parallel/qss_parallel.c	/^double PAR_FINAL_TIME = 0;$/;"	v
+PAR_cleanLPTask	../parallel/qss_parallel.c	/^void PAR_cleanLPTask(int lp)$/;"	f
+PAR_createLPTasks	../parallel/qss_parallel.c	/^void PAR_createLPTasks(int procs,SD_sim simulate, SD_parameters params) $/;"	f
+PAR_error	../parallel/qss_parallel.c	/^bool PAR_error;$/;"	v
+PAR_initLPTasks	../parallel/qss_parallel.c	/^int PAR_initLPTasks(int lp) $/;"	f
+PRT_Data	../parallel/qss_partition.c	/^PRT_data PRT_Data(int n)$/;"	f
+PRT_List	../parallel/qss_partition.c	/^PRT_list PRT_List()$/;"	f
+PRT_Partition	../parallel/qss_partition.c	/^PRT_partition PRT_Partition(int lp, PRT_type type)$/;"	f
+PRT_Partition_	../parallel/qss_partition.c	/^PRT_partition PRT_Partition_(PRT_type type)$/;"	f
+PRT_data	../parallel/qss_partition.h	/^typedef struct PRT_data_ *PRT_data;$/;"	t	typeref:struct:PRT_data_
+PRT_data_	../parallel/qss_partition.h	/^struct PRT_data_$/;"	s
+PRT_first	../parallel/qss_partition.c	/^PRT_data PRT_first(PRT_list lst)$/;"	f
+PRT_genPartitions	../parallel/qss_partition.c	/^bool PRT_genPartitions(char *name, int lps, int nstvars, int nevents)$/;"	f
+PRT_handler	../parallel/qss_partition.h	/^	PRT_handler, $/;"	e	enum:__anon6
+PRT_insert	../parallel/qss_partition.c	/^void PRT_insert(PRT_list lst, int lp)$/;"	f
+PRT_list	../parallel/qss_partition.h	/^typedef LST_list PRT_list;$/;"	t
+PRT_nan	../parallel/qss_partition.h	/^	PRT_nan$/;"	e	enum:__anon6
+PRT_next	../parallel/qss_partition.c	/^PRT_data PRT_next(PRT_list lst)$/;"	f
+PRT_partition	../parallel/qss_partition.h	/^typedef struct PRT_partition_ *PRT_partition;$/;"	t	typeref:struct:PRT_partition_
+PRT_partition_	../parallel/qss_partition.h	/^struct PRT_partition_$/;"	s
+PRT_state	../parallel/qss_partition.h	/^	PRT_state,$/;"	e	enum:__anon6
+PRT_type	../parallel/qss_partition.h	/^}PRT_type;$/;"	t	typeref:enum:__anon6
+QA_Quantizer	../parallel/qss_quantizer.c	/^QA_quantizer QA_Quantizer(SD_data simData, SD_time simTime, SD_LP_data lpData)$/;"	f
+QA_Quantizer	../serial/qss_quantizer.c	/^QA_quantizer QA_Quantizer(SD_data simData, SD_time simTime)$/;"	f
+QA_freeQuantizer	../parallel/qss_quantizer.c	/^void QA_freeQuantizer(QA_quantizer q, int lp)$/;"	f
+QA_freeQuantizer	../serial/qss_quantizer.c	/^void QA_freeQuantizer(QA_quantizer q)$/;"	f
+QA_freeQuantizer_	../parallel/qss_quantizer.h	/^typedef void (*QA_freeQuantizer_)(int);$/;"	t
+QA_freeQuantizer_	../serial/qss_quantizer.h	/^typedef void (*QA_freeQuantizer_)(void);$/;"	t
+QA_nextTime	../parallel/qss_quantizer.h	/^typedef void (*QA_nextTime)(int,double,double*,double**,double*,int);$/;"	t
+QA_nextTime	../serial/qss_quantizer.h	/^typedef void (*QA_nextTime)(int,double,double*,double**,double*);$/;"	t
+QA_quantizer	../parallel/qss_quantizer.h	/^typedef struct QA_quantizer_ *QA_quantizer;$/;"	t	typeref:struct:QA_quantizer_
+QA_quantizer	../serial/qss_quantizer.h	/^typedef struct QA_quantizer_ *QA_quantizer;$/;"	t	typeref:struct:QA_quantizer_
+QA_quantizer_	../parallel/qss_quantizer.h	/^struct QA_quantizer_$/;"	s
+QA_quantizer_	../serial/qss_quantizer.h	/^struct QA_quantizer_$/;"	s
+QA_recomputeNextTime	../parallel/qss_quantizer.h	/^typedef void (*QA_recomputeNextTime)(int,double,double*,double**,double*,double**,int);$/;"	t
+QA_recomputeNextTime	../serial/qss_quantizer.h	/^typedef void (*QA_recomputeNextTime)(int,double,double*,double**,double*,double**);$/;"	t
+QA_recomputeNextTimes	../parallel/qss_quantizer.h	/^typedef void (*QA_recomputeNextTimes)(int,int *,double,double*,double**,double*,double**,int,SD_idx_map);$/;"	t
+QA_recomputeNextTimes	../serial/qss_quantizer.h	/^typedef void (*QA_recomputeNextTimes)(int,int *,double,double*,double**,double*,double**);$/;"	t
+QA_updateQuantizedState	../parallel/qss_quantizer.h	/^typedef void (*QA_updateQuantizedState)(int,double **,double **,double *,int);$/;"	t
+QA_updateQuantizedState	../serial/qss_quantizer.h	/^typedef void (*QA_updateQuantizedState)(int,double **,double **,double *);$/;"	t
+QSS	../parallel/qss_data.h	/^	QSS,$/;"	e	enum:__anon5
+QSS2	../parallel/qss_data.h	/^	QSS2,$/;"	e	enum:__anon5
+QSS2_H	../parallel/qss2.h	2;"	d
+QSS2_H	../serial/qss2.h	2;"	d
+QSS2_freeQuantizer	../parallel/qss2.c	/^void QSS2_freeQuantizer(int lp)$/;"	f
+QSS2_freeQuantizer	../serial/qss2.c	/^void QSS2_freeQuantizer()$/;"	f
+QSS2_init	../parallel/qss2.c	/^void QSS2_init(SD_data _simData, SD_time _simTime, SD_LP_data _lpData)$/;"	f
+QSS2_init	../serial/qss2.c	/^void QSS2_init(SD_data simData, SD_time simTime)$/;"	f
+QSS2_nextTime	../parallel/qss2.c	/^void QSS2_nextTime(int _var,double _t,double *_nTime, double **_x, double *_lqu, int lp)$/;"	f
+QSS2_nextTime	../serial/qss2.c	/^void QSS2_nextTime(int var,double t,double *nTime, double **x, double *lqu)$/;"	f
+QSS2_recomputeNextTime	../parallel/qss2.c	/^void QSS2_recomputeNextTime(int _var, double _t,double *_nTime, double **_x, $/;"	f
+QSS2_recomputeNextTime	../serial/qss2.c	/^void QSS2_recomputeNextTime(int var, double t,double *nTime, double **x, double *lqu,double **q)$/;"	f
+QSS2_recomputeNextTimes	../parallel/qss2.c	/^void QSS2_recomputeNextTimes(int _vars, int *_inf, double _t,double *_nTime, $/;"	f
+QSS2_recomputeNextTimes	../serial/qss2.c	/^void QSS2_recomputeNextTimes(int vars, int *inf, double t,double *nTime, double **x, double *lqu,double **q)$/;"	f
+QSS2_updateQuantizedState	../parallel/qss2.c	/^void QSS2_updateQuantizedState(int _i, double **_q, double **_x, double *_lqu, int lp) $/;"	f
+QSS2_updateQuantizedState	../serial/qss2.c	/^void QSS2_updateQuantizedState(int _i, double **q, double **x, double *lqu) $/;"	f
+QSS3	../parallel/qss_data.h	/^	QSS3,$/;"	e	enum:__anon5
+QSS3_H	../parallel/qss3.h	2;"	d
+QSS3_H	../serial/qss3.h	2;"	d
+QSS3_freeQuantizer	../parallel/qss3.c	/^void QSS3_freeQuantizer(int lp)$/;"	f
+QSS3_freeQuantizer	../serial/qss3.c	/^void QSS3_freeQuantizer()$/;"	f
+QSS3_init	../parallel/qss3.c	/^void QSS3_init(SD_data _simData, SD_time _simTime, SD_LP_data _lpData)$/;"	f
+QSS3_init	../serial/qss3.c	/^void QSS3_init(SD_data simData, SD_time simTime)$/;"	f
+QSS3_nextTime	../parallel/qss3.c	/^void QSS3_nextTime(int _var,double _t,double *_nTime, double **_x, double *_lqu, int lp)$/;"	f
+QSS3_nextTime	../serial/qss3.c	/^void QSS3_nextTime(int var,double t,double *nTime, double **x, double *lqu)$/;"	f
+QSS3_recomputeNextTime	../parallel/qss3.c	/^void QSS3_recomputeNextTime(int _var, double _t,double *_nTime, double **_x, $/;"	f
+QSS3_recomputeNextTime	../serial/qss3.c	/^void QSS3_recomputeNextTime(int var, double t,double *nTime, double **x, double *lqu,double **q)$/;"	f
+QSS3_recomputeNextTimes	../parallel/qss3.c	/^void QSS3_recomputeNextTimes(int _vars, int *_inf, double _t,double *_nTime, $/;"	f
+QSS3_recomputeNextTimes	../serial/qss3.c	/^void QSS3_recomputeNextTimes(int vars, int *inf, double t,double *nTime, double **x, double *lqu,double **q)$/;"	f
+QSS3_updateQuantizedState	../parallel/qss3.c	/^void QSS3_updateQuantizedState(int _i, double **_q, double **_x, double *_lqu, int lp) $/;"	f
+QSS3_updateQuantizedState	../serial/qss3.c	/^void QSS3_updateQuantizedState(int i, double **q, double **x, double *lqu) $/;"	f
+QSS_BINARY_H	../parallel/qss_binary.h	2;"	d
+QSS_BINARY_H	../serial/qss_binary.h	2;"	d
+QSS_BINARY_RANDOM_H	../serial/qss_binary_random.h	2;"	d
+QSS_BIORICA_H	../serial/qss_biorica.h	2;"	d
+QSS_DATA_H	../parallel/qss_data.h	16;"	d
+QSS_DATA_H	../serial/qss_data.h	16;"	d
+QSS_FILE_H	../parallel/qss_file.h	2;"	d
+QSS_FILE_H	../serial/qss_file.h	2;"	d
+QSS_FRW_H	../parallel/qss_frw.h	2;"	d
+QSS_FRW_H	../serial/qss_frw.h	2;"	d
+QSS_H	../parallel/qss.h	2;"	d
+QSS_H	../serial/qss.h	2;"	d
+QSS_INTEGRATOR_H	../parallel/qss_integrator.h	20;"	d
+QSS_INTEGRATOR_H	../serial/qss_integrator.h	20;"	d
+QSS_LINEAR_H	../parallel/qss_linear.h	2;"	d
+QSS_LINEAR_H	../serial/qss_linear.h	2;"	d
+QSS_LP_H	../parallel/qss_lp.h	2;"	d
+QSS_MEMORY_H	../parallel/qss_memory.h	2;"	d
+QSS_MEMORY_H	../serial/qss_memory.h	2;"	d
+QSS_MODEL_H	../parallel/qss_model.h	6;"	d
+QSS_MODEL_H	../serial/qss_model.h	6;"	d
+QSS_OUTPUT_H	../parallel/qss_output.h	2;"	d
+QSS_OUTPUT_H	../serial/qss_output.h	2;"	d
+QSS_PARALLEL_H	../parallel/qss_parallel.h	2;"	d
+QSS_PARTITION_H	../parallel/qss_partition.h	2;"	d
+QSS_QUANTIZER_H	../parallel/qss_quantizer.h	2;"	d
+QSS_QUANTIZER_H	../serial/qss_quantizer.h	2;"	d
+QSS_RANDOM_H	../serial/qss_random.h	2;"	d
+QSS_Random	../serial/qss_random.c	/^void QSS_Random()$/;"	f
+QSS_SAMPLED_H	../parallel/qss_sampled.h	2;"	d
+QSS_SAMPLED_H	../serial/qss_sampled.h	2;"	d
+QSS_SAVE_H	../parallel/qss_save.h	2;"	d
+QSS_SAVE_H	../serial/qss_save.h	2;"	d
+QSS_SCHEDULER_H	../serial/qss_scheduler.h	2;"	d
+QSS_STEP_H	../parallel/qss_step.h	2;"	d
+QSS_STEP_H	../serial/qss_step.h	2;"	d
+QSS_TIME_H	../parallel/qss_time.h	2;"	d
+QSS_TREE_SCHEDULER_H	../serial/qss_tree.h	2;"	d
+QSS_UTILS_H	../parallel/qss_utils.h	2;"	d
+QSS_UTILS_H	../serial/qss_utils.h	2;"	d
+QSS_exponential	../serial/qss_random.c	/^double QSS_exponential(double mu)$/;"	f
+QSS_freeQuantizer	../parallel/qss.c	/^void QSS_freeQuantizer(int lp)$/;"	f
+QSS_freeQuantizer	../serial/qss.c	/^void QSS_freeQuantizer()$/;"	f
+QSS_freeRandom	../serial/qss_random.c	/^void QSS_freeRandom()$/;"	f
+QSS_getRandomValue	../serial/qss_random.c	/^unsigned long QSS_getRandomValue(int n)$/;"	f
+QSS_init	../parallel/qss.c	/^void QSS_init(SD_data _simData, SD_time _simTime, SD_LP_data _lpData)$/;"	f
+QSS_init	../serial/qss.c	/^void QSS_init(SD_data simData, SD_time simTime)$/;"	f
+QSS_nextTime	../parallel/qss.c	/^void QSS_nextTime(int _var,double _t,double *_nTime, double **_x, double *_lqu, int lp)$/;"	f
+QSS_nextTime	../serial/qss.c	/^void QSS_nextTime(int var,double t, double *nTime, double **x, double *lqu)$/;"	f
+QSS_normal	../serial/qss_random.c	/^double QSS_normal(double sigma)$/;"	f
+QSS_random_generator	../serial/qss_random.h	/^const gsl_rng_type *QSS_random_generator;$/;"	v
+QSS_recomputeNextTime	../parallel/qss.c	/^void QSS_recomputeNextTime(int _var, double _t,double *_nTime, double **_x, $/;"	f
+QSS_recomputeNextTime	../serial/qss.c	/^void QSS_recomputeNextTime(int var, double t, double *nTime, double **x, double *lqu,double **q)$/;"	f
+QSS_recomputeNextTimes	../parallel/qss.c	/^void QSS_recomputeNextTimes(int _vars, int *_inf, double _t,double *_nTime, $/;"	f
+QSS_recomputeNextTimes	../serial/qss.c	/^void QSS_recomputeNextTimes(int vars, int *inf, double t, double *nTime, double **x, double *lqu,double **q)$/;"	f
+QSS_rseed	../serial/qss_random.h	/^gsl_rng *QSS_rseed;$/;"	v
+QSS_shuffle	../serial/qss_random.c	/^void QSS_shuffle(int *a, int size)$/;"	f
+QSS_uniform	../serial/qss_random.c	/^double QSS_uniform(double a, double b)$/;"	f
+QSS_updateQuantizedState	../parallel/qss.c	/^void QSS_updateQuantizedState(int _i, double **_q, double **_x, double *_lqu, int lp) $/;"	f
+QSS_updateQuantizedState	../serial/qss.c	/^void QSS_updateQuantizedState(int _i, double **q, double **x, double *lqu) $/;"	f
+RHSSt	../serial/qss_data.h	/^    int *RHSSt;			\/**< Number of state variables that influence the zero crossing function.	*\/$/;"	m	struct:SD_eventData_
+RTFRAC	../parallel/qss_data.h	37;"	d
+RTLAMBDA	../parallel/qss_data.h	43;"	d
+RTPERIOD	../parallel/qss_data.h	39;"	d
+RTWRATIO	../parallel/qss_data.h	41;"	d
+RT_MAX_OVERRUN_STEPS	../parallel/qss_data.h	55;"	d
+RT_SCALED_FINAL_TIME	../parallel/qss_data.h	57;"	d
+RT_barrier_a	../parallel/qss_parallel.c	/^int RT_barrier_a[MAX_THREADS];$/;"	v
+RT_frac	../parallel/qss_parallel.c	/^double RT_frac = 0;$/;"	v
+RT_indx	../parallel/qss_parallel.c	/^int RT_indx[MAX_THREADS];$/;"	v
+RT_lambda	../parallel/qss_parallel.c	/^double RT_lambda = 0;$/;"	v
+RT_period	../parallel/qss_parallel.c	/^double RT_period = 0;$/;"	v
+RT_processors	../parallel/qss_parallel.c	/^int RT_processors = 0;$/;"	v
+RT_processors	../parallel/qss_parallel.c	/^int RT_processors;$/;"	v
+RT_wratio	../parallel/qss_parallel.c	/^double RT_wratio = 0;$/;"	v
+SAM_free	../serial/qss_sampled.c	/^inline void SAM_free(void) { free(_steps);_sv->free(); }$/;"	f
+SAM_freeOutput	../parallel/qss_sampled.c	/^inline void SAM_freeOutput(int lp) $/;"	f
+SAM_freeOutput	../serial/qss_sampled.c	/^void SAM_freeOutput()$/;"	f
+SAM_getSteps	../parallel/qss_sampled.c	/^inline int SAM_getSteps(int var, int lp) { return _steps[lp][var]; } $/;"	f
+SAM_getSteps	../serial/qss_sampled.c	/^inline int SAM_getSteps(int var) { return _steps[var]; } $/;"	f
+SAM_init	../parallel/qss_sampled.c	/^void SAM_init(SD_data simData, SD_time simTime, SD_output simOutput, SD_LP_data _lpData)$/;"	f
+SAM_init	../serial/qss_sampled.c	/^void SAM_init(SD_data simData, SD_time simTime, SD_output simOutput)$/;"	f
+SAM_save	../parallel/qss_sampled.c	/^inline void SAM_save(int lp) {_sv[lp]->toFile(lp); }$/;"	f
+SAM_save	../serial/qss_sampled.c	/^inline void SAM_save(void) { _sv->toFile(); }$/;"	f
+SAM_write	../parallel/qss_sampled.c	/^void SAM_write(SD_data _simData, SD_time _simTime, SD_output _simOutput, SD_LP_data _lpData)$/;"	f
+SAM_write	../serial/qss_sampled.c	/^void SAM_write(SD_data simData, SD_time simTime, SD_output simOutput)$/;"	f
+SAM_writeOutvar	../parallel/qss_sampled.c	/^void SAM_writeOutvar(SD_data _simData, SD_time _simTime, SD_output _simOutput,$/;"	f
+SAM_writeOutvar	../serial/qss_sampled.c	/^void SAM_writeOutvar(SD_data simData, SD_time simTime, SD_output simOutput, int index)$/;"	f
+SC_Scheduler	../serial/qss_scheduler.c	/^SC_scheduler SC_Scheduler(SD_data simData, SD_time simTime)$/;"	f
+SC_free	../serial/qss_scheduler.h	/^typedef void (*SC_free)(void);		$/;"	t
+SC_freeScheduler	../serial/qss_scheduler.c	/^void SC_freeScheduler(SC_scheduler t)$/;"	f
+SC_scheduler	../serial/qss_scheduler.h	/^typedef struct SC_scheduler_ *SC_scheduler;$/;"	t	typeref:struct:SC_scheduler_
+SC_scheduler_	../serial/qss_scheduler.h	/^struct SC_scheduler_$/;"	s
+SC_update	../serial/qss_scheduler.h	/^typedef void (*SC_update)(SD_data,SD_time);$/;"	t
+SD	../serial/qss_data.h	/^	int 	    	**SD;	$/;"	m	struct:SD_data_
+SD_Algebraics	../serial/qss_data.c	/^double **SD_Algebraics(int algebraics, int order)$/;"	f
+SD_CommInterval	../serial/qss_data.h	/^} SD_CommInterval;$/;"	t	typeref:enum:__anon9
+SD_Data	../parallel/qss_data.c	/^SD_data SD_Data(int nStVars, int nDVars, int nEvents, int nInputs, string name)$/;"	f
+SD_Data	../serial/qss_data.c	/^SD_data SD_Data(int states, int discretes, int events, int inputs, string name)$/;"	f
+SD_Debug	../serial/qss_data.h	/^} SD_Debug;$/;"	t	typeref:enum:__anon13
+SD_Event	../parallel/qss_data.c	/^SD_event SD_Event(SD_zc zeroCrossing, SD_hnd handler_pos, SD_hnd handler_neg)$/;"	f
+SD_Event	../serial/qss_data.c	/^SD_event SD_Event(SD_zc zeroCrossing, SD_hnd handlerPos, SD_hnd handlerNeg)$/;"	f
+SD_EventData	../parallel/qss_data.c	/^SD_eventData SD_EventData(int size)$/;"	f
+SD_EventData	../serial/qss_data.c	/^SD_eventData SD_EventData(int size)$/;"	f
+SD_File	../serial/qss_data.h	/^	SD_File, 		\/**< Save simulation output data to file. 				*\/$/;"	e	enum:__anon10
+SD_GlobalEventData	../parallel/qss_data.c	/^SD_globalEventData SD_GlobalEventData(int size)$/;"	f
+SD_Globalvar	../parallel/qss_data.c	/^SD_global_var SD_Globalvar(int size, int order, double it)$/;"	f
+SD_IntegratorFlags	../parallel/qss_data.c	/^SD_integratorFlags SD_IntegratorFlags()$/;"	f
+SD_LP_Data	../parallel/qss_data.c	/^SD_LP_data SD_LP_Data(double it, double ft, int nstvar, int nev, int nins, int nstins, int nevins,  int order, int number, int nstates, int nevents)$/;"	f
+SD_LP_OutputData	../parallel/qss_data.c	/^void SD_LP_OutputData(SD_LP_data data, int size, int outvars)$/;"	f
+SD_LP_data	../parallel/qss_data.h	/^typedef struct SD_LP_data_ *SD_LP_data;$/;"	t	typeref:struct:SD_LP_data_
+SD_LP_data_	../parallel/qss_data.h	/^struct SD_LP_data_$/;"	s
+SD_LP_freeData	../parallel/qss_data.c	/^void SD_LP_freeData(SD_LP_data data)$/;"	f
+SD_LP_init	../parallel/qss_data.h	/^typedef void (*SD_LP_init)(SD_LP_data,SD_time,int);$/;"	t
+SD_Memory	../serial/qss_data.h	/^	SD_Memory		\/**< Save simulation output data in memory (default). 	*\/ $/;"	e	enum:__anon10
+SD_Model	../parallel/qss_data.c	/^SD_model SD_Model(SD_eq f, SD_dep deps,SD_zc zeroCrossing, SD_hnd handler_pos, SD_hnd handler_neg)$/;"	f
+SD_Model	../serial/qss_data.c	/^SD_model SD_Model(SD_eq f, SD_dep deps, SD_zc zeroCrossing, SD_hnd handlerPos, SD_hnd handlerNeg)$/;"	f
+SD_Output	../parallel/qss_data.c	/^SD_output SD_Output(string name, int nOutvars, int nDVars, int nStVars, double *period, int nperiod, double it, $/;"	f
+SD_Output	../serial/qss_data.c	/^SD_output SD_Output(string name, int outputs, int discretes, int states, double *period, int nPeriod, double it, $/;"	f
+SD_OutputVariable	../serial/qss_data.c	/^SD_outputVariable SD_OutputVariable(int outputs)$/;"	f
+SD_Outvar	../parallel/qss_data.c	/^SD_outvar SD_Outvar(int nOutvars)$/;"	f
+SD_Parameters	../parallel/qss_data.c	/^SD_parameters SD_Parameters(double derDelta, double zcHist, double minStep, int symDiff, int lps, int nodesize,$/;"	f
+SD_Parameters	../serial/qss_data.c	/^SD_parameters SD_Parameters(double derDelta, double zcHist, double minStep, int symDiff)$/;"	f
+SD_SampledOutput	../parallel/qss_data.c	/^SD_sampledOutput SD_SampledOutput(int nOutputVars, double it, double *period, int nperiod)$/;"	f
+SD_SampledOutput	../serial/qss_data.c	/^SD_sampledOutput SD_SampledOutput(int outputs, double it, double *period, int nPeriod)$/;"	f
+SD_SchedulerType	../serial/qss_data.h	/^} SD_SchedulerType;$/;"	t	typeref:enum:__anon8
+SD_SimulationFlags	../parallel/qss_data.c	/^SD_simulationFlags SD_SimulationFlags(bool dbg)$/;"	f
+SD_SimulationSettings	../serial/qss_data.c	/^SD_simulationSettings SD_SimulationSettings(bool debug)$/;"	f
+SD_Solver	../serial/qss_data.h	/^} SD_Solver;$/;"	t	typeref:enum:__anon12
+SD_StepType	../serial/qss_data.h	/^} SD_StepType;$/;"	t	typeref:enum:__anon11
+SD_StoreData	../serial/qss_data.h	/^} SD_StoreData;$/;"	t	typeref:enum:__anon10
+SD_Time	../parallel/qss_data.c	/^SD_time SD_Time(double t, double minValue, int minIndex, SD_search search, SD_step type, int nstates, int nevents, int ninputs)$/;"	f
+SD_Time	../serial/qss_data.c	/^SD_time SD_Time(int states, int events, int inputs, double it, SD_SchedulerType scheduler, $/;"	f
+SD_VariableLog	../serial/qss_data.c	/^SD_variableLog SD_VariableLog(int states, int events)$/;"	f
+SD_allocDataMatrix	../serial/qss_data.c	/^void SD_allocDataMatrix(SD_data data)$/;"	f
+SD_allocOutputMatrix	../parallel/qss_data.c	/^void SD_allocOutputMatrix(SD_output output, int nStVars, int nDVars)$/;"	f
+SD_allocOutputMatrix	../serial/qss_data.c	/^void SD_allocOutputMatrix(SD_output output, int states, int discretes)$/;"	f
+SD_allocOutputVar	../parallel/qss_data.c	/^void SD_allocOutputVar(struct SD_outvar_ outvar,string name, int nx)$/;"	f
+SD_comminterval	../parallel/qss_data.h	/^} SD_comminterval;$/;"	t	typeref:enum:__anon2
+SD_dQMin	../parallel/qss_data.c	/^double SD_dQMin(int index)$/;"	f
+SD_dQRel	../parallel/qss_data.c	/^double SD_dQRel(int index)$/;"	f
+SD_data	../parallel/qss_data.h	/^typedef struct SD_data_ *SD_data;$/;"	t	typeref:struct:SD_data_
+SD_data	../serial/qss_data.h	/^typedef struct SD_data_ *SD_data;$/;"	t	typeref:struct:SD_data_
+SD_data_	../parallel/qss_data.h	/^struct SD_data_$/;"	s
+SD_data_	../serial/qss_data.h	/^struct SD_data_$/;"	s
+SD_dep	../parallel/qss_data.h	/^typedef void (*SD_dep)(int,double**,double*,double,double**,int,SD_idx_map);$/;"	t
+SD_dep	../serial/qss_data.h	/^typedef void (*SD_dep)(int,double**,double*,double,double**);$/;"	t
+SD_eq	../parallel/qss_data.h	/^typedef void (*SD_eq)(int,double**,double*,double,double*,int);$/;"	t
+SD_eq	../serial/qss_data.h	/^typedef void (*SD_eq)(int,double**,double*,double,double*);$/;"	t
+SD_event	../parallel/qss_data.h	/^typedef struct SD_event_ *SD_event;$/;"	t	typeref:struct:SD_event_
+SD_event	../serial/qss_data.h	/^typedef struct SD_event_ *SD_event;$/;"	t	typeref:struct:SD_event_
+SD_eventData	../parallel/qss_data.h	/^typedef struct SD_eventData_ *SD_eventData;$/;"	t	typeref:struct:SD_eventData_
+SD_eventData	../serial/qss_data.h	/^typedef struct SD_eventData_ *SD_eventData;$/;"	t	typeref:struct:SD_eventData_
+SD_eventData_	../parallel/qss_data.h	/^struct SD_eventData_$/;"	s
+SD_eventData_	../serial/qss_data.h	/^struct SD_eventData_$/;"	s
+SD_event_	../parallel/qss_data.h	/^struct SD_event_$/;"	s
+SD_event_	../serial/qss_data.h	/^struct SD_event_$/;"	s
+SD_fp	../parallel/qss_data.h	/^typedef void (*SD_fp)(void);$/;"	t
+SD_fp	../serial/qss_data.h	/^typedef void (*SD_fp)(void);$/;"	t
+SD_fpa	../parallel/qss_data.h	/^typedef void (*SD_fpa)(int);$/;"	t
+SD_fpa	../serial/qss_data.h	/^typedef void (*SD_fpa)(int);$/;"	t
+SD_fpr	../parallel/qss_data.h	/^typedef int  (*SD_fpr)(int);$/;"	t
+SD_fpr	../serial/qss_data.h	/^typedef int  (*SD_fpr)(int);$/;"	t
+SD_freeData	../parallel/qss_data.c	/^void SD_freeData(SD_data data)$/;"	f
+SD_freeData	../serial/qss_data.c	/^void SD_freeData(SD_data data)$/;"	f
+SD_freeEvent	../parallel/qss_data.c	/^void SD_freeEvent(SD_event event)$/;"	f
+SD_freeEvent	../serial/qss_data.c	/^void SD_freeEvent(SD_event events)$/;"	f
+SD_freeEventData	../parallel/qss_data.c	/^void SD_freeEventData(SD_eventData ed, int size)$/;"	f
+SD_freeEventData	../serial/qss_data.c	/^void SD_freeEventData(SD_eventData events, int size)$/;"	f
+SD_freeGlobalEventData	../parallel/qss_data.c	/^void SD_freeGlobalEventData(SD_globalEventData e,int size)$/;"	f
+SD_freeGlobalVar	../parallel/qss_data.c	/^void SD_freeGlobalVar(SD_global_var p, int size)$/;"	f
+SD_freeIntegratorFlags	../parallel/qss_data.c	/^void SD_freeIntegratorFlags(SD_integratorFlags flags)$/;"	f
+SD_freeModel	../parallel/qss_data.c	/^void SD_freeModel(SD_model model)$/;"	f
+SD_freeModel	../serial/qss_data.c	/^void SD_freeModel(SD_model model)$/;"	f
+SD_freeOutput	../parallel/qss_data.c	/^void SD_freeOutput(SD_output output, int nDscVars, int nStVars)$/;"	f
+SD_freeOutput	../serial/qss_data.c	/^void SD_freeOutput(SD_output output, int states, int discretes)$/;"	f
+SD_freeOutputVariable	../serial/qss_data.c	/^void SD_freeOutputVariable(SD_outputVariable variable)$/;"	f
+SD_freeOutvar	../parallel/qss_data.c	/^void SD_freeOutvar(SD_outvar outvar, int nOutvars)$/;"	f
+SD_freeParameters	../parallel/qss_data.c	/^void SD_freeParameters(SD_parameters param)$/;"	f
+SD_freeParameters	../serial/qss_data.c	/^void SD_freeParameters(SD_parameters params)$/;"	f
+SD_freeSampledOutput	../parallel/qss_data.c	/^void SD_freeSampledOutput(SD_sampledOutput output)$/;"	f
+SD_freeSampledOutput	../serial/qss_data.c	/^void SD_freeSampledOutput(SD_sampledOutput output)$/;"	f
+SD_freeSimulationFlags	../parallel/qss_data.c	/^void SD_freeSimulationFlags(SD_simulationFlags simf)$/;"	f
+SD_freeSimulationSettings	../serial/qss_data.c	/^void SD_freeSimulationSettings(SD_simulationSettings settings)$/;"	f
+SD_freeTime	../parallel/qss_data.c	/^void SD_freeTime(SD_time simt, int nEvents, int nInputs)$/;"	f
+SD_freeTime	../serial/qss_data.c	/^void SD_freeTime(SD_time simTime, int events, int inputs)$/;"	f
+SD_freeVariableLog	../serial/qss_data.c	/^void SD_freeVariableLog(SD_variableLog log)$/;"	f
+SD_getInf	../parallel/qss_data.c	/^double SD_getInf()$/;"	f
+SD_globalEventData	../parallel/qss_data.h	/^typedef struct SD_globalEventData_ *SD_globalEventData;$/;"	t	typeref:struct:SD_globalEventData_
+SD_globalEventData_	../parallel/qss_data.h	/^struct SD_globalEventData_$/;"	s
+SD_global_var	../parallel/qss_data.h	/^typedef struct SD_global_var_ *SD_global_var;$/;"	t	typeref:struct:SD_global_var_
+SD_global_var_	../parallel/qss_data.h	/^struct SD_global_var_$/;"	s
+SD_hnd	../parallel/qss_data.h	/^typedef void (*SD_hnd)(int,double**,double*,double,int);$/;"	t
+SD_hnd	../serial/qss_data.h	/^typedef void (*SD_hnd)(int,double**,double*,double);$/;"	t
+SD_idx_map	../parallel/qss_data.h	/^typedef int *SD_idx_map;$/;"	t
+SD_inf	../parallel/qss_data.c	/^void SD_inf(SD_data data)$/;"	f
+SD_init	../parallel/qss_data.h	/^typedef void (*SD_init)(SD_data,SD_output,SD_model,SD_simulationFlags);$/;"	t
+SD_init	../serial/qss_data.h	/^typedef void (*SD_init)(SD_data,SD_time,SD_output,SD_model,SD_simulationSettings);$/;"	t
+SD_input	../parallel/qss_data.h	/^typedef void (*SD_input)(double,double*);$/;"	t
+SD_input	../serial/qss_data.h	/^typedef void (*SD_input)(double,double*);$/;"	t
+SD_integratorFlags	../parallel/qss_data.h	/^typedef struct SD_integratorFlags_ *SD_integratorFlags;$/;"	t	typeref:struct:SD_integratorFlags_
+SD_integratorFlags_	../parallel/qss_data.h	/^struct SD_integratorFlags_$/;"	s
+SD_mapping	../parallel/qss_data.h	/^typedef struct SD_mapping_ SD_mapping;$/;"	t	typeref:struct:SD_mapping_
+SD_mapping_	../parallel/qss_data.h	/^struct SD_mapping_$/;"	s
+SD_model	../parallel/qss_data.h	/^typedef struct SD_model_ *SD_model;$/;"	t	typeref:struct:SD_model_
+SD_model	../serial/qss_data.h	/^typedef struct SD_model_ *SD_model;$/;"	t	typeref:struct:SD_model_
+SD_model_	../parallel/qss_data.h	/^struct SD_model_ $/;"	s
+SD_model_	../serial/qss_data.h	/^struct SD_model_ $/;"	s
+SD_output	../parallel/qss_data.h	/^typedef struct SD_output_ *SD_output;$/;"	t	typeref:struct:SD_output_
+SD_output	../serial/qss_data.h	/^typedef struct SD_output_ *SD_output;$/;"	t	typeref:struct:SD_output_
+SD_outputVariable	../serial/qss_data.h	/^typedef struct SD_outputVariable_ *SD_outputVariable;$/;"	t	typeref:struct:SD_outputVariable_
+SD_outputVariable_	../serial/qss_data.h	/^struct SD_outputVariable_$/;"	s
+SD_output_	../parallel/qss_data.h	/^struct SD_output_$/;"	s
+SD_output_	../serial/qss_data.h	/^struct SD_output_$/;"	s
+SD_outvar	../parallel/qss_data.h	/^typedef struct SD_outvar_ *SD_outvar;$/;"	t	typeref:struct:SD_outvar_
+SD_outvar_	../parallel/qss_data.h	/^struct SD_outvar_$/;"	s
+SD_parameters	../parallel/qss_data.h	/^typedef struct SD_parameters_ *SD_parameters;$/;"	t	typeref:struct:SD_parameters_
+SD_parameters	../serial/qss_data.h	/^typedef struct SD_parameters_ *SD_parameters;$/;"	t	typeref:struct:SD_parameters_
+SD_parameters_	../parallel/qss_data.h	/^struct SD_parameters_$/;"	s
+SD_parameters_	../serial/qss_data.h	/^struct SD_parameters_$/;"	s
+SD_sampledOutput	../parallel/qss_data.h	/^typedef struct SD_sampledOutput_ *SD_sampledOutput;$/;"	t	typeref:struct:SD_sampledOutput_
+SD_sampledOutput	../serial/qss_data.h	/^typedef struct SD_sampledOutput_ *SD_sampledOutput;$/;"	t	typeref:struct:SD_sampledOutput_
+SD_sampledOutput_	../parallel/qss_data.h	/^struct SD_sampledOutput_ $/;"	s
+SD_sampledOutput_	../serial/qss_data.h	/^struct SD_sampledOutput_ $/;"	s
+SD_savedata	../parallel/qss_data.h	/^} SD_savedata;$/;"	t	typeref:enum:__anon3
+SD_search	../parallel/qss_data.h	/^}SD_search;$/;"	t	typeref:enum:__anon1
+SD_setDataMatrix	../parallel/qss_data.c	/^void SD_setDataMatrix(SD_data data)$/;"	f
+SD_sim	../parallel/qss_data.h	/^typedef void *(*SD_sim)(void*);$/;"	t
+SD_simulationFlags	../parallel/qss_data.h	/^typedef struct SD_simulationFlags_ *SD_simulationFlags;$/;"	t	typeref:struct:SD_simulationFlags_
+SD_simulationFlags_	../parallel/qss_data.h	/^struct SD_simulationFlags_$/;"	s
+SD_simulationSettings	../serial/qss_data.h	/^typedef struct SD_simulationSettings_ *SD_simulationSettings;$/;"	t	typeref:struct:SD_simulationSettings_
+SD_simulationSettings_	../serial/qss_data.h	/^struct SD_simulationSettings_$/;"	s
+SD_solver	../parallel/qss_data.h	/^} SD_solver;$/;"	t	typeref:enum:__anon5
+SD_step	../parallel/qss_data.h	/^} SD_step;$/;"	t	typeref:enum:__anon4
+SD_time	../parallel/qss_data.h	/^typedef struct SD_time_ *SD_time;$/;"	t	typeref:struct:SD_time_
+SD_time	../serial/qss_data.h	/^typedef struct SD_time_ *SD_time;$/;"	t	typeref:struct:SD_time_
+SD_time_	../parallel/qss_data.h	/^struct SD_time_$/;"	s
+SD_time_	../serial/qss_data.h	/^struct SD_time_$/;"	s
+SD_variableLog	../serial/qss_data.h	/^typedef struct SD_variableLog_ *SD_variableLog;$/;"	t	typeref:struct:SD_variableLog_
+SD_variableLog_	../serial/qss_data.h	/^struct SD_variableLog_$/;"	s
+SD_zc	../parallel/qss_data.h	/^typedef void (*SD_zc)(int,double**,double*,double,double*,int);$/;"	t
+SD_zc	../serial/qss_data.h	/^typedef void (*SD_zc)(int,double**,double*,double,double*);$/;"	t
+SETTINGS_H	../serial/settings.h	2;"	d
+SET_Settings	../serial/settings.c	/^SET_settings SET_Settings(char *fname)$/;"	f
+SET_settings	../serial/settings.h	/^typedef struct SET_settings_ *SET_settings;$/;"	t	typeref:struct:SET_settings_
+SET_settings_	../serial/settings.h	/^struct SET_settings_$/;"	s
+SL_CQSS	../serial/qss_data.h	/^	SL_CQSS,$/;"	e	enum:__anon12
+SL_DASSL	../serial/qss_data.h	/^	SL_DASSL,$/;"	e	enum:__anon12
+SL_DOPRI	../serial/qss_data.h	/^	SL_DOPRI$/;"	e	enum:__anon12
+SL_LIQSS	../serial/qss_data.h	/^	SL_LIQSS,$/;"	e	enum:__anon12
+SL_LIQSS2	../serial/qss_data.h	/^	SL_LIQSS2,$/;"	e	enum:__anon12
+SL_LIQSS3	../serial/qss_data.h	/^	SL_LIQSS3,$/;"	e	enum:__anon12
+SL_QSS	../serial/qss_data.h	/^	SL_QSS,$/;"	e	enum:__anon12
+SL_QSS2	../serial/qss_data.h	/^	SL_QSS2,$/;"	e	enum:__anon12
+SL_QSS3	../serial/qss_data.h	/^	SL_QSS3,$/;"	e	enum:__anon12
+SO	../serial/qss_data.h	/^	int 			**SO;	\/**< \\f$ dscOutVars[i] \\f$ is the i-th discrete output variable.			  					*\/$/;"	m	struct:SD_output_
+SOH_freeFramework	../parallel/qss_frw.c	/^void SOH_freeFramework()$/;"	f
+SOH_freeFramework	../serial/qss_frw.c	/^void SOH_freeFramework()$/;"	f
+SOH_nextEventTime	../parallel/qss_frw.c	/^void SOH_nextEventTime(SD_model simModel, SD_data simData, SD_time simTime, int index, SD_LP_data lpData, struct SD_globalEventData_ gbl_event)$/;"	f
+SOH_nextEventTime	../serial/qss_frw.c	/^void SOH_nextEventTime(SD_model simModel, SD_data simData, SD_time simTime, int index)$/;"	f
+SOH_nextInputTime	../parallel/qss_frw.c	/^void SOH_nextInputTime(SD_model model, SD_data data, SD_time time, double elapsed, int var, int index, SD_LP_data lpData)$/;"	f
+SOH_nextInputTime	../serial/qss_frw.c	/^void SOH_nextInputTime(SD_model model, SD_data data, SD_time time, double elapsed, int var, int index)$/;"	f
+SOH_recomputeDerivative	../parallel/qss_frw.c	/^void SOH_recomputeDerivative(SD_model simModel, SD_data simData, SD_time simTime, double elapsed,int stateVar, SD_LP_data lpData)$/;"	f
+SOH_recomputeDerivative	../serial/qss_frw.c	/^void SOH_recomputeDerivative(SD_model simModel, SD_data simData, SD_time simTime, double elapsed,int index)$/;"	f
+SOH_recomputeDerivatives	../parallel/qss_frw.c	/^void SOH_recomputeDerivatives(SD_model simModel, SD_data simData, SD_time simTime, double elapsed, int index, SD_LP_data lpData)$/;"	f
+SOH_recomputeDerivatives	../serial/qss_frw.c	/^void SOH_recomputeDerivatives(SD_model simModel, SD_data simData, SD_time simTime, double elapsed, int index)$/;"	f
+ST_Binary	../serial/qss_data.h	/^	ST_Binary,		\/**< Search the minimum time using a Binary Tree search strategy. *\/$/;"	e	enum:__anon8
+ST_Event	../serial/qss_data.h	/^	ST_Event,		\/**< Event transition.			*\/$/;"	e	enum:__anon11
+ST_Input	../serial/qss_data.h	/^	ST_Input		\/**< Input transition.			*\/$/;"	e	enum:__anon11
+ST_Linear	../serial/qss_data.h	/^	ST_Linear,		\/**< Search the minimum time using a Linear search strategy. *\/$/;"	e	enum:__anon8
+ST_RandomSearch	../serial/qss_data.h	/^	ST_RandomSearch$/;"	e	enum:__anon8
+ST_State	../serial/qss_data.h	/^	ST_State, 	    \/**< State Variable transition.	*\/$/;"	e	enum:__anon11
+ST_free	../serial/qss_step.c	/^inline void ST_free() { free(_steps_s); _sv->free(); }$/;"	f
+ST_freeOutput	../parallel/qss_step.c	/^inline void ST_freeOutput(int lp) $/;"	f
+ST_freeOutput	../serial/qss_step.c	/^void ST_freeOutput()$/;"	f
+ST_getSteps	../parallel/qss_step.c	/^inline int ST_getSteps(int var, int lp) { return _steps_s[lp][var]; } $/;"	f
+ST_getSteps	../serial/qss_step.c	/^inline int ST_getSteps(int var) { return _steps_s[var]; } $/;"	f
+ST_init	../parallel/qss_step.c	/^void ST_init(SD_data _simData, SD_time _simTime, SD_output _simOutput, SD_LP_data _lpData)$/;"	f
+ST_init	../serial/qss_step.c	/^void ST_init(SD_data simData, SD_time simTime, SD_output simOutput)$/;"	f
+ST_save	../parallel/qss_step.c	/^inline void ST_save(int lp) {_sv[lp]->toFile(lp); }$/;"	f
+ST_save	../serial/qss_step.c	/^inline void ST_save() { _sv->toFile(); }$/;"	f
+ST_write	../parallel/qss_step.c	/^void ST_write(SD_data _simData, SD_time _simTime, SD_output _simOutput, SD_LP_data _lpData)$/;"	f
+ST_write	../serial/qss_step.c	/^void ST_write(SD_data simData, SD_time simTime, SD_output simOutput)$/;"	f
+ST_writeOutvar	../parallel/qss_step.c	/^void ST_writeOutvar(SD_data _simData, SD_time _simTime, SD_output _simOutput, $/;"	f
+ST_writeOutvar	../serial/qss_step.c	/^void ST_writeOutvar(SD_data simData, SD_time simTime, SD_output simOutput, int index)$/;"	f
+SV_Save	../parallel/qss_save.c	/^SV_save SV_Save(SD_LP_data simData, SD_output simOutput, int nodesize)$/;"	f
+SV_Save	../serial/qss_save.c	/^SV_save SV_Save(SD_data simData, SD_output simOutput)$/;"	f
+SV_freeValues	../parallel/qss_save.c	/^void SV_freeValues(SV_save v, int lp)$/;"	f
+SV_freeValues	../serial/qss_save.c	/^void SV_freeValues(SV_save v)$/;"	f
+SV_freeValues_	../parallel/qss_save.h	/^typedef void (*SV_freeValues_)(int);$/;"	t
+SV_freeValues_	../serial/qss_save.h	/^typedef void (*SV_freeValues_)();$/;"	t
+SV_save	../parallel/qss_save.h	/^typedef struct SV_save_ *SV_save;$/;"	t	typeref:struct:SV_save_
+SV_save	../serial/qss_save.h	/^typedef struct SV_save_ *SV_save;$/;"	t	typeref:struct:SV_save_
+SV_save_	../parallel/qss_save.h	/^struct SV_save_$/;"	s
+SV_save_	../serial/qss_save.h	/^struct SV_save_$/;"	s
+SV_toFile	../parallel/qss_save.h	/^typedef void (*SV_toFile)(int lp);$/;"	t
+SV_toFile	../serial/qss_save.h	/^typedef void (*SV_toFile)();$/;"	t
+SV_write	../parallel/qss_save.h	/^typedef void (*SV_write)(int,double,double,int);$/;"	t
+SV_write	../serial/qss_save.h	/^typedef void (*SV_write)(int,double,double);$/;"	t
+SV_writeLine	../parallel/qss_save.h	/^typedef void (*SV_writeLine)(int,double,double*,int);$/;"	t
+SV_writeLine	../serial/qss_save.h	/^typedef void (*SV_writeLine)(int,double,double*);$/;"	t
+SYM_RecomputeDerivative	../serial/qss_frw.c	/^void SYM_RecomputeDerivative(SD_model simModel, SD_data simData, SD_time simTime, double elapsed,int index)$/;"	f
+SYM_freeFramework	../parallel/qss_frw.c	/^void SYM_freeFramework()$/;"	f
+SYM_freeFramework	../serial/qss_frw.c	/^void SYM_freeFramework()$/;"	f
+SYM_nextEventTime	../parallel/qss_frw.c	/^void SYM_nextEventTime(SD_model simModel, SD_data simData, SD_time simTime, int index, SD_LP_data lpData, struct SD_globalEventData_ gbl_event)$/;"	f
+SYM_nextEventTime	../serial/qss_frw.c	/^void SYM_nextEventTime(SD_model simModel, SD_data simData, SD_time simTime, int index)$/;"	f
+SYM_recomputeDerivative	../parallel/qss_frw.c	/^void SYM_recomputeDerivative(SD_model simModel, SD_data simData, SD_time simTime, double elapsed,int stateVar, SD_LP_data lpData)$/;"	f
+SYM_recomputeDerivatives	../parallel/qss_frw.c	/^void SYM_recomputeDerivatives(SD_model simModel, SD_data simData, SD_time simTime, double elapsed, int index, SD_LP_data lpData)$/;"	f
+SYM_recomputeDerivatives	../serial/qss_frw.c	/^void SYM_recomputeDerivatives(SD_model simModel, SD_data simData, SD_time simTime, double elapsed, int index)$/;"	f
+SZ	../serial/qss_data.h	/^	int 	    	**SZ;	$/;"	m	struct:SD_data_
+TM_Time	../parallel/qss_time.c	/^TM_time TM_Time(SD_data _simData, SD_time _simTime, SD_LP_data _lpData)$/;"	f
+TM_free	../parallel/qss_time.h	/^typedef void (*TM_free)(int);		$/;"	t
+TM_freeTime	../parallel/qss_time.c	/^void TM_freeTime(TM_time t,int lp)$/;"	f
+TM_time	../parallel/qss_time.h	/^typedef struct TM_time_ *TM_time;$/;"	t	typeref:struct:TM_time_
+TM_time_	../parallel/qss_time.h	/^struct TM_time_$/;"	s
+TM_update	../parallel/qss_time.h	/^typedef void (*TM_update)(SD_data,SD_time,SD_LP_data);$/;"	t
+TOH_freeFramework	../parallel/qss_frw.c	/^void TOH_freeFramework()$/;"	f
+TOH_freeFramework	../serial/qss_frw.c	/^void TOH_freeFramework()$/;"	f
+TOH_nextEventTime	../parallel/qss_frw.c	/^void TOH_nextEventTime(SD_model simModel, SD_data simData, SD_time simTime, int index, SD_LP_data lpData, struct SD_globalEventData_ gbl_event)$/;"	f
+TOH_nextEventTime	../serial/qss_frw.c	/^void TOH_nextEventTime(SD_model simModel, SD_data simData, SD_time simTime, int index)$/;"	f
+TOH_nextInputTime	../parallel/qss_frw.c	/^void TOH_nextInputTime(SD_model model, SD_data data, SD_time time, double elapsed, int var, int index, SD_LP_data lpData)$/;"	f
+TOH_nextInputTime	../serial/qss_frw.c	/^void TOH_nextInputTime(SD_model model, SD_data data, SD_time time, double elapsed, int var, int index)$/;"	f
+TOH_recomputeDerivative	../parallel/qss_frw.c	/^void TOH_recomputeDerivative(SD_model simModel, SD_data simData, SD_time simTime, double elapsed,int stateVar, SD_LP_data lpData)$/;"	f
+TOH_recomputeDerivative	../serial/qss_frw.c	/^void TOH_recomputeDerivative(SD_model simModel, SD_data simData, SD_time simTime, double elapsed,int index)$/;"	f
+TOH_recomputeDerivatives	../parallel/qss_frw.c	/^void TOH_recomputeDerivatives(SD_model simModel, SD_data simData, SD_time simTime, double elapsed, int index, SD_LP_data lpData)$/;"	f
+TOH_recomputeDerivatives	../serial/qss_frw.c	/^void TOH_recomputeDerivatives(SD_model simModel, SD_data simData, SD_time simTime, double elapsed, int index)$/;"	f
+TRUE	../serial/qss_utils.h	13;"	d
+TR_free	../serial/qss_tree.c	/^void TR_free()$/;"	f
+TR_free	../serial/qss_tree.h	/^typedef void (*TR_free)(void);$/;"	t
+TR_min	../serial/qss_tree.h	/^typedef int (*TR_min)(SD_StepType);$/;"	t
+TR_size	../serial/qss_tree.h	/^typedef int (*TR_size)(SD_StepType);$/;"	t
+TR_tree	../serial/qss_tree.h	/^typedef struct TR_tree_ *TR_tree;$/;"	t	typeref:struct:TR_tree_
+TR_treeScheduler	../serial/qss_tree.h	/^typedef struct TR_treeScheduler_ *TR_treeScheduler;$/;"	t	typeref:struct:TR_treeScheduler_
+TR_treeScheduler_	../serial/qss_tree.h	/^struct TR_treeScheduler_$/;"	s
+TR_tree_	../serial/qss_tree.h	/^struct TR_tree_$/;"	s
+TR_update	../serial/qss_tree.h	/^typedef void (*TR_update)(SD_Data,SD_time);$/;"	t
+TR_updateH	../serial/qss_tree.c	/^void TR_updateH(SD_data simData, SD_time simTime)$/;"	f
+TR_updateHI	../serial/qss_tree.c	/^void TR_updateHI(SD_data simData, SD_time simTime)$/;"	f
+TR_updateI	../serial/qss_tree.c	/^void TR_updateI(SD_data simData, SD_time simTime)$/;"	f
+TR_updateS	../serial/qss_tree.c	/^void TR_updateS(SD_data simData, SD_time simTime)$/;"	f
+TR_updateTree	../serial/qss_tree.h	/^typedef void (*TR_updateTree)(SD_StepType,int,int);$/;"	t
+UPDATE_DEPS	../parallel/qss_binary.c	9;"	d	file:
+ZC_HIST	../parallel/qss_data.h	51;"	d
+ZC_HIST	../serial/qss_data.h	37;"	d
+ZS	../serial/qss_data.h	/^	int 	    	**ZS;	$/;"	m	struct:SD_data_
+_BTR_dscVars	../serial/qss_binary_random.c	/^BTR_tree _BTR_dscVars = NULL;$/;"	v
+_BTR_inputVars	../serial/qss_binary_random.c	/^BTR_tree _BTR_inputVars = NULL;$/;"	v
+_BTR_stVars	../serial/qss_binary_random.c	/^BTR_tree _BTR_stVars = NULL;$/;"	v
+_BTR_update	../serial/qss_binary_random.c	/^BTR_upd _BTR_update = NULL;$/;"	v
+_BTR_visit	../serial/qss_binary_random.c	/^BTR_info _BTR_visit = NULL;$/;"	v
+_BT_update	../parallel/qss_binary.c	/^BT_upd _BT_update[MAX_THREADS];$/;"	v
+_BT_update	../serial/qss_binary.c	/^BT_upd _BT_update = NULL;$/;"	v
+_GNU_SOURCE	../parallel/qss_parallel.c	1;"	d	file:
+__USE_GNU	../parallel/qss_parallel.c	2;"	d	file:
+_a	../parallel/liqss.c	/^double *_a[MAX_THREADS];$/;"	v
+_a	../parallel/liqss2.c	/^double *_a[MAX_THREADS];$/;"	v
+_a	../parallel/liqss3.c	/^double *_a[MAX_THREADS];$/;"	v
+_a	../serial/liqss.c	/^double *_a;$/;"	v
+_a	../serial/liqss2.c	/^double *_a;$/;"	v
+_a	../serial/liqss3.c	/^double *_a;$/;"	v
+_actual	../parallel/qss_partition.c	/^LST_node _actual = NULL;$/;"	v
+_dq	../parallel/liqss.c	/^double *_dq[MAX_THREADS];$/;"	v
+_dq	../parallel/liqss2.c	/^double *_dq[MAX_THREADS];$/;"	v
+_dq	../parallel/liqss3.c	/^double *_dq[MAX_THREADS];$/;"	v
+_dq	../serial/liqss.c	/^double *_dq;$/;"	v
+_dq	../serial/liqss2.c	/^double *_dq;$/;"	v
+_dq	../serial/liqss3.c	/^double *_dq;$/;"	v
+_dscVars	../serial/qss_binary.c	/^BT_tree _dscVars = NULL;$/;"	v
+_ev_ins	../parallel/qss_partition.c	/^LST_list *_ev_ins = NULL;$/;"	v
+_finTime	../parallel/liqss2.c	/^double _finTime[MAX_THREADS];$/;"	v
+_finTime	../parallel/liqss3.c	/^double _finTime[MAX_THREADS];$/;"	v
+_finTime	../serial/liqss2.c	/^double _finTime;$/;"	v
+_finTime	../serial/liqss3.c	/^double _finTime;$/;"	v
+_flag2	../parallel/liqss2.c	/^int *_flag2[MAX_THREADS];$/;"	v
+_flag2	../parallel/liqss3.c	/^int *_flag2[MAX_THREADS];$/;"	v
+_flag2	../serial/liqss2.c	/^int *_flag2;$/;"	v
+_flag2	../serial/liqss3.c	/^int *_flag2;$/;"	v
+_flag3	../parallel/liqss2.c	/^int *_flag3[MAX_THREADS];$/;"	v
+_flag3	../parallel/liqss3.c	/^int *_flag3[MAX_THREADS];$/;"	v
+_flag3	../serial/liqss2.c	/^int *_flag3;$/;"	v
+_flag3	../serial/liqss3.c	/^int *_flag3;$/;"	v
+_flag4	../parallel/liqss2.c	/^int *_flag4[MAX_THREADS];$/;"	v
+_flag4	../parallel/liqss3.c	/^int *_flag4[MAX_THREADS];$/;"	v
+_flag4	../serial/liqss2.c	/^int *_flag4;$/;"	v
+_flag4	../serial/liqss3.c	/^int *_flag4;$/;"	v
+_handler	../parallel/qss_partition.c	/^PRT_partition *_handler = NULL;$/;"	v
+_info	../serial/qss_binary.c	/^BT_info _info = NULL;$/;"	v
+_inputVars	../serial/qss_binary.c	/^BT_tree _inputVars = NULL;$/;"	v
+_lSimTime	../parallel/liqss2.c	/^SD_time _lSimTime[MAX_THREADS];$/;"	v
+_lSimTime	../parallel/liqss3.c	/^SD_time _lSimTime[MAX_THREADS];$/;"	v
+_lSimTime	../serial/liqss2.c	/^SD_time _lSimTime;$/;"	v
+_lSimTime	../serial/liqss3.c	/^SD_time _lSimTime;$/;"	v
+_localData	../parallel/qss_memory.c	/^SD_LP_data _localData[MAX_THREADS];$/;"	v
+_localData	../serial/qss_memory.c	/^SD_data _localData;$/;"	v
+_localOutput	../parallel/qss_memory.c	/^SD_output _localOutput[MAX_THREADS];$/;"	v
+_localOutput	../serial/qss_memory.c	/^SD_output _localOutput;$/;"	v
+_logFile	../serial/qss_utils.c	/^FILE *_logFile;$/;"	v
+_lp_localData	../parallel/qss_lp.c	/^SD_LP_data *_lp_localData;$/;"	v
+_lp_localTime	../parallel/qss_lp.c	/^SD_time *_lp_localTime;$/;"	v
+_lquOld	../parallel/liqss2.c	/^static double *_lquOld[MAX_THREADS];$/;"	v	file:
+_lquOld	../parallel/liqss3.c	/^static double *_lquOld[MAX_THREADS];$/;"	v	file:
+_lquOld	../serial/liqss2.c	/^static double *_lquOld;$/;"	v	file:
+_lquOld	../serial/liqss3.c	/^static double *_lquOld;$/;"	v	file:
+_lt	../parallel/cqss.c	/^double *_lt[MAX_THREADS];$/;"	v
+_lt	../parallel/liqss.c	/^double *_lt[MAX_THREADS];$/;"	v
+_lt	../parallel/liqss2.c	/^static double *_lt[MAX_THREADS];$/;"	v	file:
+_lt	../parallel/liqss3.c	/^static double *_lt[MAX_THREADS];$/;"	v	file:
+_lt	../serial/cqss.c	/^double *_lt;$/;"	v
+_lt	../serial/liqss.c	/^double *_lt;$/;"	v
+_lt	../serial/liqss2.c	/^static double *_lt;$/;"	v	file:
+_lt	../serial/liqss3.c	/^static double *_lt;$/;"	v	file:
+_ltq	../parallel/liqss2.c	/^static double *_ltq[MAX_THREADS];$/;"	v	file:
+_ltq	../parallel/liqss3.c	/^static double *_ltq[MAX_THREADS];$/;"	v	file:
+_ltq	../serial/liqss2.c	/^static double *_ltq;$/;"	v	file:
+_ltq	../serial/liqss3.c	/^static double *_ltq;$/;"	v	file:
+_minEventIndex	../serial/qss_linear.c	/^int     _minEventIndex = -1;$/;"	v
+_minEventValue	../serial/qss_linear.c	/^double  _minEventValue = INF;$/;"	v
+_minInputIndex	../serial/qss_linear.c	/^int     _minInputIndex = -1;$/;"	v
+_minInputValue	../serial/qss_linear.c	/^double  _minInputValue = INF;$/;"	v
+_minStep	../parallel/liqss2.c	/^double _minStep[MAX_THREADS];$/;"	v
+_minStep	../parallel/liqss3.c	/^double _minStep[MAX_THREADS];$/;"	v
+_minStep	../serial/liqss2.c	/^double _minStep;$/;"	v
+_minStep	../serial/liqss3.c	/^double _minStep;$/;"	v
+_old_dx	../parallel/liqss.c	/^double *_old_dx[MAX_THREADS];$/;"	v
+_old_dx	../parallel/liqss2.c	/^double *_old_dx[MAX_THREADS];$/;"	v
+_old_dx	../parallel/liqss3.c	/^double *_old_dx[MAX_THREADS];$/;"	v
+_old_dx	../serial/liqss.c	/^double *_old_dx;$/;"	v
+_old_dx	../serial/liqss2.c	/^double *_old_dx;$/;"	v
+_old_dx	../serial/liqss3.c	/^double *_old_dx;$/;"	v
+_q_aux	../parallel/liqss.c	/^double *_q_aux[MAX_THREADS];$/;"	v
+_q_aux	../parallel/liqss2.c	/^double *_q_aux[MAX_THREADS];$/;"	v
+_q_aux	../parallel/liqss3.c	/^double *_q_aux[MAX_THREADS];$/;"	v
+_q_aux	../serial/liqss.c	/^double *_q_aux;$/;"	v
+_q_aux	../serial/liqss2.c	/^double *_q_aux;$/;"	v
+_q_aux	../serial/liqss3.c	/^double *_q_aux;$/;"	v
+_qinf	../parallel/cqss.c	/^double *_qinf[MAX_THREADS];$/;"	v
+_qinf	../serial/cqss.c	/^double *_qinf;$/;"	v
+_qsup	../parallel/cqss.c	/^double *_qsup[MAX_THREADS];$/;"	v
+_qsup	../serial/cqss.c	/^double *_qsup;$/;"	v
+_sample_period	../parallel/qss_integrator.c	/^unsigned long _sample_period;$/;"	v
+_sd_inf	../parallel/qss_data.c	/^double _sd_inf = 1e20;$/;"	v
+_settings	../parallel/qss_data.c	/^SET_settings _settings = NULL;$/;"	v
+_sign	../parallel/qss_utils.c	/^int _sign(double x)$/;"	f
+_simt	../parallel/cqss.c	/^double *_simt[MAX_THREADS];$/;"	v
+_simt	../parallel/liqss.c	/^double *_simt[MAX_THREADS];$/;"	v
+_simt	../serial/cqss.c	/^double *_simt;$/;"	v
+_simt	../serial/liqss.c	/^double *_simt;$/;"	v
+_slope_change	../parallel/cqss.c	/^int _slope_change[MAX_THREADS];$/;"	v
+_slope_change	../serial/cqss.c	/^int _slope_change = 0;$/;"	v
+_stVar	../serial/qss_memory.c	/^list *_stVar;$/;"	v
+_stVars	../serial/qss_binary.c	/^BT_tree _stVars = NULL;$/;"	v
+_st_ins	../parallel/qss_partition.c	/^LST_list *_st_ins = NULL;$/;"	v
+_state	../parallel/qss_partition.c	/^PRT_partition *_state = NULL;$/;"	v
+_steps	../parallel/qss_sampled.c	/^int *_steps[MAX_THREADS];$/;"	v
+_steps	../serial/qss_sampled.c	/^int *_steps = NULL;$/;"	v
+_steps_s	../parallel/qss_step.c	/^int *_steps_s[MAX_THREADS];$/;"	v
+_steps_s	../serial/qss_step.c	/^int *_steps_s = NULL;$/;"	v
+_sv	../parallel/qss_sampled.c	/^SV_save _sv[MAX_THREADS];$/;"	v
+_sv	../parallel/qss_step.c	/^SV_save _sv[MAX_THREADS];$/;"	v
+_sv	../serial/qss_sampled.c	/^SV_save _sv;$/;"	v
+_sv	../serial/qss_step.c	/^SV_save _sv;$/;"	v
+_tout	../serial/qss_binary.c	/^double _tout;$/;"	v
+_tout	../serial/qss_binary_random.c	/^double _tout;$/;"	v
+_tout	../serial/qss_linear.c	/^double  _tout;$/;"	v
+_tree	../serial/qss_tree.h	/^	TR_tree _tree;$/;"	m	struct:TR_treeScheduler_
+_tunit	../serial/qss_binary.c	/^double _tunit;$/;"	v
+_tunit	../serial/qss_binary_random.c	/^double _tunit;$/;"	v
+_tunit	../serial/qss_linear.c	/^double  _tunit;$/;"	v
+_u	../parallel/liqss.c	/^double *_u[MAX_THREADS];$/;"	v
+_u	../serial/liqss.c	/^double *_u;$/;"	v
+_u0	../parallel/liqss2.c	/^static double *_u0[MAX_THREADS];$/;"	v	file:
+_u0	../parallel/liqss3.c	/^static double *_u0[MAX_THREADS];$/;"	v	file:
+_u0	../serial/liqss2.c	/^static double *_u0;$/;"	v	file:
+_u0	../serial/liqss3.c	/^static double *_u0;$/;"	v	file:
+_u1	../parallel/liqss2.c	/^static double *_u1[MAX_THREADS];$/;"	v	file:
+_u1	../parallel/liqss3.c	/^static double *_u1[MAX_THREADS];$/;"	v	file:
+_u1	../serial/liqss2.c	/^static double *_u1;$/;"	v	file:
+_u1	../serial/liqss3.c	/^static double *_u1;$/;"	v	file:
+_u2	../parallel/liqss3.c	/^static double *_u2[MAX_THREADS];$/;"	v	file:
+_u2	../serial/liqss3.c	/^static double *_u2;$/;"	v	file:
+_values	../parallel/qss_sampled.c	/^double *_values[MAX_THREADS];$/;"	v
+_values	../serial/qss_sampled.c	/^double *_values = NULL;$/;"	v
+abort	../parallel/qss_data.h	/^	bool 			abort;$/;"	m	struct:SD_data_
+advanceTime	../parallel/qss_utils.c	/^void advanceTime(int i, double dt, double **p, int order) $/;"	f
+advanceTime	../serial/qss_utils.c	/^void advanceTime(int i, double dt, double **p, int order) $/;"	f
+b	../parallel/qss_parallel.c	/^pthread_barrier_t b;$/;"	v
+begin	../parallel/qss_memory.h	/^	node begin;$/;"	m	struct:list_
+begin	../serial/qss_memory.h	/^	node begin;$/;"	m	struct:list_
+binary	../parallel/qss_data.h	/^	binary,		\/**< Search the minimum time using a Binary Tree search strategy. *\/$/;"	e	enum:__anon1
+bool	../serial/qss_utils.h	/^typedef char bool;$/;"	t
+cant	../parallel/qss_binary.h	/^    short cant;$/;"	m	struct:BT_node_
+change	../parallel/qss_lp.h	/^	bool change;$/;"	m	struct:LP_input_
+checked_malloc	../serial/qss_utils.c	/^void *checked_malloc(unsigned long long len)$/;"	f
+commInterval	../serial/qss_data.h	/^	SD_CommInterval	 commInterval;	\/**< This variable defines how the simulation must save the variables values.					*\/$/;"	m	struct:SD_output_
+comminterval	../parallel/qss_data.h	/^	SD_comminterval	 comminterval;	\/**< This variable defines how the simulation must save the variables values.*\/$/;"	m	struct:SD_output_
+comp	../parallel/qss_lp.c	/^int comp(void *a, void *b)$/;"	f
+d	../parallel/qss_data.h	/^    double      	*d;					\/**< Discrete variables.	*\/$/;"	m	struct:SD_data_
+d	../serial/qss_data.h	/^  double      	*d;					\/**< Discrete variables.																	*\/$/;"	m	struct:SD_data_
+dQMin	../parallel/qss_data.h	/^	double 	    	*dQMin;				\/**< Minimum quantum for each state variable.  *\/$/;"	m	struct:SD_data_
+dQMin	../serial/qss_data.h	/^	double 	    	*dQMin;				\/**< Minimum quantum for each state variable.												*\/$/;"	m	struct:SD_data_
+dQRel	../parallel/qss_data.h	/^	double 	    	*dQRel;				\/**< Relative quantum for each state variable. *\/$/;"	m	struct:SD_data_
+dQRel	../serial/qss_data.h	/^	double 	    	*dQRel;				\/**< Relative quantum for each state variable.		    									*\/$/;"	m	struct:SD_data_
+debug	../parallel/qss_data.h	/^	int debug;$/;"	m	struct:SD_simulationFlags_
+debug	../serial/qss_data.h	/^	int debug;$/;"	m	struct:SD_simulationSettings_
+delta	../parallel/qss_frw.c	/^double delta = 0;$/;"	v
+delta	../serial/qss_frw.c	/^double delta = 0;$/;"	v
+dense	../parallel/qss_data.h	/^	dense,		\/**< In DenseOutput and SampledOutput, everytime the derivative of one of the output variables change, the coefficients of the state polynomials are saved. *\/$/;"	e	enum:__anon2
+deps	../parallel/qss_data.h	/^    SD_dep		deps;	\/**< Model dependents definition, this definition allows the engine to evaluate all the dependent equations of a state variable with only one function call. *\/$/;"	m	struct:SD_model_
+deps	../parallel/qss_data.h	/^    int *deps;			\/**< \\f$ \\forall j \\in [0,nDependents] dependents[j] \\f$ is the jth influenced state variable by the event handler. *\/ $/;"	m	struct:SD_eventData_
+deps	../serial/qss_data.h	/^    SD_dep	   deps;	\/**< Model dependents definition, this definition allows the engine to evaluate all the dependent equations of a state variable with only one function call. *\/$/;"	m	struct:SD_model_
+derDelta	../parallel/qss_data.h	/^	double derDelta;$/;"	m	struct:SD_parameters_
+derDelta	../serial/qss_data.h	/^	double derDelta;$/;"	m	struct:SD_parameters_
+derdelta	../serial/settings.h	/^	double derdelta;$/;"	m	struct:SET_settings_
+dir	../parallel/qss_data.h	/^	int dir;		    \/**< Zero crossing function direction.	*\/$/;"	m	struct:SD_eventData_
+direction	../serial/qss_data.h	/^	int direction;		    \/**< Zero crossing function direction.	*\/$/;"	m	struct:SD_eventData_
+discretes	../serial/qss_data.h	/^	int *discretes;$/;"	m	struct:SD_variableLog_
+discretes	../serial/qss_data.h	/^  int        	discretes;				\/**< Number of discrete variables of the system.											*\/$/;"	m	struct:SD_data_
+dqmin	../serial/settings.h	/^	double *dqmin;$/;"	m	struct:SET_settings_
+dqrel	../serial/settings.h	/^	double *dqrel;$/;"	m	struct:SET_settings_
+dscOutvars	../parallel/qss_data.h	/^	int 			**dscOutvars;	\/**< \\f$ dscOutVars[i] \\f$ is the i-th discrete output variable.		*\/$/;"	m	struct:SD_output_
+dscVars	../parallel/qss_binary.c	/^BT_tree dscVars[MAX_THREADS];$/;"	v
+dscVars	../parallel/qss_data.h	/^	int *dscVars;		\/**< \\f$ \\forall j \\in [0,nFcrossDeps] stVars[j] \\f$ is the jth izero crossing function influenced by the event handler. *\/ $/;"	m	struct:SD_eventData_
+dxn_old	../parallel/qss_frw.c	/^double dxn_old[MAX_THREADS];$/;"	v
+dxn_old	../serial/qss_frw.c	/^double dxn_old = 0;$/;"	v
+eInMap	../parallel/qss_data.h	/^	SD_idx_map      eInMap;$/;"	m	struct:SD_LP_data_
+eInTime	../parallel/qss_data.h	/^	double      	*eInTime;$/;"	m	struct:SD_LP_data_
+eMap	../parallel/qss_data.h	/^	SD_idx_map      eMap;$/;"	m	struct:SD_LP_data_
+eOutMap	../parallel/qss_data.h	/^	SD_idx_map      eOutMap;$/;"	m	struct:SD_LP_data_
+end	../parallel/qss_memory.h	/^	node end;$/;"	m	struct:list_
+end	../serial/qss_memory.h	/^	node end;$/;"	m	struct:list_
+equals	../serial/qss_binary_random.h	/^	int *equals;$/;"	m	struct:BTR_tree_
+evaluatePoly	../parallel/qss_utils.c	/^double evaluatePoly(int i, double dt,double **p, int order) $/;"	f
+evaluatePoly	../serial/qss_utils.c	/^double evaluatePoly(int i, double dt,double **p, int order) $/;"	f
+evaluateVectorPoly	../parallel/qss_utils.c	/^double evaluateVectorPoly(double dt,double *p, int order) $/;"	f
+evaluateVectorPoly	../serial/qss_utils.c	/^double evaluateVectorPoly(double dt,double *p, int order) $/;"	f
+event	../parallel/qss_data.h	/^	event,		\/**< Event transition.			*\/$/;"	e	enum:__anon4
+event	../serial/qss_data.h	/^	SD_eventData	event;  		   	\/**< Events defined in the system.															*\/$/;"	m	struct:SD_data_
+events	../parallel/qss_data.h	/^	SD_eventData	events;  		   	\/**< Events defined in the system.								*\/$/;"	m	struct:SD_data_
+events	../parallel/qss_data.h	/^	int events;$/;"	m	struct:SD_mapping_
+events	../parallel/qss_data.h	/^    SD_event   events;	\/**< Model event definition,i.e. zero crossing and handler function, for each event. *\/$/;"	m	struct:SD_model_
+events	../serial/qss_data.h	/^	int 	    	events;			\/**< Number of events of the system.														*\/$/;"	m	struct:SD_data_
+events	../serial/qss_data.h	/^    SD_event   events;	\/**< Model event definition,i.e. zero crossing and handler function, for each event. *\/$/;"	m	struct:SD_model_
+f	../parallel/qss_data.h	/^    SD_eq  		f;		\/**< Model definition \\f$ \\forall \\imath \\in [0,DIM] f(x_{i}(t),t)_{i} \\f$ 		*\/$/;"	m	struct:SD_model_
+f	../serial/qss_data.h	/^    SD_eq  	   f;		\/**< Model definition \\f$ \\forall \\imath \\in [0,DIM] f(x_{i}(t),t)_{i} \\f$ 		*\/$/;"	m	struct:SD_model_
+father	../parallel/qss_binary.h	/^	int *father;$/;"	m	struct:BT_tree_
+father	../parallel/qss_binary.h	/^    int father;$/;"	m	struct:BT_node_
+father	../serial/qss_binary.h	/^	int *father;$/;"	m	struct:BT_tree_
+father	../serial/qss_binary.h	/^    int father;$/;"	m	struct:BT_node_
+father	../serial/qss_binary_random.h	/^	int *father;$/;"	m	struct:BTR_tree_
+father	../serial/qss_binary_random.h	/^  int father;$/;"	m	struct:BTR_node_
+fathers	../parallel/qss_binary.h	/^	int **fathers;$/;"	m	struct:BT_info_
+fathers	../serial/qss_binary.h	/^	int **fathers;$/;"	m	struct:BT_info_
+fathers	../serial/qss_binary_random.h	/^	int **fathers;$/;"	m	struct:BTR_info_
+fcDeps	../parallel/qss_data.h	/^	int *fcDeps;		\/**< \\f$ \\forall j \\in [0,nFcrossDeps] fcrossDeps[j] \\f$ is the jth izero crossing function influenced by the event handler. *\/ $/;"	m	struct:SD_eventData_
+file	../parallel/qss_data.h	/^	file, 		\/**< Save simulation output data to file. 				*\/$/;"	e	enum:__anon3
+fileName	../parallel/qss_file.c	/^char fileName[NAME_SIZE];$/;"	v
+fileName	../serial/qss_file.c	/^char fileName[NAME_SIZE];$/;"	v
+flags	../parallel/qss_integrator.c	/^SD_integratorFlags flags[MAX_THREADS];$/;"	v
+free	../parallel/qss_frw.h	/^	FRW_freeFramework_ 		 free;$/;"	m	struct:FRW_framework_
+free	../parallel/qss_output.h	/^	OUT_freeOutput_ 	 free;$/;"	m	struct:OUT_output_
+free	../parallel/qss_quantizer.h	/^	QA_freeQuantizer_ 		free;$/;"	m	struct:QA_quantizer_
+free	../parallel/qss_save.h	/^	SV_freeValues_      free;$/;"	m	struct:SV_save_
+free	../parallel/qss_time.h	/^	TM_free	  free;$/;"	m	struct:TM_time_
+free	../serial/qss_frw.h	/^	FRW_freeFramework_ 		 free;$/;"	m	struct:FRW_framework_
+free	../serial/qss_output.h	/^	OUT_freeOutput_ 	 free;$/;"	m	struct:OUT_output_
+free	../serial/qss_quantizer.h	/^	QA_freeQuantizer_ 		free;$/;"	m	struct:QA_quantizer_
+free	../serial/qss_save.h	/^	SV_freeValues_ free;$/;"	m	struct:SV_save_
+free	../serial/qss_scheduler.h	/^	SC_free	  free;$/;"	m	struct:SC_scheduler_
+free	../serial/qss_tree.h	/^	TR_free free;$/;"	m	struct:TR_treeScheduler_
+freeSettings	../serial/settings.c	/^void freeSettings(SET_settings settings)$/;"	f
+frw	../parallel/qss_integrator.c	/^FRW_framework *frw = NULL;$/;"	v
+frw	../serial/qss_integrator.c	/^FRW_framework frw = NULL;$/;"	v
+ft	../parallel/qss_data.h	/^	double 	    	ft;					\/**< Final simulation time.							*\/$/;"	m	struct:SD_data_
+ft	../parallel/qss_data.h	/^	double 	    	ft;					\/**< Final simulation time.		 	*\/$/;"	m	struct:SD_LP_data_
+ft	../serial/qss_data.h	/^	double 	    	ft;					\/**< Final simulation time.		 	 														*\/$/;"	m	struct:SD_data_
+ft	../serial/settings.h	/^	double ft;$/;"	m	struct:SET_settings_
+g_events	../parallel/qss_data.h	/^	SD_globalEventData g_events;$/;"	m	struct:SD_data_
+getSteps	../parallel/qss_output.h	/^	OUT_getSteps getSteps;$/;"	m	struct:OUT_output_
+getSteps	../serial/qss_output.h	/^	OUT_getSteps getSteps;$/;"	m	struct:OUT_output_
+getTime	../parallel/qss_utils.c	/^void getTime(struct timeval *te) $/;"	f
+getTime	../serial/qss_utils.c	/^void getTime(struct timespec *te) $/;"	f
+getTimeRes	../parallel/qss_utils.c	/^void getTimeRes(struct timeval *te) $/;"	f
+getTimeRes	../serial/qss_utils.c	/^void getTimeRes(struct timespec *te) $/;"	f
+handlerNeg	../serial/qss_data.h	/^	SD_hnd handlerNeg;		\/**< Handler function for the event.					*\/$/;"	m	struct:SD_event_
+handlerPos	../serial/qss_data.h	/^	SD_hnd handlerPos;		\/**< Handler function for the event.					*\/$/;"	m	struct:SD_event_
+handler_neg	../parallel/qss_data.h	/^	SD_hnd handler_neg;		\/**< Handler function for the event.					*\/$/;"	m	struct:SD_event_
+handler_pos	../parallel/qss_data.h	/^	SD_hnd handler_pos;		\/**< Handler function for the event.					*\/$/;"	m	struct:SD_event_
+height	../parallel/qss_binary.h	/^	int height;$/;"	m	struct:BT_tree_
+height	../serial/qss_binary.h	/^	int height;$/;"	m	struct:BT_tree_
+height	../serial/qss_binary_random.h	/^	int height;$/;"	m	struct:BTR_tree_
+iMap	../parallel/qss_data.h	/^	SD_idx_map      iMap;$/;"	m	struct:SD_LP_data_
+iTime	../parallel/qss_integrator.c	/^struct timeval iTime;$/;"	v	typeref:struct:timeval
+iTime	../serial/qss_integrator.c	/^struct timespec *iTime = NULL;$/;"	v	typeref:struct:timespec
+index	../parallel/qss_integrator.c	/^	int index;$/;"	m	struct:INT_min	file:
+index	../parallel/qss_lp.h	/^	int index;$/;"	m	struct:LP_input_
+info	../parallel/qss_binary.c	/^BT_info info[MAX_THREADS];$/;"	v
+initLog	../parallel/qss_utils.c	/^void initLog(char *name)$/;"	f
+initLog	../serial/qss_utils.c	/^void initLog(char *name)$/;"	f
+input	../parallel/qss_data.h	/^	input		\/**< Input transition.			*\/$/;"	e	enum:__anon4
+inputVars	../parallel/qss_binary.c	/^BT_tree inputVars[MAX_THREADS];$/;"	v
+inputs	../serial/qss_data.h	/^  int        	inputs;			\/**< Number of inputs of the system.														*\/$/;"	m	struct:SD_data_
+it	../parallel/qss_data.h	/^	double 	    	it;  				\/**< Initial simulation time. 						*\/$/;"	m	struct:SD_data_
+it	../parallel/qss_data.h	/^	double 	    	it;  				\/**< Initial simulation time. 		*\/$/;"	m	struct:SD_LP_data_
+it	../serial/qss_data.h	/^	double 	    	it;  				\/**< Initial simulation time. 																*\/$/;"	m	struct:SD_data_
+it	../serial/settings.h	/^	double it;$/;"	m	struct:SET_settings_
+lastValue	../parallel/qss_data.h	/^	double *lastValue;	    \/**< Last time value for each output variable. *\/ $/;"	m	struct:SD_sampledOutput_
+last_change	../parallel/qss_data.h	/^	double last_change;$/;"	m	struct:SD_globalEventData_
+last_change	../parallel/qss_data.h	/^	double last_change;$/;"	m	struct:SD_global_var_
+leave	../parallel/qss_binary.h	/^typedef double *leave;$/;"	t
+leave	../serial/qss_binary.h	/^typedef double *leave;$/;"	t
+leave	../serial/qss_binary_random.h	/^typedef double *leave;$/;"	t
+leaves	../parallel/qss_binary.h	/^	leave leaves;$/;"	m	struct:BT_tree_
+leaves	../serial/qss_binary.h	/^	leave leaves;$/;"	m	struct:BT_tree_
+leaves	../serial/qss_binary_random.h	/^	leave leaves;$/;"	m	struct:BTR_tree_
+linear	../parallel/qss_data.h	/^	linear,		\/**< Search the minimum time using a Linear search strategy. *\/$/;"	e	enum:__anon1
+list	../parallel/qss_memory.h	/^typedef struct list_ *list;$/;"	t	typeref:struct:list_
+list	../serial/qss_memory.h	/^typedef struct list_ *list;$/;"	t	typeref:struct:list_
+list_	../parallel/qss_memory.h	/^struct list_$/;"	s
+list_	../serial/qss_memory.h	/^struct list_$/;"	s
+logFile	../parallel/qss_utils.h	/^FILE *logFile;$/;"	v
+lp	../parallel/qss_data.h	/^	int lp;$/;"	m	struct:SD_globalEventData_
+lp	../parallel/qss_data.h	/^	int lp;$/;"	m	struct:SD_global_var_
+lp	../parallel/qss_integrator.c	/^	int lp;$/;"	m	struct:INT_min	file:
+lp_ext_trans	../parallel/qss_integrator.c	/^static unsigned long lp_ext_trans[MAX_THREADS];$/;"	v	file:
+lp_future_events	../parallel/qss_integrator.c	/^static unsigned int lp_future_events[MAX_THREADS][MAX_THREADS];$/;"	v	file:
+lp_past_events	../parallel/qss_integrator.c	/^static unsigned int lp_past_events[MAX_THREADS];$/;"	v	file:
+lp_speedup	../parallel/qss_integrator.c	/^double lp_speedup[MAX_THREADS];$/;"	v
+lps	../parallel/qss_data.h	/^	int    lps;$/;"	m	struct:SD_parameters_
+lps	../serial/settings.h	/^	int lps;$/;"	m	struct:SET_settings_
+lqu	../parallel/qss_data.h	/^	double 	    	*lqu;				\/**< Relative error value for each state variable.	*\/$/;"	m	struct:SD_data_
+lqu	../serial/qss_data.h	/^	double 	    	*lqu;				\/**< Relative error value for each state variable.											*\/$/;"	m	struct:SD_data_
+main	../parallel/qss_integrator.c	/^int main()$/;"	f
+main	../serial/qss_integrator.c	/^int main()$/;"	f
+map	../parallel/qss_binary.h	/^	int *map;$/;"	m	struct:BT_tree_
+memory	../parallel/qss_data.h	/^	memory		\/**< Save simulation output data in memory (default). 	*\/ $/;"	e	enum:__anon3
+min	../parallel/qss_integrator.c	/^	double min;$/;"	m	struct:INT_min	file:
+min	../serial/qss_tree.h	/^	TR_min				min;$/;"	m	struct:TR_tree_
+minEventIndex	../parallel/qss_linear.c	/^int     minEventIndex = -1;$/;"	v
+minEventValue	../parallel/qss_linear.c	/^double  minEventValue = CTE_INF;$/;"	v
+minIndex	../parallel/qss_data.h	/^	int 	    minIndex;		    \/**< Index of the variable that contains the next minimum time. *\/$/;"	m	struct:SD_time_
+minIndex	../serial/qss_data.h	/^	int 	    minIndex;		    \/**< Index of the variable that contains the next minimum time. *\/$/;"	m	struct:SD_time_
+minInputIndex	../parallel/qss_linear.c	/^int     minInputIndex = -1;$/;"	v
+minInputValue	../parallel/qss_linear.c	/^double  minInputValue = CTE_INF;$/;"	v
+minPosRoot	../parallel/qss_utils.c	/^double minPosRoot(double *coeff, int order) $/;"	f
+minPosRoot	../serial/qss_utils.c	/^double minPosRoot(double *coeff, int order) $/;"	f
+minStep	../parallel/qss_data.h	/^	double minStep;$/;"	m	struct:SD_parameters_
+minStep	../serial/qss_data.h	/^	double minStep;$/;"	m	struct:SD_parameters_
+minValue	../parallel/qss_data.h	/^	double	    minValue;		    \/**< Next minimum time. *\/$/;"	m	struct:SD_time_
+minValue	../serial/qss_data.h	/^	double	    minValue;		    \/**< Next minimum time. *\/$/;"	m	struct:SD_time_
+minimum	../serial/qss_binary_random.h	/^	double minimum;$/;"	m	struct:BTR_tree_
+minstep	../serial/settings.h	/^	double minstep;$/;"	m	struct:SET_settings_
+mode	../parallel/qss_file.c	/^char *mode = "w";$/;"	v
+mode	../serial/qss_file.c	/^char *mode = "w";$/;"	v
+nDO	../serial/qss_data.h	/^	int 			*nDO;	\/**< Defines the number of discrete output variables for the simulation. 						*\/$/;"	m	struct:SD_output_
+nDQMin	../serial/settings.h	/^	int nDQMin;$/;"	m	struct:SET_settings_
+nDQRel	../serial/settings.h	/^	int nDQRel;$/;"	m	struct:SET_settings_
+nDS	../serial/qss_data.h	/^  int         	*nDS;			\/**< Vector that contains the number of quantized variables that depend on each equation.   *\/ $/;"	m	struct:SD_data_
+nDVars	../parallel/qss_data.h	/^    int         	nDVars;				\/**< Number of discrete variables of the system.			*\/$/;"	m	struct:SD_data_
+nDeps	../parallel/qss_data.h	/^   	int nDeps;			\/**< Number of equations influenced by the event handler.					*\/$/;"	m	struct:SD_eventData_
+nDscOutvars	../parallel/qss_data.h	/^	int 			*nDscOutvars;	\/**< Defines the number of discrete output variables for the simulation.*\/$/;"	m	struct:SD_output_
+nDscVars	../parallel/qss_data.h	/^	int nDscVars;		\/**< Number of state variables influenced by the handler.					*\/$/;"	m	struct:SD_eventData_
+nEvents	../parallel/qss_data.h	/^	int 	    	nEvents;			\/**< Number of events of the system.							*\/$/;"	m	struct:SD_LP_data_
+nEvents	../parallel/qss_data.h	/^	int 	    	nEvents;			\/**< Number of events of the system.						*\/$/;"	m	struct:SD_data_
+nFcDeps	../parallel/qss_data.h	/^	int nFcDeps;		\/**< Number of zero crossing functions influenced by the event handler.		*\/$/;"	m	struct:SD_eventData_
+nHD	../serial/qss_data.h	/^  int         	*nHD;			\/**< Vector that contains the number of quantized variables that depend on each equation.   *\/ $/;"	m	struct:SD_data_
+nHZ	../serial/qss_data.h	/^  int         	*nHZ;			\/**< Vector that contains the number of quantized variables that depend on each equation.   *\/ $/;"	m	struct:SD_data_
+nI	../parallel/qss_data.h	/^	int 	    	*nI;				\/**< Vector that contains the number of influenced equations for the each state variable. 	*\/$/;"	m	struct:SD_data_
+nIE	../parallel/qss_data.h	/^	int 	    	*nIE;				\/**< Vector that contains the number of influenced events for each state variable.         	*\/$/;"	m	struct:SD_data_
+nIVars	../parallel/qss_data.h	/^    int nIVars;			\/**< Number of state variables that influence the zero crossing function.	*\/$/;"	m	struct:SD_eventData_
+nInEvents	../parallel/qss_data.h	/^    int         	nInEvents;		 $/;"	m	struct:SD_LP_data_
+nInVars	../parallel/qss_data.h	/^    int         	nInVars;		 $/;"	m	struct:SD_LP_data_
+nInputs	../parallel/qss_data.h	/^    int         	nInputs;			\/**< Number of inputs of the system.						*\/$/;"	m	struct:SD_data_
+nInputs	../parallel/qss_data.h	/^    int         	nInputs;		 $/;"	m	struct:SD_LP_data_
+nLHSDsc	../serial/qss_data.h	/^    int nLHSDsc;			\/**< Number of state variables that influence the zero crossing function.	*\/$/;"	m	struct:SD_eventData_
+nLHSSt	../serial/qss_data.h	/^    int nLHSSt;			\/**< Number of state variables that influence the zero crossing function.	*\/$/;"	m	struct:SD_eventData_
+nOS	../serial/qss_data.h	/^	int 			*nOS;	\/**< Defines the number of discrete output variables for the simulation. 						*\/$/;"	m	struct:SD_output_
+nOutputs	../parallel/qss_data.h	/^	int 			nOutputs;$/;"	m	struct:SD_LP_data_
+nOutvars	../parallel/qss_data.h	/^	int 			nOutvars;$/;"	m	struct:SD_output_
+nQDeps	../parallel/qss_data.h	/^    int         	*nQDeps;			\/**< Vector that contains the number of quantized variables that depend on each equation.   *\/ $/;"	m	struct:SD_data_
+nRHSSt	../serial/qss_data.h	/^    int nRHSSt;			\/**< Number of state variables that influence the zero crossing function.	*\/$/;"	m	struct:SD_eventData_
+nSD	../serial/qss_data.h	/^	int 	    	*nSD;				\/**< Vector that contains the number of influenced equations for the each state variable. 	*\/$/;"	m	struct:SD_data_
+nSO	../serial/qss_data.h	/^	int 			*nSO;	\/**< Defines the number of discrete output variables for the simulation. 						*\/$/;"	m	struct:SD_output_
+nSZ	../serial/qss_data.h	/^	int 	    	*nSZ;				\/**< Vector that contains the number of influenced events for each state variable.         	*\/$/;"	m	struct:SD_data_
+nStHndrVars	../parallel/qss_data.h	/^	int nStHndrVars;	\/**< Number of discrete variables influenced by the handler.				*\/$/;"	m	struct:SD_eventData_
+nStOutvars	../parallel/qss_data.h	/^	int 			*nStOutvars;	\/**< Defines the number of discrete output variables for the simulation.*\/$/;"	m	struct:SD_output_
+nStVars	../parallel/qss_data.h	/^	int 	    	nStVars;			\/**< Dimension of the system (number of state variables).		*\/$/;"	m	struct:SD_LP_data_
+nStVars	../parallel/qss_data.h	/^	int 	    	nStVars;			\/**< Dimension of the system (number of state variables).	*\/$/;"	m	struct:SD_data_
+nStVars	../parallel/qss_data.h	/^	int nStVars;		\/**< Number of state variables influenced by the handler.					*\/$/;"	m	struct:SD_eventData_
+nZS	../serial/qss_data.h	/^  int         	*nZS;			\/**< Vector that contains the number of quantized variables that depend on each equation.   *\/ $/;"	m	struct:SD_data_
+name	../parallel/qss_data.h	/^	char			*name;			\/**< Name of the model.  *\/$/;"	m	struct:SD_output_
+name	../parallel/qss_data.h	/^	char *name;$/;"	m	struct:SD_outvar_
+name	../serial/qss_data.h	/^	char			*name;			\/**< Name of the model.																			*\/$/;"	m	struct:SD_output_
+name	../serial/qss_data.h	/^	char name[MAX_NAME_SIZE];$/;"	m	struct:SD_outputVariable_
+next	../parallel/qss_memory.h	/^	struct node_ *next;$/;"	m	struct:node_	typeref:struct:node_::node_
+next	../serial/qss_memory.h	/^	struct node_ *next;$/;"	m	struct:node_	typeref:struct:node_::node_
+nextEventTime	../parallel/qss_data.h	/^	double      *nextEventTime;	    \/**< Next transition time for each event. *\/$/;"	m	struct:SD_time_
+nextEventTime	../parallel/qss_frw.h	/^	FRW_nextEventTime        nextEventTime;$/;"	m	struct:FRW_framework_
+nextEventTime	../serial/qss_data.h	/^	double      *nextEventTime;	    \/**< Next transition time for each event. *\/$/;"	m	struct:SD_time_
+nextEventTime	../serial/qss_frw.h	/^	FRW_nextEventTime        nextEventTime;$/;"	m	struct:FRW_framework_
+nextInputTime	../parallel/qss_data.h	/^	double	    *nextInputTime;	    \/**< Next transition time for each input. *\/$/;"	m	struct:SD_time_
+nextInputTime	../parallel/qss_frw.h	/^	FRW_nextInputTime 	     nextInputTime;$/;"	m	struct:FRW_framework_
+nextInputTime	../serial/qss_data.h	/^	double	    *nextInputTime;	    \/**< Next transition time for each input. *\/$/;"	m	struct:SD_time_
+nextInputTime	../serial/qss_frw.h	/^	FRW_nextInputTime        nextInputTime;$/;"	m	struct:FRW_framework_
+nextStateTime	../parallel/qss_data.h	/^	double      *nextStateTime;		\/**< Next step time of each state variable. *\/$/;"	m	struct:SD_time_
+nextStateTime	../serial/qss_data.h	/^	double      *nextStateTime;		\/**< Next step time of each state variable. *\/$/;"	m	struct:SD_time_
+nextTime	../parallel/qss_data.h	/^	double *nextTime;		\/**< Next time used to save output values.     *\/$/;"	m	struct:SD_sampledOutput_
+nextTime	../parallel/qss_quantizer.h	/^	QA_nextTime			    nextTime;$/;"	m	struct:QA_quantizer_
+nextTime	../serial/qss_data.h	/^	double *nextTime;		\/**< Next time used to save output values.     *\/$/;"	m	struct:SD_sampledOutput_
+nextTime	../serial/qss_quantizer.h	/^	QA_nextTime			    nextTime;$/;"	m	struct:QA_quantizer_
+node	../parallel/qss_memory.h	/^typedef struct node_ *node;$/;"	t	typeref:struct:node_
+node	../serial/qss_memory.h	/^typedef struct node_ *node;$/;"	t	typeref:struct:node_
+nodeSize	../parallel/qss_data.h	/^	int    nodeSize;$/;"	m	struct:SD_parameters_
+nodeSize	../serial/qss_memory.h	/^	int nodeSize;$/;"	m	struct:list_
+node_	../parallel/qss_memory.h	/^struct node_$/;"	s
+node_	../serial/qss_memory.h	/^struct node_$/;"	s
+node_size	../parallel/qss_memory.h	/^	int node_size;$/;"	m	struct:list_
+nodes	../parallel/qss_binary.h	/^	BT_node *nodes;$/;"	m	struct:BT_tree_
+nodes	../serial/qss_binary.h	/^	BT_node *nodes;$/;"	m	struct:BT_tree_
+nodes	../serial/qss_binary_random.h	/^	BTR_node *nodes;$/;"	m	struct:BTR_tree_
+nodesize	../serial/settings.h	/^	int nodesize;$/;"	m	struct:SET_settings_
+num	../serial/qss_binary_random.h	/^	int num;$/;"	m	struct:BTR_tree_
+numEquals	../serial/qss_binary_random.h	/^	int numEquals;$/;"	m	struct:BTR_tree_
+number	../parallel/qss_data.h	/^	int 			number;$/;"	m	struct:SD_LP_data_
+number	../parallel/qss_lp.h	/^	int number;$/;"	m	struct:LP_data_
+number	../parallel/qss_partition.h	/^	int number;$/;"	m	struct:PRT_data_
+nx	../parallel/qss_data.h	/^	int nx;$/;"	m	struct:SD_outvar_
+oMap	../parallel/qss_data.h	/^	SD_idx_map      oMap;$/;"	m	struct:SD_LP_data_
+order	../parallel/qss_data.h	/^	int 			order;$/;"	m	struct:SD_LP_data_
+order	../parallel/qss_data.h	/^    int         	order;				\/**< Order of the solver used.								*\/$/;"	m	struct:SD_data_
+order	../parallel/qss_memory.h	/^	int order;$/;"	m	struct:list_
+order	../serial/qss_data.h	/^  int        	order;				\/**< Order of the solver used.																*\/$/;"	m	struct:SD_data_
+order	../serial/qss_memory.h	/^	int order;$/;"	m	struct:list_
+order	../serial/settings.h	/^	int order;$/;"	m	struct:SET_settings_
+out	../parallel/qss_file.c	/^static FILE **out[MAX_THREADS];$/;"	v	file:
+out	../serial/qss_file.c	/^static FILE **out;$/;"	v	file:
+output	../parallel/qss_data.h	/^	int output;$/;"	m	struct:SD_integratorFlags_
+output	../parallel/qss_integrator.c	/^OUT_output *output = NULL;$/;"	v
+output	../serial/qss_integrator.c	/^OUT_output output = NULL;$/;"	v
+outputs	../serial/qss_data.h	/^	int 			outputs;$/;"	m	struct:SD_output_
+outvars	../parallel/qss_data.h	/^	SD_outvar		outvars;$/;"	m	struct:SD_output_
+params	../parallel/qss_data.h	/^	SD_parameters   params; 			\/**< Simulation parameters. *\/$/;"	m	struct:SD_data_
+params	../serial/qss_data.h	/^	SD_parameters   params; 			\/**< Simulation parameters. *\/$/;"	m	struct:SD_data_
+period	../parallel/qss_data.h	/^	double *period;		    \/**< Time interval for each output variable.   *\/$/;"	m	struct:SD_sampledOutput_
+period	../serial/qss_data.h	/^	double *period;		    \/**< Time interval for each output variable.   *\/$/;"	m	struct:SD_sampledOutput_
+printLog	../parallel/qss_utils.c	/^void printLog(const char *message,...)$/;"	f
+printLog	../serial/qss_utils.c	/^void printLog(const char *message,...)$/;"	f
+q	../parallel/qss_data.h	/^	SD_global_var  	q;				    \/**< Global vector of quantized vars, used to synchronize the lps. *\/$/;"	m	struct:SD_data_
+q	../parallel/qss_data.h	/^	double 	    	**q;				\/**< Quantized variables.	*\/$/;"	m	struct:SD_LP_data_
+q	../serial/qss_data.h	/^	double 	    	**q;				\/**< Quantized variables.																	*\/$/;"	m	struct:SD_data_
+qInMap	../parallel/qss_data.h	/^	SD_idx_map 		qInMap;$/;"	m	struct:SD_LP_data_
+qInTime	../parallel/qss_data.h	/^	double      	*qInTime;$/;"	m	struct:SD_LP_data_
+qMap	../parallel/qss_data.h	/^	SD_idx_map 		qMap;$/;"	m	struct:SD_LP_data_
+qOutMap	../parallel/qss_data.h	/^	SD_idx_map 		qOutMap;$/;"	m	struct:SD_LP_data_
+quantizer	../parallel/qss_integrator.c	/^QA_quantizer *quantizer = NULL;$/;"	v
+quantizer	../serial/qss_integrator.c	/^QA_quantizer quantizer = NULL;$/;"	v
+randomRange	../serial/qss_binary_random.h	/^	int randomRange;$/;"	m	struct:BTR_tree_
+recomputeDerivative	../parallel/qss_frw.h	/^	FRW_recomputeDerivative  recomputeDerivative;$/;"	m	struct:FRW_framework_
+recomputeDerivative	../serial/qss_frw.h	/^	FRW_recomputeDerivative  recomputeDerivative;$/;"	m	struct:FRW_framework_
+recomputeDerivatives	../parallel/qss_frw.h	/^	FRW_recomputeDerivatives recomputeDerivatives;$/;"	m	struct:FRW_framework_
+recomputeDerivatives	../serial/qss_frw.h	/^	FRW_recomputeDerivatives recomputeDerivatives;$/;"	m	struct:FRW_framework_
+recomputeNextTime	../parallel/qss_quantizer.h	/^	QA_recomputeNextTime    recomputeNextTime;$/;"	m	struct:QA_quantizer_
+recomputeNextTime	../serial/qss_quantizer.h	/^	QA_recomputeNextTime    recomputeNextTime;$/;"	m	struct:QA_quantizer_
+recomputeNextTimes	../parallel/qss_quantizer.h	/^	QA_recomputeNextTimes   recomputeNextTimes;$/;"	m	struct:QA_quantizer_
+recomputeNextTimes	../serial/qss_quantizer.h	/^	QA_recomputeNextTimes   recomputeNextTimes;$/;"	m	struct:QA_quantizer_
+root	../serial/qss_biorica.c	/^double root(int sq, double value)$/;"	f
+rtfrac	../parallel/qss_data.h	/^	double rtfrac;$/;"	m	struct:SD_parameters_
+rtlambda	../parallel/qss_data.h	/^	double rtlambda;$/;"	m	struct:SD_parameters_
+rtmos	../parallel/qss_data.h	/^	int    rtmos;$/;"	m	struct:SD_parameters_
+rtperiod	../parallel/qss_data.h	/^	double rtperiod;$/;"	m	struct:SD_parameters_
+rtsft	../parallel/qss_data.h	/^	int    rtsft;$/;"	m	struct:SD_parameters_
+rtwratio	../parallel/qss_data.h	/^	double rtwratio;$/;"	m	struct:SD_parameters_
+sTime	../parallel/qss_integrator.c	/^struct timeval sTime;$/;"	v	typeref:struct:timeval
+sTime	../serial/qss_integrator.c	/^struct timespec *sTime = NULL;$/;"	v	typeref:struct:timespec
+sampled	../parallel/qss_data.h	/^	SD_sampledOutput sampled;	  	\/**< When the simulation output is dense or sampled, this structure is used to store extra information needed. *\/$/;"	m	struct:SD_output_
+sampled	../parallel/qss_data.h	/^	sampled		\/**< Same as DenseOutput.	*\/$/;"	e	enum:__anon2
+sampled	../serial/qss_data.h	/^	SD_sampledOutput sampled;	  	\/**< When the simulation output is dense or sampled, this structure is used to store extra information needed. *\/$/;"	m	struct:SD_output_
+save	../parallel/qss_data.h	/^	SD_savedata  	 save;			\/**< This variable defines where the simulation must save the output values.*\/$/;"	m	struct:SD_output_
+save	../parallel/qss_output.h	/^	OUT_save	 save;$/;"	m	struct:OUT_output_
+save	../serial/qss_output.h	/^	OUT_save	 save;$/;"	m	struct:OUT_output_
+scheduler	../serial/qss_data.h	/^	SD_SchedulerType scheduler;			    \/**< Time search method used by the engine. 		*\/$/;"	m	struct:SD_time_
+scheduler	../serial/qss_integrator.c	/^SC_scheduler scheduler = NULL;$/;"	v
+sdTime	../serial/qss_integrator.c	/^struct timespec *sdTime = NULL;$/;"	v	typeref:struct:timespec
+search	../parallel/qss_data.h	/^	SD_search 	search;			    \/**< Time search method used by the engine. 		*\/$/;"	m	struct:SD_time_
+sign	../serial/qss_utils.c	/^int sign(double x)$/;"	f
+simData	../parallel/qss_integrator.c	/^SD_data   	simData   = NULL;$/;"	v
+simData	../serial/qss_integrator.c	/^SD_data   	simData   = NULL;$/;"	v
+simFlags	../parallel/qss_integrator.c	/^SD_simulationFlags simFlags = NULL;$/;"	v
+simLPData	../parallel/qss_integrator.c	/^SD_LP_data  *simLPData = NULL;$/;"	v
+simModel	../parallel/qss_integrator.c	/^SD_model 	simModel  = NULL;$/;"	v
+simModel	../serial/qss_integrator.c	/^SD_model 	simModel  = NULL;$/;"	v
+simOutput	../parallel/qss_integrator.c	/^SD_output 	simOutput = NULL;$/;"	v
+simOutput	../serial/qss_integrator.c	/^SD_output 	simOutput = NULL;$/;"	v
+simSettings	../serial/qss_integrator.c	/^SD_simulationSettings simSettings = NULL;$/;"	v
+simTime	../parallel/qss_integrator.c	/^SD_time   	*simTime   = NULL;$/;"	v
+simTime	../serial/qss_integrator.c	/^SD_time   	simTime   = NULL;$/;"	v
+size	../parallel/qss_binary.h	/^	int size;$/;"	m	struct:BT_tree_
+size	../parallel/qss_file.c	/^static int size[MAX_THREADS];$/;"	v	file:
+size	../serial/qss_binary.h	/^	int size;$/;"	m	struct:BT_tree_
+size	../serial/qss_binary.h	/^    short size;$/;"	m	struct:BT_node_
+size	../serial/qss_binary_random.h	/^	int size;$/;"	m	struct:BTR_tree_
+size	../serial/qss_binary_random.h	/^  short size;$/;"	m	struct:BTR_node_
+size	../serial/qss_file.c	/^static int size;$/;"	v	file:
+size	../serial/qss_tree.h	/^	TR_size				size;$/;"	m	struct:TR_tree_
+solver	../parallel/qss_data.h	/^	SD_solver 		solver;				\/**< Solver used by the engine.									*\/$/;"	m	struct:SD_data_
+solver	../serial/qss_data.h	/^	SD_Solver 		solver;				\/**< Solver used by the engine.																*\/$/;"	m	struct:SD_data_
+solver	../serial/settings.h	/^	int solver;$/;"	m	struct:SET_settings_
+stHndrVars	../parallel/qss_data.h	/^	int *stHndrVars;	\/**< Handler's right hand side state variables. *\/ $/;"	m	struct:SD_eventData_
+stOutvars	../parallel/qss_data.h	/^	int 			**stOutvars;	\/**< \\f$ outVars[i] \\f$ is the i-th output variable.					*\/$/;"	m	struct:SD_output_
+stVars	../parallel/qss_binary.c	/^BT_tree stVars[MAX_THREADS];$/;"	v
+stVars	../parallel/qss_data.h	/^	int *stVars;		\/**< Handler left hand side state variables. *\/ $/;"	m	struct:SD_eventData_
+st_var	../parallel/qss_memory.c	/^list *st_var[MAX_THREADS];$/;"	v
+start_time	../parallel/qss_integrator.c	/^struct timeval start_time[MAX_THREADS];$/;"	v	typeref:struct:timeval
+state	../parallel/qss_data.h	/^	state, 	    \/**< State Variable transition.	*\/$/;"	e	enum:__anon4
+states	../parallel/qss_data.h	/^	int states;$/;"	m	struct:SD_mapping_
+states	../serial/qss_data.h	/^	int 	    	states;			\/**< Dimension of the system (number of state variables).									*\/$/;"	m	struct:SD_data_
+states	../serial/qss_data.h	/^	int *states;$/;"	m	struct:SD_variableLog_
+step	../parallel/qss_data.h	/^	step,         \/**< Save the output values everytime a step in one of the output varaibles is taken. *\/$/;"	e	enum:__anon2
+stop_time	../parallel/qss_integrator.c	/^struct timeval stop_time[MAX_THREADS];$/;"	v	typeref:struct:timeval
+store	../serial/qss_data.h	/^	SD_StoreData  	 store;			\/**< This variable defines where the simulation must save the output values.					*\/$/;"	m	struct:SD_output_
+string	../serial/qss_utils.h	/^typedef char *string;$/;"	t
+subTime	../parallel/qss_utils.c	/^struct timeval subTime(struct timeval start, struct timeval end)$/;"	f
+subTime	../serial/qss_utils.c	/^void subTime(struct timespec *v, struct timespec *u)$/;"	f
+symDiff	../parallel/qss_data.h	/^	int    symDiff;$/;"	m	struct:SD_parameters_
+symDiff	../serial/qss_data.h	/^	int    symDiff;$/;"	m	struct:SD_parameters_
+symdiff	../serial/settings.h	/^	int symdiff;$/;"	m	struct:SET_settings_
+taskname	../parallel/qss_parallel.c	11;"	d	file:
+tasks	../parallel/qss_parallel.c	/^pthread_t tasks[MAX_THREADS];$/;"	v
+time	../parallel/qss_data.h	/^	double	    time;			    \/**< Simulation time. *\/$/;"	m	struct:SD_time_
+time	../parallel/qss_lp.h	/^	double time;$/;"	m	struct:LP_input_
+time	../serial/qss_data.h	/^	double	    time;			    \/**< Simulation time. *\/$/;"	m	struct:SD_time_
+timeVal	../serial/qss_memory.h	/^	double *timeVal;$/;"	m	struct:node_
+time_val	../parallel/qss_memory.h	/^	double *time_val;$/;"	m	struct:node_
+tm	../parallel/qss_integrator.c	/^TM_time *tm = NULL;$/;"	v
+tmp1	../parallel/qss_data.h	/^	double 	    	**tmp1;	   			\/**< Temporal values used to update high order derivatives.		*\/$/;"	m	struct:SD_LP_data_
+tmp1	../serial/qss_data.h	/^	double 	    	**tmp1;	   			\/**< Temporal values used to update high order derivatives.									*\/$/;"	m	struct:SD_data_
+tmp2	../parallel/qss_data.h	/^	double 	    	**tmp2;			    \/**< Temporal values used to update high order derivatives.		*\/$/;"	m	struct:SD_LP_data_
+tmp2	../serial/qss_data.h	/^	double 	    	**tmp2;			    \/**< Temporal values used to update high order derivatives.									*\/$/;"	m	struct:SD_data_
+toFile	../parallel/qss_save.h	/^	SV_toFile    toFile;$/;"	m	struct:SV_save_
+toFile	../serial/qss_save.h	/^	SV_toFile    toFile;$/;"	m	struct:SV_save_
+totalStates	../parallel/qss_data.h	/^	int 			totalStates;$/;"	m	struct:SD_LP_data_
+totalSteps	../parallel/qss_integrator.c	/^unsigned long totalSteps[MAX_THREADS];$/;"	v
+tq	../parallel/qss_data.h	/^	double		*tq;				\/**< Last update time for each quantized variable. *\/$/;"	m	struct:SD_time_
+tq	../serial/qss_data.h	/^	double		*tq;				\/**< Last update time for each quantized variable. *\/$/;"	m	struct:SD_time_
+tx	../parallel/qss_data.h	/^	double      *tx;                \/**< Last update time for each state variable. *\/$/;"	m	struct:SD_time_
+tx	../serial/qss_data.h	/^	double      *tx;                \/**< Last update time for each state variable. *\/$/;"	m	struct:SD_time_
+type	../parallel/qss_data.h	/^	SD_step	    type;			    \/**< Defines if the transition is a state transition, an event transition or an input transition.*\/$/;"	m	struct:SD_time_
+type	../parallel/qss_lp.h	/^	SD_step type;$/;"	m	struct:LP_input_
+type	../parallel/qss_partition.h	/^	PRT_type type;$/;"	m	struct:PRT_partition_
+type	../serial/qss_data.h	/^	SD_StepType	    type;			    \/**< Defines if the transition is a state transition, an event transition or an input transition.*\/$/;"	m	struct:SD_time_
+update	../parallel/qss_time.h	/^	TM_update update;$/;"	m	struct:TM_time_
+update	../serial/qss_scheduler.h	/^	SC_update update;$/;"	m	struct:SC_scheduler_
+update	../serial/qss_tree.h	/^	TR_update update;$/;"	m	struct:TR_treeScheduler_
+update	../serial/qss_tree.h	/^	TR_updateTree update;$/;"	m	struct:TR_tree_
+updateQuantizedState	../parallel/qss_quantizer.h	/^	QA_updateQuantizedState updateQuantizedState;$/;"	m	struct:QA_quantizer_
+updateQuantizedState	../serial/qss_quantizer.h	/^	QA_updateQuantizedState updateQuantizedState;$/;"	m	struct:QA_quantizer_
+used	../parallel/qss_memory.h	/^	int used;$/;"	m	struct:node_
+used	../serial/qss_memory.h	/^	int used;$/;"	m	struct:node_
+val	../parallel/qss_memory.h	/^	double **val;$/;"	m	struct:node_
+val	../serial/qss_memory.h	/^	double **val;$/;"	m	struct:node_
+value	../parallel/qss_binary.h	/^    int value;$/;"	m	struct:BT_node_
+value	../parallel/qss_data.h	/^	SD_eq 			value;$/;"	m	struct:SD_output_
+value	../parallel/qss_data.h	/^	double *value;$/;"	m	struct:SD_global_var_
+value	../serial/qss_binary.h	/^    int value;$/;"	m	struct:BT_node_
+value	../serial/qss_binary_random.h	/^  int value;$/;"	m	struct:BTR_node_
+value	../serial/qss_data.h	/^	SD_eq 				value;$/;"	m	struct:SD_output_
+values	../parallel/qss_partition.h	/^	PRT_list values;$/;"	m	struct:PRT_partition_
+variable	../serial/qss_data.h	/^	SD_outputVariable	variable;$/;"	m	struct:SD_output_
+variableLog	../serial/qss_integrator.c	/^SD_variableLog variableLog = NULL;$/;"	v
+visit	../serial/qss_binary_random.h	/^	int visit[3];$/;"	m	struct:BTR_node_
+weightedEquals	../serial/qss_binary_random.h	/^	int *weightedEquals;$/;"	m	struct:BTR_tree_
+weights	../serial/qss_binary_random.h	/^	int *weights;	$/;"	m	struct:BTR_tree_
+weights	../serial/qss_data.h	/^	double 		*weights;$/;"	m	struct:SD_time_
+write	../parallel/qss_output.h	/^	OUT_write 	 write;$/;"	m	struct:OUT_output_
+write	../parallel/qss_save.h	/^	SV_write     write;$/;"	m	struct:SV_save_
+write	../serial/qss_output.h	/^	OUT_write 	 write;$/;"	m	struct:OUT_output_
+write	../serial/qss_save.h	/^	SV_write     write;$/;"	m	struct:SV_save_
+writeLine	../parallel/qss_save.h	/^	SV_writeLine writeLine;$/;"	m	struct:SV_save_
+writeLine	../serial/qss_save.h	/^	SV_writeLine writeLine;$/;"	m	struct:SV_save_
+x	../parallel/qss_data.h	/^	double 	    	**x;				\/**< \\f$ X[0][i] \\f$ is the state variable, \\f$ 1< j < N \\ X[j][i]\\f$ are the coefficients of the aproximation polynomial. *\/$/;"	m	struct:SD_LP_data_
+x	../parallel/qss_data.h	/^	int *x;$/;"	m	struct:SD_outvar_
+x	../serial/qss_data.h	/^	double 	    	**x;				\/**< \\f$ X[0][i] \\f$ is the state variable, \\f$ 1< j < N \\ X[j][i]\\f$ are the coefficients of the aproximation polynomial. *\/$/;"	m	struct:SD_data_
+xTemp	../parallel/qss_data.h	/^	double *xTemp;$/;"	m	struct:SD_globalEventData_
+zcHist	../parallel/qss_data.h	/^	double zcHist;$/;"	m	struct:SD_parameters_
+zcHist	../serial/qss_data.h	/^	double zcHist;		\/**< Zero crossing function hysteresis.	*\/$/;"	m	struct:SD_eventData_
+zcHist	../serial/qss_data.h	/^	double zcHist;$/;"	m	struct:SD_parameters_
+zcSign	../serial/qss_data.h	/^	int zcSign;		\/**< Current sign of the zero crossing function.	*\/$/;"	m	struct:SD_eventData_
+zc_h	../parallel/qss_data.h	/^	double zc_h;		\/**< Zero crossing function hysteresis.	*\/$/;"	m	struct:SD_eventData_
+zc_sign	../parallel/qss_data.h	/^	int zc_sign;		\/**< Current sign of the zero crossing function.	*\/$/;"	m	struct:SD_globalEventData_
+zchist	../serial/settings.h	/^	double zchist;$/;"	m	struct:SET_settings_
+zeroCrossing	../parallel/qss_data.h	/^	SD_zc zeroCrossing;		\/**< Zero Crossing function for the event.				*\/$/;"	m	struct:SD_event_
+zeroCrossing	../serial/qss_data.h	/^	SD_zc zeroCrossing;		\/**< Zero Crossing function for the event.				*\/$/;"	m	struct:SD_event_

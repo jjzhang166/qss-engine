@@ -1,0 +1,1 @@
+../../linux/scripts/runtests.sh

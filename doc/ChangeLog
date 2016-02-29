@@ -1,0 +1,6 @@
+joaquin <joaquin.f.fernandez@gmail.com>
+
+	* mmo_model_checker.cpp:
+	(AST_MicroModelica_::visit): Remove constants from inital assignment
+	restriction.
+	* generator_utils.h: Modified total section number.
