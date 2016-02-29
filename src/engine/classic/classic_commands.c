@@ -21,6 +21,9 @@
 #include <stdlib.h>
 #include <classic/classic_commands.h>
 
+/**
+ * @brief Terminate @f$ \mu @f$--Modelica command implementation for classic solvers.
+ */
 void
 CLC_CMD_terminate ()
 {
