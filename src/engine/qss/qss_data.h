@@ -412,6 +412,11 @@ typedef struct QSS_time_ *QSS_time;
  * @var QSS_time_::tq
  * @brief Array that contains the current time @f$ q(t) @f$ polynomial in the simulation.
  *
+ * @var QSS_time_::weights
+ * @brief Array that contains the weights associated with each event defined in the model.
+ *
+ * The @a weight of an event defines the probability of that event in case of a tie.
+ *
  */
 struct QSS_time_
 {
