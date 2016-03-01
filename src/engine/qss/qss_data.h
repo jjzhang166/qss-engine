@@ -407,10 +407,10 @@ typedef struct QSS_time_ *QSS_time;
  * @see SC_update
  *
  * @var QSS_time_::tx
- * @brief
+ * @brief Array that contains the current time @f$ x(t) @f$ polynomial in the simulation.
  *
  * @var QSS_time_::tq
- * @brief
+ * @brief Array that contains the current time @f$ q(t) @f$ polynomial in the simulation.
  *
  */
 struct QSS_time_
