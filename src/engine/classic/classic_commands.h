@@ -21,8 +21,7 @@
 #define CLASSIC_COMMANDS_H_
 
 /**
- *
- * @param i
+ * @brief Terminate @f$ \mu @f$--Modelica command implementation for classic solvers.
  */
 void
 CLC_CMD_terminate ();
