@@ -154,13 +154,24 @@ typedef void
 (*QSS_input) (double, double*);
 
 /**
+ * @enum QSS_SchedulerType
+ * @brief QSS simulator scheduler type definition.
+ *
+ * @var QSS_SchedulerType::ST_Linear
+ * @brief Linear search scheduler.
+ *
+ * @var QSS_SchedulerType::ST_Binary
+ * @brief
+ *
+ * @var QSS_SchedulerType::ST_Random
+ * @brief
  *
  */
 typedef enum
 {
-  ST_Linear, //!< ST_Linear
-  ST_Binary, //!< ST_Binary
-  ST_Random //!< ST_Random
+  ST_Linear,
+  ST_Binary,
+  ST_Random
 } QSS_SchedulerType;
 
 /**
