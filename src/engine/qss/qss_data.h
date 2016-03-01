@@ -18,11 +18,17 @@
  ******************************************************************************/
 
 /**
- * @file qss_data.h
  * @brief This header provides all the data structures used by the simulation engine.
  *
- * All the structures defined here, all visible from all the layers in the 
+ * All the structures defined here, all visible from all the layers in the
  * system architecture.
+ *
+ * @file qss_data.h
+ * @author Joaquin Fernandez
+ * @version 3.1
+ * @date 2010-2015
+ * @copyright  GNU General Public License
+ *
  */
 
 #ifndef QSS_DATA_H_
@@ -369,22 +375,58 @@ QSS_allocDataMatrix (QSS_data data);
 typedef struct QSS_time_ *QSS_time;
 
 /**
+ * @struct QSS_time_
+ *
+ * @brief Time management data structure for QSS simulations.
+ *
+ * This structure stores the next time of the state variables,
+ * events and inputs defined in the model.
+ *
+ * @var QSS_time_::nextStateTime
+ * @brief Array that contains the next change time of all the state variables defined in the model.
+ *
+ * On each step taken by the simulator, this array is updated by the \ref QA_quantizer_ routines
+ * @ref QA_recomputeNextTimes, @ref QA_recomputeNextTime and @ref QA_nextTime with the corresponding
+ * QSS method and after the array is updated the scheduler selects the next simulation time.
+ * @see SC_update
+ *
+ * @var QSS_time_::nextEventTime
+ * @brief  Array that contains the next change time of all the events defined in the model.
+ *
+ * On each step taken by the simulator, this array is updated by the \ref FRW_framework_ routine
+ * @ref FRW_nextEventTime according to the order of the QSS method selected for the simulation
+ * and after the array is updated the scheduler selects the next simulation time.
+ * @see SC_update
+ *
+ * @var QSS_time_::nextInputTime
+ * @brief  Array that contains the next change time of all the inputs defined in the model.
+ *
+ * On each step taken by the simulator, this array is updated by the \ref FRW_framework_ routine
+ * @ref FRW_nextInputTime according to the order of the QSS method selected for the simulation
+ * and after the array is updated the scheduler selects the next simulation time.
+ * @see SC_update
+ *
+ * @var QSS_time_::tx
+ * @brief
+ *
+ * @var QSS_time_::tq
+ * @brief
  *
  */
 struct QSS_time_
 {
-  double *nextStateTime; //!<
-  double *nextEventTime; //!<
-  double *nextInputTime; //!<
-  double *tx; //!<
-  double *tq; //!<
+  double *nextStateTime;
+  double *nextEventTime;
+  double *nextInputTime;
+  double *tx;
+  double *tq;
   double *weights;
-  double time; //!<
-  double minValue; //!<
-  int minIndex; //!<
-  QSS_SchedulerType scheduler; //!<
-  QSS_StepType type; //!<
-  QSS_reinit reinits; //!<
+  double time;
+  double minValue;
+  int minIndex;
+  QSS_SchedulerType scheduler;
+  QSS_StepType type;
+  QSS_reinit reinits;
 };
 
 /**

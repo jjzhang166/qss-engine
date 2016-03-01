@@ -33,5 +33,6 @@ echo 'export MMOC_PACKAGES=$MMOC_PATH/packages' >> ~/.bashrc
 echo 'export MMOC_LIBRARIES=$MMOC_PATH/usr/libs' >> ~/.bashrc
 echo 'export MMOC_INCLUDE=$MMOC_PATH/usr/include' >> ~/.bashrc
 echo 'export MMOC_SRC=$MMOC_PATH/src' >> ~/.bashrc
+echo 'export MMOC_DOC=$MMOC_PATH/doc' >> ~/.bashrc
 cd bin
 echo Done.
