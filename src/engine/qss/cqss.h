@@ -24,6 +24,7 @@
 #include <qss/qss_quantizer.h>
 
 /**
+ * @brief Recomputes the next time of all the influenced variables of...
  *
  * @param quantizer
  * @param vars
