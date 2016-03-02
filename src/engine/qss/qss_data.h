@@ -175,13 +175,24 @@ typedef enum
 } QSS_SchedulerType;
 
 /**
+ * @enum QSS_StepType
+ * @brief QSS simulation step type definition.
+ *
+ * @var QSS_StepType::ST_State
+ * @brief Linear search scheduler.
+ *
+ * @var QSS_StepType::ST_Event
+ * @brief
+ *
+ * @var QSS_StepType::ST_Input
+ * @brief
  *
  */
 typedef enum
 {
-  ST_State, //!<ST_State
-  ST_Event, //!< ST_Event
-  ST_Input //!< ST_Input
+  ST_State,
+  ST_Event,
+  ST_Input
 } QSS_StepType;
 
 /**
