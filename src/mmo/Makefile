@@ -95,6 +95,19 @@ $(PARSERDIR)/mocc_scanner.cpp: parser/mocc.lex parser/mocc_parser.cpp
 	$(FLEX) -d -oparser/mocc_scanner.cpp parser/mocc.lex
 endif
 
+$(ASTOBJ): | $(BUILDDIR)
+
+$(GENERATOROBJ): | $(BUILDDIR)
+
+$(IROBJ): | $(BUILDDIR)
+
+$(PARSEROBJ): | $(BUILDDIR)
+
+$(UTILOBJ): | $(BUILDDIR)
+
+$(BUILDDIR):
+	mkdir -p $(BUILDDIR)
+
 -include $(DEPS)
 
 .PHONY: clean

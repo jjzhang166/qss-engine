@@ -22,6 +22,8 @@
 
 /**
  * @brief Terminate @f$ \mu @f$--Modelica command implementation for classic solvers.
+ *
+ * @todo finde
  */
 void
 CLC_CMD_terminate ();

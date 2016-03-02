@@ -48,6 +48,11 @@ $(BUILDDIR)/%.o : $(SRCDIR)/%.cpp
 sbml: $(OBJ)
 	$(CXX) convert.cpp -o $(TARGET) $(OBJ) $(INC) $(CXXFLAGS) $(LIB)
 
+$(OBJ): | $(BUILDDIR)
+
+$(BUILDDIR):
+	mkdir -p $(BUILDDIR)
+	
 -include $(DEPS)
 
 .PHONY: clean

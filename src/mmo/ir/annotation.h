@@ -28,20 +28,24 @@
 #include <util/ast_util.h>
 
 /**
+ * @enum ANT_solver
+ * @brief Model annotations solver type.
  *
+ * @var ANT_solver::ANT_QSS
+ * @brief QSS1 method.
  */
 typedef enum
 {
-  ANT_QSS,   //!< ANT_QSS
-  ANT_CQSS,  //!< ANT_CQSS
-  ANT_LIQSS, //!< ANT_LIQSS
-  ANT_QSS2,  //!< ANT_QSS2
-  ANT_LIQSS2,  //!< ANT_LIQSS2
-  ANT_QSS3,  //!< ANT_QSS3
-  ANT_LIQSS3,  //!< ANT_LIQSS3
-  ANT_DASSL, //!< ANT_DASSL
-  ANT_DOPRI, //!< ANT_DOPRI
-  ANT_QSS4   //!< ANT_QSS4
+  ANT_QSS,
+  ANT_CQSS,
+  ANT_LIQSS,
+  ANT_QSS2,
+  ANT_LIQSS2,
+  ANT_QSS3,
+  ANT_LIQSS3,
+  ANT_DASSL,
+  ANT_DOPRI,
+  ANT_QSS4
 } ANT_Solver;
 
 typedef enum
