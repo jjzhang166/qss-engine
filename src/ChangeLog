@@ -1,6 +1,471 @@
 2016-03-02  Joaquin  <joaquin.f.fernandez@gmail.com>
-
+	
 	* mmo/ir/annotation.h: Added doc.
 	* tools/sbml/Makefile: Added obj folder creation.
 	* libs/Makefile: Added obj folder creation.
 	* mmo/Makefile: Added obj folder creation.
+
+2016-02-25  Joaquin  <joaquin.f.fernandez@gmail.com>
+    
+    * Removed all Warning from source code.
+
+
+2016-02-23  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/qss_dt.c (QSS_dtLogStep): Modified Windows/Mac wrapper.
+
+2016-02-22  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/qss_dt.c: Modified Windows wrapper.
+	* engine/classic/classic_commands.c: New file.
+	* engine/classic/classic_commands.h: New file.
+	* engine/common/commands.c: New file.
+	* engine/common/commands.h: New file.
+	* engine/qss/qss_commands.c: New file.
+	* engine/qss/qss_commands.h: New file.
+	* engine/common/simulator.c:
+	(SIM_Simulator): Call CMD_init on simulator constructor,
+	* engine/common/utils.c:
+	(minPosRoot): Implement minposroot for fourth order polynomials using GSL
+	library routines.
+	* engine/qss/liqss2.c:
+	(LIQSS2_recomputeNextTime): Removed OQSS flag.
+	* engine/qss/liqss3.c:
+	(LIQSS3_recomputeNextTime): Removed OQSS flag.
+	* engine/qss/qss2.c:
+	(QSS2_recomputeNextTime): Removed OQSS flag.
+	* engine/qss/qss3.c:
+	(QSS3_recomputeNextTime): Removed OQSS flag.
+	* engine/qss/qss4.c:
+	(QSS4_recomputeNextTime): Removed OQSS flag.
+	* engine/qss/qss_integrator.c:
+	(QSS_SEQ_initialize): Added call to QSS_CMD_init.
+	(QSS_PAR_initializeSimulation): Added call to QSS_CMD_init.
+	(QSS_PAR_runSimulation): Added new function to run simulations with both
+	parallel integrators.
+	* engine/qss/qss_integrator.h: Added QSS_PAR_runSimulation.
+	* engine/qss/qss_parc_integrator.c:
+	(QSS_PARC_runSimulation): Use QSS_PAR_runSimulation with QSS_PARC_integrator as
+	argument.
+	* engine/qss/qss_parh_integrator.c:
+	(QSS_PARH_runSimulation): Use QSS_PAR_runSimulation with QSS_PARH_integrator as
+	argument.
+	* engine/qss/qss_scheduler.c:
+	(SC_setUpdate): New function used to set the update function used by the
+	scheduler.
+	* engine/qss/qss_scheduler.h: Added SC_setUpdate function.
+	* engine/qss/qss_simulator.c:
+	(QSS_simulate): Added a call to QSS_CMD_alloc in the simulatior initialization
+	routine.
+	* gui/mmohighlight.cpp:
+	(MmoHighlighter::MmoHighlighter): Added terminate command as a new function.
+	* libs/Makefile: Added commands.c classic_commands.c and qss_commands.c
+	* mmo/generator/solver.cpp
+	(QSS_::initHeader): Added "common/commands.h" include to generated models.
+	* mmo/ir/statement.cpp:
+	(MMO_Statement_::_init): Added handler for terminate statement.
+	(MMO_Statement_::print): Added handler for terminate statement.
+	* mmo/util/util.cpp:
+	(Util::Util): Added terminate to built-in functions.
+	* mmo/util/util.h: Added terminate to built-in functions.
+	* tools/sbml/mmo_event.cpp:
+	(MMOEvent::MMOEvent): Generate initial assignments for events with initial value
+	SBML flag set to "false".
+	(MMOEvent::accept): Generate initial assignments for events with initial value
+	SBML flag set to "false".
+	(MMOEvent::generateInitialAsignments): Generate initial assignments for events
+	with initial value SBML flag set to "false".
+	(MMOEvent::setInitialAlgorithm): Generate initial assignments for events with
+	initial value SBML flag set to "false".
+	(MMOEvent::initialAlgorithm): Generate initial assignments for events with
+	initial value SBML flag set to "false".
+	* tools/sbml/mmo_event.h:
+	(MMOEvent): Generate initial assignments for events with initial value SBML flag
+	set to "false".
+	(MMOEvent.getId): Generate initial assignments for events with initial value
+	SBML flag set to "false".
+	* tools/sbml/mmo_model.cpp:
+	(MMOModel::write): Generate initial assignments for events with initial value
+	SBML flag set to "false".
+	(MMOModel::add): Generate initial assignments for events with initial value SBML
+	flag set to "false".
+	* tools/sbml/mmo_section.cpp:
+	(MMOSection::MMOSection): Generate initial assignments for events with initial
+	value SBML flag set to "false".
+	(MMOSection::accept): Generate initial assignments for events with initial value
+	SBML flag set to "false".
+	(MMOSection::setInitialValues): Generate initial assignments for events with
+	initial value SBML flag set to "false".
+	* tools/sbml/mmo_section.h:
+	(MMOSection): Generate initial assignments for events with initial value SBML
+	flag set to "false".
+	* tools/sbml/mmo_writer.cpp:
+	(MMOWriter::MMOWriter): Generate initial assignments for events with initial
+	value SBML flag set to "false".
+	(MMOWriter::visit): Generate initial assignments for events with initial value
+	SBML flag set to "false".
+	(MMOWriter::leave): Generate initial assignments for events with initial value
+	SBML flag set to "false".
+	* tools/sbml/mmo_writer.h:
+	(MMOWriter): Generate initial assignments for events with initial value SBML
+	flag set to "false".
+
+2016-02-18  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/common/data.h: Moved EPSILON definition.
+	* engine/common/utils.c
+	(minPosRoot): Modified procedure for 4 order polynomial
+	* engine/common/utils.h: added EPSILON definition.
+	* engine/qss/qss_binary.c:
+	(BT_init): Modified initial time asignment.
+	* engine/qss/qss_dt.c
+	(DT_ASYNCH_logStep): Added debug option to log dt values.
+	(QSS_Dt): Added debug option to log dt values.
+	(QSS_DtState): Added debug option to log dt values.
+	(QSS_freeDtState): Added debug option to log dt values.
+	* engine/qss/qss_integrator.c
+	(QSS_PAR_copySimulator): Modified DT constructor, added new debug parameters
+	* engine/qss/qss_seqh_integrator.c:
+	* gui/settings.cpp
+	(SettingsDlg): Added DBG_SD_Dt flag.
+	(~SettingsDlg): Added DBG_SD_Dt flag.
+	(SettingsDlg::SettingsDlg): Added DBG_SD_Dt flag.
+	(_getCheckBoxValue): Added DBG_SD_Dt flag.
+	(SettingsDlg::_save): Added DBG_SD_Dt flag.
+	(SettingsDlg::_getDebugValue): Added DBG_SD_Dt flag.
+	* gui/ui/settings.ui: Added DBG_SD_Dt flag.
+	* gui/utils.cpp
+	(Utils::isSet): Added DBG_SD_Dt flag.
+	(Utils::appFlag): Added DBG_SD_Dt flag.
+	(Utils::setFlag): Added DBG_SD_Dt flag.
+	* gui/utils.h: Added DBG_SD_Dt flag.
+	* mmo/main.cpp
+	(usage): Added DBG_SD_Dt flag.
+	* mmo/util/compile_flags.cpp
+	(MMO_CompileFlags_::MMO_CompileFlags_): Added DBG_SD_Dt flag.
+
+2016-02-16  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* mmo/generator/solver.cpp:
+	(QSS_::_indexDependencies): Modified equation offset for IDX_SUBSET.
+	(QSS_::initializeMatrices): Modified equation index for discrete algebraic
+	influences.
+
+2016-02-12  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/qss_dt.c: Modified Windows wrapper function definition.
+	* engine/classic/classic_data.c:
+	(CLC_Data): Removed step log and dt period parameters.
+	* engine/common/data.c:
+	(SD_Parameters): Removed step log and dt period parameters.
+	* engine/common/data.h: Removed step log and dt period parameters.
+	* engine/common/settings.c:
+	(_getDtSynch): Removed step log and dt period parameters.
+	(_getDtLog): Removed step log and dt period parameters.
+	(SET_Settings): Removed step log and dt period parameters.
+	* engine/common/settings.h: Removed step log and dt period parameters.
+	* engine/qss/qss_data.c:
+	(QSS_Data): Removed step log and dt period parameters.
+	* gui/mmohighlight.cpp:
+	(MmoHighlighter::MmoHighlighter): Updated log tokens.
+	* gui/modeleditor.cpp:
+	(ModelEditor::ModelEditor): Removed step log and dt period parameters.
+	* mmo/generator/files.cpp:
+	(MMO_Files_::settings): Updated tokens.
+	* mmo/ir/annotation.cpp:
+	(MMO_ModelAnnotation_::MMO_ModelAnnotation_): Removed step log and dt period
+	parameters.
+	(MMO_ModelAnnotation_::_processAnnotation): Removed step log and dt period
+	parameters.
+	(MMO_EvalAnnotation_::MMO_EvalAnnotation_): Removed step log and dt period
+	parameters.
+	* mmo/ir/annotation.h
+	(MMO_ModelAnnotation_): Removed step log and dt period parameters.
+	* engine/qss/qss_integrator.c:
+	(QSS_SEQ_initialize): Removed event handler execution at initial simulation
+	time.
+	(QSS_PAR_initializeSimulation): Removed event handler execution at initial
+	simulation time.
+	(QSS_PAR_printSimulationLog): Modified print tokens.
+	* gui/mmomegui.cpp:
+	(MmomeGui::runDlgClose): Removed Dt Period and Dt Synchronous from the GUI.
+	(MmomeGui::on_actionRun_triggered): Removed Dt Period and Dt Synchronous from
+	the GUI.
+	* gui/runform.cpp
+	(RunDlg::on__parallel_currentIndexChanged): Removed Dt Period and Dt Synchronous
+	from the GUI.
+	(RunDlg::_getDtSynchIdx): Removed Dt Period and Dt Synchronous from the GUI.
+	(RunDlg::_getDtSynchString): Removed Dt Period and Dt Synchronous from the GUI.
+	(RunDlg::RunDlg): Removed Dt Period and Dt Synchronous from the GUI.
+	* gui/runform.h
+	(dtPeriod): Removed Dt Period and Dt Synchronous from the GUI.
+	(setDtPeriod): Removed Dt Period and Dt Synchronous from the GUI.
+	(dtStepLog): Removed Dt Period and Dt Synchronous from the GUI.
+	(setDtStepLog): Removed Dt Period and Dt Synchronous from the GUI.
+	(RunDlg): Removed Dt Period and Dt Synchronous from the GUI.
+
+2016-02-04  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/qss_binary.c:
+	(BT_init): Modified return value for parallel simulations when the minimum time
+	is INF
+	(use ft instead). * engine/qss/qss_data.c: (QSS_LP_Data): Added outStates field.
+	(QSS_LP_copyData): Added outStates field.
+	* engine/qss/qss_data.h: Added outStates field to QSS_LP_data structure..
+	* engine/qss/qss_dt.c:
+	(QSS_updateLocalDt): New function that calculates the local minimum of the
+	output variables of the LP.
+	(QSS_updateDt): Calculate the global minimum dt of all LPs defined in the
+	simulation.
+	(DT_FIXED_logStep): Changed return value.
+	(DT_ASYNCH_logStep): Asynchronous strategy implementation.
+	(QSS_Dt): Modified/ added fields to reflect the new asynchronous implementation.
+	(QSS_DtState): Modified/ added fields to reflect the new asynchronous
+	implementation.
+	(QSS_freeDtState): Modified/ added fields to reflect the new asynchronous
+	implementation.
+	(QSS_dtValue): Modified/ added fields to reflect the new asynchronous
+	implementation.
+	(QSS_dtLogStep): Changed return type.
+	* engine/qss/qss_integrator.c:
+	(QSS_PAR_printSimulationLog): Added average dt log.
+	(QSS_PAR_allocRootSimulatorData): Modified constructor paramenters for QSS_dt.
+	(QSS_PAR_copySimulator):Copy new LP fields. (QSS_PAR_passiveInitialization):
+	Changed return value.
+	* engine/qss/qss_lp.c:
+	(LP_initializeDataStructs): Added the number of output values for each LP.
+	* engine/qss/qss_parc_integrator.c:
+	(QSS_PARC_integrator): Modified return value from passive LPs and return value
+	from dt step log and update the corresponding maxAdvanceTime variable.
+	* engine/qss/qss_parh_integrator.c:
+	(QSS_PARH_integrator):Modified return value from passive LPs and return value from dt step log and update the corresponding maxAdvanceTime variable.* mmo/Makefile: Added separator to if expression.2016-02-03 Joaquin <joaquin.f.fernandez@gmail.com>* engine/qss/qss_dt.c:(QSS_DtSynch):
+	Added Windows and MAC wrappers.
+	(QSS_freeDtSynch): Added Windows and MAC wrappers.
+	(QSS_Dt): Added Windows and MAC wrappers.
+	(QSS_freeDt): Added Windows and MAC wrappers.
+	(QSS_DtOps): Added Windows and MAC wrappers.
+	(QSS_freeDtOps): Added Windows and MAC wrappers.
+	(QSS_DtState): Added Windows and MAC wrappers.
+	(QSS_freeDtState): Added Windows and MAC wrappers.
+	(QSS_dtCheck): Added Windows and MAC wrappers.
+	(QSS_dtValue): Added Windows and MAC wrappers.
+	(QSS_dtLogStep): Added Windows and MAC wrappers.
+
+2016-02-03  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/classic/classic_data.c:
+	(CLC_Data): Added new parameters to Param constructor.
+	* engine/common/settings.c:
+	(_getDtSynch): New function that gets the Dt synchronization strategy from a
+	string.
+	(_getDtLog): New function that gets the Dt step log strategy from a string.
+	(SET_Settings): Added Dt synchronization, Dt step log and Dt period tags from
+	ini file.
+	* engine/qss/qss_dt.c: New file that contains the Dt synchronization inteface
+	and data structures.
+	(QSS_DtSynch): DtSynch object constructor.
+	(QSS_freeDtSynch): DtSynch object destructor.
+	(QSS_updateDt): Function that updates the value of the global Dt parameter.
+	(DT_FIXED_logStep): Dummy implementation for Fixed Dt.
+	(QSS_Dt): Dt object constructor.
+	(DT_ASYNCH_ALL_logStep): Function that implements a control strategy for the Dt
+	update.
+	(DT_ASYNCH_OUT_logStep): Function that implements a control strategy for the Dt
+	update.
+	(DT_SYNCH_ALL_logStep): Function that implements a control strategy for the Dt
+	update.
+	(DT_SYNCH_OUT_logStep): Function that implements a control strategy for the Dt
+	update.
+	(QSS_DtState): Dt state data structure.
+	(QSS_dtCheck): Function that controls if the global Dt value has to be updated.
+	(QSS_dtValue): Function that returns the current value of the global Dt
+	parameter-
+	* engine/qss/qss_dt.h: New file that contains the Dt synchronization inteface
+	and data structures.
+	* engine/qss/qss_integrator.c:
+	(QSS_PAR_allocRootSimulatorData): Create a DtSynch object in the root simulator.
+	(QSS_PAR_copySimulator): Create a new Dt object for each LP whit the
+	corresponding global values.
+	(QSS_PAR_synchronize): Modify the call to IBX_checkInbox for IBX_checkAckInbox.
+	(QSS_PAR_passiveInitialization): Refactor simulation code to control passive LPs
+	at simulation initial time.
+	(QSS_PAR_waitFor): New function that evaluates
+	* engine/qss/qss_integrator.h: Added QSS_PAR_waitFor function-
+	* engine/qss/qss_parallel.c:
+	(PAR_readArchitecture): New function that reads the processors architecture.
+	(PAR_initLPTasks): Modified the processor number associated with each LP
+	according to the architecture configuration.
+	(PAR_createLPTasks): Call PAR_readArchitecture to obtain the correct lp mapping.
+	* engine/qss/qss_parc_integrator.c:
+	(QSS_PARC_integrator): Added calls to update the value of the Dt object and to
+	control the update rutine execution. Additionally added calls to
+	IBX_checkAckInbox instead of IBX_checkInbox when the LP is not in passive state.
+	* engine/qss/qss_parh_integrator.c:
+	(QSS_PARH_integrator): Added calls to update the value of the Dt object and to
+	control the update rutine execution. Additionally added calls to
+	IBX_checkAckInbox instead of IBX_checkInbox when the LP is not in passive state.
+	* engine/qss/qss_simulator.c:
+	(QSS_Simulator): New DtSynch and Dt member creation in contructor, double dt
+	member is replaced with a Dt object.
+	* engine/qss/qss_simulator.h: Added a DtSynch data structure and Dt data
+	structure to simulator object.
+	* gui/mmohighlight.cpp:
+	(MmoHighlighter::MmoHighlighter): Highlight new MMO token for parallel
+	simulations.
+	* gui/mmomegui.cpp:
+	(MmomeGui::runDlgClose): Added handlers for new tokens.
+	(MmomeGui::on_actionRun_triggered): Added handlers for new tokens.
+	* gui/modeleditor.cpp:
+	(ModelEditor::ModelEditor): Added handlers for new tokens.
+	(ModelEditor::editModel): Added handlers for new tokens.
+	(ModelEditor::_getAnnotationValue): Added handlers for new tokens.
+	* gui/modeleditor.h:
+	(ModelEditor.setDtSynch): Added handlers for new tokens.
+	(ModelEditor.dtSynch): Added handlers for new tokens.
+	(ModelEditor.setDtPeriod): Added handlers for new tokens.
+	(ModelEditor.dtPeriod): Added handlers for new tokens.
+	(ModelEditor.setDtStepLog): Added handlers for new tokens.
+	(ModelEditor.dtStepLog): Added handlers for new tokens.
+	* gui/runform.cpp:
+	(RunDlg::RunDlg): Added handlers for new tokens.
+	(RunDlg::on__commInterval_currentIndexChanged): Don't remove the peroid value
+	when disabled.
+	(RunDlg::on__dtSynch_currentIndexChanged): Added handlers for new tokens.
+	(RunDlg::on__parallel_currentIndexChanged): Added handlers for new tokens.
+	(RunDlg::_getDtSynchIdx): Added handlers for new tokens.
+	(RunDlg::_getDtSynchString): Added handlers for new tokens.
+	(RunDlg::_getDtStepLogIdx): Added handlers for new tokens.
+	(RunDlg::_getDtStepLogString): Added handlers for new tokens.
+	* gui/runform.h:
+	(RunDlg.dtSynch): New token functions..
+	(RunDlg.setDtSynch): New token functions.
+	(RunDlg.dtPeriod): New token functions.
+	(RunDlg.setDtPeriod): New token functions.
+	(RunDlg.dtStepLog): New token functions.
+	(RunDlg.setDtStepLog): New token functions.
+	* gui/ui/run.ui: Added the nuw tokens to run dialog.
+	* mmo/generator/files.cpp:
+	(MMO_Files_::settings): Added new tags to simulation ini file.
+	* mmo/ir/annotation.cpp :
+	(MMO_ModelAnnotation_::MMO_ModelAnnotation_): Added new model annotation for Dt
+	synchronization.
+	(MMO_ModelAnnotation_::_getDtSynch): New model annotation handler.
+	(MMO_ModelAnnotation_::_getDtStepLog): New model annotation handler.
+	(MMO_ModelAnnotation_::_getPartitionMethod): New model annotation handler.
+	(MMO_ModelAnnotation_::dtSynch): New model annotation get/set.
+	(MMO_ModelAnnotation_::dtSynchString): New model annotation get/set.
+	(MMO_ModelAnnotation_::setDtSynch): New model annotation get/set.
+	(MMO_ModelAnnotation_::dtPeriod): New model annotation get/set.
+	(MMO_ModelAnnotation_::setDtPeriod): New model annotation get/set.
+	(MMO_ModelAnnotation_::dtStepLogString): New model annotation get/set.
+	(MMO_ModelAnnotation_::dtStepLog): New model annotation get/set.
+	(MMO_ModelAnnotation_::setDtStepLog): New model annotation get/set.
+	(MMO_EvalAnnotation_::MMO_EvalAnnotation_): Added new model annotation for Dt
+	synchronization.
+	* mmo/ir/annotation.h
+	(MMO_ModelAnnotation_): Added new model annotation tokens for Dt
+	synchronization.
+
+2016-01-25  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/QSSSolver.doxyfile: Modified configuration.
+	* gui/QSSSolverGUI.doxyfile: Modified configuration.
+	* mmo/ir/class.cpp:
+	(MMO_Model_::_insertEquation): Ignore algebraic equations when traveling.
+	(MMO_Model_::_insertAlgebraicEquation): New function that adds only algebraic
+	equations.
+	(MMO_Model_::setEquations): Run _insertAlgebraicEquations before calling
+	_insertEquations to avoid the variable definition restriction.
+	* mmo/ir/class.h
+	(MMO_Model_): Added _insertAlgebraicEquation function.
+	* mmo/MMOCompiler.doxyfile: Modified configuration.
+	* tools/sbml/sbml.Doxyfile: Modified configuration.
+
+2015-12-22  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/qss_graph.c::
+	(GRP_readGraph): HyperGraph new implementation.
+	* engine/qss/qss_binary.c:
+	(BT_updateC): Added special case to handle models or partitions with no states
+	defiend.
+	(BT_updateH): Added special case to handle models or partitions with no states
+	defiend.
+	(BT_updateI): Added special case to handle models or partitions with no states
+	defiend.
+	(BT_updateHI): Added special case to handle models or partitions with no states
+	defiend.
+	(BT_init): Added special case to handle models or partitions with no states
+	defiend.
+	* engine/qss/qss_data.c:
+	(QSS_Time): Initialize qssTime->state to NULL when there's no states defined in
+	the model.
+	* mmo/ir/class.cpp:
+	(MMO_Model_::setEquations): Removed the internal call to setEvents.
+	(MMO_Model_::setEvents): New function to insert model events.
+	* mmo/ir/class.h:
+	(MMO_Model_): Added setEvents function.
+	* mmo/ir/mmo_ir.cpp:
+	(MMO_MicroModelicaIR_::leave): Call setEvents allways after setEquations.
+	* engine/qss/qss_simulator.c:
+	(QSS_Simulator): Set totalsteps initial value to 1.
+	* mmo/generator/files.cpp:
+	(MMO_Files_::graph): Call solver->hyperGraph to obtain the model hyperGraph.
+	* mmo/generator/solver.cpp:
+	(QSS_::QSS_): Added _hyperGraph to initialization.
+	(SolverCommon_::SolverCommon_): Added _hyperGraph to initialization.
+	(SolverCommon_::graphInsert): Generate model hyperGraph.
+	(newSolverCommon): Added _hyperGraph to initialization.
+	(QSS_::hyperGraph): Return modelhyperGraph.
+	(Classic_::hyperGraph): Return modelhyperGraph.
+	* mmo/generator/solver.h :
+	(MMO_Solver_): New hyperGraph function.
+	(QSS_): New hyperGraph function.
+	(Classic_): New hyperGraph function.
+	(SolverCommon_): Added _hyperGraph to initialization.
+
+2015-12-21  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/qss_integrator.c
+	(QSS_PAR_printParallelLog): Modifiefd printed message.
+	* engine/qss/qss_parallel.c
+	(PAR_initLPTasks): Always create the threads but return a different code.
+	* engine/qss/qss_parc_integrator.c
+	(QSS_PARC_integrator): Don't return on PAR_initLPTasks error
+	* engine/qss/qss_parh_integrator.c
+	(QSS_PARH_integrator): Don't return on PAR_initLPTasks error
+	* mmo/ir/statement.cpp :
+	(MMO_Statement_::_printAssignment): Don't print initial code algebraic variable
+	dependencies for state variables.
+	(MMO_Statement_::_printList): Don't print initial code algebraic variable
+	dependencies for state variables.
+	(MMO_Statement_::_printIfExpression): Don't print initial code algebraic
+	variable dependencies for state variables.
+
+2015-12-18  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* mmo/generator/files.cpp
+	(MMO_Files_::graph):
+
+2015-12-18  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/qss_simulator.c:
+	(fpe_handler): Modified message
+	(QSS_simulate): Removed FE_INVALID exception
+	* Makefile: Deleted make clean for GUI
+	* mmo/generator/files.cpp :
+	(MMO_Files_::graph): Added edge weights for hypergraph events and removed extra
+	printLog.
+
+2015-12-16  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* mmo/generator/files.cpp:
+	(MMO_Files_::graph): Modified hgraph generation for events.
+
+2015-12-15  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* gui/mmomegui.cpp :
+	(MmomeGui::on_actionAbout_triggered): Added Version and Revision number.
+	* gui/utils.cpp:
+	(Utils::isSet): Added Version and REvision Flag.
+	(Utils::appFlag): Added Version and REvision Flag.
+	* gui/utils.h: Added Version and REvision Flag.
