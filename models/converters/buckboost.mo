@@ -32,7 +32,6 @@ model buckboost
 		diodeon:=0;
 	end when;
 	annotation(
-
 	experiment(
 		MMO_Description="Buck-Boost Circuit.",
 		MMO_Solver=LIQSS2,

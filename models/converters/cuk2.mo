@@ -36,10 +36,9 @@ model cuk2
 		 diodeon:=0;
 	end when;
 	annotation(
-
 	experiment(
 		MMO_Description="Cuk converter with change of variables.",
-		MMO_Solver=DASSL,
+		MMO_Solver=LIQSS2,
 		MMO_Output={iL,iL1,uC,uC1},
 		StartTime=0,
 		StopTime=0.01,

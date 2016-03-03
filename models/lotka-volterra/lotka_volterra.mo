@@ -7,16 +7,13 @@ model lotka_volterra
 		der(x[1]) = 0.1 * x[1] - 0.1 * x[1]*x[2];
 		der(x[2]) = 0.1 * x[1]*x[2] - 0.1 * x[2];
 	annotation(
-
 	experiment(
 		MMO_Description="Lotka Volterra model",
-		MMO_Solver=QSS4,
-		MMO_Period={300/5000},
+		MMO_Solver=QSS3,
 		MMO_Output={x[:]},
-		MMO_OutputType=CI_Sampled,
-		StartTime=0,
+		StartTime= 0.0,
 		StopTime= 300.0,
-		Tolerance={ 1e-6},
-		AbsTolerance={ 1e-9}
+		Tolerance={ 1e-3},
+		AbsTolerance={ 1e-6}
 	));
 end lotka_volterra;

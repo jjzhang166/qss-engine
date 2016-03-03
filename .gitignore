@@ -1,0 +1,50 @@
+# no deb files.
+*.deb
+
+# no object files.
+*.o
+
+# no packages automatic generated files.
+packages/*.c
+packages/*.h
+packages/*.o
+packages/*.moo
+
+# Build folders, object folders, etc.
+/bin
+/build
+/output
+/usr/libs
+/src/engine/obj
+/src/mmo/obj
+/src/gui/obj
+/src/tools/sbml/obj
+
+# Eclipse project files.
+/src/.autotools
+/src/.cproject
+/src/.project
+
+# Qt generated files.
+/src/gui/Makefile
+/src/gui/moc
+/src/gui/qrc_mmome.cpp
+/src/gui/ui
+/src/libs/*.a
+
+# User packages objects.
+/usr/src/*.o
+
+# Parser generated files.
+/src/mmo/parser/mocc_parser.cpp
+/src/mmo/parser/mocc_parser.h
+/src/mmo/parser/mocc_scanner.cpp
+
+# Testsuite objects.
+/testsuite/**/*.o
+
+# Doc generated files.
+/doc/engine
+/doc/gui
+/doc/mmoc
+/doc/sbml

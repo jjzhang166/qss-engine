@@ -25,6 +25,6 @@ FOLDER=$2
 
 PARALLEL=$3
 
-$MMOC_BIN/compile.sh $FILE $FOLDER
+$MMOC_BIN/compile.sh $FILE $FOLDER $PARALLEL
 
 $MMOC_BIN/simulate.sh $FILE $PARALLEL

@@ -1,6 +1,6 @@
 model airconds
 	import math;
-	constant Integer N = 2000;
+	constant Integer N = 200;
 	parameter Real CAP[N], RES[N], POT[N], THA = 32,pmax=0;
 	Real th[N];
 	discrete Real ptotal;
@@ -54,19 +54,13 @@ model airconds
 		end when;
 	end for;
 	annotation(
-
 	experiment(
 		MMO_Description="Power consumption  in a large population of air conditioners.",
 		MMO_Solver=QSS3,
-		MMO_Period={3000/5000},
-		MMO_Parallel=true,
-		MMO_PartitionMethod=MetisVol,
-		MMO_LPS=4,
-		MMO_DT_Min=2,
-		MMO_Output={th[1]},
+		MMO_Output={ptotal},
 		StartTime=0,
 		StopTime=3000,
-		Tolerance={1e-6},
-		AbsTolerance={1e-9}
+		Tolerance={1e-3},
+		AbsTolerance={1e-3}
 	));
 end airconds;

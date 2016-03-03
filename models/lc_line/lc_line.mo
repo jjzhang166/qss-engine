@@ -1,5 +1,5 @@
 model lc_line
-	constant Integer N = 2000;
+	constant Integer N = 200;
 	Real x[N];
 	discrete Real d (start= 1);
 
@@ -18,17 +18,12 @@ model lc_line
 		d := 1;
 	end when;
 	annotation(
-
 	experiment(
 		MMO_Description="LC transmission line",
 		MMO_Solver=QSS3,
-		MMO_Parallel=true,
-		MMO_PartitionMethod=MetisVol,
-		MMO_LPS=4,
-		MMO_DT_Min=100,
 		MMO_Output={x[1],x[N],x[101],x[100]},
 		StartTime=0,
-		StopTime=2000,
+		StopTime=200,
 		Tolerance={ 1e-3},
 		AbsTolerance={ 1e-6}
 	));

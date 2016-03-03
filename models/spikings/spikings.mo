@@ -33,13 +33,11 @@ model spikings
 
 	experiment(
 		MMO_Description="Spiking Neurons.",
-		MMO_Solver=QSS4,
-		MMO_LPS=4,
-		MMO_DT_Min=2,
+		MMO_Solver=QSS3,
 		MMO_Output={v[1],v[2]},
 		StartTime=0,
-		StopTime=1000,
-		Tolerance={1e-6},
-		AbsTolerance={1e-6}
+		StopTime=100,
+		Tolerance={1e-3},
+		AbsTolerance={1e-3}
 	));
 end spikings;

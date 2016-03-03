@@ -1,7 +1,7 @@
 model interleaved
 	constant Integer N = 4;
 	parameter Real C = 1e-4, L = 1e-4, R = 10, U = 24, T = 1e-4, DC = 0.5, ROn = 1e-5, ROff = 1e5;
-	discrete Real Rd[N](each start=1e5), Rs[N](each start=1e5), nextT(start=T),lastT;
+	discrete Real Rd[N](each start=1e5), Rs[N](each start=1e5), nextT,lastT;
 	Real uC,iL[N];
 
 	 equation
@@ -33,7 +33,6 @@ model interleaved
 		end when;
 	end for;
 	annotation(
-
 	experiment(
 		MMO_Description="",
 		MMO_Solver=LIQSS2,

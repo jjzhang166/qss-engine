@@ -32,10 +32,9 @@ model boost
 		diodeon:=0;
 	end when;
 	annotation(
-
 	experiment(
 		MMO_Description="Boost Circuit.",
-		MMO_Solver=DOPRI,
+		MMO_Solver=LIQSS2,
 		MMO_Output={uC,iL},
 		StartTime=0,
 		StopTime=0.01,

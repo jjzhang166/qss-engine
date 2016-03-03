@@ -10,22 +10,16 @@ model bball_downstairs
 	when y < stair then
 		contact := 1;
 	elsewhen y > stair then
-if contact <> 1 then
-contact:=10;
-end if;
 		contact := 0;
 	end when;
 	when x - 11 +stair > 0 then
 		stair := stair - 1;
 	end when;
 	annotation(
-
 	experiment(
 		MMO_Description="Ball bouncing downstairs.",
-		MMO_Solver=QSS4,
-		MMO_Period={30/5000},
+		MMO_Solver=QSS3,
 		MMO_Output={y},
-		MMO_OutputType=CI_Sampled,
 		StartTime=0.0,
 		StopTime=30.0,
 		Tolerance={1e-6},

@@ -1,6 +1,6 @@
 model advection
 	parameter Real alpha=0.5,mu=1000;
-	constant Integer N = 10000;
+	constant Integer N = 1000;
 	Real u[N];
 	initial algorithm
 	for i in 1:N/3 loop
@@ -13,17 +13,14 @@ model advection
 		  der(u[j])=(-u[j]+u[j-1])*N-mu*u[j]*(u[j]-alpha)*(u[j]-1);
 	end for;
 	annotation(
-
 	experiment(
 		MMO_Description="Advection Reaction Equation.",
 		MMO_Solver=LIQSS2,
-		MMO_Parallel=true,
-		MMO_LPS=4,
-		MMO_DT_Min=2,
 		MMO_Output={u[N]},
 		StartTime=0.0,
 		StopTime=1.0,
 		Tolerance={1e-3},
 		AbsTolerance={1e-3}
 	));
+
 end advection;

@@ -32,15 +32,9 @@ model buck
 		diodeon:=0;
 	end when;
 	annotation(
-
 	experiment(
 		MMO_Description="Buck converter.",
 		MMO_Solver=LIQSS2,
-		MMO_Parallel=true,
-		MMO_PartitionMethod=MetisVol,
-		MMO_DT_Synch=SD_DT_Synchronous,
-		MMO_DT_SynchPeriod=1e-1,
-		MMO_DT_StepLog=SD_DT_All,
 		MMO_Output={uC,iL},
 		StartTime=0,
 		StopTime=0.01,
