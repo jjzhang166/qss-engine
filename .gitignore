@@ -48,3 +48,6 @@ packages/*.moo
 /doc/gui
 /doc/mmoc
 /doc/sbml
+
+# Tarball files.
+*.tar.gz

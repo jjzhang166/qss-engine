@@ -20,24 +20,33 @@
 
 cd ../../
 ARCH=`uname -m`
-echo "Retrieving latest from SVN";
-svn up
-svnversion > rev
-head version.major -c 6 >vm
-cat vm rev > version
+echo "Retrieving latest from Git";
+git pull
+head ./doc/version.major -c 4 > vm
+git rev-list --count HEAD > rvn
+cat vm rvn > version
 VER=`cat version`
-echo "Building QSS Solver libraries DEB package for $ARCH";
+echo "Building QSS Solver libraries DEB package for $ARCH version $VER";
 echo "Building Binaries";
 cd ./src
 make clean
 make 
 cd ..
 rm -rf tmp_deb
-svn export deploy/linux/deb ./tmp_deb
+rm -rf tmp
+mkdir tmp_deb
+mkdir tmp
+git checkout-index --prefix=tmp/ -a
+cp -r ./tmp/deploy/linux/deb/* ./tmp_deb/
 chmod 0755 tmp_deb/DEBIAN/post*
-rm -rf tmp_deb/usr
+mkdir ./tmp_deb/opt
 mkdir ./tmp_deb/opt/qss-solver
-svn export deploy/linux/scripts ./tmp_deb/opt/qss-solver/bin
+mkdir ./tmp_deb/opt/qss-solver/bin
+mkdir ./tmp_deb/opt/qss-solver/build
+mkdir ./tmp_deb/opt/qss-solver/output
+mkdir ./tmp_deb/opt/qss-solver/usr/
+mkdir ./tmp_deb/opt/qss-solver/usr/libs
+cp ./tmp/deploy/linux/scripts/* ./tmp_deb/opt/qss-solver/bin/
 if [ "$ARCH" == "i686" ]; then
   cat ./tmp_deb/DEBIAN/control.i386 | awk -v VERSION="$VER" '{ if(index($0,"Version: ")>=1) print "Version: " VERSION ; else print $0;}' >  ./tmp_deb/DEBIAN/control
   rm ./tmp_deb/DEBIAN/control.amd64; 
@@ -58,8 +67,8 @@ cp doc/COPYING ./tmp_deb/opt/qss-solver/
 cp doc/INSTALL ./tmp_deb/opt/qss-solver/
 cp doc/README.txt ./tmp_deb/opt/qss-solver/
 cp version ./tmp_deb/opt/qss-solver/
-svn export usr ./tmp_deb/opt/qss-solver/usr
-svn export packages ./tmp_deb/opt/qss-solver/packages
+cp -r ./tmp/usr/* ./tmp_deb/opt/qss-solver/usr/
+cp -r ./tmp/packages ./tmp_deb/opt/qss-solver/
 mkdir ./tmp_deb/opt/qss-solver/src
 mkdir ./tmp_deb/opt/qss-solver/src/libs
 cp src/libs/*.a ./tmp_deb/opt/qss-solver/src/libs
@@ -83,6 +92,7 @@ fi
 if [ "$ARCH" == "x86_64" ]; then
   mv libqss-solver.deb ./deploy/linux/libqss-solver-amd64.deb
 fi
-rm rev version vm
+rm rvn version vm
 rm -rf tmp_deb
+rm -rf tmp
 cd deploy/linux
