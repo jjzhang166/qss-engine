@@ -44,11 +44,11 @@ echo Done.
 echo Exporting files
 git checkout-index --prefix=tmp/ -a
 cp -r ./tmp/deploy/windows/export/*  ./tmp-win-installer/
-cp -r ./tmp/models ./tmp-win-installer/
-cp -r ./tmp/src ./tmp-win-installer/
-cp -r ./tmp/usr/* ./tmp-win-installer/usr/
-cp -r ./tmp/packages ./tmp-win-installer/
-cp -r ./tmp/doc ./tmp-win-installer/
+cp -r ./tmp/models ./tmp-win-installer/qss-solver/
+cp -r ./tmp/src ./tmp-win-installer/qss-solver/
+cp -r ./tmp/usr/* ./tmp-win-installer/qss-solver/usr/
+cp -r ./tmp/packages ./tmp-win-installer/qss-solver/
+cp -r ./tmp/doc ./tmp-win-installer/qss-solver/
 cp doc/COPYING ./tmp-win-installer/qss-solver/
 cp doc/INSTALL ./tmp-win-installer/qss-solver/
 cp doc/README.txt ./tmp-win-installer/qss-solver/
