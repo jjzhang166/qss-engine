@@ -19,28 +19,39 @@
 #===================================================================================
 
 cd ../../
-echo Building Windows Package
-echo Retrieving latest from SVN
-svn update 
-svnversion | head -c 4 > rvn
+echo "Retrieving latest from Git";
+git pull
+head ./doc/version.major -c 4 > vm
+git rev-list --count HEAD > rvn
+cat vm rvn > version
 REV=`cat rvn`
 ./deploy/linux/setRevision.sh ./deploy/windows/qss-solver.ini $REV 
-echo Done.
+VER=`cat version`
+echo Building Windows Package version $VER
 echo Creating directories
 rm -rf tmp-win-installer 
+rm -rf tmp 
+mkdir tmp
+mkdir tmp-win-installer
+mkdir ./tmp-win-installer/qss-solver
+mkdir ./tmp-win-installer/qss-solver/bin
+mkdir ./tmp-win-installer/qss-solver/build
+mkdir ./tmp-win-installer/qss-solver/output
+mkdir ./tmp-win-installer/qss-solver/usr
+mkdir ./tmp-win-installer/qss-solver/usr/libs
 echo Done.
+
 echo Exporting files
-svn export ./deploy/windows/export ./tmp-win-installer
-svn export ./models ./tmp-win-installer/qss-solver/models
-svn export ./build ./tmp-win-installer/qss-solver/build
-svn export ./src ./tmp-win-installer/qss-solver/src
-svn export ./output ./tmp-win-installer/qss-solver/output
-svn export ./usr ./tmp-win-installer/qss-solver/usr
-svn export ./packages ./tmp-win-installer/qss-solver/packages
-svn export ./doc ./tmp-win-installer/qss-solver/doc
-cp doc/COPYING ./tmp-win-installer/qss-solver
-cp doc/INSTALL ./tmp-win-installer/qss-solver
-cp doc/README.txt ./tmp-win-installer/qss-solver
+git checkout-index --prefix=tmp/ -a
+cp -r ./tmp/deploy/windows/export/*  ./tmp-win-installer/
+cp -r ./tmp/models ./tmp-win-installer/
+cp -r ./tmp/src ./tmp-win-installer/
+cp -r ./tmp/usr/* ./tmp-win-installer/usr/
+cp -r ./tmp/packages ./tmp-win-installer/
+cp -r ./tmp/doc ./tmp-win-installer/
+cp doc/COPYING ./tmp-win-installer/qss-solver/
+cp doc/INSTALL ./tmp-win-installer/qss-solver/
+cp doc/README.txt ./tmp-win-installer/qss-solver/
 cp deploy/images/integrator.svg ./tmp-win-installer/qss-solver/bin
 cp deploy/windows/qss-solver.ini ./tmp-win-installer/qss-solver/bin
 cp deploy/windows/qss-solver.gpr ./tmp-win-installer
@@ -67,7 +78,7 @@ echo Creating installer
 gibuild qss-solver.gpr
 cp ./Output/qss-solver-install.exe ../
 cd ..
-rm rvn
+rm rvn vm version
 rm -rf tmp-win-installer 
 mv qss-solver-install.exe deploy/windows/
 echo Done.
