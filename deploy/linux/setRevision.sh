@@ -21,6 +21,6 @@ FILE=$1
 
 REV=$2
 
-cat $FILE | awk -v REVISION="$REV" '{ if(index($0,"revision=")>=1) print "revision=" REVISION; else print $0;}' > tmp
+cat $FILE | awk -v REVISION="$REV" '{ if(index($0,"revision=")>=1) print "revision=" REVISION; else print $0;}' > tmp-cfg.ini
 
-mv tmp $FILE
+mv tmp-cfg.ini $FILE
