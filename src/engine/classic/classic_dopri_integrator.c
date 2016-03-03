@@ -112,7 +112,7 @@ DOPRI_integrate (SIM_simulator simulate)
   int i;
   unsigned long totalOutputSteps = 0;
   double t = clcData->it;
-  double tout;
+  double tout = 0;
   const double _ft = clcData->ft;
   double dQRel = clcData->dQRel[0];
   double dQMin = clcData->dQMin[0];

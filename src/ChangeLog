@@ -1,9 +1,14 @@
 2016-03-03  Joaquin  <joaquin.f.fernandez@gmail.com>
 
+	* engine/qss/qss_parc_integrator.c:
+	(QSS_PARC_externalEvent): Removed warnings.
+	* mmo/util/symbol_table.cpp:
+	(MMO_EquationTable_::findGenericDependencies): Removed warnings.
+	* Makefile: Added build documentation rule.
 	* gui/mainpage.dox: Added main doc file.
 	* mmo/mainpage.dox: Added main doc file. 
 	* tools/sbml/mainpage.dox:  Added main doc file.
-	
+
 2016-03-02  Joaquin  <joaquin.f.fernandez@gmail.com>
 	
 	* mmo/ir/annotation.h: Added doc.

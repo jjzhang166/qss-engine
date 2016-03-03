@@ -85,7 +85,7 @@ QSS_PARC_externalEvent (QSS_simulator simulator, IBX_message message)
   SD_simulationLog simulationLog = simulator->simulationLog;
   if (settings->debug & SD_DBG_ExternalEvent)
     {
-      SD_print (simulator->simulationLog, "LP %d external event: index = %d, type = %d, time = %.16lf, gvt = %.16lf, previousTime = %.16lf",id, message.index, message.type, message.time, simulator->lpTime[id], simulator->previousTime);
+      SD_print (simulationLog, "LP %d external event: index = %d, type = %d, time = %.16lf, gvt = %.16lf, previousTime = %.16lf",id, message.index, message.type, message.time, simulator->lpTime[id], simulator->previousTime);
     }
 #endif
   switch (type)

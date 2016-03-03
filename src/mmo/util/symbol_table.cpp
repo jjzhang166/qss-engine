@@ -755,9 +755,9 @@ MMO_EquationTable_::findGenericDependencies (int val)
 		    }
 		}
 	    }
-	  for (Index *dIdx = d->begin (DEP_ALGEBRAIC_STATE);
+	  for (d->begin (DEP_ALGEBRAIC_STATE);
 	      !d->end (DEP_ALGEBRAIC_STATE);
-	      dIdx = d->next (DEP_ALGEBRAIC_STATE))
+	      d->next (DEP_ALGEBRAIC_STATE))
 	    {
 	      Index state = d->key (DEP_ALGEBRAIC_STATE);
 	      if (state.factor () != 0)
