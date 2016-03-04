@@ -53,14 +53,19 @@ LIQSS_init (QA_quantizer quantizer, QSS_data simData, QSS_time simTime)
       quantizer->state->dq[i] = 0;
       quantizer->state->lt[i] = simData->it;
     }
+  quantizer->state->simTime = &simTime->time;
 #ifdef QSS_PARALLEL
   quantizer->state->qMap = simData->lp->qMap;
-#endif
-  quantizer->state->simTime = &simTime->time;
+  quantizer->ops->recomputeNextTimes = LIQSS_PAR_recomputeNextTimes;
+  quantizer->ops->recomputeNextTime = LIQSS_PAR_recomputeNextTime;
+  quantizer->ops->nextTime = LIQSS_PAR_nextTime;
+  quantizer->ops->updateQuantizedState = LIQSS_PAR_updateQuantizedState;
+#else
   quantizer->ops->recomputeNextTimes = LIQSS_recomputeNextTimes;
   quantizer->ops->recomputeNextTime = LIQSS_recomputeNextTime;
   quantizer->ops->nextTime = LIQSS_nextTime;
   quantizer->ops->updateQuantizedState = LIQSS_updateQuantizedState;
+#endif
 }
 
 #ifdef QSS_PARALLEL

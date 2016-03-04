@@ -69,17 +69,17 @@ create-dirs:
 .PHONY: clean all 
 
 clean: 
-	cd mmo && $(MAKE) OS=$(OS) clean 
-	cd libs && $(MAKE) clean 
-	cd libs && $(MAKE) DEBUG=True clean 
-	cd ../usr && $(MAKE) clean
-	cd gui && $(MAKE) clean    
-	cd tools/sbml && $(MAKE) clean     
+	@cd mmo && $(MAKE) OS=$(OS) clean 
+	@cd libs && $(MAKE) clean 
+	@cd libs && $(MAKE) DEBUG=True clean 
+	@cd ../usr && $(MAKE) clean
+	@cd gui && $(MAKE) clean    
+	@cd tools/sbml && $(MAKE) clean     
 
 help:
-	echo "make DEBUG=<True|False> OS=<unix|win32|mac> CORES=<n>"
-	echo "Default values:"
-	echo ""
-	echo "DEBUG=False"
-	echo "OS=unix"
-	echo "CORES=1"
+	@echo "make DEBUG=<True|False> OS=<unix|win32|mac> CORES=<n>"
+	@echo "Default values:"
+	@echo ""
+	@echo "DEBUG=False"
+	@echo "OS=unix"
+	@echo "CORES=1"

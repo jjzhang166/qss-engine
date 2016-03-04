@@ -44,11 +44,16 @@ QSS3_init (QA_quantizer quantizer, QSS_data simData, QSS_time simTime)
     }
 #ifdef QSS_PARALLEL
   quantizer->state->qMap = simData->lp->qMap;
-#endif
+  quantizer->ops->recomputeNextTimes = QSS3_PAR_recomputeNextTimes;
+  quantizer->ops->recomputeNextTime = QSS3_PAR_recomputeNextTime;
+  quantizer->ops->nextTime = QSS3_PAR_nextTime;
+  quantizer->ops->updateQuantizedState = QSS3_PAR_updateQuantizedState;
+#else
   quantizer->ops->recomputeNextTimes = QSS3_recomputeNextTimes;
   quantizer->ops->recomputeNextTime = QSS3_recomputeNextTime;
   quantizer->ops->nextTime = QSS3_nextTime;
   quantizer->ops->updateQuantizedState = QSS3_updateQuantizedState;
+#endif
 }
 
 #ifdef QSS_PARALLEL

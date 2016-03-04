@@ -101,10 +101,10 @@ $(BUILDDIR)/%.o : $(DASSLDIR)/%.f
 	$(FC) $(INC) -c $< -o $@ $(CFLAGS)
 
 $(LIBTIMESTEP): $(DASSLOBJ) $(DOPRIOBJ)
-	ar rvs $(@) $(DASSLOBJ) $(DOPRIOBJ)
+	@ar rvs $(@) $(DASSLOBJ) $(DOPRIOBJ)
 
 $(TARGET): $(COMMONOBJ) $(SEQOBJ) $(PAROBJ) $(CLASSICOBJ) 
-	ar rsc $@ $(COMMONOBJ) $(SEQOBJ) $(PAROBJ) $(CLASSICOBJ) 
+	@ar rsc $@ $(COMMONOBJ) $(SEQOBJ) $(PAROBJ) $(CLASSICOBJ) 
 
 $(COMMONOBJ): | $(BUILDDIR)
 
@@ -115,17 +115,18 @@ $(PAROBJ): | $(BUILDDIR)
 $(CLASSICOBJ): | $(BUILDDIR)
 
 $(BUILDDIR):
-	mkdir -p $(BUILDDIR)
+	@mkdir -p $(BUILDDIR)
 	
 -include $(DEPS)
 
 .PHONY: clean
+
 clean:
 	$(RMS) $(DEPS) $(TARGET) $(COMMONOBJ) $(SEQOBJ) $(PAROBJ) $(CLASSICOBJ) $(DASSLOBJ) $(DOPRIOBJ)
 
 help:
-	echo "make DEBUG=<True|False> OS=<unix|win32|mac>"
-	echo "Default value:"
-	echo ""
-	echo "DEBUG=False"
-	echo "OS=unix"
+	@echo "make DEBUG=<True|False> OS=<unix|win32|mac>"
+	@echo "Default value:"
+	@echo ""
+	@echo "DEBUG=False"
+	@echo "OS=unix"

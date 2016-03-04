@@ -71,15 +71,20 @@ LIQSS3_init (QA_quantizer quantizer, QSS_data simData, QSS_time simTime)
       quantizer->state->flag3[i] = 0; //this flag becomes true after trying to provoke dddx=0.
       quantizer->state->flag4[i] = 0; //this flag becomes true after detecting a sign change in ddx.
     }
+  quantizer->state->minStep = simData->params->minStep;
+  quantizer->state->lSimTime = simTime;
 #ifdef QSS_PARALLEL
   quantizer->state->qMap = simData->lp->qMap;
-#endif
-  quantizer->state->lSimTime = simTime;
-  quantizer->state->minStep = simData->params->minStep;
+  quantizer->ops->recomputeNextTimes = LIQSS3_PAR_recomputeNextTimes;
+  quantizer->ops->recomputeNextTime = LIQSS3_PAR_recomputeNextTime;
+  quantizer->ops->nextTime = LIQSS3_PAR_nextTime;
+  quantizer->ops->updateQuantizedState = LIQSS3_PAR_updateQuantizedState;
+#else
   quantizer->ops->recomputeNextTimes = LIQSS3_recomputeNextTimes;
   quantizer->ops->recomputeNextTime = LIQSS3_recomputeNextTime;
   quantizer->ops->nextTime = LIQSS3_nextTime;
   quantizer->ops->updateQuantizedState = LIQSS3_updateQuantizedState;
+#endif
 }
 
 #ifdef QSS_PARALLEL

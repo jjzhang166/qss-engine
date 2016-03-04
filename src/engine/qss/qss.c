@@ -41,11 +41,16 @@ QSS_init (QA_quantizer quantizer, QSS_data simData, QSS_time simTime)
     }
 #ifdef QSS_PARALLEL
   quantizer->state->qMap = simData->lp->qMap;
-#endif
+  quantizer->ops->recomputeNextTimes = QSS_PAR_recomputeNextTimes;
+  quantizer->ops->recomputeNextTime = QSS_PAR_recomputeNextTime;
+  quantizer->ops->nextTime = QSS_PAR_nextTime;
+  quantizer->ops->updateQuantizedState = QSS_PAR_updateQuantizedState;
+#else
   quantizer->ops->recomputeNextTimes = QSS_recomputeNextTimes;
   quantizer->ops->recomputeNextTime = QSS_recomputeNextTime;
   quantizer->ops->nextTime = QSS_nextTime;
   quantizer->ops->updateQuantizedState = QSS_updateQuantizedState;
+#endif
 }
 
 #ifdef QSS_PARALLEL

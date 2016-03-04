@@ -106,7 +106,7 @@ $(PARSEROBJ): | $(BUILDDIR)
 $(UTILOBJ): | $(BUILDDIR)
 
 $(BUILDDIR):
-	mkdir -p $(BUILDDIR)
+	@mkdir -p $(BUILDDIR)
 
 -include $(DEPS)
 
@@ -120,8 +120,8 @@ else
 endif
 
 help:
-	echo "make DEBUG=<True|False> OS=<unix|win32|mac>"
-	echo "Default values:"
-	echo ""
-	echo "DEBUG=False"
-	echo "OS=unix"
+	@echo "make DEBUG=<True|False> OS=<unix|win32|mac>"
+	@echo "Default values:"
+	@echo ""
+	@echo "DEBUG=False"
+	@echo "OS=unix"
