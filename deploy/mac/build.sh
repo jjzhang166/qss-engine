@@ -32,10 +32,10 @@ echo "Done"
 echo "Building QSS Solver MAC bundle version $VER";
 echo "Building Binaries";
 rm -rf ./bin/qss-solver.app
-mkdir -p ./bin/qss-solver.app
-mkdir -p ./bin/qss-solver.app/Contents
-mkdir -p ./bin/qss-solver.app/Contents/MacOS
-mkdir -p ./bin/qss-solver.app/Contents/Resources
+mkdir ./bin/qss-solver.app
+mkdir ./bin/qss-solver.app/Contents
+mkdir ./bin/qss-solver.app/Contents/MacOS
+mkdir ./bin/qss-solver.app/Contents/Resources
 mkdir ./bin/qss-solver.app/Contents/Resources/output
 mkdir ./bin/qss-solver.app/Contents/Resources/build
 mkdir ./bin/qss-solver.app/Contents/Resources/usr
@@ -47,7 +47,7 @@ git checkout-index --prefix=tmp/ -a
 cd ./src
 make OS=mac  
 cd ..
-cp -r ./tmp/deploy/mac/scripts/ ./bin/qss-solver.app/Contents/MacOS
+cp -r ./tmp/deploy/mac/scripts ./bin/qss-solver.app/Contents/MacOS/
 chmod +x ./bin/qss-solver.app/Contents/MacOS/scripts/*
 cp bin/mmoc  ./bin/qss-solver.app/Contents/MacOS/ 
 cp bin/translate-sbml  ./bin/qss-solver.app/Contents/MacOS/ 
