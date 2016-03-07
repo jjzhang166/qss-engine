@@ -5,6 +5,9 @@ CORES ?= 1
 
 #The Directories, Source, Includes, Objects, Binary 
 ROOT   := ..
+ifeq ($(OS),unix)
+ARCH = $(shell $(ROOT)/deploy/linux/scripts/print-arch.sh)
+endif
 
 all: qss-compiler qss-engine qss-gui qss-tools qss-user
 
@@ -64,7 +67,32 @@ create-dirs:
 	@mkdir -p $(ROOT)/bin
 	@mkdir -p $(ROOT)/build
 	@mkdir -p $(ROOT)/output
-	@mkdir -p $(ROOT)/usr/libs	
+	@mkdir -p $(ROOT)/usr/libs
+	
+install:	
+ifeq ($(OS),unix)
+	@install $(ROOT)/deploy/linux/scripts/* $(ROOT)/bin/
+	@install $(ROOT)/deploy/linux/qss-solver.ini $(ROOT)/bin/
+	@install $(ROOT)/src/tools/partitioners/hmetis/khmetis $(ROOT)/bin/
+ifeq ($(ARCH),i686)
+	@install $(ROOT)/src/tools/partitioners/patoh/Linux-i386/libpatoh.a $(ROOT)/src/libs/
+else
+	@install $(ROOT)/src/tools/partitioners/patoh/Linux-x86_64/libpatoh.a $(ROOT)/src/libs/
+endif
+else
+ifeq ($(OS),win32)
+	@cp $(ROOT)/deploy/windows/scripts/* $(ROOT)/bin/
+	@cp $(ROOT)/deploy/windows/qss-solver.ini $(ROOT)/bin/
+	@cp $(ROOT)/src/tools/partitioners/hmetis/khmetis $(ROOT)/bin/
+	@cp $(ROOT)/src/tools/partitioners/patoh/Linux-i386/libpatoh.a $(ROOT)/src/libs/
+else
+	@cp $(ROOT)/deploy/mac/scripts/* $(ROOT)/bin/
+	@cp $(ROOT)/deploy/mac/qss-solver.ini $(ROOT)/bin/
+	@cp $(ROOT)/src/tools/partitioners/hmetis/khmetis $(ROOT)/bin/
+	@cp $(ROOT)/src/tools/partitioners/patoh/Linux-x86_64/libpatoh.a $(ROOT)/src/libs/
+endif
+endif
+
 	
 .PHONY: clean all 
 

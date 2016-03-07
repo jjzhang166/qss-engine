@@ -1,3 +1,7 @@
+2016-03-07  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* Makefile: Added install rule
+
 2016-03-03  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* engine/qss/qss_parc_integrator.c:
