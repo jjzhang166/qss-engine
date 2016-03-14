@@ -4,7 +4,7 @@ model buck
 	Real uC,iL,iD;
 
 	initial algorithm 
-	 nextT:=0;
+	 nextT:=T;
 	 Rs:=1e5;
 	 Rd:=1e5;
 
@@ -31,6 +31,7 @@ model buck
 		  Rd := ROff;
 		diodeon:=0;
 	end when;
+
 	annotation(
 	experiment(
 		MMO_Description="Buck converter.",

@@ -9,6 +9,19 @@ initial algorithm
       x[2 * i]:=5;
     x[2 * i + 1]:=0.006247;
   end for;
+  for i in 1:N loop
+    if x[i] > UTH then
+          satx[i]:=1;    
+    else
+      satx[i]:=0;
+    end if;
+      if x[i] - x[i + 1] > UTH then
+          satdx[i]:=1;    
+     else
+      satdx[i]:=0;
+    end if;
+  end for;
+
 equation
   der(x[1]) = uslope;
   for i in 2:N + 1 loop
@@ -44,6 +57,7 @@ algorithm
       nextchange:=10000000000.0;
     end if;  
   end when;
+
 	annotation(
 	experiment(
 		MMO_Description="A chain of logical inverters",

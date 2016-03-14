@@ -491,7 +491,7 @@ AST_Expression_ComponentReference_::name ()
   AST_StringListIterator it;
   foreach (it, names())
     {
-      ret << current_element(it);
+      ret << current_element(it)->c_str();
     }
   return (ret.str ());
 }

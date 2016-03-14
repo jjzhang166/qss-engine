@@ -61,7 +61,10 @@ MMO_MicroModelicaIR_::visit (AST_Class x)
 	  _childName = x->name ();
 	  _childPrefix = x->prefix ();
 	  _child = newMMO_Function (*x->name ());
-	  _child->getAsFunction()->setFunctions(_father->getAsModel()->functions(),_externalFunctions, _father->getAsModel()->calledFunctions());
+	  if (_father->classType() == CL_MODEL)
+	    {
+	      _child->getAsFunction()->setFunctions(_father->getAsModel()->functions(),_externalFunctions, _father->getAsModel()->calledFunctions());
+	    }
 	  _child->getAsFunction ()->setImports (_father->imports ());
 	  _child->setFather (_father);
 	  _class = _child;

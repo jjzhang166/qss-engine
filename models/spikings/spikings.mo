@@ -36,7 +36,7 @@ model spikings
 		MMO_Solver=QSS3,
 		MMO_Output={v[1],v[2]},
 		StartTime=0,
-		StopTime=100,
+		StopTime=1000,
 		Tolerance={1e-3},
 		AbsTolerance={1e-3}
 	));
