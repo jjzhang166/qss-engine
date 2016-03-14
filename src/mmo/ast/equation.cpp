@@ -17,8 +17,13 @@
 
  ******************************************************************************/
 
-#include <ast/equation.h>
-#include <ast/ast_builder.h>
+#include "equation.h"
+
+#include <list>
+#include <sstream>
+
+#include "../util/ast_util.h"
+#include "expression.h"
 
 /* Equation Class */
 

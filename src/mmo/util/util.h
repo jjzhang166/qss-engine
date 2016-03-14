@@ -21,11 +21,13 @@
 #define UTIL_H_
 
 #include <fstream>
-#include <string>
+#include <list>
 #include <map>
-#include <ast/ast_types.h>
-#include <util/util_types.h>
-#include <ir/mmo_types.h>
+#include <string>
+
+#include "../ast/ast_types.h"
+#include "../ir/mmo_types.h"
+#include "util_types.h"
 
 using namespace std;
 

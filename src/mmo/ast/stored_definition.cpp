@@ -17,9 +17,14 @@
 
  ******************************************************************************/
 
-#include <ast/ast_builder.h>
-#include <ast/imports.h>
-#include <ast/stored_definition.h>
+#include "stored_definition.h"
+
+#include <stddef.h>
+#include <iostream>
+#include <list>
+
+#include "class.h"
+#include "imports.h"
 
 AST_StoredDefinition_::AST_StoredDefinition_ (AST_ClassList ml,
 					      AST_String within) :

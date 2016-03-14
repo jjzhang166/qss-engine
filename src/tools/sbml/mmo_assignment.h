@@ -20,9 +20,14 @@
 #ifndef MMO_ASSIGNMENT_H_
 #define MMO_ASSIGNMENT_H_
 
+#include <sbml/common/libsbml-namespace.h>
 #include <list>
-#include <sbml/math/ASTNode.h>
 #include <string>
+
+namespace libsbml
+{
+  class ASTNode;
+} /* namespace libsbml */
 
 using namespace std;
 

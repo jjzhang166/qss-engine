@@ -17,17 +17,17 @@
 
  ******************************************************************************/
 
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <sys/time.h>
+#include "classic_dassl_integrator.h"
 
-#include <common/utils.h>
-#include <classic/classic_integrator.h>
-#include <classic/classic_simulator.h>
-#include <classic/classic_dassl_integrator.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "../common/data.h"
+#include "../common/utils.h"
+#include "classic_data.h"
+#include "classic_integrator.h"
+#include "classic_simulator.h"
 
 static CLC_data clcData = NULL;
 

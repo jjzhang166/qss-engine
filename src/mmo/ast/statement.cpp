@@ -17,10 +17,14 @@
 
  ******************************************************************************/
 
-#include <ast/ast_builder.h>
-#include <ast/statement.h>
-#include <ast/expression.h>
-#include <util/ast_util.h>
+#include "statement.h"
+
+#include <list>
+#include <sstream>
+
+#include "../util/ast_util.h"
+#include "element.h"
+#include "expression.h"
 
 /* Statement Class */
 

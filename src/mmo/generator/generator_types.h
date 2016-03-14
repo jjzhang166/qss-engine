@@ -19,6 +19,18 @@
 
 #ifndef GENERATOR_TYPES_H_
 #define GENERATOR_TYPES_H_
+class Classic_;
+class MMO_Engine_;
+class MMO_Files_;
+class MMO_FileWriter_;
+class MMO_Generator_;
+class MMO_MemoryWriter_;
+class MMO_ParallelEngine_;
+class MMO_SerialEngine_;
+class MMO_Solver_;
+class MMO_Writer_;
+class QSS_;
+class SolverCommon_;
 
 /**
  *

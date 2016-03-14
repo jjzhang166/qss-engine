@@ -17,14 +17,21 @@
 
  ******************************************************************************/
 
-#include <ir/statement.h>
-#include <ir/expression.h>
-#include <ir/equation.h>
-#include <ast/equation.h>
-#include <ast/statement.h>
-#include <util/symbol_table.h>
-#include <util/util.h>
-#include <util/error.h>
+#include "../ast/statement.h"
+#include "statement.h"
+
+#include <sstream>
+
+#include "../ast/equation.h"
+#include "../ast/expression.h"
+#include "../util/ast_util.h"
+#include "../util/error.h"
+#include "../util/symbol_table.h"
+#include "../util/type.h"
+#include "../util/util.h"
+#include "equation.h"
+#include "expression.h"
+#include "mmo_util.h"
 
 MMO_Statement_::MMO_Statement_ (AST_Statement stm, MMO_ModelData data) :
     _stm (stm), _data (data), _deps (NULL), _lhs (NULL), _initialCode (
@@ -243,7 +250,7 @@ MMO_Statement_::_init ()
 	      default:
 		Error::getInstance ()->add (_stm->lineNum (),
 		EM_IR | EM_FUNCTION_NOT_FOUND,
-					    ER_Error, "%s", name.c_str ());
+					    ER_Error, "Init statement %s", name.c_str ());
 	      }
 	  }
 	else
@@ -592,7 +599,7 @@ MMO_Statement_::print (string indent, string idx, int offset, int order,
 	      default:
 		Error::getInstance ()->add (_stm->lineNum (),
 		EM_IR | EM_FUNCTION_NOT_FOUND,
-					    ER_Error, "%s", name.c_str ());
+					    ER_Error, "Print statement %s", name.c_str ());
 	      }
 	  }
 	else

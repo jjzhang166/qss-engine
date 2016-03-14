@@ -20,12 +20,13 @@
 #ifndef AST_UTIL_H_
 #define AST_UTIL_H_
 
-#include <ast/ast_types.h>
-#include <ast/expression.h>
-#include <util/symbol_table.h>
-#include <util/error.h>
-#include <util/macros.h>
-#include <util/util_types.h>
+#include <string>
+
+#include "../ast/ast_types.h"
+#include "../ast/expression.h"
+#include "../ir/mmo_types.h"
+#include "util_types.h"
+#include "index.h"
 
 /**
  *

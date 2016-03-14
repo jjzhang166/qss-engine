@@ -17,9 +17,12 @@
 
 ******************************************************************************/
 
-#include <common/commands.h>
-#include <qss/qss_commands.h>
-#include <classic/classic_commands.h>
+#include "commands.h"
+
+#include <stddef.h>
+
+#include "../classic/classic_commands.h"
+#include "../qss/qss_commands.h"
 
 static CMD_terminateFn _terminate = NULL;
 

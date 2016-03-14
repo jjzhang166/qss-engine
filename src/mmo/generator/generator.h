@@ -20,15 +20,27 @@
 #ifndef GENERATOR_H_
 #define GENERATOR_H_
 
+#include <fstream>
+#include <iostream>
+#include <list>
+#include <map>
+#include <string>
+
+#include "../ir/mmo_types.h"
+#include "../util/compile_flags.h"
+#include "../util/util_types.h"
+#include "generator_types.h"
+
 using namespace std;
 
-#include <fstream>
+/*
+
 #include <map>
 
 #include <generator/generator_types.h>
 #include <ir/mmo_types.h>
 #include <util/compile_flags.h>
-
+*/
 /**
  *
  */

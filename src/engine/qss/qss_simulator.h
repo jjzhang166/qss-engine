@@ -20,17 +20,15 @@
 #ifndef QSS_SIMULATOR_H_
 #define QSS_SIMULATOR_H_
 
-#include <common/simulator.h>
-#include <common/integrator.h>
-#include <common/utils.h>
-
-#include <qss/qss_frw.h>
-#include <qss/qss_log.h>
-#include <qss/qss_scheduler.h>
-#include <qss/qss_quantizer.h>
-#include <qss/qss_output.h>
-#include <qss/qss_data.h>
-#include <qss/qss_dt.h>
+#include "../common/data.h"
+#include "../common/simulator.h"
+#include "../common/utils.h"
+#include "qss_data.h"
+#include "qss_dt.h"
+#include "qss_frw.h"
+#include "qss_output.h"
+#include "qss_quantizer.h"
+#include "qss_scheduler.h"
 
 /**
  *

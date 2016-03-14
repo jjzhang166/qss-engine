@@ -17,18 +17,28 @@
 
  ******************************************************************************/
 
-#include <ast/ast_builder.h>
-#include <util/ast_util.h>
-#include <parser/parse.h>
-#include <ast/equation.h>
-#include <string.h>
+#include "ginac_interface.h"
+
 #include <assert.h>
-#include <stdio.h>
+#include <ginac/add.h>
+#include <ginac/inifcns.h>
+#include <ginac/mul.h>
+#include <ginac/operators.h>
+#include <ginac/power.h>
+#include <ginac/print.h>
+#include <ginac/registrar.h>
+#include <ginac/wildcard.h>
+#include <iostream>
+#include <list>
 #include <sstream>
-#include <ginac/ginac.h>
-#include <util/ginac_interface.h>
-#include <util/util.h>
-#include <ir/expression.h>
+#include <utility>
+
+#include "../ast/ast_builder.h"
+#include "../ast/expression.h"
+#include "../ir/expression.h"
+#include "../parser/parse.h"
+#include "symbol_table.h"
+#include "util.h"
 
 using namespace GiNaC;
 

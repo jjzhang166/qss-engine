@@ -20,9 +20,9 @@
 #ifndef QSS_BINARY_H_
 #define QSS_BINARY_H_
 
-#include <qss/qss_data.h>
-#include <qss/qss_scheduler.h>
-#include <common/data.h>
+#include "qss_data.h"
+#include "qss_scheduler.h"
+
 /**
  *
  * @param simData

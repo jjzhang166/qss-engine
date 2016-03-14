@@ -17,14 +17,18 @@
 
  ******************************************************************************/
 
-#include <string>
-#include <list>
-#include <ast/ast_node.h>
-#include <ast/ast_builder.h>
-#include <ast/expression.h>
-
 #ifndef TYPE_H_
 #define TYPE_H_
+
+#include <iostream>
+#include <list>
+#include <string>
+
+#include "../ast/ast_types.h"
+#include "../ast/expression.h"
+#include "macros.h"
+
+using namespace std;
 
 /**
  *

@@ -17,13 +17,12 @@
 
  ******************************************************************************/
 
+#include "classic_data.h"
+
 #include <stdlib.h>
 #include <string.h>
 
-#include <classic/classic_data.h>
-#include <common/data.h>
-#include <common/settings.h>
-#include <common/utils.h>
+#include "../common/settings.h"
 
 CLC_event
 CLC_Event (CLC_zc zeroCrossing, CLC_hnd handlerPos, CLC_hnd handlerNeg)

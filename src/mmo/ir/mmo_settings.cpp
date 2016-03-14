@@ -17,18 +17,12 @@
 
  ******************************************************************************/
 
-#include <math.h>
+#include "mmo_settings.h"
 
-#include <ir/mmo_settings.h>
-#include <ir/mmo_types.h>
-#include <util/type.h>
-#include <util/util.h>
-#include <util/error.h>
-#include <ast/expression.h>
-#include <ast/stored_definition.h>
-#include <ast/modification.h>
-#include <ast/statement.h>
-#include <ast/class.h>
+#include "../ast/class.h"
+#include "../ast/modification.h"
+#include "../util/error.h"
+#include "class.h"
 
 /* MicroModelica Intermediate Representation */
 
@@ -205,7 +199,7 @@ MMO_Settings_::apply (AST_Node x)
   return (Error::getInstance ()->errors ());
 }
 
-MMO_ModelAnnotation
+MMO_Annotation
 MMO_Settings_::annotations ()
 {
   return (_class->getAsModel ()->annotation ());

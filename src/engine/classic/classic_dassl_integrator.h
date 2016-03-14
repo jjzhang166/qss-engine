@@ -20,7 +20,8 @@
 #ifndef DASSL_INTEGRATOR_H_
 #define DASSL_INTEGRATOR_H_
 
-#include <classic/classic_integrator.h>
+#include "../common/simulator.h"
+
 /**
  *
  * @param t

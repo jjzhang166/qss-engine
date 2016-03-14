@@ -20,10 +20,13 @@
 #ifndef MMO_SECTION_H_
 #define MMO_SECTION_H_
 
+#include <list>
 #include <map>
+#include <string>
 
-#include <mmo_decl.h>
-#include <mmo_exp.h>
+#include "mmo_exp.h"
+
+class MMODecl;
 
 using namespace std;
 
@@ -32,12 +35,12 @@ using namespace std;
  */
 typedef enum
 {
-  equation,          //!< equation
-  algorithm,         //!< algorithm
-  initial_algorithm, //!< initial_algorithm
-  external_functions, //!< external_functions
-  declarations,      //!< declarations
-  imports            //!< imports
+  SEC_EQUATION,
+  SEC_ALGORITHM,
+  SEC_INITIAL_ALGORITHM,
+  SEC_EXTERNAL_FUNCTIONS,
+  SEC_DECLARATIONS,
+  SEC_IMPORTS
 } MMOSectionType;
 
 /**
@@ -106,7 +109,7 @@ public:
   bool
   isEquation ()
   {
-    return (_type == equation);
+    return (_type == SEC_EQUATION);
   }
   ;
   /**
@@ -116,7 +119,7 @@ public:
   bool
   isAlgorithm ()
   {
-    return (_type == algorithm);
+    return (_type == SEC_ALGORITHM);
   }
   ;
   /**
@@ -126,7 +129,7 @@ public:
   bool
   isInitialAlgorithm ()
   {
-    return (_type == initial_algorithm);
+    return (_type == SEC_INITIAL_ALGORITHM);
   }
   ;
   /**
@@ -136,7 +139,7 @@ public:
   bool
   isExternalFunctions ()
   {
-    return (_type == external_functions);
+    return (_type == SEC_EXTERNAL_FUNCTIONS);
   }
   ;
   /**
@@ -146,7 +149,7 @@ public:
   bool
   isDeclarations ()
   {
-    return (_type == declarations);
+    return (_type == SEC_DECLARATIONS);
   }
   ;
   /**

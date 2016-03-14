@@ -20,15 +20,19 @@
 #ifndef SYMBOL_TABLE_H_
 #define SYMBOL_TABLE_H_
 
+#include <functional>
+#include <iostream>
+#include <list>
 #include <map>
 #include <string>
 
-#include <ast/ast_builder.h>
-#include <ast/ast_node.h>
-#include <ir/mmo_types.h>
-#include <util/index.h>
-#include <util/type.h>
-#include <util/util_types.h>
+#include "../ast/ast_types.h"
+#include "../ast/element.h"
+#include "../ast/modification.h"
+#include "../ir/mmo_types.h"
+#include "../ir/mmo_util.h"
+#include "type.h"
+#include "util_types.h"
 
 /**
  *

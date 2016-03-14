@@ -17,11 +17,13 @@
 
  ******************************************************************************/
 
+#include "mmo_section.h"
+
 #include <utility>
 
-#include <mmo_event.h>
-#include <mmo_section.h>
-#include <mmo_math.h>
+#include "mmo_decl.h"
+#include "mmo_event.h"
+#include "mmo_visitor.h"
 
 MMOSection::MMOSection (MMOSectionType type) :
     _expIt(0), _algebraics (), _setInitialValues (false)
@@ -29,22 +31,22 @@ MMOSection::MMOSection (MMOSectionType type) :
   _type = type;
   switch (type)
     {
-    case equation:
+    case SEC_EQUATION:
       _id = "equation";
       break;
-    case initial_algorithm:
+    case SEC_INITIAL_ALGORITHM:
       _id = "initial algorithm";
       break;
-    case external_functions:
+    case SEC_EXTERNAL_FUNCTIONS:
       _id = "";
       break;
-    case algorithm:
+    case SEC_ALGORITHM:
       _id = "algorithm";
       break;
-    case declarations:
+    case SEC_DECLARATIONS:
       _id = "";
       break;
-    case imports:
+    case SEC_IMPORTS:
       _id = "";
       break;
     }
@@ -61,7 +63,7 @@ MMOSection::accept (MMOVisitor *visitor)
     {
       visitor->visit (this);
     }
-  if (_type == declarations)
+  if (_type == SEC_DECLARATIONS)
     {
       for (std::map<string, MMOExp*>::iterator it = _exps.begin ();
 	  it != _exps.end (); ++it)
@@ -83,7 +85,7 @@ MMOSection::accept (MMOVisitor *visitor)
 	}
 
     }
-  else if (_type == equation)
+  else if (_type == SEC_EQUATION)
     {
       for (list<string>::iterator it = _algebraics.begin ();
 	  it != _algebraics.end (); it++)
@@ -104,7 +106,7 @@ MMOSection::accept (MMOVisitor *visitor)
 	    }
 	}
     }
-  else if (_type == algorithm && _setInitialValues)
+  else if (_type == SEC_ALGORITHM && _setInitialValues)
     {
        for (std::map<string, MMOExp*>::iterator it = _exps.begin ();
 	  it != _exps.end (); ++it)
@@ -149,7 +151,7 @@ MMOSection::find (string id)
 MMODecl *
 MMOSection::findDec (string id)
 {
-  if (_type == declarations || _type == equation)
+  if (_type == SEC_DECLARATIONS || _type == SEC_EQUATION)
     {
       return ((MMODecl*) find (id));
     }

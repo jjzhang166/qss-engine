@@ -20,9 +20,12 @@
 #ifndef MMO_FLATTEN_ARRAY_H_
 #define MMO_FLATTEN_ARRAY_H_
 
-#include <util/ast_util.h>
-#include <ir/class.h>
-#include <ir/mmo_types.h>
+#include <list>
+#include <string>
+
+#include "../ast/ast_types.h"
+#include "../util/ast_util.h"
+#include "mmo_types.h"
 
 /**
  *

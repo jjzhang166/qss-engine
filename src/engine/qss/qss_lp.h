@@ -20,8 +20,8 @@
 #ifndef QSS_LP_H_
 #define QSS_LP_H_
 
-#include <qss/qss_partition.h>
-#include <qss/qss_integrator.h>
+#include "qss_partition.h"
+#include "qss_simulator.h"
 
 /**
  *

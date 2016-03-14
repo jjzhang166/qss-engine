@@ -17,21 +17,22 @@
 
  ******************************************************************************/
 
-#include <iostream>
 #include <sstream>
 
-#include <generator/generator.h>
-#include <generator/generator_utils.h>
-#include <generator/files.h>
-#include <generator/solver.h>
-#include <util/util.h>
-#include <util/error.h>
-#include <util/index.h>
-#include <ir/annotation.h>
-#include <ir/class.h>
-#include <ir/expression.h>
-#include <ir/statement.h>
-#include <ir/stored_definition.h>
+#include "generator.h"
+
+#include "../ir/annotation.h"
+#include "../ir/class.h"
+#include "../ir/mmo_util.h"
+#include "../ir/statement.h"
+#include "../ir/stored_definition.h"
+#include "../util/error.h"
+#include "../util/symbol_table.h"
+#include "../util/type.h"
+#include "../util/util.h"
+#include "files.h"
+#include "generator_utils.h"
+#include "solver.h"
 
 MMO_Generator_::MMO_Generator_ (MMO_StoredDefinition std,
 				MMO_CompileFlags flags) :
@@ -440,7 +441,7 @@ MMO_Generator_::_generatePackage (MMO_Package p)
       _writer->print ("FUNCTION");
       _writer->print (p->prefix () + f->name ());
       _writer->print ("ENDFUNCTION");
-      MMO_FunctionAnnotation annot = f->annotation ();
+      MMO_Annotation annot = f->annotation ();
       if (annot->hasInclude ())
 	{
 	  includes.push_back (annot->include ());

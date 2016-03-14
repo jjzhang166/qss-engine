@@ -17,13 +17,14 @@
 
  ******************************************************************************/
 
+#include "classic_integrator.h"
+
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include <classic/classic_integrator.h>
-#include <classic/classic_model.h>
-#include <common/data.h>
-#include <common/utils.h>
+#include "../common/utils.h"
+#include "classic_simulator.h"
 
 void
 CLC_initialize (SIM_simulator simulate)

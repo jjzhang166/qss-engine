@@ -17,8 +17,11 @@
 
  ******************************************************************************/
 
-#include "mmo_utils.h"
 #include "mmo_zerocrossing.h"
+
+#include <iostream>
+
+#include "mmo_utils.h"
 
 MMOZeroCrossing::MMOZeroCrossing () :
     _zero_crossing (NULL)

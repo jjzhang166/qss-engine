@@ -17,10 +17,11 @@
 
  ******************************************************************************/
 
-#include <sstream>
+#include "mmo_utils.h"
 
 #include <sbml/math/FormulaFormatter.h>
-#include "mmo_utils.h"
+#include <sstream>
+#include <utility>
 
 using namespace std;
 
@@ -112,7 +113,7 @@ MMOUtils::_applyList(ASTNode *node, string oper)
   return (buffer.str ());
 }
 string
-MMOUtils::getExp (ASTNode *node)
+MMOUtils::getExp (ASTNode *node, string asgVariable)
 {
   if (node->getType () == AST_RELATIONAL_GT)
     {
@@ -195,6 +196,45 @@ MMOUtils::getExp (ASTNode *node)
 	  ret.append (SBML_formulaToString (node)).append (")");
 	  return (ret);
 	}
+    }
+  else if (node->getType() == AST_FUNCTION_PIECEWISE)
+    {
+      stringstream ret;
+      int numchilds = node->getNumChildren ();
+      bool otherwise = false;
+      if (numchilds % 2)
+ 	{
+	  otherwise = true;
+ 	  numchilds--;
+ 	}
+       int i;
+       for (i = 0; i < numchilds; i = i + 2)
+ 	{
+ 	  if (i > 0)
+ 	    {
+ 	      ret << "elseif ";
+ 	    }
+ 	  else
+ 	    {
+ 	      ret << "if ";
+ 	    }
+ 	    ret << getExp(node->getChild(i+1),asgVariable) << " then" << endl;
+ 	    ret << asgVariable << " := " << getExp(node->getChild(i),asgVariable) << ";" << endl;
+ 	}
+       if (otherwise)
+ 	{
+	  ret << "else " << endl;
+	  if (node->getChild(numchilds)->getType() == AST_FUNCTION_PIECEWISE)
+	    {
+	      ret << getExp(node->getChild(numchilds),asgVariable) << ";"  << endl;
+	    }
+	  else
+	    {
+	      ret << asgVariable << " := " << getExp(node->getChild(numchilds),asgVariable) << ";" << endl;
+	    }
+ 	}
+       ret << "end if";
+       return (ret.str());
     }
   return (SBML_formulaToString (node));
 }

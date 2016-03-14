@@ -20,23 +20,15 @@
 #ifndef MMO_EQUATION_H_
 #define MMO_EQUATION_H_
 
-#include <ir/mmo_base.h>
-#include <ast/ast_types.h>
-#include <util/util_types.h>
-/*
- #define	EQ_DERIVATIVE 1
+#include <list>
+#include <set>
+#include <string>
 
- #define 	EQ_CLASSIC -1
-
- #define 	EQ_ALGEBRAIC 0
-
- #define 	EQ_OUTPUT 0
-
- #define 	EQ_ZC 0
-
- #define 	EQ_HANDLER -1
- #define         EQ_HANDLER_IF -2
- */
+#include "../ast/ast_types.h"
+#include "../util/index.h"
+#include "../util/util_types.h"
+#include "mmo_base.h"
+#include "mmo_types.h"
 
 typedef enum
 {

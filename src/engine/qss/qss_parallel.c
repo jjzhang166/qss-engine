@@ -17,6 +17,8 @@
 
  ******************************************************************************/
 
+
+
 #ifdef __linux__
 
 #define _GNU_SOURCE 
@@ -26,7 +28,10 @@
 #include <pthread.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <stddef.h>
+#include <stdio.h>
 
+#include "../common/data.h"
 #include <qss/qss_parallel.h>
 #include <common/utils.h>
 

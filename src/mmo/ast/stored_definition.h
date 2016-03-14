@@ -20,9 +20,12 @@
 #ifndef STORED_DEFINITION_H_
 #define STORED_DEFINITION_H_
 
-#include <ast/ast_node.h>
-#include <ast/class.h>
-#include <ast/imports.h>
+#include "../util/macros.h"
+#include "../util/util_types.h"
+#include "ast_node.h"
+#include "ast_types.h"
+
+class AST_Imports;
 
 /**
  *

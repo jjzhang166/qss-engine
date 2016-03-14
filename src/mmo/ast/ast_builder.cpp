@@ -17,16 +17,24 @@
 
  ******************************************************************************/
 
-#include <ast/stored_definition.h>
-#include <ast/class.h>
-#include <ast/composition.h>
-#include <ast/expression.h>
-#include <ast/equation.h>
-#include <ast/statement.h>
-#include <ast/modification.h>
 #include <ast/ast_builder.h>
+
 #include <cassert>
-#include <parser/mocc_parser.h>
+#include <cstdlib>
+#include <iostream>
+#include <list>
+#include <string>
+
+#include "../parser/mocc_parser.h"
+#include "ast_types.h"
+#include "class.h"
+#include "composition.h"
+#include "element.h"
+#include "equation.h"
+#include "expression.h"
+#include "modification.h"
+#include "statement.h"
+#include "stored_definition.h"
 
 class MCC_Parser;
 class MCC_Lexer;

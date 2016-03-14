@@ -17,13 +17,13 @@
 
  ******************************************************************************/
 
+#include "qss_data.h"
+
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include <common/data.h>
-#include <common/settings.h>
-#include <common/utils.h>
-#include <qss/qss_data.h>
+#include "../common/settings.h"
 
 static bool QSS_allocBuffer = FALSE;
 

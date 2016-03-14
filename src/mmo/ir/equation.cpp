@@ -17,12 +17,22 @@
 
  ******************************************************************************/
 
-#include <ir/equation.h>
-#include <ir/expression.h>
-#include <ir/class.h>
-#include <ir/annotation.h>
-#include <util/derivative.h>
-#include <util/util.h>
+#include "equation.h"
+
+#include <iterator>
+#include <map>
+#include <sstream>
+
+#include "../ast/expression.h"
+#include "../util/ast_util.h"
+#include "../util/dependencies.h"
+#include "../util/derivative.h"
+#include "../util/error.h"
+#include "../util/symbol_table.h"
+#include "../util/util.h"
+#include "annotation.h"
+#include "expression.h"
+#include "mmo_util.h"
 
 MMO_Equation_::MMO_Equation_ (AST_Expression exp, MMO_ModelData data) :
     _data (data), _end (data->end ()), _init (data->begin ()), _lhs (

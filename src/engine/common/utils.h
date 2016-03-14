@@ -28,6 +28,7 @@
 #endif
 #include <stdio.h>
 #include <stdint.h>
+#include <math.h>
 #ifdef __linux__
 #include <pthread.h>
 #endif

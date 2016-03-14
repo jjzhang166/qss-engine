@@ -20,7 +20,11 @@
 #ifndef MMO_MODEL_CHECKER_H_
 #define MMO_MODEL_CHECKER_H_
 
-#include <util/ast_util.h>
+#include <string>
+
+#include "../ast/ast_types.h"
+#include "../util/ast_util.h"
+#include "../util/util_types.h"
 
 /**
  *

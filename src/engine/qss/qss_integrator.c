@@ -17,26 +17,24 @@
 
  ******************************************************************************/
 
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <stdint.h>
+#include "qss_integrator.h"
 
-#include <qss/qss_data.h>
-#include <qss/qss_integrator.h>
-#include <qss/qss_frw.h>
-#include <qss/qss_log.h>
-#include <qss/qss_quantizer.h>
-#include <qss/qss_simulator.h>
-#include <qss/qss_scheduler.h>
-#include <qss/qss_model.h>
-#include <qss/qss_parallel.h>
-#include <qss/qss_lp.h>
-#include <qss/qss_partition.h>
-#include <qss/qss_graph.h>
-#include <qss/qss_commands.h>
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+
+#include "../common/data.h"
+#include "qss_commands.h"
+#include "qss_data.h"
+#include "qss_dt.h"
+#include "qss_frw.h"
+#include "qss_graph.h"
+#include "qss_lp.h"
+#include "qss_output.h"
+#include "qss_parallel.h"
+#include "qss_partition.h"
+#include "qss_quantizer.h"
+#include "qss_scheduler.h"
 
 void
 QSS_SEQ_saveLog (QSS_simulator simulator)

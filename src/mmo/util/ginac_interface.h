@@ -20,11 +20,17 @@
 #ifndef GINAC_INTERFACE_H_
 #define GINAC_INTERFACE_H_
 
-#include <ast/ast_builder.h>
-#include <util/ast_util.h>
-#include <ir/mmo_types.h>
-#include <ginac/ginac.h>
-#include <ginac/flags.h>
+#include <ginac/ex.h>
+#include <ginac/function.h>
+#include <ginac/symbol.h>
+#include <map>
+#include <string>
+
+#include "../ast/ast_types.h"
+#include "../ir/mmo_types.h"
+#include "ast_util.h"
+#include "util_types.h"
+
 /**
  *
  */

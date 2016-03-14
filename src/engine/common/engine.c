@@ -17,9 +17,9 @@
 
  ******************************************************************************/
 
-#include <common/data.h>
-#include <common/model.h>
-#include <common/simulator.h>
+#include "data.h"
+#include "model.h"
+#include "simulator.h"
 
 int
 main()

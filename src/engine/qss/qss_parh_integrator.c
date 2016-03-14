@@ -19,6 +19,14 @@
 
 #include <qss/qss_parh_integrator.h>
 
+#include "../common/simulator.h"
+#include "../common/utils.h"
+#include "qss_dt.h"
+#include "qss_frw.h"
+#include "qss_output.h"
+#include "qss_quantizer.h"
+#include "qss_scheduler.h"
+
 #ifdef __linux__
 #include <stdio.h>
 #include <math.h>

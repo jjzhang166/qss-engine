@@ -20,12 +20,9 @@
 #ifndef INDEX_H_
 #define INDEX_H_
 
-#include <iostream>
-#include <math.h>
 #include <string>
 
-#include <util/util_types.h>
-#include <ast/ast_types.h>
+#include "util_types.h"
 
 using namespace std;
 

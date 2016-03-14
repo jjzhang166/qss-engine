@@ -20,7 +20,7 @@
 #ifndef QSS_SEQC_INTEGRATOR_H_
 #define QSS_SEQC_INTEGRATOR_H_
 
-#include <common/simulator.h>
+#include "../common/simulator.h"
 
 /**
  *

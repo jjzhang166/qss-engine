@@ -20,13 +20,15 @@
 #ifndef MMO_CLASS_H_
 #define MMO_CLASS_H_
 
+#include <list>
 #include <map>
+#include <string>
 
-#include <ir/mmo_base.h>
-#include <ir/mmo_types.h>
-#include <util/util_types.h>
-#include <util/error.h>
-#include <ast/ast_types.h>
+#include "../ast/ast_types.h"
+#include "../util/error.h"
+#include "../util/util_types.h"
+#include "mmo_base.h"
+#include "mmo_types.h"
 
 /**
  *
@@ -302,7 +304,7 @@ public:
    *
    * @return
    */
-  MMO_ModelAnnotation
+  MMO_Annotation
   annotation ();
   /**
    *
@@ -412,12 +414,6 @@ public:
   outputIndexes (Index idx);
   /**
    *
-   * @param ft
-   */
-  void
-  setExternalFunctions (MMO_FunctionTable ft);
-  /**
-   *
    * @return
    */
   list<string>
@@ -443,6 +439,12 @@ public:
    */
   string
   printInitialAssignment (VarInfo vi, string indent, string localVar = "i");
+  /**
+    *
+    * @param ft
+    */
+   void
+   setExternalFunctions (MMO_FunctionTable ft);
 private:
   double
   _scalarValue (AST_Expression exp);
@@ -696,8 +698,10 @@ public:
    *
    * @return
    */
-  MMO_FunctionAnnotation
+  MMO_Annotation
   annotation ();
+  void
+  setFunctions (MMO_FunctionTable functions, MMO_FunctionTable externalFunctions, MMO_SymbolRefTable calledFunctions);
 private:
   string _name;
   VarSymbolTable _declarations;
@@ -713,8 +717,10 @@ private:
   MMO_ModelData _data;
   MMO_PackageTable _packages;
   MMO_FunctionTable _functions;
+  MMO_FunctionTable _externalFunctions;
   string _prefix;
   list<VarInfo> _arguments;
+  TypeSymbolTable _types;
 };
 /**
  *

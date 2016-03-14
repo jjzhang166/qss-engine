@@ -17,14 +17,18 @@
 
  ******************************************************************************/
 
-#include <assert.h>
-#include <stdio.h>
-#include <ast/ast_builder.h>
-#include <ast/composition.h>
-#include <ast/modification.h>
-#include <ast/statement.h>
-#include <ast/element.h>
-#include <ast/expression.h>
+#include "composition.h"
+
+#include <iostream>
+#include <list>
+
+#include "../util/ast_util.h"
+#include "ast_builder.h"
+#include "element.h"
+#include "equation.h"
+#include "expression.h"
+#include "modification.h"
+#include "statement.h"
 
 /* Composition Class */
 

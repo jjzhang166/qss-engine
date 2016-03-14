@@ -17,13 +17,13 @@
 
  ******************************************************************************/
 
-#include <string.h>
+#include "qss_lp.h"
+
 #include <stdlib.h>
 
-#include <qss/qss_lp.h>
-#include <qss/qss_data.h>
-#include <common/data.h>
-#include <common/utils.h>
+#include "../common/data.h"
+#include "../common/utils.h"
+#include "qss_data.h"
 
 LP_partitionInfo
 LP_PartitionInfo (int states, int handlers, int out)

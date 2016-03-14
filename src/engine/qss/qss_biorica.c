@@ -17,9 +17,9 @@
 
  ******************************************************************************/
 
-#include <math.h>
-
 #include "qss_biorica.h"
+
+#include <math.h>
 
 double
 root (int sq, double value)

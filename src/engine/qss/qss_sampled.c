@@ -17,12 +17,14 @@
 
  ******************************************************************************/
 
-#include <stdlib.h>
-#include <stdio.h>
-
 #include <qss/qss_sampled.h>
-#include <qss/qss_log.h>
-#include <common/utils.h>
+
+#include <stdlib.h>
+
+#include "../common/data.h"
+#include "qss_data.h"
+#include "qss_log.h"
+#include "qss_output.h"
 
 #ifdef QSS_PARALLEL
 void

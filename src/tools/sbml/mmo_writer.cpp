@@ -17,15 +17,13 @@
 
  ******************************************************************************/
 
-#include "mmo_decl.h"
-#include "mmo_event.h"
-#include "mmo_exp.h"
-#include "mmo_function.h"
-#include "mmo_math.h"
-#include "mmo_model.h"
-#include "mmo_section.h"
-#include "mmo_utils.h"
 #include "mmo_writer.h"
+
+#include <iostream>
+#include <iterator>
+
+#include "mmo_decl.h"
+#include "mmo_utils.h"
 
 MMOWriter::MMOWriter (string file) :
     _indent (1), _modelName (), _out (file.c_str (),
@@ -96,6 +94,10 @@ MMOWriter::visit (MMODecl *x)
       _out << utils->indent (_indent) << x->getId () << " := " << x->getExp ()
 	  << ";" << endl;
     }
+  if (x->isConditionalAssignment())
+    {
+      _out << utils->indent (_indent) << x->getExp () << ";" << endl;
+    }
   if (x->isReinit ())
     {
       _out << utils->indent (_indent) << "reinit(" << x->getId () << ","
@@ -106,7 +108,7 @@ MMOWriter::visit (MMODecl *x)
       _out << x->getExp () << " then" << endl;
       _indent++;
     }
-  if (x->isOpositeZeroCrossing ())
+  if (x->isOppositeZeroCrossing ())
     {
       if (_initialAsignment)
 	{

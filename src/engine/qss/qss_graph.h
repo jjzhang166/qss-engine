@@ -20,7 +20,9 @@
 #ifndef QSS_GRAPH_H_
 #define QSS_GRAPH_H_
 
-#include <qss/qss_data.h>
+#include <stdio.h>
+
+#include "qss_data.h"
 
 typedef enum
 {

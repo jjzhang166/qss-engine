@@ -20,10 +20,9 @@
 #ifndef DERIVATIVE_H_
 #define DERIVATIVE_H_
 
-#include <ast/ast_builder.h>
-#include <util/ast_util.h>
-#include <ir/mmo_types.h>
-#include <ginac/ginac.h>
+#include "../ast/ast_types.h"
+#include "../ir/mmo_types.h"
+#include "util_types.h"
 
 /**
  *

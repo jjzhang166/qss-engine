@@ -20,7 +20,7 @@
 #ifndef MODEL_H_
 #define MODEL_H_
 
-#include <common/data.h>
+#include "data.h"
 
 void
 MOD_settings (SD_simulationSettings settings);

@@ -1,8 +1,12 @@
+#include "mmo_util.h"
+
 #include <sstream>
 
-#include <ir/expression.h>
-#include <ir/mmo_util.h>
-#include <util/symbol_table.h>
+#include "../ast/expression.h"
+#include "../util/symbol_table.h"
+#include "annotation.h"
+#include "class.h"
+#include "expression.h"
 
 /* MMO_ModelData class */
 
@@ -510,12 +514,12 @@ MMO_ModelData_::arguments ()
 }
 
 void
-MMO_ModelData_::setAnnotation (MMO_ModelAnnotation annotation)
+MMO_ModelData_::setAnnotation (MMO_Annotation annotation)
 {
   _annotation = annotation;
 }
 
-MMO_ModelAnnotation
+MMO_Annotation
 MMO_ModelData_::annotation ()
 {
   return (_annotation);

@@ -20,10 +20,6 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-#include <iostream>
-#include <list>
-#include <string>
-#include <set>
 
 using namespace std;
 

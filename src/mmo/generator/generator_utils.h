@@ -22,7 +22,9 @@
 
 #include <fstream>
 #include <list>
-#include <generator/generator_types.h>
+#include <string>
+
+#include "generator_types.h"
 
 using namespace std;
 

@@ -17,13 +17,17 @@
 
  ******************************************************************************/
 
-#include <math.h>
-#include <stdlib.h>
-#include <stdio.h>
-
-#include <common/random.h>
-#include <common/utils.h>
 #include <qss/qss_binary_random.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "../common/data.h"
+#include "../common/random.h"
+#include "../common/tree.h"
+#include "../common/utils.h"
+#include "qss_data.h"
+#include "qss_scheduler.h"
 
 
 void

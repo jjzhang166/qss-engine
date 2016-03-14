@@ -17,20 +17,20 @@
 
  ******************************************************************************/
 
+#include "qss_quantizer.h"
+
 #include <stdlib.h>
 
-#include <common/utils.h>
-#include <common/data.h>
-#include <qss/qss_data.h>
-#include <qss/qss_quantizer.h>
-#include <qss/qss.h>
-#include <qss/cqss.h>
-#include <qss/liqss.h>
-#include <qss/qss2.h>
-#include <qss/liqss2.h>
-#include <qss/qss3.h>
-#include <qss/liqss3.h>
-#include <qss/qss4.h>
+#include "../common/data.h"
+#include "../common/utils.h"
+#include "cqss.h"
+#include "liqss.h"
+#include "liqss2.h"
+#include "liqss3.h"
+#include "qss.h"
+#include "qss2.h"
+#include "qss3.h"
+#include "qss4.h"
 
 QA_quantizerOps
 QA_QuantizerOps ()

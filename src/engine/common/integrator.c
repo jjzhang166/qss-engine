@@ -17,18 +17,20 @@
 
  ******************************************************************************/
 
+#include "integrator.h"
+
 #include <stdlib.h>
 
-#include <common/integrator.h>
-#include <common/data.h>
-#include <classic/classic_integrator.h>
-#include <classic/classic_dopri_integrator.h>
-#include <classic/classic_dassl_integrator.h>
-#include <qss/qss_integrator.h>
-#include <qss/qss_seqc_integrator.h>
-#include <qss/qss_seqh_integrator.h>
-#include <qss/qss_parc_integrator.h>
-#include <qss/qss_parh_integrator.h>
+#include "../classic/classic_dassl_integrator.h"
+#include "../classic/classic_dopri_integrator.h"
+#include "../classic/classic_integrator.h"
+#include "../qss/qss_integrator.h"
+#include "../qss/qss_parc_integrator.h"
+#include "../qss/qss_parh_integrator.h"
+#include "../qss/qss_seqc_integrator.h"
+#include "../qss/qss_seqh_integrator.h"
+#include "data.h"
+#include "utils.h"
 
 INT_integrator
 INT_Integrator (SIM_simulator simulator)

@@ -17,8 +17,11 @@
 
  ******************************************************************************/
 
-#include <util/compile_flags.h>
-#include <util/util.h>
+#include "compile_flags.h"
+
+#include <utility>
+
+#include "util.h"
 
 MMO_CompileFlags_::MMO_CompileFlags_ () :
     _store (true), _parallel (false), _externalStructureFiles (false), _output (

@@ -17,22 +17,23 @@
 
  ******************************************************************************/
 
-#include <math.h>
+#include "mmo_ir.h"
 
-#include <ir/mmo_ir.h>
-#include <ir/mmo_types.h>
-#include <ir/expression.h>
-#include <ir/stored_definition.h>
-#include <util/ast_util.h>
-#include <util/symbol_table.h>
-#include <util/type.h>
-#include <util/util.h>
-#include <util/error.h>
-#include <ast/expression.h>
-#include <ast/stored_definition.h>
-#include <ast/modification.h>
-#include <ast/statement.h>
-#include <ast/class.h>
+#include <iterator>
+
+#include "../ast/class.h"
+#include "../ast/composition.h"
+#include "../ast/element.h"
+#include "../ast/equation.h"
+#include "../ast/expression.h"
+#include "../ast/modification.h"
+#include "../ast/statement.h"
+#include "../util/error.h"
+#include "../util/symbol_table.h"
+#include "../util/type.h"
+#include "class.h"
+#include "expression.h"
+#include "stored_definition.h"
 
 /* MicroModelica Intermediate Representation */
 
@@ -60,6 +61,7 @@ MMO_MicroModelicaIR_::visit (AST_Class x)
 	  _childName = x->name ();
 	  _childPrefix = x->prefix ();
 	  _child = newMMO_Function (*x->name ());
+	  _child->getAsFunction()->setFunctions(_father->getAsModel()->functions(),_externalFunctions, _father->getAsModel()->calledFunctions());
 	  _child->getAsFunction ()->setImports (_father->imports ());
 	  _child->setFather (_father);
 	  _class = _child;
@@ -93,6 +95,16 @@ MMO_MicroModelicaIR_::visit (AST_Class x)
     }
 }
 
+/**
+ * @brief Leave the class and set the corresponding father and child pointers if needed.
+ *
+ * When leaving the class, if the class has a father then reset the child pointer and
+ * child prefix fields and add the child (that must be a function) into the father's children
+ * list.
+ *
+ * @param x @ref AST_Class to visit.
+ *
+ */
 void
 MMO_MicroModelicaIR_::leave (AST_Class x)
 {

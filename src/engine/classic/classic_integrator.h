@@ -38,9 +38,9 @@
 #ifndef CLASSIC_INTEGRATOR_H_
 #define CLASSIC_INTEGRATOR_H_
 
-#include <common/data.h>
-#include <common/simulator.h>
-#include <classic/classic_data.h>
+#include "../common/data.h"
+#include "../common/simulator.h"
+#include "classic_data.h"
 
 /**
  *

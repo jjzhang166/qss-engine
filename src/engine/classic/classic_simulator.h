@@ -20,8 +20,9 @@
 #ifndef CLASSIC_SIMULATOR_H_
 #define CLASSIC_SIMULATOR_H_
 
-#include <common/simulator.h>
-#include <classic/classic_data.h>
+#include "../common/data.h"
+#include "../common/simulator.h"
+#include "classic_data.h"
 
 typedef struct CLC_simulator_ *CLC_simulator;
 

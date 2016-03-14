@@ -17,6 +17,10 @@
 
  ******************************************************************************/
 
+#include <time.h>
+
+#include "../common/integrator.h"
+
 
 #ifdef  __linux__
 #define _GNU_SOURCE

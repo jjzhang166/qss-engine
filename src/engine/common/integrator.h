@@ -20,7 +20,7 @@
 #ifndef INTEGRATOR_H_
 #define INTEGRATOR_H_
 
-#include <common/simulator.h>
+#include "simulator.h"
 
 typedef struct INT_integrator_ *INT_integrator;
 

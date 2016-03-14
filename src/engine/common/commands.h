@@ -20,7 +20,7 @@
 #ifndef COMMANDS_H_
 #define COMMANDS_H_
 
-#include <common/data.h>
+#include "data.h"
 
 typedef void (*CMD_terminateFn) (void);
 

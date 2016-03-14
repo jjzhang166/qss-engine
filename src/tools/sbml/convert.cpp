@@ -17,12 +17,18 @@
 
  ******************************************************************************/
 
-#include "mmo_convert.h"
-
-#include <iostream>
-#include <sbml/SBMLTypes.h>
-#include <unistd.h>
 #include <getopt.h>
+#include <libio.h>
+#include <sbml/Model.h>
+#include <sbml/SBMLDocument.h>
+#include <sbml/SBMLReader.h>
+#include <cstdlib>
+#include <iostream>
+#include <iterator>
+#include <string>
+
+#include "mmo_convert.h"
+#include "mmo_writer.h"
 
 using namespace std;
 

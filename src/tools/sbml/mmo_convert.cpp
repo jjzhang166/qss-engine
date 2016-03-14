@@ -17,18 +17,19 @@
 
  ******************************************************************************/
 
-#include <iostream>
-#include <sbml/Compartment.h>
-#include <sbml/InitialAssignment.h>
-#include <sbml/KineticLaw.h>
-#include <sbml/Model.h>
-#include <sbml/Parameter.h>
-#include <sbml/Reaction.h>
-#include <sbml/Rule.h>
-#include <sbml/Species.h>
+#include "mmo_convert.h"
 
-#include "mmo_convert.h" 
-#include "mmo_model.h" 
+#include <sbml/AssignmentRule.h>
+#include <sbml/Constraint.h>
+#include <sbml/ModifierSpeciesReference.h>
+#include <sbml/Priority.h>
+#include <sbml/RateRule.h>
+#include <sbml/Reaction.h>
+#include <sbml/SpeciesReference.h>
+#include <iostream>
+#include <utility>
+
+#include "mmo_section.h"
 
 MMOConvert::MMOConvert (string prefix, bool replace, WR_Type type) :
     _reaction_def (), _events (), _in_reaction (false), _type (type), _reaction_name()
@@ -113,11 +114,11 @@ MMOConvert::visit (const Compartment &x)
   cout << "Visit Compartment " << x.getId () << endl;
   if (x.isSetSize ())
     {
-      _model.add (x.getId (), x.isSetConstant (), x.getSize (), declarations);
+      _model.add (x.getId (), x.isSetConstant (), x.getSize (), SEC_DECLARATIONS);
     }
   else
     {
-      _model.add (x.getId (), x.isSetConstant (), declarations);
+      _model.add (x.getId (), x.isSetConstant (), SEC_DECLARATIONS);
     }
   return (true);
 }
@@ -128,16 +129,16 @@ MMOConvert::visit (const Species &x)
   if (x.isSetInitialAmount ())
     {
       _model.add (x.getId (), x.getConstant (), x.getInitialAmount (),
-		  declarations);
+		  SEC_DECLARATIONS);
     }
   else if (x.isSetInitialConcentration ())
     {
       _model.add (x.getId (), x.getConstant (), x.getInitialConcentration (),
-		  declarations);
+		  SEC_DECLARATIONS);
     }
   else
     {
-      _model.add (x.getId (), x.getConstant (), declarations);
+      _model.add (x.getId (), x.getConstant (), SEC_DECLARATIONS);
     }
   cout << "Visit Species " << x.getId () << endl;
   return (true);
@@ -149,11 +150,11 @@ MMOConvert::visit (const Parameter &x)
   cout << "Visit Parameter " << x.getId () << endl;
   if (x.isSetValue ())
     {
-      _model.add (x.getId (), x.getConstant (), x.getValue (), declarations);
+      _model.add (x.getId (), x.getConstant (), x.getValue (), SEC_DECLARATIONS);
     }
   else
     {
-      _model.add (x.getId (), x.getConstant (), declarations);
+      _model.add (x.getId (), x.getConstant (), SEC_DECLARATIONS);
     }
   return (true);
 }
@@ -162,7 +163,7 @@ bool
 MMOConvert::visit (const InitialAssignment &x)
 {
   cout << "Visit InitialAssignment" << endl;
-  _model.add (x.getId (), false, x.getMath (), initial_algorithm);
+  _model.add (x.getId (), false, x.getMath (), SEC_INITIAL_ALGORITHM);
   return (true);
 }
 
@@ -177,7 +178,7 @@ bool
 MMOConvert::visit (const AlgebraicRule &x)
 {
   cout << "Visit AlgebraicRule " << x.getId () << endl;
-  _model.add (x.getVariable (), false, x.getMath (), equation);
+  _model.add (x.getVariable (), false, x.getMath (), SEC_EQUATION);
   return (true);
 }
 
@@ -185,7 +186,7 @@ bool
 MMOConvert::visit (const AssignmentRule &x)
 {
   cout << "Visit AssignmentRule " << x.getId () << endl;
-  _model.add (x.getVariable (), false, x.getMath (), equation);
+  _model.add (x.getVariable (), false, x.getMath (), SEC_EQUATION);
   return (true);
 }
 
@@ -193,7 +194,7 @@ bool
 MMOConvert::visit (const RateRule &x)
 {
   cout << "Visit RateRule " << x.getId () << endl;
-  _model.add (x.getVariable (), true, x.getMath (), equation);
+  _model.add (x.getVariable (), true, x.getMath (), SEC_EQUATION);
   return (true);
 }
 
@@ -341,7 +342,7 @@ MMOConvert::leave (const Model &x)
   map<string, ASTNode*>::iterator it;
   for (it = _reaction_def.begin (); it != _reaction_def.end (); it++)
     {
-      _model.add (it->first, true, it->second, equation);
+      _model.add (it->first, true, it->second, SEC_EQUATION);
     }
   list<Event>::iterator i;
   for (i = _events.begin (); i != _events.end (); i++)

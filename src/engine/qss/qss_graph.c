@@ -17,9 +17,12 @@
 
  ******************************************************************************/
 
+#include "qss_graph.h"
+
 #include <stdlib.h>
-#include <common/utils.h>
-#include <qss/qss_graph.h>
+
+#include "../common/data.h"
+#include "../common/utils.h"
 
 int
 GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,

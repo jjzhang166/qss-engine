@@ -20,9 +20,9 @@
 #ifndef MMO_EQUATION_H_
 #define MMO_EQUATION_H_
 
-#include <list>
-#include <map>
+#include <sbml/common/libsbml-namespace.h>
 #include <sbml/math/ASTNode.h>
+#include <list>
 #include <string>
 #include <utility>
 

@@ -20,7 +20,7 @@
 #ifndef QSS_COMMANDS_H_
 #define QSS_COMMANDS_H_
 
-#include <qss/qss_simulator.h>
+#include "qss_simulator.h"
 
 /**
  *

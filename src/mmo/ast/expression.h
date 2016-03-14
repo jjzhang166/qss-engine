@@ -20,11 +20,12 @@
 #ifndef AST_EXPRESSION_H_
 #define AST_EXPRESSION_H_
 
-#include <ast/ast_node.h>
-#include <ast/ast_builder.h>
-#include <util/util_types.h>
+#include <string>
 
-#include <sstream>
+#include "../util/macros.h"
+#include "../util/util_types.h"
+#include "ast_node.h"
+#include "ast_types.h"
 
 /**
  *

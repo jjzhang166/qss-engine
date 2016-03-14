@@ -20,10 +20,12 @@
 #ifndef AST_MODIFICATION_H_
 #define AST_MODIFICATION_H_
 
-#include <ast/ast_node.h>
-#include <ast/ast_builder.h>
-#include <util/ast_util.h>
-#include <sstream>
+#include <string>
+
+#include "../util/macros.h"
+#include "../util/util_types.h"
+#include "ast_node.h"
+#include "ast_types.h"
 
 /**
  *

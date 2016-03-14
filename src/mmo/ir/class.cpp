@@ -17,22 +17,30 @@
 
  ******************************************************************************/
 
-#include <ir/class.h>
-#include <ir/expression.h>
-#include <ir/event.h>
-#include <ir/statement.h>
-#include <ir/equation.h>
-#include <ir/annotation.h>
-#include <util/util.h>
-#include <util/error.h>
-#include <util/index.h>
-#include <util/symbol_table.h>
-#include <ast/equation.h>
-#include <ast/statement.h>
-#include <ast/modification.h>
-#include <ast/expression.h>
-#include <ast/composition.h>
-#include <parser/parse.h>
+#include "class.h"
+
+#include <iterator>
+#include <sstream>
+#include <utility>
+
+#include "../ast/ast_builder.h"
+#include "../ast/composition.h"
+#include "../ast/equation.h"
+#include "../ast/expression.h"
+#include "../ast/modification.h"
+#include "../ast/statement.h"
+#include "../parser/parse.h"
+#include "../util/ast_util.h"
+#include "../util/dependencies.h"
+#include "../util/symbol_table.h"
+#include "../util/type.h"
+#include "../util/util.h"
+#include "annotation.h"
+#include "equation.h"
+#include "event.h"
+#include "expression.h"
+#include "mmo_util.h"
+#include "statement.h"
 
 /* MMO_Class class. */
 
@@ -1354,7 +1362,7 @@ MMO_Model_::insert (AST_Statement stm, bool initial)
 void
 MMO_Model_::_getFunctionInfo (MMO_Function f)
 {
-  MMO_FunctionAnnotation fa = f->annotation ();
+  MMO_Annotation fa = f->annotation ();
   if (fa->hasIncludeDirectory ())
     {
       string in = fa->includeDirectory ();
@@ -1434,7 +1442,7 @@ MMO_Model_::insert (string n)
   _insertFunctionDependencies (tmp, &_linkLibraries);
 }
 
-MMO_ModelAnnotation
+MMO_Annotation
 MMO_Model_::annotation ()
 {
   return (_annotations);
@@ -1580,19 +1588,22 @@ deleteMMO_Model (MMO_Model m)
 /* MMO_Function class */
 
 MMO_Function_::MMO_Function_ (string name) :
-    _name (name), _externalFuncs (0), _outputs (0), _outputName (), _prefix (
-	"__"), _arguments ()
+    _name (name), _externalFuncs (0), _outputs (0), _outputName (),
+    _externalFunctions (NULL), _prefix ("__"), _arguments ()
 {
+  _types = newTypeSymbolTable ();
   _annotations = newMMO_FunctionAnnotation ();
   _externalFunctionCalls = newMMO_ArgumentsTable ();
-  _functions = newMMO_FunctionTable ();
   _calledFunctions = newMMO_SymbolRefTable ();
   _declarations = newVarSymbolTable ();
+  _declarations->initialize (_types);
   _localDeclarations = newVarSymbolTable ();
   _statements = newMMO_StatementTable ();
   _packages = newMMO_PackageTable ();
   _imports = newMMO_ImportTable ();
   _data = newMMO_ModelData ();
+  _functions = newMMO_FunctionTable();
+  _data->setAnnotation(_annotations);
   _data->setInitialCode (true);
   _data->setPackages (_packages);
   _data->setCalledFunctions (_calledFunctions);
@@ -1631,7 +1642,7 @@ MMO_Function_::setImports (MMO_ImportTable it)
     }
 }
 
-MMO_FunctionAnnotation
+MMO_Annotation
 MMO_Function_::annotation ()
 {
   return (_annotations);
@@ -2072,4 +2083,23 @@ void
 MMO_Model_::setEvents ()
 {
   _setEvents ();
+}
+
+void
+MMO_Function_::setFunctions (MMO_FunctionTable functions, MMO_FunctionTable externalFunctions, MMO_SymbolRefTable calledFunctions)
+{
+  _externalFunctions = externalFunctions;
+  if (_functions != NULL)
+    {
+      deleteMMO_FunctionTable(_functions);
+    }
+  if (_calledFunctions != NULL)
+    {
+      deleteMMO_SymbolRefTable (_calledFunctions);
+    }
+  _calledFunctions = calledFunctions;
+  _functions = functions;
+  _data->setExternalFunctions(_externalFunctions);
+  _data->setFunctions(_functions);
+  _data->setCalledFunctions(_calledFunctions);
 }

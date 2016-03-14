@@ -17,13 +17,12 @@
 
  ******************************************************************************/
 
-#include <string>
-#include <list>
-
 #include "mmo_function.h"
 
+#include "mmo_visitor.h"
+
 MMOFunction::MMOFunction (string id) :
-    _id (id), _inputs (), _output (NULL)
+    _id (id), _definition (NULL), _inputs (), _output (NULL)
 {
 }
 
@@ -55,6 +54,6 @@ MMOFunction::add (MMODecl *decl)
   else if (decl->isFunctionDefinition ())
     {
       _definition = decl;
-      _output = new MMODecl (decl->getId (), function_output);
+      _output = new MMODecl (decl->getId (), DEC_FUNCTION_OUTPUT);
     }
 }

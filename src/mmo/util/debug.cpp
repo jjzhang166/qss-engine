@@ -18,11 +18,10 @@
  ******************************************************************************/
 
 #include <debug/debug.h>
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 static const char *enableFlags = NULL; // controls which DEBUG messages are printed
 

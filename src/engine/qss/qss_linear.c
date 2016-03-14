@@ -17,9 +17,13 @@
 
  ******************************************************************************/
 
+#include <qss/qss_linear.h>
+
 #include <stdio.h>
 
-#include <qss/qss_linear.h>
+#include "../common/utils.h"
+#include "qss_data.h"
+#include "qss_scheduler.h"
 
 #ifdef QSS_PARALLEL
 void

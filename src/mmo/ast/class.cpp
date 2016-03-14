@@ -17,7 +17,16 @@
 
  ******************************************************************************/
 
-#include <ast/class.h>
+#include "class.h"
+
+#include <stddef.h>
+#include <iostream>
+#include <list>
+
+#include "../util/ast_util.h"
+#include "ast_builder.h"
+#include "composition.h"
+#include "element.h"
 
 AST_Class_::AST_Class_ (AST_String n, AST_Composition comp) :
     _name (n), _composition (comp), _father (NULL), _basic (false), _encapsulated (

@@ -20,7 +20,8 @@
 #ifndef DOPRI_INTEGRATOR_H_
 #define DOPRI_INTEGRATOR_H_
 
-#include <common/simulator.h>
+#include "../common/simulator.h"
+
 /**
  *
  */

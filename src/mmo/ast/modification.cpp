@@ -17,9 +17,13 @@
 
  ******************************************************************************/
 
-#include <ast/modification.h>
-#include <ast/expression.h>
+#include "modification.h"
+
+#include <list>
 #include <sstream>
+
+#include "../util/ast_util.h"
+#include "expression.h"
 
 /* Argument Class */
 

@@ -16,12 +16,10 @@
  along with QSS Solver.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-#include <iostream>
-#include <math.h>
+#include "index.h"
+
 #include <sstream>
 
-#include <util/index.h>
-#include <ast/expression.h>
 
 Index_::Index_ () :
     _constant (-1), _factor (0), _offset (0), _low (1), _hi (1), _isSet (false), _array (

@@ -20,6 +20,8 @@
 #ifndef STORED_DEFINITION_H_
 #define STORED_DEFINITION_H_
 
+#include <string>
+
 using namespace std;
 
 #include <list>

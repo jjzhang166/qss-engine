@@ -20,7 +20,7 @@
 #ifndef SETTINGS_H_
 #define SETTINGS_H_
 
-#include <common/data.h>
+#include "data.h"
 
 /**
  *

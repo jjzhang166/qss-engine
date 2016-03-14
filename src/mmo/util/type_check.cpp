@@ -17,7 +17,16 @@
 
  ******************************************************************************/
 
-#include <util/type_check.h>
+#include "type_check.h"
+
+#include <iostream>
+#include <list>
+#include <string>
+
+#include "../ast/ast_builder.h"
+#include "../ast/expression.h"
+#include "symbol_table.h"
+
 #define T(s) tyEnv->lookup(s)
 
 TypeCheck_::TypeCheck_ (TypeSymbolTable t, VarSymbolTable v) :

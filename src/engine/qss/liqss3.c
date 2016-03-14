@@ -17,12 +17,15 @@
 
  ******************************************************************************/
 
+#include <qss/liqss3.h>
+
 #include <math.h>
 #include <stdlib.h>
-#include <stdio.h>
 
-#include <common/utils.h>
-#include <qss/liqss3.h>
+#include "../common/data.h"
+#include "../common/utils.h"
+#include "qss_data.h"
+#include "qss_quantizer.h"
 
 #ifdef QSS_PARALLEL
 void

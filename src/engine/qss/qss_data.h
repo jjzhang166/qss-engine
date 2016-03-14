@@ -34,8 +34,8 @@
 #ifndef QSS_DATA_H_
 #define QSS_DATA_H_
 
-#include <common/data.h>
-#include <common/utils.h>
+#include "../common/data.h"
+#include "../common/utils.h"
 
 #define QSS_REINIT_BUFFER 10000 //!<
 
@@ -179,7 +179,7 @@ typedef enum
  * @brief QSS simulation step type definition.
  *
  * @var QSS_StepType::ST_State
- * @brief Linear search scheduler.
+ * @brief
  *
  * @var QSS_StepType::ST_Event
  * @brief

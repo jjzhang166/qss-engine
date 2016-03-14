@@ -22,9 +22,10 @@
 
 #include <iostream>
 #include <list>
-#include <string>
 #include <set>
-#include <util/macros.h>
+#include <string>
+
+#include "../util/macros.h"
 
 /**
  *

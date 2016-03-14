@@ -20,9 +20,8 @@
 #ifndef QSS_BINARY_RANDOM_H_
 #define QSS_BINARY_RANDOM_H_
 
-#include <qss/qss_data.h>
-#include <qss/qss_scheduler.h>
-#include <common/data.h>
+#include "qss_data.h"
+#include "qss_scheduler.h"
 
 void
 BTR_update (SC_scheduler scheduler, QSS_data simData, QSS_time simTime);

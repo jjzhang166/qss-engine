@@ -20,19 +20,22 @@
 #ifndef MMO_MODEL_H_
 #define MMO_MODEL_H_
 
-#include "mmo_decl.h"
-#include "mmo_exp.h"
-#include "mmo_section.h"
-#include "mmo_writer.h"
-
-#include <list>
-#include <map>
+#include <sbml/common/libsbml-namespace.h>
 #include <sbml/Event.h>
 #include <sbml/FunctionDefinition.h>
 #include <sbml/math/ASTNode.h>
+#include <list>
+#include <map>
 #include <string>
+#include <utility>
+
+#include "mmo_decl.h"
+#include "mmo_section.h"
+#include "mmo_writer.h"
 
 using namespace std;
+
+LIBSBML_CPP_NAMESPACE_USE
 
 /**
  *

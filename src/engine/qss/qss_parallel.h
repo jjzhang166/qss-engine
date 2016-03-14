@@ -20,8 +20,8 @@
 #ifndef QSS_PARALLEL_H_
 #define QSS_PARALLEL_H_
 
-#include <qss/qss_data.h>
-#include <qss/qss_integrator.h>
+#include "qss_data.h"
+#include "qss_simulator.h"
 
 /**
  *

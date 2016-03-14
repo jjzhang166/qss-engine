@@ -20,10 +20,8 @@
 #ifndef AST_PRINTER_H_
 #define AST_PRINTER_H_
 
-#include <iostream>
-#include <list>
-#include <string>
-#include <util/macros.h>
+#include "../util/macros.h"
+#include "ast_types.h"
 
 using namespace std;
 

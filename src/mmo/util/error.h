@@ -17,12 +17,13 @@
 
  ******************************************************************************/
 
-#include <ast/ast_builder.h>
-#include <ast/expression.h>
-#include <util/symbol_table.h>
-
 #ifndef ERROR_H_
 #define ERROR_H_
+
+#include <map>
+#include <string>
+
+using namespace std;
 
 /**
  *
@@ -236,7 +237,7 @@
  *
  */
 #define EM_INDEX_EXP				0x00000f00
-/*
+/**
  *
  */
 #define EM_FUNCTION_NOT_FOUND 		0x00001000

@@ -20,11 +20,14 @@
 #ifndef MMO_STATEMENT_H_
 #define MMO_STATEMENT_H_
 
-#include <ast/ast_types.h>
-#include <ir/mmo_types.h>
-#include <ir/mmo_base.h>
-#include <util/util_types.h>
-#include <util/dependencies.h>
+#include <list>
+#include <string>
+
+#include "../ast/ast_types.h"
+#include "../util/dependencies.h"
+#include "../util/util_types.h"
+#include "mmo_base.h"
+#include "mmo_types.h"
 
 /**
  *

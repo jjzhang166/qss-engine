@@ -20,10 +20,14 @@
 #ifndef MMO_UTIL_H_
 #define MMO_UTIL_H_
 
-#include <ir/mmo_types.h>
-#include <util/index.h>
-#include <util/util_types.h>
-#include <ast/ast_types.h>
+#include <list>
+#include <string>
+
+#include "../ast/ast_types.h"
+#include "../util/index.h"
+#include "../util/util_types.h"
+#include "mmo_types.h"
+
 
 /**
  *
@@ -231,8 +235,8 @@ public:
   AST_Expression
   arguments();
   void
-  setAnnotation (MMO_ModelAnnotation annotation);
-  MMO_ModelAnnotation
+  setAnnotation (MMO_Annotation annotation);
+  MMO_Annotation
   annotation ();
   bool
   hasAnnotation();
@@ -252,7 +256,7 @@ private:
   MMO_SymbolRefTable _calledFunctions;
   bool _calculateAlgebraics;
   AST_Expression _arguments;
-  MMO_ModelAnnotation _annotation;
+  MMO_Annotation _annotation;
 };
 /**
  *

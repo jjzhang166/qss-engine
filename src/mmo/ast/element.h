@@ -20,11 +20,12 @@
 #ifndef AST_ELEMENT_H_
 #define AST_ELEMENT_H_
 
-#include <sstream>
 #include <string>
-#include <list>
-#include <ast/ast_builder.h>
-#include <ast/ast_node.h>
+
+#include "../util/macros.h"
+#include "../util/util_types.h"
+#include "ast_node.h"
+#include "ast_types.h"
 
 /**
  *

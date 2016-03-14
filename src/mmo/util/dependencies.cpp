@@ -17,11 +17,11 @@
 
  ******************************************************************************/
 
-#include <util/dependencies.h>
-#include <util/index.h>
-#include <ir/equation.h>
-#include <ir/expression.h>
-#include <ir/class.h>
+#include "dependencies.h"
+
+#include <stddef.h>
+
+#include "index.h"
 
 Dependencies_::Dependencies_ () :
     _autonomous (true), _stateVectorsCount (0), _discreteVectorsCount (0), _algebraicVectorsCount (

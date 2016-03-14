@@ -17,10 +17,15 @@
 
  ******************************************************************************/
 
-#include <ast/element.h>
-#include <ast/class.h>
-#include <string>
-#include <ast/modification.h>
+#include "element.h"
+
+#include <list>
+#include <sstream>
+
+#include "../util/ast_util.h"
+#include "class.h"
+#include "modification.h"
+
 using namespace std;
 
 /* Element Class */

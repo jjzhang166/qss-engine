@@ -21,9 +21,11 @@
 #define MMO_FILES_H_
 
 #include <fstream>
-#include <generator/generator_types.h>
-#include <ir/mmo_types.h>
-#include <util/util_types.h>
+#include <string>
+
+#include "../ir/mmo_types.h"
+#include "../util/util_types.h"
+#include "generator_types.h"
 
 using namespace std;
 
@@ -70,7 +72,7 @@ public:
    * @param annotation
    */
   void
-  settings (MMO_ModelAnnotation annotation);
+  settings (MMO_Annotation annotation);
   void
   graph ();
 private:

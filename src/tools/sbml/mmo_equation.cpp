@@ -17,10 +17,8 @@
 
  ******************************************************************************/
 
-#include <sbml/math/FormulaFormatter.h>
-
 #include "mmo_equation.h"
-#include "mmo_section.h"
+
 #include "mmo_utils.h"
 
 MMOEquation::MMOEquation () :
@@ -174,9 +172,7 @@ MMOEquation::_parseEquation (ASTNode *node)
 		}
 	      notElseIf->addChild(andElseIf);
 	      zc->addChild(originalCond);
-	      cout << "Agrega: " << MMOUtils::getInstance()->getExp (notElseIf) << endl;
 	      zc->addChild(notElseIf);
-	      cout << "FINAL: " << MMOUtils::getInstance()->getExp (zc) << endl;
 	    }
 	  else
 	    {

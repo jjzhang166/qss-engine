@@ -18,11 +18,11 @@
  ******************************************************************************/
 
 #include <string>
-#include <list>
-#include <ast/ast_node.h>
-#include <ast/ast_builder.h>
-#include <ast/expression.h>
-#include <util/ast_util.h>
+
+#include "../util/macros.h"
+#include "../util/util_types.h"
+#include "ast_node.h"
+#include "ast_types.h"
 
 #ifndef AST_EQUATION_H_
 #define AST_EQUATION_H_

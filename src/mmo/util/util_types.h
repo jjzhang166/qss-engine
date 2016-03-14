@@ -20,7 +20,9 @@
 #ifndef UTIL_TYPES_H_
 #define UTIL_TYPES_H_
 
-#include <util/macros.h>
+#include <string>
+
+#include "macros.h"
 
 /**
  *

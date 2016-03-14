@@ -20,12 +20,15 @@
 #ifndef MMO_ANNOTATION_H_
 #define MMO_ANNOTATION_H_
 
+#include <list>
 #include <map>
+#include <string>
 
-#include <ast/ast_types.h>
-#include <ir/mmo_base.h>
-#include <ir/mmo_types.h>
-#include <util/ast_util.h>
+#include "../ast/ast_types.h"
+#include "../util/ast_util.h"
+#include "../util/util_types.h"
+#include "mmo_base.h"
+#include "mmo_types.h"
 
 /**
  * @enum ANT_solver
@@ -69,46 +72,136 @@ typedef enum
 class MMO_Annotation_ : public MMO_Base_
 {
 public:
-  /**
-   *
-   */
-  typedef enum
-  {
-    MODEL,  //!< MODEL
-    FUNCTION  //!< FUNCTION
-  } type;
-  /**
-   *
-   */
   MMO_Annotation_ ();
-  /**
-   *
-   */
   ~MMO_Annotation_ ();
-  /**
-   *
-   * @return
-   */
   string
   print ();
-  /**
-   *
-   * @return
-   */
-  MMO_FunctionAnnotation
-  getAsFunctionAnnotation ();
-  /**
-   *
-   * @return
-   */
-  MMO_ModelAnnotation
-  getAsModelAnnotation ();
+  virtual bool
+  hasDerivative ();
+  virtual bool
+  hasInclude ();
+  virtual bool
+  hasIncludeDirectory ();
+  virtual bool
+  hasLibraries ();
+  virtual bool
+  hasLibraryDirectory ();
+  virtual string
+  derivative ();
+  virtual string
+  include ();
+  virtual string
+  includeDirectory ();
+  virtual list<string>
+  libraries ();
+  virtual string
+  libraryDirectory ();
+  virtual void
+  eventComment (AST_Comment x);
+  virtual bool
+  insert (AST_Argument_Modification x);
+  virtual void
+  setDesc (string desc);
+  virtual string
+  desc ();
+  virtual void
+  setDQMin (double dqmin);
+  virtual list<double>
+  dqmin ();
+  virtual list<double>
+  dqrel ();
+  virtual void
+  setDQRel (double dqrel);
+  virtual void
+  setWeight (double weight);
+  virtual double
+  weight ();
+  virtual void
+  setSolver (ANT_Solver solver);
+  virtual ANT_Solver
+  solver ();
+  virtual string
+  solverString ();
+  virtual void
+  setInitialTime (double it);
+  virtual double
+  initialTime ();
+  virtual void
+  setFinalTime (double ft);
+  virtual double
+  finalTime ();
+  virtual void
+  setMinStep (double ms);
+  virtual double
+  minStep ();
+  virtual void
+  setZCHyst (double zch);
+  virtual double
+  ZCHyst ();
+  virtual void
+  setDerDelta (double dd);
+  virtual double
+  derDelta ();
+  virtual void
+  setLps (int lps);
+  virtual void
+  setDT (double dt);
+  virtual double
+  DT ();
+  virtual int
+  lps ();
+  virtual void
+  setNodeSize (int ns);
+  virtual int
+  nodeSize ();
+  virtual void
+  setCommInterval (string ci);
+  virtual string
+  commInterval ();
+  virtual void
+  setSample (double s);
+  virtual list<double>
+  sample ();
+  virtual void
+  setSymDiff (bool sd);
+  virtual bool
+  symDiff ();
+  virtual int
+  order ();
+  virtual string
+  scheduler ();
+  virtual void
+  setScheduler (string sched);
+  virtual list<AST_Expression>
+  output ();
+  virtual void
+  setStoreData (string save);
+  virtual string
+  storeData ();
+  virtual void
+  setPartitionMethod (ANT_PartitionMethod pm);
+  virtual string
+  partitionMethodString ();
+  virtual ANT_PartitionMethod
+  partitionMethod ();
+  virtual void
+  setParallel (bool p);
+  virtual bool
+  parallel ();
+  virtual int
+  polyCoeffs();
+  virtual void
+  setDtSynch (ANT_DT_Synch synch);
+  virtual string
+  dtSynchString ();
+  virtual ANT_DT_Synch
+  dtSynch ();
 };
 
 /**
  *
  */
-class MMO_FunctionAnnotation_ : MMO_Annotation_
+class MMO_FunctionAnnotation_ : public MMO_Annotation_
 {
 public:
   /**
@@ -221,7 +314,7 @@ deleteMMO_FunctionAnnotation (MMO_FunctionAnnotation m);
 /**
  *
  */
-class MMO_ModelAnnotation_ : MMO_Annotation_
+class MMO_ModelAnnotation_ : public MMO_Annotation_
 {
 public:
   /**

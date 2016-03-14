@@ -17,14 +17,15 @@
 
  ******************************************************************************/
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
-#include <math.h>
-#include <stdlib.h>
-
 #include <qss/qss_frw_imp.h>
-#include <common/utils.h>
+
+#include <math.h>
+#include <stdio.h>
+
+#include "../common/data.h"
+#include "../common/utils.h"
+#include "qss_data.h"
+#include "qss_frw.h"
 
 /* First order */
 

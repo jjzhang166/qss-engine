@@ -19,6 +19,16 @@
 
 #include <qss/qss_parc_integrator.h>
 
+#include "../common/data.h"
+#include "../common/simulator.h"
+#include "../common/utils.h"
+#include "qss_data.h"
+#include "qss_dt.h"
+#include "qss_frw.h"
+#include "qss_output.h"
+#include "qss_quantizer.h"
+#include "qss_scheduler.h"
+
 #ifdef __linux__
 #include <stdio.h>
 #include <math.h>

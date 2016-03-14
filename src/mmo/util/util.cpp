@@ -17,15 +17,19 @@
 
  ******************************************************************************/
 
-#include <stdlib.h>
+#include "util.h"
 
-#include <ast/expression.h>
-#include <ir/expression.h>
-#include <ir/mmo_util.h>
-#include <util/error.h>
-#include <util/util.h>
-#include <util/compile_flags.h>
-#include <util/symbol_table.h>
+#include <stddef.h>
+#include <cstdlib>
+#include <iterator>
+#include <sstream>
+#include <utility>
+
+#include "../ir/expression.h"
+#include "../ir/mmo_util.h"
+#include "compile_flags.h"
+#include "error.h"
+#include "symbol_table.h"
 
 #define SLASH "/"
 

@@ -20,6 +20,10 @@
 #ifndef MMO_VISITOR_H_
 #define MMO_VISITOR_H_
 
+#include "mmo_event.h"
+#include "mmo_function.h"
+#include "mmo_section.h"
+
 class MMODecl;
 class MMOEvent;
 class MMOExp;

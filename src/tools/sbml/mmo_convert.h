@@ -20,13 +20,45 @@
 #ifndef MMO_CONVERT_H_
 #define MMO_CONVERT_H_
 
+#include <sbml/AlgebraicRule.h>
+#include <sbml/AssignmentRule.h>
+#include <sbml/common/libsbml-namespace.h>
+#include <sbml/Compartment.h>
+#include <sbml/CompartmentType.h>
+#include <sbml/Constraint.h>
+#include <sbml/Delay.h>
+#include <sbml/Event.h>
+#include <sbml/EventAssignment.h>
+#include <sbml/FunctionDefinition.h>
+#include <sbml/InitialAssignment.h>
+#include <sbml/KineticLaw.h>
+#include <sbml/ListOf.h>
+#include <sbml/math/ASTNode.h>
+#include <sbml/Model.h>
+#include <sbml/ModifierSpeciesReference.h>
+#include <sbml/Parameter.h>
+#include <sbml/Priority.h>
+#include <sbml/RateRule.h>
+#include <sbml/Reaction.h>
+#include <sbml/SBMLDocument.h>
+#include <sbml/SBMLVisitor.h>
+#include <sbml/Species.h>
+#include <sbml/SpeciesReference.h>
+#include <sbml/SpeciesType.h>
+#include <sbml/Trigger.h>
+#include <sbml/Unit.h>
+#include <sbml/UnitDefinition.h>
+#include <list>
+#include <map>
+#include <string>
+
 #include "mmo_model.h"
 #include "mmo_writer.h"
 
-#include <sbml/SBMLVisitor.h>
-#include <string> 
 
 using namespace std;
+
+LIBSBML_CPP_NAMESPACE_USE
 
 class MMOConvert : public SBMLVisitor
 {

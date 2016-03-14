@@ -17,19 +17,29 @@
 
  ******************************************************************************/
 
+#include "files.h"
+
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
+#include <iterator>
+#include <list>
+#include <map>
+#include <set>
+#include <sstream>
+#include <utility>
 
-#include <generator/files.h>
-#include <generator/solver.h>
-#include <generator/generator_utils.h>
-#include <ir/annotation.h>
-#include <ir/class.h>
-#include <ir/equation.h>
-#include <ir/expression.h>
-#include <util/compile_flags.h>
-#include <util/util.h>
-#include <util/error.h>
+#include "../ir/annotation.h"
+#include "../ir/class.h"
+#include "../ir/equation.h"
+#include "../ir/expression.h"
+#include "../util/compile_flags.h"
+#include "../util/dependencies.h"
+#include "../util/symbol_table.h"
+#include "../util/util.h"
+#include "generator_utils.h"
+#include "solver.h"
+
 #ifdef linux
 #include <sys/stat.h>
 #endif
@@ -291,7 +301,7 @@ MMO_Files_::plot ()
 }
 
 void
-MMO_Files_::settings (MMO_ModelAnnotation annotation)
+MMO_Files_::settings (MMO_Annotation annotation)
 {
   stringstream buffer;
   string fname = _fname;

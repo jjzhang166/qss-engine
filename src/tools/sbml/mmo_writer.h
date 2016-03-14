@@ -24,6 +24,9 @@
 #include <list>
 #include <string>
 
+#include "mmo_event.h"
+#include "mmo_function.h"
+#include "mmo_section.h"
 #include "mmo_visitor.h"
 
 class MMODecl;
@@ -40,8 +43,8 @@ using namespace std;
  */
 typedef enum
 {
-  WR_MMO, //!< WR_MMO
-  WR_BR   //!< WR_BR
+  WR_MMO,
+  WR_BR
 } WR_Type;
 
 /**

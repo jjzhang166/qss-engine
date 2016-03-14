@@ -18,13 +18,12 @@
  ******************************************************************************/
 
 #include "biorica_writer.h"
+
+#include <iostream>
+#include <iterator>
+#include <sstream>
+
 #include "mmo_decl.h"
-#include "mmo_event.h"
-#include "mmo_exp.h"
-#include "mmo_function.h"
-#include "mmo_math.h"
-#include "mmo_model.h"
-#include "mmo_section.h"
 #include "mmo_utils.h"
 
 BioRicaWriter::BioRicaWriter (string file) :
@@ -152,7 +151,7 @@ BioRicaWriter::visit (MMODecl *x)
       ev.first = x->getExp ();
       _nodeFieldTransitions[_currentEvent] = ev;
     }
-  else if (x->isOpositeZeroCrossing ())
+  else if (x->isOppositeZeroCrossing ())
     {
       _currentEvent = utils->getVar ("event");
       _nodeElementEvents.push_back (utils->indent (_indent) + _currentEvent);

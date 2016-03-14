@@ -17,11 +17,11 @@
 
  ******************************************************************************/
 
-#include <stdlib.h>
-#include <math.h>
+#include "tree.h"
 
-#include <common/tree.h>
-#include <common/utils.h>
+#include <stdlib.h>
+
+#include "utils.h"
 
 BT_node
 BT_Node ()

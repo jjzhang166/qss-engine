@@ -20,8 +20,7 @@
 #ifndef CLASSIC_MODEL_H_
 #define CLASSIC_MODEL_H_
 
-#include <classic/classic_data.h>
-#include <classic/classic_simulator.h>
+#include "classic_simulator.h"
 
 /**
  *

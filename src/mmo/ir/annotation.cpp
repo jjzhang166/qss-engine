@@ -17,13 +17,17 @@
 
  ******************************************************************************/
 
-#include <iostream>
+#include "annotation.h"
 
-#include <ir/annotation.h>
-#include <ir/expression.h>
-#include <ast/modification.h>
-#include <ast/element.h>
-#include <util/util.h>
+#include <utility>
+
+#include "../ast/element.h"
+#include "../ast/expression.h"
+#include "../ast/modification.h"
+#include "../util/error.h"
+#include "../util/symbol_table.h"
+#include "../util/util.h"
+#include "mmo_util.h"
 
 MMO_Annotation_::MMO_Annotation_ ()
 {
@@ -39,18 +43,6 @@ MMO_Annotation_::print ()
 {
   string ret;
   return (ret);
-}
-
-MMO_FunctionAnnotation
-MMO_Annotation_::getAsFunctionAnnotation ()
-{
-  return (dynamic_cast<MMO_FunctionAnnotation> (this));
-}
-
-MMO_ModelAnnotation
-MMO_Annotation_::getAsModelAnnotation ()
-{
-  return (dynamic_cast<MMO_ModelAnnotation> (this));
 }
 
 MMO_FunctionAnnotation_::MMO_FunctionAnnotation_ () :
@@ -419,6 +411,12 @@ MMO_ModelAnnotation_::_processExpressionList (AST_Expression x,
 	  l->push_back (current_element(it));
 	}
     }
+}
+
+ANT_PartitionMethod
+MMO_ModelAnnotation_::partitionMethod ()
+{
+  return (_partitionMethod);
 }
 
 ANT_DT_Synch
@@ -1165,4 +1163,364 @@ int
 MMO_ModelAnnotation_::polyCoeffs ()
 {
   return (_polyCoeffs);
+}
+
+bool
+MMO_Annotation_::hasDerivative ()
+{
+  return (true);
+}
+
+bool
+MMO_Annotation_::hasInclude ()
+{
+  return (true);
+}
+
+bool
+MMO_Annotation_::hasIncludeDirectory ()
+{
+  return (true);
+}
+
+bool
+MMO_Annotation_::hasLibraries ()
+{
+  return (true);
+}
+
+bool
+MMO_Annotation_::hasLibraryDirectory ()
+{
+  return (true);
+}
+
+string
+MMO_Annotation_::derivative ()
+{
+  return ("");
+}
+
+string
+MMO_Annotation_::include ()
+{
+  return ("");
+}
+
+string
+MMO_Annotation_::includeDirectory ()
+{
+  return ("");
+}
+
+list<string>
+MMO_Annotation_::libraries ()
+{
+  return (list<string>());
+}
+
+string
+MMO_Annotation_::libraryDirectory ()
+{
+  return ("");
+}
+
+void
+MMO_Annotation_::eventComment (AST_Comment x)
+{
+  return;
+}
+
+bool
+MMO_Annotation_::insert (AST_Argument_Modification x)
+{
+  return (true);
+}
+
+void
+MMO_Annotation_::setDesc (string desc)
+{
+  return;
+}
+
+string
+MMO_Annotation_::desc ()
+{
+  return ("");
+}
+
+void
+MMO_Annotation_::setDQMin (double dqmin)
+{
+  return;
+}
+
+list<double>
+MMO_Annotation_::dqmin ()
+{
+  return (list<double>());
+}
+
+list<double>
+MMO_Annotation_::dqrel ()
+{
+  return (list<double>());
+}
+
+void
+MMO_Annotation_::setDQRel (double dqrel)
+{
+  return;
+}
+
+void
+MMO_Annotation_::setWeight (double weight)
+{
+  return;
+}
+
+double
+MMO_Annotation_::weight ()
+{
+  return (0);
+}
+
+void
+MMO_Annotation_::setSolver (ANT_Solver solver)
+{
+  return;
+}
+
+ANT_Solver
+MMO_Annotation_::solver ()
+{
+  return (ANT_QSS);
+}
+
+string
+MMO_Annotation_::solverString ()
+{
+  return ("");
+}
+
+void
+MMO_Annotation_::setInitialTime (double it)
+{
+  return;
+}
+
+double
+MMO_Annotation_::initialTime ()
+{
+  return (0);
+}
+
+void
+MMO_Annotation_::setFinalTime (double ft)
+{
+  return;
+}
+
+double
+MMO_Annotation_::finalTime ()
+{
+  return (0);
+}
+
+void
+MMO_Annotation_::setMinStep (double ms)
+{
+  return;
+}
+
+double
+MMO_Annotation_::minStep ()
+{
+  return (0);
+}
+
+void
+MMO_Annotation_::setZCHyst (double zch)
+{
+  return;
+}
+
+double
+MMO_Annotation_::ZCHyst ()
+{
+  return (0);
+}
+
+void
+MMO_Annotation_::setDerDelta (double dd)
+{
+  return;
+}
+
+double
+MMO_Annotation_::derDelta ()
+{
+  return (0);
+}
+
+void
+MMO_Annotation_::setLps (int lps)
+{
+  return;
+}
+
+void
+MMO_Annotation_::setDT (double dt)
+{
+  return;
+}
+
+double
+MMO_Annotation_::DT ()
+{
+  return (0);
+}
+
+int
+MMO_Annotation_::lps ()
+{
+  return (0);
+}
+
+void
+MMO_Annotation_::setNodeSize (int ns)
+{
+  return;
+}
+
+int
+MMO_Annotation_::nodeSize ()
+{
+  return (0);
+}
+
+void
+MMO_Annotation_::setCommInterval (string ci)
+{
+  return;
+}
+
+string
+MMO_Annotation_::commInterval ()
+{
+  return ("");
+}
+
+void
+MMO_Annotation_::setSample (double s)
+{
+  return;
+}
+
+list<double>
+MMO_Annotation_::sample ()
+{
+  return (list<double>());
+}
+
+void
+MMO_Annotation_::setSymDiff (bool sd)
+{
+  return;
+}
+
+bool
+MMO_Annotation_::symDiff ()
+{
+  return (true);
+}
+
+int
+MMO_Annotation_::order ()
+{
+  return (1);
+}
+
+string
+MMO_Annotation_::scheduler ()
+{
+  return ("");
+}
+
+void
+MMO_Annotation_::setScheduler (string sched)
+{
+  return;
+}
+
+list<AST_Expression>
+MMO_Annotation_::output ()
+{
+  return (list<AST_Expression>());
+}
+
+void
+MMO_Annotation_::setStoreData (string save)
+{
+  return;
+}
+
+string
+MMO_Annotation_::storeData ()
+{
+  return ("");
+}
+
+void
+MMO_Annotation_::setPartitionMethod (ANT_PartitionMethod pm)
+{
+  return;
+}
+
+string
+MMO_Annotation_::partitionMethodString ()
+{
+  return ("");
+}
+
+ANT_PartitionMethod
+MMO_Annotation_::partitionMethod ()
+{
+  return (ANT_MetisCut);
+}
+
+void
+MMO_Annotation_::setParallel (bool p)
+{
+  return;
+}
+
+bool
+MMO_Annotation_::parallel ()
+{
+  return (true);
+}
+
+int
+MMO_Annotation_::polyCoeffs ()
+{
+  return (2);
+}
+
+void
+MMO_Annotation_::setDtSynch (ANT_DT_Synch synch)
+{
+  return;
+}
+
+string
+MMO_Annotation_::dtSynchString ()
+{
+  return ("");
+}
+
+ANT_DT_Synch
+MMO_Annotation_::dtSynch ()
+{
+  return (ANT_DT_Asynchronous);
 }

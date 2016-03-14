@@ -20,8 +20,12 @@
 #ifndef AST_STATEMENT_H_
 #define AST_STATEMENT_H_
 
-#include <ast/ast_node.h>
-#include <util/util_types.h>
+#include <string>
+
+#include "../util/macros.h"
+#include "../util/util_types.h"
+#include "ast_node.h"
+#include "ast_types.h"
 
 /**
  *

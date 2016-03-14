@@ -17,12 +17,13 @@
 
  ******************************************************************************/
 
-#include "mmo_decl.h"
 #include "mmo_event.h"
-#include "mmo_exp.h"
+
+#include "mmo_visitor.h"
 
 MMOEvent::MMOEvent (string id, bool generateInitialAsignment) :
- _condition(), _generateInitialAsignment(generateInitialAsignment)
+ _id(), _zero_crossing(), _condition(), _handler_pos(), _handler_neg(),
+ _generateInitialAsignment(generateInitialAsignment), _initialAlgorithm(false)
 {
   _id = id;
 }

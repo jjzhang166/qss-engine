@@ -17,12 +17,15 @@
 
  ******************************************************************************/
 
-#include <ir/event.h>
-#include <ir/equation.h>
-#include <ir/expression.h>
-#include <ir/statement.h>
-#include <util/dependencies.h>
-#include <util/index.h>
+#include "event.h"
+
+#include "../ast/expression.h"
+#include "../util/ast_util.h"
+#include "../util/dependencies.h"
+#include "equation.h"
+#include "expression.h"
+#include "mmo_util.h"
+#include "statement.h"
 
 MMO_Event_::MMO_Event_ (AST_Expression cond, MMO_ModelData data) :
     _positiveHandlerStatements (), _negativeHandlerStatements (), _init (0), _end (

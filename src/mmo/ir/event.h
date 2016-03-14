@@ -20,9 +20,14 @@
 #ifndef MMO_EVENT_H_
 #define MMO_EVENT_H_
 
-#include <ir/mmo_base.h>
-#include <ast/ast_types.h>
-#include <util/util_types.h>
+#include <list>
+#include <string>
+
+#include "../ast/ast_types.h"
+#include "../util/index.h"
+#include "../util/util_types.h"
+#include "mmo_base.h"
+#include "mmo_types.h"
 
 /**
  *

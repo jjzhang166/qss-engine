@@ -20,9 +20,9 @@
 #ifndef MMO_EXP_H_
 #define MMO_EXP_H_
 
-#include "mmo_visitor.h"
-
 #include <string>
+
+class MMOVisitor;
 
 using namespace std;
 

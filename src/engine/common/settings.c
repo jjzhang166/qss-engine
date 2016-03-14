@@ -17,13 +17,14 @@
 
  ******************************************************************************/
 
+#include "settings.h"
+
+#include <libconfig.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <libconfig.h>
 #include <string.h>
 
-#include <common/settings.h>
-#include <common/utils.h>
+#include "utils.h"
 
 SD_Solver
 _getSolver (const char *sol)

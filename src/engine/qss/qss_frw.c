@@ -17,10 +17,14 @@
 
  ******************************************************************************/
 
+#include "qss_frw.h"
+
+#include <stdio.h>
 #include <stdlib.h>
 
-#include <qss/qss_frw.h>
-#include <qss/qss_frw_imp.h>
+#include "../common/data.h"
+#include "../common/utils.h"
+#include "qss_frw_imp.h"
 
 /*! \brief Initializes the \f$ \Delta \f$ value that the different functions use to
  * advance the time variable (\f$ t' = t + \Delta t\f$)

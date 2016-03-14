@@ -17,13 +17,14 @@
 
  ******************************************************************************/
 
-#include <stdlib.h>
-#include <string.h>
+#include <qss/qss_memory.h>
+
 #include <stdio.h>
 
-#include <qss/qss_memory.h>
-#include <qss/qss_file.h>
-#include <common/utils.h>
+#include "../common/data.h"
+#include "../common/utils.h"
+#include "qss_data.h"
+#include "qss_log.h"
 
 #ifdef QSS_PARALLEL
 void

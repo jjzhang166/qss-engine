@@ -20,9 +20,13 @@
 #ifndef MMO_MICROMODELICA_IR_H_
 #define MMO_MICROMODELICA_IR_H_
 
-#include <util/ast_util.h>
-#include <ir/class.h>
-#include <ir/mmo_types.h>
+#include <list>
+#include <string>
+
+#include "../ast/ast_types.h"
+#include "../util/ast_util.h"
+#include "../util/util_types.h"
+#include "mmo_types.h"
 
 /**
  *

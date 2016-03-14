@@ -17,17 +17,22 @@
 
  ******************************************************************************/
 
-#include <sstream>
+#include "../ast/expression.h"
+#include "expression.h"
 
-#include <ir/equation.h>
-#include <ir/expression.h>
-#include <ir/annotation.h>
-#include <util/symbol_table.h>
-#include <util/dependencies.h>
-#include <util/index.h>
-#include <util/util.h>
-#include <ast/expression.h>
-#include <ast/composition.h>
+#include <iostream>
+#include <sstream>
+#include <utility>
+
+#include "../ast/ast_builder.h"
+#include "../util/error.h"
+#include "../util/index.h"
+#include "../util/symbol_table.h"
+#include "../util/type.h"
+#include "../util/util.h"
+#include "annotation.h"
+#include "equation.h"
+#include "mmo_util.h"
 
 /* MMO_Expression class. */
 

@@ -20,10 +20,8 @@
 #ifndef AST_NODE_H_
 #define AST_NODE_H_
 
-#include <ast/ast_builder.h>
-#include <util/util_types.h>
-
-#include <iostream>
+#include "../util/macros.h"
+#include "../util/util_types.h"
 
 using namespace std;
 

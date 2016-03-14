@@ -20,44 +20,51 @@
 #ifndef MMO_SOLVER_H_
 #define MMO_SOLVER_H_
 
+#include <list>
+#include <map>
 #include <set>
+#include <string>
 
-#include <generator/generator_types.h>
-#include <generator/generator_utils.h>
-#include <ir/mmo_types.h>
-#include <util/dependencies.h>
-#include <util/util_types.h>
+#include "../ir/mmo_types.h"
+#include "../util/dependencies.h"
+#include "../util/index.h"
+#include "../util/symbol_table.h"
+#include "../util/util_types.h"
+#include "generator_types.h"
+#include "generator_utils.h"
 
 /**
  *
  */
 typedef enum
 {
-  SOL_MODEL_SETTINGS,      //!< SOL_MODEL_SETTINGS
-  SOL_MODEL,      //!< SOL_MODEL
-  SOL_DEPS,       //!< SOL_DEPS
-  SOL_ZC,         //!< SOL_ZC
-  SOL_HANDLER_POS,         //!< SOL_HANDLER_POS
-  SOL_HANDLER_NEG,         //!< SOL_HANDLER_NEG
-  SOL_OUTPUT,     //!< SOL_OUTPUT
-  SOL_INIT,       //!< SOL_INIT
-  SOL_CALLBACK    //!< SOL_CALLBACK
+  SOL_MODEL_SETTINGS,
+  SOL_MODEL,
+  SOL_DEPS,
+  SOL_ZC,
+  SOL_HANDLER_POS,
+  SOL_HANDLER_NEG,
+  SOL_OUTPUT,
+  SOL_INIT,
+  SOL_CALLBACK
 } SOL_Function;
+
 /**
  *
  */
 typedef enum
 {
-  SOL_LIBRARIES, //!< SOL_LIBRARIES
-  SOL_INCLUDES   //!< SOL_INCLUDES
+  SOL_LIBRARIES,
+  SOL_INCLUDES
 } SOL_Makefile;
+
 /**
  *
  */
 typedef enum
 {
-  SOL_SERIAL, //!< SOL_SERIAL
-  SOL_PARALLEL //!< SOL_PARALLEL
+  SOL_SERIAL,
+  SOL_PARALLEL
 } SOL_Engine;
 
 typedef enum
@@ -179,6 +186,7 @@ public:
   virtual  map<int,set<int> >
   hyperGraph () = 0;
 };
+
 /**
  *
  */

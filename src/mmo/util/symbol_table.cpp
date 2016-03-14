@@ -17,14 +17,16 @@
 
  ******************************************************************************/
 
-#include <ast/modification.h>
-#include <ast/statement.h>
-#include <ir/equation.h>
-#include <ir/expression.h>
-#include <util/dependencies.h>
-#include <util/index.h>
-#include <util/symbol_table.h>
-#include <util/util.h>
+#include "symbol_table.h"
+
+#include <sstream>
+
+#include "../ast/expression.h"
+#include "../ir/equation.h"
+#include "../ir/expression.h"
+#include "dependencies.h"
+#include "index.h"
+#include "util.h"
 
 /* VarInfo class. */
 

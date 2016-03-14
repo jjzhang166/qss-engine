@@ -20,7 +20,7 @@
 #ifndef QSS_PARH_INTEGRATOR_H_
 #define QSS_PARH_INTEGRATOR_H_
 
-#include <common/simulator.h>
+#include "../common/simulator.h"
 
 /**
  *

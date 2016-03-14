@@ -18,7 +18,9 @@
  ******************************************************************************/
 
 #include "mmo_assignment.h"
-#include "mmo_utils.h"
+
+#include <sbml/math/ASTNode.h>
+
 
 
 MMOAssignment::MMOAssignment (ASTNode *node)

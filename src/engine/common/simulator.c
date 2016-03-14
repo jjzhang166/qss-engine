@@ -17,12 +17,14 @@
 
  ******************************************************************************/
 
+#include "simulator.h"
+
 #include <stdlib.h>
 
-#include <common/simulator.h>
-#include <common/commands.h>
-#include <classic/classic_simulator.h>
-#include <qss/qss_simulator.h>
+#include "../classic/classic_simulator.h"
+#include "../qss/qss_simulator.h"
+#include "commands.h"
+#include "utils.h"
 
 SIM_simulator
 SIM_Simulator (SD_simulationSettings settings)

@@ -1,7 +1,10 @@
-#include <ast/ast_builder.h>
-#include <ast/element.h>
-#include <ast/class.h>
-#include <ast/imports.h>
+#include "imports.h"
+
+#include <list>
+
+#include "ast_builder.h"
+#include "class.h"
+#include "element.h"
 
 AST_Imports::AST_Imports ()
 {

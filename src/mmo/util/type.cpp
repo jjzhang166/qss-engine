@@ -17,7 +17,11 @@
 
  ******************************************************************************/
 
-#include <util/type.h>
+#include <sstream>
+
+#include "type.h"
+
+#include "../ast/ast_builder.h"
 
 ostream &
 operator<< (ostream &os, const Type_ &e)

@@ -17,12 +17,20 @@
 
  ******************************************************************************/
 
-#include <fstream>
-#include <cstdlib>
 #include <parser/parse.h>
-#include <ast/stored_definition.h>
-#include <ast/class.h>
-#include <parser/mocc_parser.h>
+
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <list>
+#include <string>
+
+#include "../ast/ast_types.h"
+#include "../ast/class.h"
+#include "../ast/composition.h"
+#include "../ast/equation.h"
+#include "../ast/stored_definition.h"
+#include "mocc_parser.h"
 
 using namespace std;
 

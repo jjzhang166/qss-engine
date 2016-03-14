@@ -17,36 +17,37 @@
 
  ******************************************************************************/
 
-#include <sbml/EventAssignment.h>
+#include "mmo_model.h"
 
-#include "biorica_writer.h" 
-#include "mmo_decl.h"
+#include <sbml/Delay.h>
+#include <sbml/EventAssignment.h>
+#include <sbml/Trigger.h>
+#include <sstream>
+
+#include "biorica_writer.h"
 #include "mmo_event.h"
 #include "mmo_function.h"
 #include "mmo_math.h"
-#include "mmo_model.h"
 #include "mmo_utils.h"
 
 MMOModel::MMOModel (string prefix, bool replace, WR_Type type) :
-    _replace (replace), _type (type), _imports (), _functions (), _variableParameters (), _prefix (), _constantAlgebraics (),
-    _name(), _variables()
+    _replace (replace), _type (type), _imports (), _functions (), _variableParameters (), _prefix (), _constantAlgebraics (), _name (), _variables ()
 {
   if (_replace)
     {
       _prefix = prefix;
     }
-  _importSec = MMOSection (imports);
-  _equation = MMOSection (equation);
-  _algorithm = MMOSection (algorithm);
-  _initial_algorithm = MMOSection (initial_algorithm);
-  _external_functions = MMOSection (external_functions);
-  _declarations = MMOSection (declarations);
+  _importSec = MMOSection (SEC_IMPORTS);
+  _equation = MMOSection (SEC_EQUATION);
+  _algorithm = MMOSection (SEC_ALGORITHM);
+  _initial_algorithm = MMOSection (SEC_INITIAL_ALGORITHM);
+  _external_functions = MMOSection (SEC_EXTERNAL_FUNCTIONS);
+  _declarations = MMOSection (SEC_DECLARATIONS);
   MMOUtils::getInstance ()->bioricaLanguage (_replace);
 }
 
 MMOModel::MMOModel (string name) :
-    _replace (false), _type (WR_MMO), _imports (), _functions (), _variableParameters (), _prefix (), _constantAlgebraics (),
-    _name(), _variables()
+    _replace (false), _type (WR_MMO), _imports (), _functions (), _variableParameters (), _prefix (), _constantAlgebraics (), _name (), _variables ()
 {
 }
 
@@ -72,9 +73,9 @@ MMOModel::write (string file)
   _external_functions.accept (writer);
   _declarations.accept (writer);
   _initial_algorithm.accept (writer);
-  _algorithm.setInitialValues(true);
+  _algorithm.setInitialValues (true);
   _algorithm.accept (writer);
-  _algorithm.setInitialValues(false);
+  _algorithm.setInitialValues (false);
   _equation.accept (writer);
   _algorithm.accept (writer);
   delete writer;
@@ -87,17 +88,17 @@ MMOModel::_addAlgebraicReplacement (MMOMath& eq)
       !eq.endAlgebraic (); def = eq.nextAlgebraic ())
     {
       MMODecl* exp = new MMODecl (def.first, def.second.first,
-				  algebraic_equation);
+				  DEC_ALGEBRAIC_EQUATION);
       _variables.insert (
 	  pair<string, list<string> > (def.first, def.second.second));
-      _add (exp, equation);
+      _add (exp, SEC_EQUATION);
     }
   for (string imp = eq.firstImport (); !eq.endImport (); imp = eq.nextImport ())
     {
       if (_imports.find (imp) == _imports.end ())
 	{
-	  MMODecl* exp = new MMODecl (imp, import);
-	  _add (exp, imports);
+	  MMODecl* exp = new MMODecl (imp, DEC_IMPORT);
+	  _add (exp, SEC_IMPORTS);
 	}
     }
 }
@@ -119,11 +120,11 @@ MMOModel::addExpressionZeroCrossings (MMOMath eq, const string& id)
 	  for (zc_it = zc.firstZC (); !zc.endZC (); zc_it = zc.nextZC ())
 	    {
 	      MMOEvent* ev = new MMOEvent (utils->getVar ());
-	      MMODecl dec = MMODecl (zc_it.first, zc_relation);
+	      MMODecl dec = MMODecl (zc_it.first, DEC_ZC_RELATION);
 	      ev->add (dec);
 	      if (!zc_it.second.empty ())
 		{
-		  MMODecl cond = MMODecl (zc_it.second, condition);
+		  MMODecl cond = MMODecl (zc_it.second, DEC_CONDITION);
 		  ev->add (cond);
 		}
 	      list<pair<string, ASTNode*> >::iterator asg_it;
@@ -134,18 +135,20 @@ MMOModel::addExpressionZeroCrossings (MMOMath eq, const string& id)
 		  if (asg_it->first == "")
 		    {
 		      MMODecl* dec = _declarations.findDec (id);
-		      dec->setType (discrete);
+		      dec->setType (DEC_DISCRETE);
 		      asgVar = id;
 		    }
 		  else
 		    {
-		      MMODecl* asg_vars = new MMODecl (asg_it->first, discrete);
-		      _add (asg_vars, declarations);
+		      MMODecl* asg_vars = new MMODecl (asg_it->first,
+						       DEC_DISCRETE);
+		      _add (asg_vars, SEC_DECLARATIONS);
 		      asgVar = asg_it->first;
 		    }
 		  MMOMath asg_exp = MMOMath (_replace, &_functions, _prefix);
-		  asg_exp.parseAssignment (asg_it->second);
-		  MMODecl asg = MMODecl (asgVar, asg_exp.getExp (), assignment);
+		  asg_exp.parseAssignment (asg_it->second, asgVar);
+		  MMODecl asg = MMODecl (asgVar, asg_exp.getExp (),
+		      					 DEC_ASSIGNMENT, asg_exp.isConditional());
 		  if (zc.isPositive (ev_num))
 		    {
 		      ev->add (asg, positive);
@@ -156,7 +159,7 @@ MMOModel::addExpressionZeroCrossings (MMOMath eq, const string& id)
 		    }
 		}
 	      ev_num++;
-	      _add (ev, algorithm);
+	      _add (ev, SEC_ALGORITHM);
 	    }
 	}
     }
@@ -172,7 +175,7 @@ MMOModel::_parseEquation (string id, const ASTNode *node, MMODeclType tydec,
   if (eq.hasEquation ())
     {
       MMODecl *exp = new MMODecl (id, eq.getExp (), tydec);
-      if (tydec == algebraic_equation)
+      if (tydec == DEC_ALGEBRAIC_EQUATION)
 	{
 	  _variables.insert (
 	      pair<string, list<string> > (id, eq.getVariables ()));
@@ -183,7 +186,7 @@ MMOModel::_parseEquation (string id, const ASTNode *node, MMODeclType tydec,
 	  MMODecl *dec = _declarations.findDec (id);
 	  if (!dec->isState ())
 	    {
-	      dec->setType (algebraic);
+	      dec->setType (DEC_ALGEBRAIC);
 	    }
 	}
     }
@@ -199,18 +202,18 @@ MMOModel::_addAsgs (const Event &x, MMOMath zc, int pos, MMOEvent *ev)
       const EventAssignment *ea = x.getEventAssignment (i);
       string asg_var = ea->getVariable ();
       MMOMath as = MMOMath (_replace, &_functions, _prefix);
-      as.parseAssignment (new ASTNode (*ea->getMath ()));
+      as.parseAssignment (new ASTNode (*ea->getMath ()), asg_var);
       _addAlgebraicReplacement (as);
       MMODecl asg_dec;
       MMODecl *_dis = _declarations.findDec (asg_var);
       if (_dis != NULL && _equation.findDec (asg_var) == NULL)
 	{
-	  asg_dec = MMODecl (asg_var, as.getExp (), assignment);
-	  _dis->setType (discrete);
+          asg_dec = MMODecl (asg_var, as.getExp (), DEC_ASSIGNMENT, as.isConditional());
+	  _dis->setType (DEC_DISCRETE);
 	}
       else
 	{
-	  asg_dec = MMODecl (asg_var, as.getExp (), reinit);
+	  asg_dec = MMODecl (asg_var, as.getExp (), DEC_REINIT);
 	}
       if (zc.isPositive (pos))
 	{
@@ -239,7 +242,7 @@ MMOModel::add (const Event &x)
   MMOMath zc = MMOMath (true, &_functions, _prefix);
   _addAlgebraicReplacement (zc);
   zc.parseZeroCrossing (new ASTNode (*x.getTrigger ()->getMath ()));
-  bool setInitialValues = !(x.getTrigger()->getInitialValue());
+  bool setInitialValues = !(x.getTrigger ()->getInitialValue ());
   pair<string, string> zc_def;
   int _pos = 0;
   MMOMath delay_as = MMOMath (_replace, &_functions, _prefix);
@@ -250,7 +253,7 @@ MMOModel::add (const Event &x)
       static MMOUtils *utils = MMOUtils::getInstance ();
       // Create delay event.
       delay_var_str = "delay_" + x.getId ();
-      MMOEvent *ev = new MMOEvent ("delay_" + x.getId (),setInitialValues);
+      MMOEvent *ev = new MMOEvent ("delay_" + x.getId (), setInitialValues);
       ASTNode *delay_zc = new ASTNode (AST_RELATIONAL_GEQ);
       ASTNode *delay_cte = new ASTNode (AST_INTEGER);
       delay_cte->setValue (0);
@@ -263,38 +266,38 @@ MMOModel::add (const Event &x)
       delay_minus->addChild (_time);
       delay_zc->addChild (delay_minus);
       delay_zc->addChild (delay_cte);
-      MMODecl *delay_var_dec = new MMODecl (delay_var_str, 1e20, discrete);
+      MMODecl *delay_var_dec = new MMODecl (delay_var_str, 1e20, DEC_DISCRETE);
       _declarations.add (delay_var_dec);
       dv_zc.parseZeroCrossing (delay_zc);
       pair<string, string> zc_def = dv_zc.firstZC ();
-      MMODecl zc_dec = MMODecl (zc_def.first, zc_relation);
+      MMODecl zc_dec = MMODecl (zc_def.first, DEC_ZC_RELATION);
       ev->add (zc_dec);
       if (!x.getTrigger ()->isSetPersistent ())
 	{
-	  MMODecl cond = MMODecl (utils->getExp (delay_zc), condition);
+	  MMODecl cond = MMODecl (utils->getExp (delay_zc), DEC_CONDITION);
 	  ev->add (cond);
 	}
       ASTNode *delay_eq = new ASTNode (AST_PLUS);
       delay_eq->addChild (new ASTNode (*x.getDelay ()->getMath ()));
       delay_eq->addChild (_time);
-      delay_as.parseAssignment (delay_eq);
+      delay_as.parseAssignment (delay_eq, delay_var_str);
       _addAsgs (x, dv_zc, 0, ev);
       _algorithm.add (ev);
     }
   for (zc_def = zc.firstZC (); !zc.endZC (); zc_def = zc.nextZC ())
     {
       MMOEvent *ev = new MMOEvent (x.getId (), setInitialValues);
-      MMODecl zc_dec = MMODecl (zc_def.first, zc_relation);
+      MMODecl zc_dec = MMODecl (zc_def.first, DEC_ZC_RELATION);
       ev->add (zc_dec);
       if (!zc_def.second.empty ())
 	{
-	  MMODecl zc_cond = MMODecl (zc_def.second, condition);
+	  MMODecl zc_cond = MMODecl (zc_def.second, DEC_CONDITION);
 	  ev->add (zc_cond);
 	}
       if (x.isSetDelay () && _delayValue (x.getDelay ()->getMath ()))
 	{
 	  MMODecl asg_dec;
-	  asg_dec = MMODecl (delay_var_str, delay_as.getExp (), assignment);
+	  asg_dec = MMODecl (delay_var_str, delay_as.getExp (), DEC_ASSIGNMENT, delay_as.isConditional());
 	  ev->add (asg_dec, positive);
 	}
       else
@@ -314,28 +317,28 @@ MMOModel::add (string id, bool isDerivative, const ASTNode *value,
   MMODecl *dec = _declarations.findDec (id);
   if (dec == NULL)
     {
-      t = implicit_equation;
+      t = DEC_IMPLICIT_EQUATION;
     }
   else
     {
       if (isDerivative)
 	{
-	  t = derivative;
-	  dec->setType (state);
+	  t = DEC_DERIVATIVE;
+	  dec->setType (DEC_STATE);
 	}
       else
 	{
-	  t = algebraic_equation;
-	  dec->setType (algebraic);
+	  t = DEC_ALGEBRAIC_EQUATION;
+	  dec->setType (DEC_ALGEBRAIC);
 	}
     }
-  if (type == equation)
+  if (type == SEC_EQUATION)
     {
       _parseEquation (id, value, t, type);
     }
-  else if (type == initial_algorithm)
+  else if (type == SEC_INITIAL_ALGORITHM)
     {
-      _parseEquation (id, value, initial_assignment, type);
+      _parseEquation (id, value, DEC_INITIAL_ASSIGNMENT, type);
     }
 }
 
@@ -349,11 +352,11 @@ MMOModel::add (string id, bool isConstant, double value, MMOSectionType type)
 	{
 	  _variableParameters[id] = id;
 	}
-      exp = new MMODecl (id, value, parameter);
+      exp = new MMODecl (id, value, DEC_PARAMETER);
     }
   else
     {
-      exp = new MMODecl (id, value, algebraic);
+      exp = new MMODecl (id, value, DEC_ALGEBRAIC);
     }
   _add (exp, type);
 }
@@ -364,11 +367,11 @@ MMOModel::add (string id, bool isVar, MMOSectionType type)
   MMODecl *exp = NULL;
   if (isVar)
     {
-      exp = new MMODecl (id, parameter);
+      exp = new MMODecl (id, DEC_PARAMETER);
     }
   else
     {
-      exp = new MMODecl (id, algebraic);
+      exp = new MMODecl (id, DEC_ALGEBRAIC);
     }
   _add (exp, type);
 }
@@ -378,22 +381,22 @@ MMOModel::_add (MMOExp *exp, MMOSectionType type)
 {
   switch (type)
     {
-    case equation:
+    case SEC_EQUATION:
       _equation.add (exp);
       break;
-    case algorithm:
+    case SEC_ALGORITHM:
       _algorithm.add (exp);
       break;
-    case initial_algorithm:
+    case SEC_INITIAL_ALGORITHM:
       _initial_algorithm.add (exp);
       break;
-    case external_functions:
+    case SEC_EXTERNAL_FUNCTIONS:
       _external_functions.add (exp);
       break;
-    case declarations:
+    case SEC_DECLARATIONS:
       _declarations.add (exp);
       break;
-    case imports:
+    case SEC_IMPORTS:
       _importSec.add (exp);
     }
 }
@@ -464,18 +467,18 @@ MMOModel::add (const FunctionDefinition &f)
     {
       d.parseEquation (f.getArgument (i));
       string argExp = d.getExp ();
-      MMODecl *adec = new MMODecl (argExp, function_input);
+      MMODecl *adec = new MMODecl (argExp, DEC_FUNCTION_INPUT);
       func->add (adec);
       funcArgs.push_back (argExp);
     }
   string var = MMOUtils::getInstance ()->getVar ();
   d.parseEquation (f.getBody ());
   _addAlgebraicReplacement (d);
-  MMODecl *adec = new MMODecl (var, d.getExp (), function_definition);
+  MMODecl *adec = new MMODecl (var, d.getExp (), DEC_FUNCTION_DEFINITION);
   func->add (adec);
   _functions[fname] = pair<list<string>, ASTNode*> (
       funcArgs, new ASTNode (*f.getBody ()));
-  _add (func, external_functions);
+  _add (func, SEC_EXTERNAL_FUNCTIONS);
 }
 
 string
@@ -497,8 +500,8 @@ MMOModel::_addConstantAlgebraics ()
 	      stringstream buffer;
 	      buffer << e->getValue ();
 	      MMODecl* exp = new MMODecl (e->getId (), buffer.str (),
-					  algebraic_equation);
-	      _add (exp, equation);
+					  DEC_ALGEBRAIC_EQUATION);
+	      _add (exp, SEC_EQUATION);
 	      _constantAlgebraics.push_back (e->getId ());
 	    }
 	}

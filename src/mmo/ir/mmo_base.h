@@ -20,7 +20,8 @@
 #ifndef MMO_BASE_H_
 #define MMO_BASE_H_
 
-#include <ir/mmo_util.h>
+#include <string>
+
 
 using namespace std;
 

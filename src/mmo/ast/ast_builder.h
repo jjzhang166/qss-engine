@@ -20,11 +20,9 @@
 #ifndef AST_BUILDER_H_
 #define AST_BUILDER_H_
 
-#include <iostream>
-#include <list>
 #include <string>
-#include <ast/ast_types.h>
-#include <ast/ast_printer.h>
+
+#include "ast_types.h"
 
 /* Constructors */
 /**

@@ -20,9 +20,11 @@
 #ifndef MMO_COMPILE_FLAGS_H_
 #define MMO_COMPILE_FLAGS_H_
 
+#include <list>
 #include <map>
+#include <string>
 
-#include <util/util_types.h>
+#include "util_types.h"
 
 /**
  *

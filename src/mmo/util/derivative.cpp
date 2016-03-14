@@ -18,11 +18,17 @@
  ******************************************************************************/
 
 //#include <util/solve.h>
-#include <util/ginac_interface.h>
-#include <util/derivative.h>
-#include <parser/parse.h>
-#include <ast/equation.h>
-#include <ir/expression.h>
+#include "derivative.h"
+
+#include <ginac/function.h>
+#include <ginac/operators.h>
+#include <ginac/relational.h>
+#include <ginac/symbol.h>
+#include <ginac/wildcard.h>
+
+#include "../ast/ast_builder.h"
+#include "../ast/equation.h"
+#include "ginac_interface.h"
 
 AST_Equation_Equality
 EquationDerivator::derivate (AST_Equation_Equality eq, VarSymbolTable varEnv)

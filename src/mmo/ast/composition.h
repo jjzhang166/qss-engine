@@ -20,11 +20,12 @@
 #ifndef AST_COMPOSITION_H_
 #define AST_COMPOSITION_H_
 
-#include <ast/ast_node.h>
-#include <ast/element.h>
-#include <ast/equation.h>
-#include <util/util_types.h>
-#include <stdlib.h>
+#include <string>
+
+#include "../util/macros.h"
+#include "../util/util_types.h"
+#include "ast_node.h"
+#include "ast_types.h"
 
 class AST_CompositionElement_;
 

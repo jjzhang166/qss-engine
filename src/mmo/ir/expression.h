@@ -20,13 +20,16 @@
 #ifndef MMO_EXPRESSION_H_
 #define MMO_EXPRESSION_H_
 
-#include <ir/mmo_base.h>
-#include <ir/mmo_types.h>
-#include <util/ast_util.h>
-#include <ast/ast_types.h>
-#include <util/util_types.h>
-#include <util/symbol_table.h>
-#include <util/dependencies.h>
+#include <list>
+#include <map>
+#include <string>
+
+#include "../ast/ast_types.h"
+#include "../util/ast_util.h"
+#include "../util/dependencies.h"
+#include "../util/util_types.h"
+#include "mmo_base.h"
+#include "mmo_types.h"
 
 /**
  *

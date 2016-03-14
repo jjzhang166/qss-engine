@@ -17,23 +17,28 @@
 
  ******************************************************************************/
 
-#include <math.h>
-#include <iostream>
+#include "ast_util.h"
 
-#include <ast/expression.h>
-#include <ast/stored_definition.h>
-#include <ast/modification.h>
-#include <ast/statement.h>
-#include <ast/class.h>
-#include <util/ast_util.h>
-#include <util/symbol_table.h>
-#include <util/debug.h>
-#include <util/dependencies.h>
-#include <util/util.h>
-#include <ir/annotation.h>
-#include <ir/class.h>
-#include <ir/equation.h>
-#include <ir/expression.h>
+#include <math.h>
+#include <list>
+#include <map>
+#include <set>
+#include <sstream>
+
+#include "../ast/ast_builder.h"
+#include "../ast/modification.h"
+#include "../ir/class.h"
+#include "../ir/equation.h"
+#include "../ir/expression.h"
+#include "../ir/mmo_util.h"
+#include "debug.h"
+#include "dependencies.h"
+#include "error.h"
+#include "index.h"
+#include "macros.h"
+#include "symbol_table.h"
+#include "type.h"
+#include "util.h"
 
 AST_Expression
 AST_Expression_Traverse::mapTraverse (AST_Expression e)
@@ -1365,7 +1370,7 @@ GenerateDeps_::foldTraverseElement (AST_Expression exp)
 	  {
 	    Error::getInstance ()->add (exp->lineNum (),
 	    EM_IR | EM_FUNCTION_NOT_FOUND,
-					ER_Error, "%s", name.c_str ());
+					ER_Error, "Dependencies generation %s", name.c_str ());
 	  }
       }
       break;

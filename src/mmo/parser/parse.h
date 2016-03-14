@@ -18,7 +18,9 @@
 
 ******************************************************************************/
 
-#include <ast/ast_builder.h>
+#include <string>
+
+#include "../ast/ast_types.h"
 
 /**
  *

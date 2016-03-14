@@ -38,9 +38,9 @@
 #ifndef QSS_INTEGRATOR_H_
 #define QSS_INTEGRATOR_H_
 
-#include <qss/qss_simulator.h>
-#include <common/simulator.h>
-#include <common/utils.h>
+#include "../common/simulator.h"
+#include "../common/utils.h"
+#include "qss_simulator.h"
 
 /**
  *

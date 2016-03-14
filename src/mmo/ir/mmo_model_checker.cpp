@@ -17,18 +17,20 @@
 
  ******************************************************************************/
 
-#include <math.h>
+#include "mmo_model_checker.h"
 
-#include <ir/mmo_model_checker.h>
-#include <util/ast_util.h>
-#include <util/symbol_table.h>
-#include <util/error.h>
-#include <util/util.h>
-#include <ast/expression.h>
-#include <ast/stored_definition.h>
-#include <ast/modification.h>
-#include <ast/statement.h>
-#include <ast/class.h>
+#include <list>
+
+#include "../ast/class.h"
+#include "../ast/composition.h"
+#include "../ast/element.h"
+#include "../ast/equation.h"
+#include "../ast/expression.h"
+#include "../ast/modification.h"
+#include "../ast/statement.h"
+#include "../ast/stored_definition.h"
+#include "../util/error.h"
+#include "../util/util.h"
 
 /* MicroModelica model checker interface */
 

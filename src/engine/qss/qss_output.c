@@ -17,12 +17,13 @@
 
  ******************************************************************************/
 
+#include "qss_output.h"
+
 #include <stdlib.h>
 
-#include <common/utils.h>
-#include <qss/qss_output.h>
-#include <qss/qss_step.h>
-#include <qss/qss_sampled.h>
+#include "../common/utils.h"
+#include "qss_sampled.h"
+#include "qss_step.h"
 
 OUT_outputState
 OUT_OutputState ()

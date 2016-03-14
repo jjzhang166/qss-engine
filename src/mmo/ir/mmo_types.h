@@ -55,6 +55,10 @@ typedef class MMO_EvalIndex_ *MMO_EvalIndex;
 /**
  *
  */
+typedef class MMO_Data_ *MMO_Data;
+/**
+ *
+ */
 typedef class MMO_ModelData_ *MMO_ModelData;
 /**
  *

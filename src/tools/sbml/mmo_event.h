@@ -24,7 +24,6 @@
 #include <string>
 
 #include "mmo_decl.h"
-#include "mmo_exp.h"
 
 using namespace std;
 

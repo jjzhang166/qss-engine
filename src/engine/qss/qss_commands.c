@@ -17,10 +17,13 @@
 
 ******************************************************************************/
 
-#include <common/utils.h>
 #include <qss/qss_commands.h>
-#include <qss/qss_data.h>
-#include <qss/qss_scheduler.h>
+
+#include "../common/data.h"
+#include "../common/utils.h"
+#include "qss_data.h"
+#include "qss_scheduler.h"
+#include "qss_simulator.h"
 
 static QSS_simulator *_simulator;
 

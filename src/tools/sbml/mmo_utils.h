@@ -20,9 +20,9 @@
 #ifndef MMO_UTILS_H_
 #define MMO_UTILS_H_
 
-#include <list>
-#include <map>
+#include <sbml/common/libsbml-namespace.h>
 #include <sbml/math/ASTNode.h>
+#include <map>
 #include <string>
 
 using namespace std;
@@ -91,10 +91,11 @@ public:
   /**
    *
    * @param node
+   * @param asgVariable
    * @return
    */
   string
-  getExp (ASTNode *node);
+  getExp (ASTNode *node, string asgVariable = "");
   /**
    *
    * @param n

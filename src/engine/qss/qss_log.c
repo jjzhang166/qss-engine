@@ -17,12 +17,12 @@
 
  ******************************************************************************/
 
-#include <stdio.h>
+#include "qss_log.h"
+
 #include <stdlib.h>
 
-#include <qss/qss_memory.h>
-#include <qss/qss_log.h>
-#include <qss/qss_file.h>
+#include "qss_file.h"
+#include "qss_memory.h"
 
 LG_logState
 LG_LogState ()

@@ -20,9 +20,8 @@
 #ifndef QSS_SCHEDULER_H_
 #define QSS_SCHEDULER_H_
 
-#include <qss/qss_data.h>
-#include <common/utils.h>
-#include <common/tree.h>
+#include "../common/tree.h"
+#include "qss_data.h"
 
 /**
  *

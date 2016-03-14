@@ -20,10 +20,10 @@
 #ifndef AST_CLASS_H_
 #define AST_CLASS_H_
 
-#include <ast/ast_types.h>
-#include <ast/composition.h>
-#include <ast/equation.h>
-#include <util/util_types.h>
+#include "../util/macros.h"
+#include "../util/util_types.h"
+#include "ast_node.h"
+#include "ast_types.h"
 
 /**
  *

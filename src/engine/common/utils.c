@@ -20,6 +20,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+
 #ifdef __MACH__
 #include <mach/mach_time.h>
 #define CLOCK_REALTIME 0

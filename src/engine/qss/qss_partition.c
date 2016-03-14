@@ -17,7 +17,11 @@
 
  ******************************************************************************/
 
-#include <qss/qss_partition.h>
+#include "qss_partition.h"
+
+#include <stddef.h>
+
+#include "../common/data.h"
 
 #ifdef __linux__
 

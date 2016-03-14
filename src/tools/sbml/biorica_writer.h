@@ -20,12 +20,16 @@
 #ifndef BIORICA_WRITER_H_
 #define BIORICA_WRITER_H_
 
-#include "mmo_visitor.h"
-
 #include <fstream>
 #include <list>
 #include <map>
 #include <string>
+#include <utility>
+
+#include "mmo_event.h"
+#include "mmo_function.h"
+#include "mmo_section.h"
+#include "mmo_visitor.h"
 
 class MMODecl;
 class MMOEvent;

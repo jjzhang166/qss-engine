@@ -20,11 +20,9 @@
 #ifndef MMO_DECL_H_
 #define MMO_DECL_H_
 
-#include "mmo_exp.h"
-#include "mmo_math.h"
-#include "mmo_visitor.h"
-
 #include <string>
+
+#include "mmo_exp.h"
 
 using namespace std;
 
@@ -33,25 +31,26 @@ using namespace std;
  */
 typedef enum
 {
-  constant,           //!< constant
-  parameter,          //!< parameter
-  state,              //!< state
-  discrete,           //!< discrete
-  algebraic,          //!< algebraic
-  derivative,         //!< derivative
-  assignment,         //!< assignment
-  initial_assignment, //!< initial_assignment
-  zc_relation,        //!< zc_relation
-  zc_oposite_relation,//!< zc_oposite_relation
-  algebraic_equation, //!< algebraic_equation
-  implicit_equation,  //!< implicit_equation
-  reinit,             //!< reinit
-  condition,          //!< condition
-  function_input,     //!< function_input
-  function_output,    //!< function_output
-  function_definition,//!< function_definition
-  function_formula,   //!< function_formula
-  import              //!< import
+  DEC_CONSTANT,
+  DEC_PARAMETER,
+  DEC_STATE,
+  DEC_DISCRETE,
+  DEC_ALGEBRAIC,
+  DEC_DERIVATIVE,
+  DEC_ASSIGNMENT,
+  DEC_CONDITIONAL_ASSIGNMENT,
+  DEC_INITIAL_ASSIGNMENT,
+  DEC_ZC_RELATION,
+  DEC_ZC_OPPOSITE_RELATION,
+  DEC_ALGEBRAIC_EQUATION,
+  DEC_IMPLICIT_EQUATION,
+  DEC_REINIT,
+  DEC_CONDITION,
+  DEC_FUNCTION_INPUT,
+  DEC_FUNCTION_OUTPUT,
+  DEC_FUNCTION_DEFINITION,
+  DEC_FUNCTION_FORMULA,
+  DEC_IMPORT
 } MMODeclType;
 
 /**
@@ -73,7 +72,7 @@ public:
    * @param exp
    * @param type
    */
-  MMODecl (string id, string exp, MMODeclType type);
+  MMODecl (string id, string exp, MMODeclType type, bool conditional = false);
   /**
    *
    * @param exp
@@ -177,7 +176,7 @@ public:
    * @return
    */
   bool
-  isOpositeZeroCrossing ();
+  isOppositeZeroCrossing ();
   /**
    *
    * @return
@@ -262,6 +261,12 @@ public:
    */
   bool
   isImplicit ();
+  /**
+   *
+   * @return
+   */
+  bool
+  isConditionalAssignment ();
 private:
   string _id;
   string _exp;

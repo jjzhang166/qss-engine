@@ -20,8 +20,9 @@
 #ifndef MMO_ZEROCROSSING_H_
 #define MMO_ZEROCROSSING_H_
 
-#include <list>
+#include <sbml/common/libsbml-namespace.h>
 #include <sbml/math/ASTNode.h>
+#include <list>
 #include <string>
 #include <utility>
 #include <vector>

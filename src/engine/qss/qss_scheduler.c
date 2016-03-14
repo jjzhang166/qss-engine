@@ -17,12 +17,15 @@
 
  ******************************************************************************/
 
+#include "qss_scheduler.h"
+
 #include <stdlib.h>
 
-#include <qss/qss_scheduler.h>
-#include <qss/qss_binary.h>
-#include <qss/qss_binary_random.h>
-#include <qss/qss_linear.h>
+#include "../common/data.h"
+#include "../common/utils.h"
+#include "qss_binary.h"
+#include "qss_binary_random.h"
+#include "qss_linear.h"
 
 SC_schedulerState
 SC_SchedulerState ()

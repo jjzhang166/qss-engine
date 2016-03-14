@@ -18,17 +18,17 @@
  ******************************************************************************/
 
 #include "mmo_math.h"
-#include "mmo_utils.h"
 
-#include <map>
-#include <sbml/math/FormulaFormatter.h>
-#include <utility>
+#include "mmo_assignment.h"
+#include "mmo_equation.h"
+#include "mmo_utils.h"
+#include "mmo_zerocrossing.h"
 
 MMOMath::MMOMath (bool replace,
 		  map<string, pair<list<string>, ASTNode*> > *functions,
 		  string prefix) :
     _algebraics (), _currentAlgebraic (0), _type (MATH_EQUATION), _functions (
-    NULL), _replace (replace), _imports (), _currentImport (0)
+    NULL), _replace (replace), _imports (), _currentImport (0), _asgVariable(), _isConditional (false)
 {
   if (_replace)
     {
@@ -43,18 +43,6 @@ MMOMath::MMOMath (bool replace,
 
 MMOMath::~MMOMath ()
 {
-  /*	if(_equation)
-   {
-   delete _equation;
-   }
-   if(_zerocrossing)
-   {
-   delete _zerocrossing;
-   }
-   if(_assignment)
-   {
-   delete _assignment;
-   }*/
 }
 
 void
@@ -82,7 +70,7 @@ MMOMath::parseZeroCrossing (ASTNode *node)
 }
 
 void
-MMOMath::parseAssignment (ASTNode *node)
+MMOMath::parseAssignment (ASTNode *node, string asgVariable)
 {
   _type = MATH_ASSIGNMENT;
   _exp = new ASTNode (*node);
@@ -91,6 +79,7 @@ MMOMath::parseAssignment (ASTNode *node)
     {
       _replaceFunctions (_exp);
     }
+  _asgVariable = asgVariable;
   _assignment = new MMOAssignment (_exp);
 }
 
@@ -251,7 +240,7 @@ MMOMath::getExp ()
     {
       e = _assignment->getAssignment ();
       _processNode (e);
-      return (MMOUtils::getInstance ()->getExp (e));
+      return (MMOUtils::getInstance ()->getExp (e, _asgVariable));
     }
   return ("");
 }
@@ -329,6 +318,10 @@ MMOMath::_processNode (ASTNode* node)
 	  flatName.append (node->getName ());
 	  node->setName (flatName.c_str ());
 	}
+    }
+  if (t == AST_FUNCTION_PIECEWISE)
+    {
+      _isConditional = true;
     }
   string package = MMOUtils::getInstance ()->checkPredefinedFunctions (node);
   if (!package.empty ())
@@ -415,4 +408,10 @@ MMOMath::_generateAlgebraic (pair<list<string>, ASTNode*> function,
     }
   delete repNode;
   return (pair<string, list<string> > (ret, variables));
+}
+
+bool
+MMOMath::isConditional ()
+{
+  return (_isConditional);
 }

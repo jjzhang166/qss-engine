@@ -20,13 +20,16 @@
 #ifndef MMO_MATH_H_
 #define MMO_MATH_H_
 
-#include "mmo_assignment.h"
-#include "mmo_equation.h"
-#include "mmo_zerocrossing.h"
-
-#include <list>
+#include <sbml/common/libsbml-namespace.h>
 #include <sbml/math/ASTNode.h>
+#include <list>
+#include <map>
 #include <string>
+#include <utility>
+
+class MMOAssignment;
+class MMOEquation;
+class MMOZeroCrossing;
 
 using namespace std;
 
@@ -182,13 +185,13 @@ public:
    */
   bool
   endImport ();
-  /**
-   *
-   * @param node
-   * @param replace
-   */
+/**
+ *
+ * @param node
+ * @param asgVariable
+ */
   void
-  parseAssignment (ASTNode *node);
+  parseAssignment (ASTNode *node, string asgVariable);
   /**
    *
    * @param node
@@ -201,15 +204,21 @@ public:
    */
   void
   parseZeroCrossing (ASTNode *node);
+  /**
+   *
+   * @return
+   */
+  bool
+  isConditional ();
 private:
   /**
    *
    */
   typedef enum
   {
-    MATH_EQUATION,      //!< MATH_EQUATION
-    MATH_ZERO_CROSSING, //!< MATH_ZERO_CROSSING
-    MATH_ASSIGNMENT     //!< MATH_ASSIGNMENT
+    MATH_EQUATION,
+    MATH_ZERO_CROSSING,
+    MATH_ASSIGNMENT
   } MATH_type;
   void
   _processNode (ASTNode *node);
@@ -232,6 +241,8 @@ private:
   map<string, string> _imports;
   unsigned int _currentImport;
   string _prefix;
+  string _asgVariable;
+  bool _isConditional;
 };
 
 #endif /* MMO_MATH_H */

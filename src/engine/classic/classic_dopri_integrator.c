@@ -17,22 +17,18 @@
 
  ******************************************************************************/
 
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <gsl/gsl_errno.h>
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_roots.h>
-
-#include <classic/classic_data.h>
-#include <classic/classic_integrator.h>
-#include <classic/classic_model.h>
-#include <common/data.h>
-#include <common/utils.h>
-#include <classic/dopri5/dopri5.h>
 #include <classic/classic_dopri_integrator.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "../common/data.h"
+#include "../common/simulator.h"
+#include "../common/utils.h"
+#include "classic_data.h"
+#include "classic_integrator.h"
+#include "classic_simulator.h"
+#include "dopri5/dopri5.h"
 
 static CLC_data clcData = NULL;
 

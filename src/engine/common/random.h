@@ -21,7 +21,6 @@
 #define RANDOM_H_
 
 #include <gsl/gsl_rng.h>
-#include <gsl/gsl_randist.h>
 
 /**
  *

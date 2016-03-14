@@ -17,25 +17,21 @@
 
  ******************************************************************************/
 
-#include <iostream>
-#include <vector>
-#include <set>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sstream>
+#include "solver.h"
 
-#include <generator/generator_utils.h>
-#include <generator/solver.h>
-#include <ir/annotation.h>
-#include <ir/class.h>
-#include <ir/equation.h>
-#include <ir/expression.h>
-#include <ir/event.h>
-#include <ir/statement.h>
-#include <util/util.h>
-#include <util/compile_flags.h>
-#include <util/index.h>
-#include <util/symbol_table.h>
+#include <sstream>
+#include <utility>
+
+#include "../ast/expression.h"
+#include "../ir/annotation.h"
+#include "../ir/class.h"
+#include "../ir/equation.h"
+#include "../ir/event.h"
+#include "../ir/expression.h"
+#include "../ir/statement.h"
+#include "../util/compile_flags.h"
+#include "../util/error.h"
+#include "../util/util.h"
 
 /* QSS Solver class. */
 
@@ -85,7 +81,7 @@ string
 QSS_::initTime ()
 {
   stringstream buffer;
-  MMO_ModelAnnotation annot = _model->annotation ();
+  MMO_Annotation annot = _model->annotation ();
   string weightsStr = "NULL";
   map<Index, double> w = _common->weights ();
   if (w.size ())
@@ -2853,7 +2849,7 @@ string
 SolverCommon_::initOutput ()
 {
   stringstream buffer;
-  MMO_ModelAnnotation annot = _model->annotation ();
+  MMO_Annotation annot = _model->annotation ();
   string period = "NULL";
   string indent = "";
   int ssize = 0;
@@ -3088,7 +3084,7 @@ SolverCommon_::weights ()
 int
 SolverCommon_::getOrder ()
 {
-  MMO_ModelAnnotation annot = _model->annotation ();
+  MMO_Annotation annot = _model->annotation ();
   int order = 1;
   if (annot->symDiff () && _model->hasExternalFunctions ())
     {

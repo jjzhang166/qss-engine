@@ -17,11 +17,13 @@
 
  ******************************************************************************/
 
-#include <util/error.h>
+#include "error.h"
 
 #include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <sstream>
 
 Error *Error::_instance = NULL;
 

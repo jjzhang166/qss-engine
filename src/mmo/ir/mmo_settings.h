@@ -20,9 +20,11 @@
 #ifndef MMO_SETTINGS_H_
 #define MMO_SETTINGS_H_
 
-#include <util/ast_util.h>
-#include <ir/class.h>
-#include <ir/mmo_types.h>
+#include <string>
+
+#include "../ast/ast_types.h"
+#include "../util/ast_util.h"
+#include "mmo_types.h"
 
 /**
  *
@@ -43,7 +45,7 @@ public:
    *
    * @return
    */
-  MMO_ModelAnnotation
+  MMO_Annotation
   annotations ();
   /**
    *

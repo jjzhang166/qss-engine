@@ -17,12 +17,11 @@
 
  ******************************************************************************/
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdarg.h>
+#include "data.h"
 
-#include <common/data.h>
-#include <common/utils.h>
+#include <stdarg.h>
+#include <stdlib.h>
+
 
 SD_simulationSettings
 SD_SimulationSettings ()

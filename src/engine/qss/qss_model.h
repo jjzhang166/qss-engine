@@ -20,7 +20,8 @@
 #ifndef QSS_MODEL_H_
 #define QSS_MODEL_H_
 
-#include <qss/qss_integrator.h>
+#include "qss_simulator.h"
+
 /**
  *
  * @param simulator

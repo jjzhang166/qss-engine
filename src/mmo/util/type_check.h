@@ -17,13 +17,9 @@
 
  ******************************************************************************/
 
-#include <string>
-#include <list>
-#include <ast/ast_node.h>
-#include <ast/ast_builder.h>
-#include <ast/expression.h>
-#include <util/type.h>
-#include <util/symbol_table.h>
+#include "../ast/ast_types.h"
+#include "type.h"
+#include "util_types.h"
 
 #ifndef TYPECHECK_H_
 #define TYPECHECK_H_

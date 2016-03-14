@@ -20,6 +20,8 @@
 #ifndef QSS_SEQH_INTEGRATOR_H_
 #define QSS_SEQH_INTEGRATOR_H_
 
+#include "../common/simulator.h"
+
 /**
  *
  * @param simulate

@@ -18,12 +18,14 @@
 
  ******************************************************************************/
 
+#include <qss/liqss.h>
+
 #include <math.h>
 #include <stdlib.h>
-#include <stdio.h>
 
-#include <common/utils.h>
-#include <qss/liqss.h>
+#include "../common/utils.h"
+#include "qss_data.h"
+#include "qss_quantizer.h"
 
 #ifdef QSS_PARALLEL
 void

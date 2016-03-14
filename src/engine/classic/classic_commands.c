@@ -18,8 +18,9 @@
 ******************************************************************************/
 
 
-#include <stdlib.h>
 #include <classic/classic_commands.h>
+
+#include <stdlib.h>
 
 void
 CLC_CMD_terminate ()

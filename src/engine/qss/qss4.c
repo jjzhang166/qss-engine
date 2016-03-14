@@ -17,10 +17,13 @@
 
  ******************************************************************************/
 
+#include <qss/qss4.h>
+
 #include <math.h>
 
-#include <qss/qss4.h>
-#include <common/utils.h>
+#include "../common/utils.h"
+#include "qss_data.h"
+#include "qss_quantizer.h"
 
 #ifdef QSS_PARALLEL
 void

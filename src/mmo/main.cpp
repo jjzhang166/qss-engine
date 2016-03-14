@@ -17,26 +17,29 @@
 
  ******************************************************************************/
 
-#include <ast/ast_builder.h>
-#include <ast/class.h>
-#include <ast/stored_definition.h>
-#include <fstream>
-#include <generator/generator.h>
-#include <generator/files.h>
 #include <getopt.h>
+#include <cstdio>
+#include <cstdlib>
 #include <iostream>
-#include <ir/class.h>
-#include <ir/mmo_ir.h>
-#include <ir/mmo_model_checker.h>
-#include <ir/mmo_settings.h>
-#include <ostream>
-#include <parser/parse.h>
-#include <unistd.h>
-#include <util/ast_util.h>
-#include <util/compile_flags.h>
-#include <util/error.h>
-#include <util/util_types.h>
-#include <util/util.h>
+#include <list>
+#include <string>
+
+#include "ast/ast_types.h"
+#include "ast/stored_definition.h"
+#include "generator/files.h"
+#include "generator/generator.h"
+#include "generator/generator_types.h"
+#include "ir/mmo_ir.h"
+#include "ir/mmo_model_checker.h"
+#include "ir/mmo_settings.h"
+#include "ir/mmo_types.h"
+#include "ir/mmo_util.h"
+#include "parser/parse.h"
+#include "util/compile_flags.h"
+#include "util/error.h"
+#include "util/symbol_table.h"
+#include "util/util.h"
+#include "util/util_types.h"
 
 using namespace std;
 
