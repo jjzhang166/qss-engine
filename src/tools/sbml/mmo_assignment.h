@@ -21,17 +21,14 @@
 #define MMO_ASSIGNMENT_H_
 
 #include <sbml/common/libsbml-namespace.h>
+#include <sbml/math/ASTNode.h>
 #include <list>
 #include <string>
-
-namespace libsbml
-{
-  class ASTNode;
-} /* namespace libsbml */
 
 using namespace std;
 
 LIBSBML_CPP_NAMESPACE_USE
+
 /**
  *
  */

@@ -18,7 +18,9 @@
  ******************************************************************************/
 
 #include <getopt.h>
+#ifdef __linux__
 #include <libio.h>
+#endif
 #include <sbml/Model.h>
 #include <sbml/SBMLDocument.h>
 #include <sbml/SBMLReader.h>
