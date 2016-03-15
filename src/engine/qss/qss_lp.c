@@ -470,7 +470,7 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
   for (i = 0; i < lps; i++)
       {
         QSS_LP_data lp = simulator->lps->lp[i];
-        if (events == 0 || autonomous == TRUE)
+        if (autonomous == TRUE)
           {
             lp->initDt = INF;
           }

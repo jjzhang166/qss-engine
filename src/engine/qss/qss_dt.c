@@ -191,10 +191,12 @@ QSS_Dt (SD_DtSynch synch, double alpha, int outputs,
   if (synch == SD_DT_Fixed)
     {
       p->ops->logStep = DT_FIXED_logStep;
+      p->state->dt = alpha;
     }
   else if (synch == SD_DT_Asynchronous)
     {
       p->ops->logStep = DT_ASYNCH_logStep;
+      p->state->dt = initDt;
     }
   if (lclOutputs == 0)
     {
@@ -210,7 +212,6 @@ QSS_Dt (SD_DtSynch synch, double alpha, int outputs,
   p->state->alpha = alpha;
   p->state->dtMin = INF;
   p->state->dtMinIndex = 0;
-  p->state->dt = initDt;
   p->state->gblDtMin = gblDtMin;
   p->state->synch = &(dtSynch->synch);
   p->state->id = id;
