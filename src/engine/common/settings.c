@@ -95,6 +95,10 @@ _getPartitionMethod (const char *sol)
     {
       return (SD_Patoh);
     }
+  else if (!strcmp (sol, "Manual"))
+    {
+      return (SD_Manual);
+    }
   return (SD_MetisCut);
 }
 

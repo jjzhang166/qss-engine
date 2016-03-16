@@ -137,7 +137,8 @@ typedef enum
   SD_MetisVol, //!< SD_MetisVol
   SD_HMetis,   //!< SD_HMetis
   SD_Scotch,   //!< SD_Scotch
-  SD_Patoh     //!< SD_Patoh
+  SD_Patoh,     //!< SD_Patoh
+  SD_Manual
 } SD_PartitionMethod;
 
 /**

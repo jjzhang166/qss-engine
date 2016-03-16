@@ -39,8 +39,43 @@
 #include <qss/qss_graph.h>
 
 void
+PRT_readPartition (PRT_partition partition, QSS_data data, char *name)
+{
+  char fileName[256];
+  sprintf (fileName, "%s.part", name);
+  FILE *file;
+  int i;
+  file = fopen (fileName, "r");
+  if (file != NULL)
+    {
+      char * line = NULL;
+      size_t len = 0;
+      ssize_t read;
+      int val;
+      i = 0;
+      while ((read = getline (&line, &len, file)) != -1)
+	{
+	  sscanf (line, "%d", &val);
+	  partition->values[i++] = val;
+	}
+      fclose (file);
+      if (line != NULL)
+	{
+	  free (line);
+	}
+      return;
+    }
+}
+
+
+void
 PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 {
+  if (data->params->pm == SD_Manual)
+    {
+      PRT_readPartition(partition, data, name);
+      return;
+    }
   char fileName[256];
   char graphType[64] = "unweighted";
   int nparts = (data->params->lps == 0 ? 64 : data->params->lps);
