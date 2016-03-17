@@ -117,6 +117,7 @@ struct QSS_dtState_
   int lps; //!< Total number of LPs defined.
   int outputs; //!< Number of output variables in the LP.
   int dtMinIndex; //!< Index of the output variable that contains the local minimum for the LP.
+  int dtGlobalLP;
   double dtChanges;
   double avgDt;
   SD_simulationLog log;

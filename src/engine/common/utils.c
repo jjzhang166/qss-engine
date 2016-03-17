@@ -1000,7 +1000,6 @@ IBX_receiveAndAckMessages (IBX_inbox inbox, MLB_mailbox mailbox, int id)
       tail++;
       BIT_clear (inbox->received, j);
     }
- // printf("Cola: %d\n",size);
   qsort (inbox->orderedMessages, tail, sizeof(IBX_message), IBX_compare);
   inbox->size = size;
   inbox->tail = size;
@@ -1011,19 +1010,6 @@ IBX_receiveAndAckMessages (IBX_inbox inbox, MLB_mailbox mailbox, int id)
 double
 IBX_nextMessageTime (IBX_inbox inbox)
 {
-  pthread_mutex_lock (&(inbox->receivedMutex));
-  int head = inbox->head;
-  IBX_message msg = inbox->orderedMessages[head];
- /* while (msg.type == 0 && inbox->states[msg.index] > msg.time)
-    {
-      inbox->orderedMessages[head].time = INF;
-      inbox->orderedMessages[head].type = -1;
-      inbox->head++;
-      inbox->size--;
-      head++;
-      msg = inbox->orderedMessages[head];
-    }*/
-  pthread_mutex_unlock (&(inbox->receivedMutex));
   return (inbox->orderedMessages[inbox->head].time);
 }
 

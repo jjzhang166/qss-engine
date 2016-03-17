@@ -1499,7 +1499,10 @@ QSS_PAR_passiveLP (QSS_simulator simulator,
 	    }
 	  simulator->lpTime[id] = t;
 	  QSS_dtCheck (dt);
-	  break;
+	  if (t != ft)
+	    {
+	      break;
+	    }
 	}
       sample++;
       if (sample == advanceControl)

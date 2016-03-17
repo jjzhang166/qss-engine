@@ -726,7 +726,7 @@ IBX_receiveAndAckMessages(IBX_inbox inbox, MLB_mailbox mailbox, int id);
  * @param inbox
  * @return
  */
-double
+inline double
 IBX_nextMessageTime(IBX_inbox inbox);
 
 /**

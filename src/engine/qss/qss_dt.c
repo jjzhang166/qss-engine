@@ -33,7 +33,7 @@
 #include <common/utils.h>
 
 #define DT_LOWER_BOUND 0.5
-#define DT_UPPER_BOUND 1.5
+#define DT_UPPER_BOUND 2
 
 QSS_dtSynch
 QSS_DtSynch(int lps)
@@ -103,6 +103,7 @@ QSS_updateDt (QSS_dt dt)
       if (gblDtMin[i] < dtMin)
 	{
 	  dtMin = gblDtMin[i];
+	  dt->state->dtGlobalLP = i;
 	}
     }
   dt->state->synch[0] = 0;
@@ -159,10 +160,10 @@ DT_ASYNCH_logStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable)
       dt->state->dtMin = dtOpt;
       dt->state->dtMinIndex = variable;
     }
-  if (dt->state->dtMin < dt->state->dtLowerBound ||
-      dt->state->dtMin > dt->state->dtUpperBound)
-    {
-      *(dt->state->synch) = 1;
+      if ((dt->state->dtGlobalLP == dt->state->id && dt->state->dtMin > dt->state->dtUpperBound) ||
+	  dt->state->dtMin < dt->state->dtLowerBound)
+      {
+	  *(dt->state->synch) = 1;
       QSS_updateDt (dt);
 #ifdef DEBUG
       if (dt->state->debug & SD_DBG_Dt)
@@ -174,7 +175,7 @@ DT_ASYNCH_logStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable)
       dt->state->dtLowerBound = dt->state->dt * DT_LOWER_BOUND;
       dt->state->dtUpperBound = dt->state->dt * DT_UPPER_BOUND;
       return (TRUE);
-    }
+      }
   return (FALSE);
 }
 
@@ -215,6 +216,7 @@ QSS_Dt (SD_DtSynch synch, double alpha, int outputs,
   p->state->gblDtMin = gblDtMin;
   p->state->synch = &(dtSynch->synch);
   p->state->id = id;
+  p->state->dtGlobalLP = 0;
   p->state->lps = dtSynch->activeLPS;
   p->state->outputs = outputs;
   p->state->dtChanges = 0;
