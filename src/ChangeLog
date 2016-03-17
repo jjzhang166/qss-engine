@@ -1,3 +1,10 @@
+2016-03-17  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/common/data.h: Added Manual partition option for parallel simulations.
+	* engine/common/utils.c
+	(IBX_nextMessageTime): Added mutex to inbox nextMessageTime function, this
+	allows the inbox to discard messages appropiately.
+
 2016-03-07  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* Makefile: Added install rule
@@ -10,24 +17,24 @@
 	(MMO_EquationTable_::findGenericDependencies): Removed warnings.
 	* Makefile: Added build documentation rule.
 	* gui/mainpage.dox: Added main doc file.
-	* mmo/mainpage.dox: Added main doc file. 
-	* tools/sbml/mainpage.dox:  Added main doc file.
+	* mmo/mainpage.dox: Added main doc file.
+	* tools/sbml/mainpage.dox: Added main doc file.
 
 2016-03-02  Joaquin  <joaquin.f.fernandez@gmail.com>
-	
+
 	* mmo/ir/annotation.h: Added doc.
 	* tools/sbml/Makefile: Added obj folder creation.
 	* libs/Makefile: Added obj folder creation.
 	* mmo/Makefile: Added obj folder creation.
 
 2016-02-25  Joaquin  <joaquin.f.fernandez@gmail.com>
-    
-    * Removed all Warning from source code.
 
+	* Removed all Warning from source code.
 
 2016-02-23  Joaquin  <joaquin.f.fernandez@gmail.com>
 
-	* engine/qss/qss_dt.c (QSS_dtLogStep): Modified Windows/Mac wrapper.
+	* engine/qss/qss_dt.c
+	(QSS_dtLogStep): Modified Windows/Mac wrapper.
 
 2016-02-22  Joaquin  <joaquin.f.fernandez@gmail.com>
 
