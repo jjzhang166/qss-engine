@@ -83,6 +83,19 @@ RunDlg::on__commInterval_currentIndexChanged (int index)
     }
 }
 
+void
+RunDlg::on__dtSynch_currentIndexChanged (int index)
+{
+  if (index == 0)
+    {
+      _dtLbl->setText ("Dt tolerance");
+    }
+  else
+    {
+      _dtLbl->setText ("Dt value");
+    }
+}
+
 
 void
 RunDlg::on__parallel_currentIndexChanged (int index)
@@ -271,6 +284,8 @@ RunDlg::_getPartitionMethodIdx (QString str)
     return (3);
   if (str.trimmed () == "Patoh")
     return (4);
+  if (str.trimmed () == "Manual")
+    return (5);
   return (0);
 }
 
@@ -295,6 +310,8 @@ RunDlg::_getPartitionMethodString (int idx)
       return ("Scotch");
     case 4:
       return ("Patoh");
+    case 5:
+      return ("Manual");
     }
   return ("MetisCut");
 }

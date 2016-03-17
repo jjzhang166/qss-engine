@@ -1,5 +1,8 @@
 2016-03-17  Joaquin  <joaquin.f.fernandez@gmail.com>
 
+	* gui/mmohighlight.cpp (MmoHighlighter::MmoHighlighter): Added Manual partition token and math functions.
+	* mmo/ir/annotation.cpp (MMO_EvalAnnotation_::MMO_EvalAnnotation_): Added Manual partition annotation.
+	* mmo/ir/annotation.h: Added Manual partition annotation.
 	* engine/common/data.h: Added Manual partition option for parallel simulations.
 	* engine/common/utils.c
 	(IBX_nextMessageTime): Added mutex to inbox nextMessageTime function, this

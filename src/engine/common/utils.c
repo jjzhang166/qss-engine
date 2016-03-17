@@ -1014,7 +1014,7 @@ IBX_nextMessageTime (IBX_inbox inbox)
   pthread_mutex_lock (&(inbox->receivedMutex));
   int head = inbox->head;
   IBX_message msg = inbox->orderedMessages[head];
-  while (msg.type == 0 && inbox->states[msg.index] > msg.time)
+ /* while (msg.type == 0 && inbox->states[msg.index] > msg.time)
     {
       inbox->orderedMessages[head].time = INF;
       inbox->orderedMessages[head].type = -1;
@@ -1022,7 +1022,7 @@ IBX_nextMessageTime (IBX_inbox inbox)
       inbox->size--;
       head++;
       msg = inbox->orderedMessages[head];
-    }
+    }*/
   pthread_mutex_unlock (&(inbox->receivedMutex));
   return (inbox->orderedMessages[inbox->head].time);
 }

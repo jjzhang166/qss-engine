@@ -390,6 +390,11 @@
           <string>PATOH</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>MANUAL</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="7" column="0">
@@ -419,7 +424,7 @@
       <item row="7" column="2">
        <widget class="QLabel" name="_dtLbl">
         <property name="text">
-         <string>Minimum Dt </string>
+         <string>Dt tolerance</string>
         </property>
        </widget>
       </item>

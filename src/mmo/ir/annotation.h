@@ -57,7 +57,8 @@ typedef enum
   ANT_MetisVol, //!< ANT_MetisVol
   ANT_HMetis, //!< ANT_HMetis
   ANT_Scotch, //!< ANT_Scoth
-  ANT_Patoh //!< ANT_Patoh
+  ANT_Patoh, //!< ANT_Patoh
+  ANT_Manual
 } ANT_PartitionMethod;
 
 typedef enum

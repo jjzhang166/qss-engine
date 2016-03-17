@@ -584,9 +584,16 @@ bool
 MmomeGui::_compile (bool dbg)
 {
   _compiler_msg->clear ();
+  QFileInfo modelFile(Editor::instance ()->activeFullFileName ());
   QDir buildDir (_utils->appDir (MMOC_BUILD));
   buildDir.mkdir (Editor::instance ()->activeBaseFileName ());
   buildDir.cd (Editor::instance ()->activeBaseFileName ());
+  QString fileName (buildDir.absolutePath() + SLASH + Editor::instance ()->activeBaseFileName () + QString(".part"));
+  if (QFile::exists(fileName))
+  {
+      QFile::remove(fileName);
+  }
+  QFile::copy(modelFile.absoluteDir().absolutePath() + SLASH + Editor::instance ()->activeBaseFileName () + QString(".part"),fileName);
   _compiler_msg->setPlainText (
       _compiler_msg->toPlainText () + buildDir.absolutePath ());
   QFileInfo makefi (
@@ -637,7 +644,7 @@ MmomeGui::_compile (bool dbg)
   _compiler_msg->setPlainText (
       _compiler_msg->toPlainText () + QString ("\n") + _utils->appDir (MMOC_BIN)
 	  + SLASH + comp + " " + set + " "
-	  + Editor::instance ()->activeFullFileName ());
+      + Editor::instance ()->activeFullFileName ());
   _compiler_msg->moveCursor (QTextCursor::End);
   _compiler_msg->ensureCursorVisible ();
   QProcessEnvironment env = QProcessEnvironment::systemEnvironment ();

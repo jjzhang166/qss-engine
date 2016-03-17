@@ -64,6 +64,12 @@ MmoHighlighter::MmoHighlighter (QTextDocument *parent, h_type file) :
   functionFormat.setFontItalic(true);
   functionPatterns << "\\bpre\\b" << "\\bsum\\b" << "\\bterminate\\b"
   << "\\breinit\\b" << "\\bder\\b" << "\\babs\\b"
+  << "\\bdiv\\b" << "\\bfloor\\b" << "\\bceil\\b"
+  << "\\bmod\\b" << "\\bsin\\b" << "\\bcos\\b"
+  << "\\btan\\b" << "\\basin\\b" << "\\bacos\\b"
+  << "\\batan\\b" << "\\batan2\\b" << "\\bsinh\\b"
+  << "\\bconh\\b" << "\\btanh\\b" << "\\bexp\\b"
+  << "\\blog\\b" << "\\blog10\\b"
   << "\\bmax\\b" << "\\bmin\\b" << "\\bproduct\\b";
 
   foreach (const QString &pattern, functionPatterns)
@@ -89,7 +95,7 @@ MmoHighlighter::MmoHighlighter (QTextDocument *parent, h_type file) :
   << "\\bCI_Sampled\\b" << "\\bCI_Step\\b" << "\\bCI_Dense\\b"
   << "\\bSD_DT_Fixed\\b" << "\\bSD_DT_Asynchronous\\b"
   << "\\bMetisCut\\b" << "\\bMetisVol\\b" << "\\bHMetis\\b"
-  << "\\bScotch\\b" << "\\bPatoh\\b"
+  << "\\bScotch\\b" << "\\bPatoh\\b" << "\\bManual\\b"
   << "\\btrue\\b" << "\\bfalse\\b" << "\\bDOPRI\\b" << "\\bDASSL\\b";
 
   foreach (const QString &pattern, qssTagsPatterns)
