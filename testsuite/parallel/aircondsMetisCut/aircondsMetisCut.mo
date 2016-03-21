@@ -33,10 +33,8 @@ model aircondsMetisCut
 				on[i] := 1;
 				ptotal := ptotal + POT[i];
 		elsewhen th[i] - tref[i] + on[i] - 0.5 < 0 then
-			if time > 0 then
 				on[i] := 0;
 				ptotal := ptotal - POT[i];
-			end if;
 		end when;
 	end for;
 	for i in 1:N loop
@@ -60,6 +58,7 @@ model aircondsMetisCut
 		MMO_Solver=QSS3,
 		MMO_Parallel=true,
 		MMO_LPS=4,
+		MMO_DT_Synch=SD_DT_Fixed,
 		MMO_DT_Min=3000,
 		MMO_Output={ptotal},
 		StartTime=0,

@@ -1,6 +1,6 @@
 model airconds
 	import math;
-	constant Integer N = 200;
+	constant Integer N = 2000;
 	parameter Real CAP[N], RES[N], POT[N], THA = 32,pmax=0;
 	Real th[N];
 	discrete Real ptotal;
@@ -33,10 +33,8 @@ model airconds
 				on[i] := 1;
 				ptotal := ptotal + POT[i];
 		elsewhen th[i] - tref[i] + on[i] - 0.5 < 0 then
-			if time > 0 then
-				on[i] := 0;
-				ptotal := ptotal - POT[i];
-			end if;
+							on[i] := 0;
+			 	ptotal := ptotal - POT[i];
 		end when;
 	end for;
 	for i in 1:N loop
@@ -54,6 +52,7 @@ model airconds
 		end when;
 	end for;
 	annotation(
+
 	experiment(
 		MMO_Description="Power consumption  in a large population of air conditioners.",
 		MMO_Solver=QSS3,

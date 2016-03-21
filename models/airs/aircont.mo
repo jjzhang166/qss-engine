@@ -1,6 +1,6 @@
 model aircont
 	import math;
-	constant Integer N = 200;
+	constant Integer N = 2000;
 	parameter Real CAP[N], RES[N], POT[N], THA = 32,pmax=0,Kp=1,Ki=1,tref=20;
 	Real th[N];
 	Real ierr;
@@ -32,10 +32,8 @@ model aircont
 				on[i] := 1;
 				ptotal := ptotal + POT[i];
 		elsewhen th[i] - tref -dtref + on[i] - 0.5 < 0 then
-			if time > 0 then
 				on[i] := 0;
 				ptotal := ptotal - POT[i];
-			end if;
 		end when;
 	end for;
 	when time > 1000 then

@@ -33,10 +33,8 @@ model aircondsMetisVol
 				on[i] := 1;
 				ptotal := ptotal + POT[i];
 		elsewhen th[i] - tref[i] + on[i] - 0.5 < 0 then
-			if time > 0 then
 				on[i] := 0;
 				ptotal := ptotal - POT[i];
-			end if;
 		end when;
 	end for;
 	for i in 1:N loop

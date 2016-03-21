@@ -20,7 +20,6 @@ model advectionMetisVol
 		MMO_Parallel=true,
 		MMO_PartitionMethod=MetisVol,
 		MMO_LPS=4,
-		MMO_DT_Synch=SD_DT_Asynchronous,
 		MMO_DT_Min=3,
 		MMO_Output={u[N]},
 		StartTime=0.0,

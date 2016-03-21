@@ -20,7 +20,7 @@ model advectionScotch
 		MMO_Parallel=true,
 		MMO_PartitionMethod=Scotch,
 		MMO_LPS=4,
-		MMO_DT_Min=0.01,
+		MMO_DT_Min=1,
 		MMO_Output={u[N]},
 		StartTime=0.0,
 		StopTime=1.0,
