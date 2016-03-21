@@ -216,10 +216,10 @@ QSS_Dt (SD_DtSynch synch, double alpha, int outputs,
   p->state->gblDtMin = gblDtMin;
   p->state->synch = &(dtSynch->synch);
   p->state->id = id;
-  p->state->dtGlobalLP = 0;
   p->state->lps = dtSynch->activeLPS;
   p->state->outputs = outputs;
   p->state->dtChanges = 0;
+  p->state->dtGlobalLP = id;
   p->state->avgDt = 0;
   p->state->log = SD_SimulationLog(logFile);
   p->state->debug = debug;
@@ -263,6 +263,7 @@ QSS_DtState ()
   p->dtOpt = NULL;
   p->dtUpperBound = 0;
   p->gblDtMin = NULL;
+  p->dtGlobalLP = 0;
   p->id = 0;
   p->lps = 0;
   p->outputs = 0;

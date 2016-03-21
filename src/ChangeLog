@@ -1,3 +1,9 @@
+2016-03-21  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/qss_dt.c
+	(QSS_Dt): Set dtGlobalLP field to id during initialization to avoid extra
+	symnchronization on startup.
+
 2016-03-17  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* gui/mmohighlight.cpp (MmoHighlighter::MmoHighlighter): Added Manual partition token and math functions.
