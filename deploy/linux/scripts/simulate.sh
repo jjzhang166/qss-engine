@@ -38,26 +38,44 @@ rm -rf *.log
 
 cp	$MMOC_BUILD/$FILE/$FILE.ini .
 
+if [[	-e $MMOC_BUILD/$FILE/$FILE.part ]]; 
+then
+	cp $MMOC_BUILD/$FILE/$FILE.part .
+fi
+
 if [ "$PARALLEL" == "true" ]; then
-	if [ -f ${FILE}.ewgts ];
+	if [[ -e ${FILE}.ewgts ]];
 	then
   	cp ${FILE}.ewgts ${FILE}.eweights
 	else
-		cp $MMOC_BUILD/$FILE/${FILE}.eweights . 
+		if [[ -e $MMOC_BUILD/$FILE/${FILE}.eweights ]];
+		then
+			cp $MMOC_BUILD/$FILE/${FILE}.eweights . 
+		fi
 	fi
-	if [ -f ${FILE}.hewgts ];
+	if [[ -e ${FILE}.hewgts ]];
 	then
   	cp ${FILE}.hewgts ${FILE}.heweights
 	else
-		cp $MMOC_BUILD/$FILE/${FILE}.heweights . 
+		if [[ -e $MMOC_BUILD/$FILE/${FILE}.heweights ]];
+		then
+			cp $MMOC_BUILD/$FILE/${FILE}.heweights . 
+		fi
 	fi
-	cp $MMOC_BUILD/$FILE/${FILE}.graph . 
-	cp $MMOC_BUILD/$FILE/${FILE}.hgraph . 
+	if [[ -e $MMOC_BUILD/$FILE/${FILE}.graph ]];
+	then
+		cp $MMOC_BUILD/$FILE/${FILE}.graph . 
+	fi
+	if [[ -e $MMOC_BUILD/$FILE/${FILE}.hgraph ]];
+	then
+		cp $MMOC_BUILD/$FILE/${FILE}.hgraph . 
+	fi
 fi
 
 $MMOC_BUILD/$FILE/$FILE
 
 rm -rf hkmetis
+rm -rf *.part
 rm -rf *.eweights	
 rm -rf *.heweights	
 rm -rf *.graph	
