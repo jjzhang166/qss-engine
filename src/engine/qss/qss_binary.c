@@ -433,6 +433,7 @@ BT_updateH (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
 #ifdef QSS_PARALLEL
   QSS_LP_data lp = scheduler->state->lp;
   nStates = lp->states;
+  simTime->noReinit = 1;
 #endif
   if (simTime->type == ST_State)
     {
@@ -536,6 +537,7 @@ BT_updateH (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
       simTime->minIndex = simTime->reinits->variable[simTime->reinits->counter];
       simTime->type = ST_State;
       simTime->time = simTime->minValue;
+      simTime->noReinit = 0;
       return;
     }
 #endif
@@ -623,6 +625,7 @@ BT_updateHI (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
 #ifdef QSS_PARALLEL
   QSS_LP_data lp = scheduler->state->lp;
   nStates = lp->states;
+  simTime->noReinit = 1;
 #endif
   if (simTime->type == ST_State)
     {
@@ -762,6 +765,7 @@ BT_updateHI (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
       simTime->minIndex = simTime->reinits->variable[simTime->reinits->counter];
       simTime->type = ST_State;
       simTime->time = simTime->minValue;
+      simTime->noReinit = 0;
       return;
     }
 #endif

@@ -704,6 +704,7 @@ QSS_Time (int states, int events, int inputs, double it,
   p->minIndex = NULL_INDEX;
   p->scheduler = scheduler;
   p->type = ST_State;
+  p->noReinit = 1;
   for (i = 0; i < states; i++)
     {
       p->tx[i] = it;

@@ -554,6 +554,10 @@ QSS_PARH_integrator (QSS_simulator simulator)
 				QA_updateQuantizedState (quantizer, j, q, x,
 							 lqu);
 				tq[j] = t;
+				if (j == 8000)
+				  {
+				    printf("Reinit variable %d tiempo %g valor %g\n",j,t,x[infCf0]);
+				  }
 				if (synchronize >= 0)
 				  {
 				    int updIdx;
@@ -568,6 +572,10 @@ QSS_PARH_integrator (QSS_simulator simulator)
 			      }
 			    else
 			      {
+				if (j == 8000)
+								  {
+								    printf("Reinit mensaje variable %d tiempo %g valor %g\n",j,t,tmp1[infCf0]);
+								  }
 				msg.value[nLHSDsc + i * coeffs] = tmp1[infCf0];
 				int updIdx;
 				for (updIdx = 1; updIdx <= xOrder; updIdx++)
@@ -731,7 +739,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
       simulator->previousTime = t;
       if (synchronize >= 0)
 	{
-	  if (QSS_dtLogStep (dt, Dq, Dx, Dt, synchronize))
+	  if (qssTime->noReinit && QSS_dtLogStep (dt, Dq, Dx, Dt, synchronize))
 	    {
 	      gvt = QSS_PAR_GVT (simulator);
 	      maxAdvanceTime = gvt + QSS_dtValue (dt);

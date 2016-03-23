@@ -630,7 +630,7 @@ ConvertToGiNaC::foldTraverseElement (AST_Expression e)
 	  }
 	else
 	  {
-	    cerr << "Function call : " << c->name ()
+	    cerr << "Function call : " << c->name ()->c_str()
 		<< " not converted to GiNaC" << endl;
 	    return (ex (0));
 	  }

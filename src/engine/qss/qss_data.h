@@ -451,6 +451,7 @@ struct QSS_time_
   double time;
   double minValue;
   int minIndex;
+  int noReinit;
   QSS_SchedulerType scheduler;
   QSS_StepType type;
   QSS_reinit reinits;
