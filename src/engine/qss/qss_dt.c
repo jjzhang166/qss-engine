@@ -208,11 +208,11 @@ QSS_Dt (SD_DtSynch synch, double alpha, int outputs,
     {
       p->state->dtOpt[i] = INF;
     }
-  p->state->dtUpperBound = INF;
+  p->state->dtUpperBound = 0;
   p->state->dtLowerBound = INF;
   p->state->alpha = alpha;
   p->state->dtMin = INF;
-  p->state->dtMinIndex = 0;
+  p->state->dtMinIndex = -1;
   p->state->gblDtMin = gblDtMin;
   p->state->synch = &(dtSynch->synch);
   p->state->id = id;

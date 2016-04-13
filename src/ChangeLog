@@ -1,3 +1,9 @@
+2016-04-13  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/qss_dt.c
+	(QSS_Dt): Modified upper bound and lower bound initial conditions also set
+	dtMinIndex initial value to -1.	
+	
 2016-03-21  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* engine/qss/qss_dt.c
