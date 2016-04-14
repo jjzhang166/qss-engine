@@ -403,12 +403,17 @@ _models->replace (tab, mi);
 QString
 ModelEditor::_getAnnotationValue (QString value)
 {
-QString tmpValue = value.split ("=")[1];
+  QStringList values = value.split ("=");
+QString tmpValue;
+for(int c = 1; c <= values.size();c++)
+{
+   tmpValue += value.at(c);
+}
 if (tmpValue.size () == 1)
 {
 return (QString ());
 }
-QStringList values = tmpValue.split ("{");
+values = tmpValue.split ("{");
 if (values.size () > 1)
 {
 return (values[1].split ("}")[0]);
