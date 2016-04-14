@@ -401,14 +401,22 @@ _models->replace (tab, mi);
 }
 
 QString
-ModelEditor::_getAnnotationValue (QString value)
+ModelEditor::_getAnnotationValue (QString value, QString token)
 {
   QStringList values = value.split ("=");
-QString tmpValue;
-for(int c = 1; c <= values.size();c++)
-{
-   tmpValue += value.at(c);
-}
+  QString tmpValue;
+  if (token == "MMO_Output")
+    {
+      int index = value.indexOf ("=");
+      for (int a = index+1; a < value.size(); a++)
+        {
+	  tmpValue += value[a];
+        }
+    }
+  else
+    {
+      tmpValue = values[1];
+    }
 if (tmpValue.size () == 1)
 {
 return (QString ());
@@ -676,7 +684,7 @@ if (_textEditor->find ("experiment", QTextDocument::FindBackward))
 QStringList annotationValue = annotations.split (str);
 if (annotationValue.size () > 1)
 {
-return (_getAnnotationValue (annotationValue[1]));
+return (_getAnnotationValue (annotationValue[1],str));
 }
 else if (_defaultValues.contains (str))
 {

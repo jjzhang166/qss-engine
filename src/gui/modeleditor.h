@@ -564,7 +564,7 @@ private:
   QString
   _getAnnotations (QString str);
   QString
-  _getAnnotationValue (QString value);
+  _getAnnotationValue (QString value, QString token);
   bool
   _lineEmpty ();
   void

@@ -1,7 +1,8 @@
 2016-04-14  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* gui/modeleditor.cpp
-	(ModelEditor::_getAnnotationValue): Modified return value string.
+	(ModelEditor::_getAnnotationValue): Modified return value string. Modified output annotation return string.
+		
 2016-04-13  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* engine/qss/qss_dt.c
