@@ -1,15 +1,12 @@
 model buck
 	parameter Real C = 1e-4, L = 1e-4, R = 10, U = 24, T = 1e-4, DC = 0.5, ROn = 1e-5, ROff = 1e5;
-	discrete Real Rd, Rs, nextT,lastT,diodeon;
-	Real uC,iL,iD;
+	discrete Real Rd(start=1e5), Rs(start=1e-5), nextT(start=T),lastT,diodeon;
+	Real uC,iL,iD,s;
 
-	initial algorithm 
-	 nextT:=T;
-	 Rs:=1e5;
-	 Rd:=1e5;
 
 	 equation
 		iD=(iL*Rs-U)/(Rs+Rd);
+ s=diodeon*iD+(1-diodeon)*iD*Rd;
 		der(iL) = (-iD*Rd- uC)/L;
 	 	der(uC) = (iL - uC/R)/C;
 	   
@@ -23,16 +20,17 @@ model buck
 
 	when time - lastT-DC*T>0 then
 		  Rs := ROff;
-		  Rd := ROn;
-		diodeon:=1;
 	end when;
 
-	when iD*diodeon<0 then
+	when s>0 then
+  Rd:=ROn;
+  diodeon:=1;
+elsewhen s<0 then
 		  Rd := ROff;
-		diodeon:=0;
+ 		diodeon:=0;
 	end when;
-
 	annotation(
+
 	experiment(
 		MMO_Description="Buck converter.",
 		MMO_Solver=LIQSS2,

@@ -125,17 +125,27 @@ LIQSS_recomputeNextTime (QA_quantizer quantizer, int var, double t,
 	}
     }
   u[var] = x[cf1] - q[cf0] * a[var];
-  if (x[cf1] > 0)
+  double dt1=0;
+  if (x[cf1] != 0)
+  {
+    dt1= (q[cf0] - x[cf0])/x[cf1];
+    if (dt1>=0) 
     {
-      nTime[var] = t
-	  + fabs ((lqu[var] + q[cf0] - dq[var] - x[cf0]) / x[cf1]);
+      nTime[var] = t   + dt1;
     }
-  else if (x[cf1] < 0)
+    else
     {
-      nTime[var] = t
-	  + fabs ((q[cf0] - dq[var] - lqu[var] - x[cf0]) / x[cf1]);
+      if (x[cf1]>0) 
+      {
+	nTime[var] = t   +(q[cf0] +2*lqu[var]- x[cf0])/x[cf1];
+      } 
+      else
+      {
+       nTime[var] = t   + (q[cf0] -2*lqu[var]- x[cf0])/x[cf1];
+      }
     }
-  else
+  }
+    else
     {
       nTime[var] = INF;
     }
@@ -205,5 +215,8 @@ LIQSS_updateQuantizedState (QA_quantizer quantizer, int var, double *q,
 	  dq[var] = -u[var] / a[var] - q[cf0];
 	}
     }
+  if (dq[var]>2*lqu[var]) dq[var]=2*lqu[var];
+  if (dq[var]<-2*lqu[var]) dq[var]=-2*lqu[var];
+  
   q[cf0] += dq[var];
 }
