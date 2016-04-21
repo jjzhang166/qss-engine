@@ -1,14 +1,23 @@
+2016-04-21  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* mmo/util/ast_util.cpp
+	(ExpressionIndex_::foldTraverseElement): Modified return value when the index
+	factor is negative.
+	* mmo/util/index.cpp
+	(Index_::operConstant): Modified return value when the index factor is negative.
+
 2016-04-14  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* gui/modeleditor.cpp
-	(ModelEditor::_getAnnotationValue): Modified return value string. Modified output annotation return string.
-		
+	(ModelEditor::_getAnnotationValue): Modified return value string. Modified
+	output annotation return string.
+
 2016-04-13  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* engine/qss/qss_dt.c
 	(QSS_Dt): Modified upper bound and lower bound initial conditions also set
-	dtMinIndex initial value to -1.	
-	
+	dtMinIndex initial value to -1.
+
 2016-03-21  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* engine/qss/qss_dt.c
@@ -17,8 +26,11 @@
 
 2016-03-17  Joaquin  <joaquin.f.fernandez@gmail.com>
 
-	* gui/mmohighlight.cpp (MmoHighlighter::MmoHighlighter): Added Manual partition token and math functions.
-	* mmo/ir/annotation.cpp (MMO_EvalAnnotation_::MMO_EvalAnnotation_): Added Manual partition annotation.
+	* gui/mmohighlight.cpp
+	(MmoHighlighter::MmoHighlighter): Added Manual partition token and math
+	functions.
+	* mmo/ir/annotation.cpp
+	(MMO_EvalAnnotation_::MMO_EvalAnnotation_): Added Manual partition annotation.
 	* mmo/ir/annotation.h: Added Manual partition annotation.
 	* engine/common/data.h: Added Manual partition option for parallel simulations.
 	* engine/common/utils.c

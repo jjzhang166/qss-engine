@@ -1243,7 +1243,14 @@ MMO_Model_::insert (AST_Equation eq)
       AST_EquationListIterator it;
       foreach(it,eqs)
 	{
-	  _setRealVariables (current_element(it), range[0], range[1]);
+	  if (current_element(it)->equationType() == EQFOR)
+	    {
+               insert(current_element(it));
+	    }
+	  else
+	    {
+	      _setRealVariables (current_element(it), range[0], range[1]);
+	    }
 	}
     }
   else

@@ -165,7 +165,14 @@ Index_::constant () const
 int
 Index_::operConstant () const
 {
-  return (_constant + 1);
+  if (factor() < 0)
+    {
+      return (_constant);
+    }
+  else
+    {
+      return (_constant + 1);
+    }
 }
 
 void
@@ -355,6 +362,7 @@ Index_::print (string sub, int offset, bool solver) const
 	  if (cte == 0)
 	    {
 	      buffer << _factor << "*" << map;
+
 	    }
 	  else if (cte > 0)
 	    {
