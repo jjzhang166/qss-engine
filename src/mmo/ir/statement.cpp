@@ -585,7 +585,7 @@ MMO_Statement_::print (string indent, string idx, int offset, int order,
 			{
 			  _printAssignment (cRef->name (), cRef, e, indent, idx,
 					    offset, order, forOffset, ret);
-			}
+            		}
 		      c++;
 		    }
 		  buffer.str ("");

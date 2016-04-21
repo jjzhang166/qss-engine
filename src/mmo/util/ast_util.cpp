@@ -962,7 +962,7 @@ Index
 ExpressionIndex_::index (AST_Expression exp)
 {
   Index idx = foldTraverse (exp);
-  if (idx.factor () != 0 && idx.factor () != 1)
+  if (idx.factor () != 0 && fabs(idx.factor ()) != 1)
     {
       idx.setConstant (idx.operConstant () + idx.low ());
     }
@@ -1001,7 +1001,7 @@ ExpressionIndex_::foldTraverseElement (AST_Expression exp)
 	    Error::getInstance ()->add (exp->lineNum (),
 	    EM_IR | EM_VARIABLE_NOT_FOUND,
 					ER_Error,
-					"AcaIndex expression variable %s",
+					"expression variable %s",
 					cr->name ().c_str ());
 	    return (ret);
 	  }
@@ -1025,7 +1025,7 @@ ExpressionIndex_::foldTraverseElement (AST_Expression exp)
 		  {
 		    Error::getInstance ()->add (exp->lineNum (),
 		    EM_IR | EM_WRONG_VARIABLE_TYPE,
-						ER_Error, "aca%s",
+						ER_Error, "%s",
 						cr->name ().c_str ());
 		  }
 	      }
@@ -1155,7 +1155,14 @@ ExpressionIndex_::foldTraverseElement (Index l, Index r, BinOpType bot)
       break;
     case BINOPSUB:
       ret.setFactor (l.factor () - r.factor ());
-      ret.setConstant (l.operConstant () - r.operConstant ());
+      if (ret.factor() < 0)
+	{
+          ret.setConstant (l.operConstant () - r.operConstant ()-1);
+	}
+      else
+	{
+	  ret.setConstant (l.operConstant () - r.operConstant ());
+	}
       break;
     default:
       Error::getInstance ()->add (0, EM_IR | EM_WRONG_EXP, ER_Error,
