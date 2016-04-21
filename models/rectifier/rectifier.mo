@@ -13,6 +13,7 @@ model rectifier
     when u > 0 then
     	Rd:=Ron;
   	end when;
+
 	annotation(
 	experiment(
 		MMO_Description="Half wave rectifier.",

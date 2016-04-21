@@ -17,6 +17,7 @@ model lc_line
 	elsewhen time <= 1 then
 		d := 1;
 	end when;
+
 	annotation(
 	experiment(
 		MMO_Description="LC transmission line",

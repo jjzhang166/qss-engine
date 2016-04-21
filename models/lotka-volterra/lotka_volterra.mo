@@ -6,6 +6,7 @@ model lotka_volterra
 	equation
 		der(x[1]) = 0.1 * x[1] - 0.1 * x[1]*x[2];
 		der(x[2]) = 0.1 * x[1]*x[2] - 0.1 * x[2];
+
 	annotation(
 	experiment(
 		MMO_Description="Lotka Volterra model",

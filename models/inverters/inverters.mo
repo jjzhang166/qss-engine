@@ -57,8 +57,8 @@ algorithm
       nextchange:=10000000000.0;
     end if;  
   end when;
-
 	annotation(
+
 	experiment(
 		MMO_Description="A chain of logical inverters",
 		MMO_Solver=LIQSS2,

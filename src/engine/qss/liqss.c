@@ -129,7 +129,7 @@ LIQSS_recomputeNextTime (QA_quantizer quantizer, int var, double t,
   if (x[cf1] != 0)
   {
     dt1= (q[cf0] - x[cf0])/x[cf1];
-    if (dt1>=0) 
+    if (dt1>0) 
     {
       nTime[var] = t   + dt1;
     }
@@ -137,12 +137,16 @@ LIQSS_recomputeNextTime (QA_quantizer quantizer, int var, double t,
     {
       if (x[cf1]>0) 
       {
-	nTime[var] = t   +(q[cf0] +2*lqu[var]- x[cf0])/x[cf1];
+	nTime[var] = t + (q[cf0] +2*lqu[var]- x[cf0])/x[cf1];
       } 
       else
       {
-       nTime[var] = t   + (q[cf0] -2*lqu[var]- x[cf0])/x[cf1];
+       nTime[var] = t + (q[cf0] -2*lqu[var]- x[cf0])/x[cf1];
       }
+      if (nTime[var] < t)
+	{
+	  nTime[var] = t + MIN_STEP;
+	}
     }
   }
     else

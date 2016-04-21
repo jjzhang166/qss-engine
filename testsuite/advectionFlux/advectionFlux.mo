@@ -18,6 +18,17 @@ equation
   for j in 2:N loop
     der(u[j]) = -(F[j + 1] - F[j]) * N / L;
     //  der(u[j]) = -((v*u[j])-(v*u[j-1]))*N/L;
-  end for;
-  annotation(experiment(MMO_Description = "Advection Equation.", MMO_Solver = LIQSS2, MMO_SymDiff = false, MMO_Output = {u[N]}, StartTime = 0.0, StopTime = 1, Tolerance = {1e-5}, AbsTolerance = {1e-5}));
+end for;
+	annotation(
+
+	experiment(
+		MMO_Description=" Advection Equation.",
+		MMO_Solver=LIQSS2,
+		MMO_SymDiff=false,
+		MMO_Output={u[N]},
+		StartTime= 0.0,
+		StopTime= 1,
+		Tolerance={1e-5},
+		AbsTolerance={1e-5}
+	));
 end advectionFlux;

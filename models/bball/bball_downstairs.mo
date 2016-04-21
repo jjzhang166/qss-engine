@@ -15,6 +15,7 @@ model bball_downstairs
 	when x - 11 +stair > 0 then
 		stair := stair - 1;
 	end when;
+
 	annotation(
 	experiment(
 		MMO_Description="Ball bouncing downstairs.",
