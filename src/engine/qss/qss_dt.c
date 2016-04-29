@@ -95,6 +95,7 @@ QSS_updateDt (QSS_dt dt)
   double *gblDtMin = dt->state->gblDtMin;
   QSS_updateLocalDt (dt);
   gblDtMin[id] = dt->state->dtMin;
+  dt->state->dtGlobalLP = 0;
   pthread_barrier_wait (dt->state->b);
   double dtMin = gblDtMin[0];
   int i, lps = dt->state->lps;
@@ -108,12 +109,21 @@ QSS_updateDt (QSS_dt dt)
     }
   dt->state->synch[0] = 0;
   dt->state->dt = dtMin;
+  dt->state->dtLowerBound = dtMin * DT_LOWER_BOUND;
+  dt->state->dtUpperBound = dtMin * DT_UPPER_BOUND;
   pthread_barrier_wait (dt->state->b);
   if (dtMin < INF)
     {
       dt->state->avgDt += dtMin;
       dt->state->dtChanges++;
     }
+#ifdef DEBUG
+  if (dt->state->debug & SD_DBG_Dt && dt->state->id == 0)
+	{
+	  SD_print (dt->state->log, "%g %g", dt->state->t,
+		    dt->state->dt);
+	}
+#endif
 }
 
 /**
@@ -163,17 +173,8 @@ DT_ASYNCH_logStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable)
       if ((dt->state->dtGlobalLP == dt->state->id && dt->state->dtMin > dt->state->dtUpperBound) ||
 	  dt->state->dtMin < dt->state->dtLowerBound)
       {
-	  *(dt->state->synch) = 1;
+	  dt->state->synch[0] = 1;
       QSS_updateDt (dt);
-#ifdef DEBUG
-      if (dt->state->debug & SD_DBG_Dt)
-	{
-	  SD_print (dt->state->log, "%g %g", dt->state->dtChanges,
-		    dt->state->dt);
-	}
-#endif
-      dt->state->dtLowerBound = dt->state->dt * DT_LOWER_BOUND;
-      dt->state->dtUpperBound = dt->state->dt * DT_UPPER_BOUND;
       return (TRUE);
       }
   return (FALSE);
@@ -186,7 +187,7 @@ QSS_Dt (SD_DtSynch synch, double alpha, int outputs,
   QSS_dt p = checkedMalloc (sizeof(*p));
   int i, lclOutputs = outputs;
   char logFile[128];
-  sprintf (logFile, "%s-%d-dt",file,id);
+  sprintf (logFile, "%s-dt",file);
   p->ops = QSS_DtOps ();
   p->state = QSS_DtState ();
   if (synch == SD_DT_Fixed)
@@ -221,7 +222,10 @@ QSS_Dt (SD_DtSynch synch, double alpha, int outputs,
   p->state->dtChanges = 0;
   p->state->dtGlobalLP = id;
   p->state->avgDt = 0;
+  if (id == 0)
+    {
   p->state->log = SD_SimulationLog(logFile);
+    }
   p->state->debug = debug;
 #ifdef __linux__
   p->state->b = &(dtSynch->b);
@@ -269,6 +273,7 @@ QSS_DtState ()
   p->outputs = 0;
   p->synch = NULL;
   p->avgDt = 0;
+  p->t = 0;
   p->dtChanges = 0;
   p->log = NULL;
   return (p);
@@ -292,9 +297,9 @@ QSS_dtUpdate (QSS_dt dt)
     }
   dt->state->dtMin = INF;
   dt->state->dtMinIndex = 0;
-  if (dt->state->dt == dt->state->dtMin)
+  if (dt->state->dtGlobalLP == dt->state->id)
     {
-      *(dt->state->synch) = 1;
+      dt->state->synch[0] = 1;
       QSS_updateDt (dt);
     }
 }
@@ -325,6 +330,12 @@ bool
 QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable)
 {
   return (dt->ops->logStep (dt, Dq, Dx, Dt, variable));
+}
+
+void
+QSS_dtSetTime (QSS_dt dt, double t)
+{
+  dt->state->t = t;
 }
 
 #else
@@ -398,6 +409,12 @@ bool
 QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable)
 {
   return TRUE;
+}
+
+void
+QSS_dtSetTime (QSS_dt dt, double t)
+{
+  return;
 }
 
 #endif

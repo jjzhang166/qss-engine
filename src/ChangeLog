@@ -1,3 +1,14 @@
+2016-04-29  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/qss_dt.c
+	(QSS_dtSetTime): New function used to log the current simulation time.
+	(QSS_updateDt): Added time log for bebuging, set the upper and lower bound on
+	each update and set the initial global LP to 0.
+	* engine/qss/qss_parc_integrator.c
+	(QSS_PARC_integrator): Added call to QSS_dtSetTime when login dt info.
+	* engine/qss/qss_parh_integrator.c
+	(QSS_PARH_integrator): Added call to QSS_dtSetTime when login dt info.
+
 2016-04-21  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* mmo/util/ast_util.cpp

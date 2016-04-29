@@ -731,6 +731,12 @@ QSS_PARH_integrator (QSS_simulator simulator)
       simulator->previousTime = t;
       if (synchronize >= 0)
 	{
+#ifdef DEBUG
+          if (settings->debug & SD_DBG_Dt)
+	    {
+	      QSS_dtSetTime (dt, t);
+	    }
+#endif
 	  if (qssTime->noReinit && QSS_dtLogStep (dt, Dq, Dx, Dt, synchronize))
 	    {
 	      gvt = QSS_PAR_GVT (simulator);

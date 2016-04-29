@@ -120,6 +120,7 @@ struct QSS_dtState_
   int dtGlobalLP;
   double dtChanges;
   double avgDt;
+  double t; //!< Current simulation time.
   SD_simulationLog log;
   SD_Debug debug;
 #ifdef __linux__
@@ -211,5 +212,14 @@ QSS_dtValue (QSS_dt dt);
  */
 void
 QSS_dtUpdate (QSS_dt dt);
+
+/**
+ * @brief Set the time of the output steps, only used when login DT values.
+ *
+ * @param t Current time of the simulation.
+ *
+ */
+void
+QSS_dtSetTime (QSS_dt dt, double t);
 
 #endif /* QSS_DT_H_ */
