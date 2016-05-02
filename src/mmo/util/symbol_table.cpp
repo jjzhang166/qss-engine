@@ -414,7 +414,7 @@ VarSymbolTable_::print (VarInfo vi, string idx, int offset, int order,
 	}
       else if (vi->isParameter ())
 	{
-	  ret << "__";
+	  ret << "__PAR_";
 	  ret << vi->name ();
 	  ret << idxStr;
 	}
@@ -438,7 +438,7 @@ VarSymbolTable_::print (VarInfo vi, string idx, int offset, int order,
 	}
       else if (vi->isParameter ())
 	{
-	  ret << "__";
+	  ret << "__PAR_";
 	  ret << vi->name ();
 	  ret << idxStr;
 	}
@@ -471,7 +471,7 @@ VarSymbolTable_::print (VarInfo vi, string idx, int offset, int order,
 	}
       else if (vi->isParameter ())
 	{
-	  ret << "__";
+	  ret << "__PAR_";
 	  ret << vi->name ();
 	  ret << idxStr;
 	}
@@ -495,7 +495,7 @@ VarSymbolTable_::print (VarInfo vi, string idx, int offset, int order,
 	}
       else if (vi->isParameter ())
 	{
-	  ret << "__";
+	  ret << "__PAR_";
 	  ret << vi->name ();
 	  ret << idxStr;
 	}

@@ -457,7 +457,7 @@ _data->setLHS(tmp);
   if (vi->isParameter () && (vi->type ()->getType () == TYINTEGER))
     {
       list<Index>::iterator it = idxs.begin ();
-      reverse << "__reverse__" << vi->name () << "[" << index << "-1] = "
+      reverse << "__reverse__PAR_" << vi->name () << "[" << index << "-1] = "
 	  << it->print (idx, offset) << "+1;";
     }
   list<string> vars = eq->getVariables ();

@@ -105,6 +105,7 @@ PAR_createLPTasks (QSS_sim simulate, QSS_simulator simulator)
   tasks = checkedMalloc (lps * sizeof(*tasks));
   pthread_barrier_init (&b, NULL, lps);
   QSS_simulatorInstance si[lps];
+  simulator->id = ROOT_SIMULATOR;
   for (i = 0; i < lps; i++)
     {
       si[i].root = simulator;
@@ -160,8 +161,8 @@ PAR_statistics (QSS_simulator simulator)
   avgSteps = totalSimSteps / lps;
   avgTime = totalTime / lps;
   avgStepCost = avgTime / avgSteps;
-  pm = (simulator->memory / 1024) / 1024;
-  sm = (simulator->sequentialMemory / 1024) / 1024;
+  pm = (simulator->stats->memory / 1024) / 1024;
+  sm = (simulator->stats->sequentialMemory / 1024) / 1024;
   memoryIncrement = (pm - sm) / sm;
   SD_print (simulator->simulationLog, "Parallel Simulation Statistics:");
   SD_print (simulator->simulationLog, "");
@@ -170,7 +171,7 @@ PAR_statistics (QSS_simulator simulator)
   SD_print (simulator->simulationLog, "Total Simulation transitions: %lu",
 	    totalLPSteps);
   SD_print (simulator->simulationLog, "Initialization time: %g ms",
-	    simulator->initTime);
+	    simulator->stats->initTime);
   SD_print (simulator->simulationLog, "Partitioning time: %g ms",
 	    simulator->stats->partitioningTime);
   SD_print (simulator->simulationLog, "Initialize LPS time: %g ms",

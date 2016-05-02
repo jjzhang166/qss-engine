@@ -232,6 +232,7 @@ struct QSS_LP_data_
   int totalEvents; //!<
   int totalOutputs; //!<
   double initDt; //!< dt initial value.
+  bool externalEvent; //!<
   QSS_idxMap nLPS; //!<
   QSS_idxMap lps;  //!<
   QSS_idxMap qMap; //!<
@@ -449,6 +450,7 @@ struct QSS_time_
   double *tq;
   double *weights;
   double time;
+  double previousTime;
   double minValue;
   int minIndex;
   int noReinit;

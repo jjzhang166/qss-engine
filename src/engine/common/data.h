@@ -75,6 +75,8 @@ typedef void
  */
 #define DELTA   1e-3
 
+#define ROOT_SIMULATOR -1
+
 /**
  *
  */
@@ -476,12 +478,32 @@ typedef struct SD_statistics_ *SD_statistics;
  */
 struct SD_statistics_
 {
-  double *simulationTimes;  //!<
-  double partitioningTime;  //!<
-  double initializeLPS;  //!<
-  int *steps;  //!<
-  unsigned long *simulationMessages;  //!<
-  unsigned long *simulationExternalEvents;  //!<
+  double *simulationTimes;
+    double partitioningTime;
+    double initializeLPS;
+    int *steps;
+    unsigned long *simulationMessages;
+    unsigned long *simulationExternalEvents;
+    unsigned long modelEvaluations;
+    unsigned long totalSteps;
+    unsigned long reinits;
+    unsigned long memory;
+    double initTime;
+    double simulationTime;
+    double saveTime;
+    double sequentialMemory;
+    unsigned long messages;
+    unsigned long extTrans;
+    unsigned int pastEvents;
+  #ifdef _WIN32
+    struct timeval *iTime;
+    struct timeval *sTime;
+    struct timeval *sdTime;
+  #else
+    struct timespec *iTime;
+    struct timespec *sTime;
+    struct timespec *sdTime;
+  #endif
 };
 
 /**
@@ -490,7 +512,7 @@ struct SD_statistics_
  * @return
  */
 SD_statistics
-SD_Statistics(int lps);
+SD_Statistics();
 
 /**
  *
@@ -498,5 +520,8 @@ SD_Statistics(int lps);
  */
 void
 SD_freeStatistics(SD_statistics stats);
+
+void
+SD_setStatisticsLPS (SD_statistics stats, int lps);
 
 #endif /* DATA_H_ */

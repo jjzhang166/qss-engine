@@ -31,15 +31,7 @@ CLC_Simulator ()
   p->output = NULL;
   p->settings = NULL;
   p->simulationLog = NULL;
-#ifdef _WIN32
-  p->iTime = checkedMalloc (sizeof(*(p->iTime)));
-  p->sTime = checkedMalloc (sizeof(*(p->sTime)));
-  p->sdTime = checkedMalloc (sizeof(*(p->sdTime)));
-#else
-  p->iTime = checkedMalloc (sizeof(*(p->iTime)));
-  p->sTime = checkedMalloc (sizeof(*(p->sTime)));
-  p->sdTime = checkedMalloc (sizeof(*(p->sdTime)));
-#endif
+  p->stats = NULL;
   return (p);
 }
 
@@ -52,9 +44,7 @@ CLC_freeSimulator (CLC_simulator simulator)
   CLC_freeData (simulator->data);
   CLC_freeModel (simulator->model);
   SD_freeSimulationSettings (simulator->settings);
-  free (simulator->iTime);
-  free (simulator->sTime);
-  free (simulator->sdTime);
+  SD_freeStatistics (simulator->stats);
   free (simulator);
 }
 
@@ -95,6 +85,7 @@ CLC_initSimulator (SIM_simulator simulator)
   simulator->state->sim = (void*) CLC_Simulator ();
   ((CLC_simulator) simulator->state->sim)->settings =
       simulator->state->settings;
+  ((CLC_simulator) simulator->state->sim)->stats = SD_Statistics();
   simulator->ops->simulate = CLC_simulate;
   simulator->ops->freeSimulator = CLC_simulatorEnd;
 }

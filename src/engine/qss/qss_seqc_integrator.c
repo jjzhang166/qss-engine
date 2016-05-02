@@ -51,6 +51,7 @@ QSS_SEQC_integrate (SIM_simulator simulate)
   SD_simulationSettings settings = simulator->settings;
   SD_simulationLog simulationLog = simulator->simulationLog;
 #endif
+  unsigned long totalSteps = 0;
   double t = qssTime->time;
   int index = qssTime->minIndex;
   QSS_StepType type = qssTime->type;
@@ -69,7 +70,7 @@ QSS_SEQC_integrate (SIM_simulator simulate)
   int **SD = qssData->SD;
   int *TD = qssData->TD;
   int cf0, infCf0;
-  getTime (simulator->iTime);
+  getTime (simulator->stats->iTime);
 #ifdef SYNC_RT
   setInitRealTime();
 #endif
@@ -170,7 +171,7 @@ QSS_SEQC_integrate (SIM_simulator simulate)
       t = qssTime->time;
       index = qssTime->minIndex;
       type = qssTime->type;
-      simulator->totalSteps++;
+      totalSteps++;
 #ifdef DEBUG
       if (settings->debug & SD_DBG_StepInfo)
 	{
@@ -178,9 +179,10 @@ QSS_SEQC_integrate (SIM_simulator simulate)
 	}
 #endif
     }
-  getTime (simulator->sTime);
-  subTime (simulator->sTime, simulator->iTime);
-  simulator->simulationTime = getTimeValue (simulator->sTime);
+  getTime (simulator->stats->sTime);
+  subTime (simulator->stats->sTime, simulator->stats->iTime);
+  simulator->stats->simulationTime = getTimeValue (simulator->stats->sTime);
   QSS_SEQ_saveLog (simulator);
+  simulator->stats->totalSteps = totalSteps;
   QSS_SEQ_printSimulationLog (simulator);
 }

@@ -91,7 +91,7 @@ CLC_initialize (SIM_simulator simulate)
       SD_print (simulationLog, "done.");
     }
 #endif
-  getTime (simulator->iTime);
+  getTime (simulator->stats->iTime);
 #ifdef DEBUG
   if (settings->debug > 0)
     {

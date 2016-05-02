@@ -255,7 +255,7 @@ MMO_Files_::plot ()
   string fname = _fname;
   fname.append (".plt");
   _writer->setFile (fname);
-  _writer->print ("set terminal wxt persist");
+  _writer->print ("set terminal wxt");
   _writer->print ("set title \"" + _fname + "\"");
   _writer->print ("set ylabel \"State Variables\"");
   _writer->print ("set xlabel \"Time\"");
@@ -297,6 +297,7 @@ MMO_Files_::plot ()
 	}
     }
   _writer->print (&buffer);
+  _writer->print ("pause mouse close");
   _writer->clearFile ();
 }
 

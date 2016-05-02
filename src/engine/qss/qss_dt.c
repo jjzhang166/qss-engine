@@ -36,11 +36,11 @@
 #define DT_UPPER_BOUND 2
 
 QSS_dtSynch
-QSS_DtSynch(int lps)
+QSS_DtSynch (int lps)
 {
   QSS_dtSynch p = checkedMalloc (sizeof(*p));
   p->activeLPS = lps;
-  p->synch  = 0;
+  p->synch = 0;
 #ifdef __linux__
   pthread_mutex_init (&(p->activeMutex), NULL);
   pthread_barrier_init (&(p->b), NULL, lps);
@@ -48,11 +48,12 @@ QSS_DtSynch(int lps)
   return (p);
 }
 
-void QSS_freeDtSynch(QSS_dtSynch dtSynch)
+void
+QSS_freeDtSynch (QSS_dtSynch dtSynch)
 {
 #ifdef __linux__
   pthread_mutex_destroy (&(dtSynch->activeMutex));
-  pthread_barrier_destroy(&(dtSynch->b));
+  pthread_barrier_destroy (&(dtSynch->b));
 #endif
   free (dtSynch);
 }
@@ -74,7 +75,6 @@ QSS_updateLocalDt (QSS_dt dt)
   dt->state->dtMinIndex = lclMinIndex;
 }
 
-
 /**
  * @brief Update the global \f $ \delta t$ \f value.
  *
@@ -95,9 +95,9 @@ QSS_updateDt (QSS_dt dt)
   double *gblDtMin = dt->state->gblDtMin;
   QSS_updateLocalDt (dt);
   gblDtMin[id] = dt->state->dtMin;
-  dt->state->dtGlobalLP = 0;
   pthread_barrier_wait (dt->state->b);
   double dtMin = gblDtMin[0];
+  dt->state->dtGlobalLP = 0;
   int i, lps = dt->state->lps;
   for (i = 1; i < lps; i++)
     {
@@ -119,10 +119,10 @@ QSS_updateDt (QSS_dt dt)
     }
 #ifdef DEBUG
   if (dt->state->debug & SD_DBG_Dt && dt->state->id == 0)
-	{
-	  SD_print (dt->state->log, "%g %g", dt->state->t,
-		    dt->state->dt);
-	}
+    {
+      SD_print (dt->state->log, "%g %g", dt->state->t,
+	  dt->state->dt);
+    }
 #endif
 }
 
@@ -158,7 +158,7 @@ DT_ASYNCH_logStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable)
   double dtOpt = INF;
   if (Dx != 0)
     {
-      dtOpt = (Dq * Dt * dt->state->alpha) / fabs(Dx);
+      dtOpt = (Dq * Dt * dt->state->alpha) / fabs (Dx);
     }
   dt->state->dtOpt[variable] = dtOpt;
   if (variable == dt->state->dtMinIndex)
@@ -170,24 +170,25 @@ DT_ASYNCH_logStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable)
       dt->state->dtMin = dtOpt;
       dt->state->dtMinIndex = variable;
     }
-      if ((dt->state->dtGlobalLP == dt->state->id && dt->state->dtMin > dt->state->dtUpperBound) ||
-	  dt->state->dtMin < dt->state->dtLowerBound)
-      {
-	  dt->state->synch[0] = 1;
+  if ((dt->state->dtGlobalLP == dt->state->id
+      && dt->state->dtMin > dt->state->dtUpperBound)
+      || dt->state->dtMin < dt->state->dtLowerBound)
+    {
+      dt->state->synch[0] = 1;
       QSS_updateDt (dt);
       return (TRUE);
-      }
+    }
   return (FALSE);
 }
 
 QSS_dt
-QSS_Dt (SD_DtSynch synch, double alpha, int outputs,
-	double *gblDtMin, int id, QSS_dtSynch dtSynch, double initDt, char *file, SD_Debug debug)
+QSS_Dt (SD_DtSynch synch, double alpha, int outputs, double *gblDtMin, int id,
+	QSS_dtSynch dtSynch, double initDt, char *file, SD_Debug debug)
 {
   QSS_dt p = checkedMalloc (sizeof(*p));
   int i, lclOutputs = outputs;
   char logFile[128];
-  sprintf (logFile, "%s-dt",file);
+  sprintf (logFile, "%s-dt", file);
   p->ops = QSS_DtOps ();
   p->state = QSS_DtState ();
   if (synch == SD_DT_Fixed)
@@ -204,7 +205,7 @@ QSS_Dt (SD_DtSynch synch, double alpha, int outputs,
     {
       lclOutputs++;
     }
-  p->state->dtOpt = checkedMalloc(lclOutputs * sizeof(double));
+  p->state->dtOpt = checkedMalloc (lclOutputs * sizeof(double));
   for (i = 0; i < lclOutputs; i++)
     {
       p->state->dtOpt[i] = INF;
@@ -224,7 +225,7 @@ QSS_Dt (SD_DtSynch synch, double alpha, int outputs,
   p->state->avgDt = 0;
   if (id == 0)
     {
-  p->state->log = SD_SimulationLog(logFile);
+      p->state->log = SD_SimulationLog (logFile);
     }
   p->state->debug = debug;
 #ifdef __linux__
@@ -282,7 +283,10 @@ QSS_DtState ()
 void
 QSS_freeDtState (QSS_dtState state)
 {
-  SD_freeSimulationLog(state->log);
+  if (state->id == 0)
+    {
+      SD_freeSimulationLog (state->log);
+    }
   free (state->dtOpt);
   free (state);
 }
@@ -316,7 +320,7 @@ QSS_dtCheck (QSS_dt dt)
 {
   if (dt->state->synch[0] == 1)
     {
-      QSS_updateDt(dt);
+      QSS_updateDt (dt);
     }
 }
 
@@ -346,75 +350,75 @@ QSS_dtSetTime (QSS_dt dt, double t)
 
 QSS_dtSynch
 QSS_DtSynch(int lps)
-{
-  return (NULL);
-}
+  {
+    return (NULL);
+  }
 
 void
 QSS_freeDtSynch(QSS_dtSynch dtSynch)
-{
-  return;
-}
+  {
+    return;
+  }
 
 QSS_dt
 QSS_Dt (SD_DtSynch synch, double alpha, int outputs,
-	double *gblDtMin, int id, QSS_dtSynch dtSynch, double initDt, char *file, SD_Debug debug)
-{
-  return (NULL);
-}
+    double *gblDtMin, int id, QSS_dtSynch dtSynch, double initDt, char *file, SD_Debug debug)
+  {
+    return (NULL);
+  }
 
 void
 QSS_freeDt (QSS_dt dt)
-{
-  return;
-}
+  {
+    return;
+  }
 
 QSS_dtOps
 QSS_DtOps ()
-{
-  return (NULL);
-}
+  {
+    return (NULL);
+  }
 
 void
 QSS_freeDtOps (QSS_dtOps ops)
-{
-  return;
-}
+  {
+    return;
+  }
 
 QSS_dtState
 QSS_DtState ()
-{
-  return NULL;
-}
+  {
+    return NULL;
+  }
 
 void
 QSS_freeDtState (QSS_dtState state)
-{
-  return;
-}
+  {
+    return;
+  }
 
 void
 QSS_dtCheck (QSS_dt dt)
-{
-  return;
-}
+  {
+    return;
+  }
 
 double
 QSS_dtValue (QSS_dt dt)
-{
-  return (0);
-}
+  {
+    return (0);
+  }
 
 bool
 QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable)
-{
-  return TRUE;
-}
+  {
+    return TRUE;
+  }
 
 void
 QSS_dtSetTime (QSS_dt dt, double t)
-{
-  return;
-}
+  {
+    return;
+  }
 
 #endif

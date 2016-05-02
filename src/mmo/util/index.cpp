@@ -265,7 +265,7 @@ Index_::definition (string idx)
   string map;
   if (_map != NULL)
     {
-      map = "__" + _parameter + "[" + _map->print (idx) + "]";
+      map = "__PAR_" + _parameter + "[" + _map->print (idx) + "]";
     }
   else
     {
@@ -321,7 +321,7 @@ Index_::print (string sub, int offset, bool solver) const
     {
       if (solver)
 	{
-	  map = "__";
+	  map = "__PAR_";
 	}
       map += _parameter + "[" + _map->print (sub, offset) + "]";
     }
@@ -393,7 +393,7 @@ Index_::printReverseDefinition (string variable, int offset)
   string var;
   if (_map != NULL)
     {
-      var = "__reverse__" + _parameter + "[" + _map->print (variable, offset)
+      var = "__reverse__PAR_" + _parameter + "[" + _map->print (variable, offset)
 	  + "]";
     }
   else
@@ -452,7 +452,7 @@ Index_::printReverse (string variable, int offset)
   string var;
   if (_map != NULL)
     {
-      var = "__reverse__" + _parameter + "[" + _map->print (variable, offset)
+      var = "__reverse__PAR_" + _parameter + "[" + _map->print (variable, offset)
 	  + "]";
     }
   else

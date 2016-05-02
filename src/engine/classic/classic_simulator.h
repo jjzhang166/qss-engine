@@ -33,15 +33,7 @@ struct CLC_simulator_
   SD_output output;
   SD_simulationSettings settings;
   SD_simulationLog simulationLog;
-#ifdef _WIN32
-  struct timeval *iTime;
-  struct timeval *sTime;
-  struct timeval *sdTime;
-#else
-  struct timespec *iTime;
-  struct timespec *sTime;
-  struct timespec *sdTime;
-#endif
+  SD_statistics stats;
 };
 
 CLC_simulator

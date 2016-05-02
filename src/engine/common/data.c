@@ -411,18 +411,29 @@ SD_freeOutput (SD_output output, int states, int discretes)
 }
 
 SD_statistics
-SD_Statistics (int lps)
+SD_Statistics ()
 {
   SD_statistics p = checkedMalloc (sizeof(*p));
-  p->initializeLPS = 0;
-  p->partitioningTime = 0;
-  p->simulationTimes = checkedMalloc (lps * sizeof(double));
-  cleanDoubleVector (p->simulationTimes, 0, lps);
-  p->simulationMessages = checkedMalloc (lps * sizeof(unsigned long));
-  p->simulationExternalEvents = checkedMalloc (lps * sizeof(unsigned long));
-  p->steps = checkedMalloc (lps * sizeof(int));
-  cleanVector (p->steps, 0, lps);
-  return (p);
+    p->initializeLPS = 0;
+    p->partitioningTime = 0;
+    p->simulationTimes = NULL;
+    p->simulationMessages = NULL;
+    p->simulationExternalEvents = NULL;
+    p->steps = NULL;
+    p->totalSteps = 1;
+    p->memory = 0;
+    p->reinits = 0;
+    p->modelEvaluations = 0;
+    p->iTime = checkedMalloc (sizeof(*(p->iTime)));
+    p->sTime = checkedMalloc (sizeof(*(p->sTime)));
+    p->sdTime = checkedMalloc (sizeof(*(p->sdTime)));
+    p->initTime = 0;
+    p->simulationTime = 0;
+    p->saveTime = 0;
+    p->extTrans = 0;
+    p->pastEvents = 0;
+    p->messages = 0;
+    return (p);
 }
 
 void
@@ -444,6 +455,19 @@ SD_freeStatistics (SD_statistics stats)
     {
       free (stats->steps);
     }
+  free (stats->iTime);
+  free (stats->sTime);
+  free (stats->sdTime);
   free (stats);
 }
 
+void
+SD_setStatisticsLPS (SD_statistics stats, int lps)
+{
+  stats->simulationTimes = checkedMalloc (lps * sizeof(double));
+  cleanDoubleVector (stats->simulationTimes, 0, lps);
+  stats->simulationMessages = checkedMalloc (lps * sizeof(unsigned long));
+  stats->simulationExternalEvents = checkedMalloc (lps * sizeof(unsigned long));
+  stats->steps = checkedMalloc (lps * sizeof(int));
+  cleanVector (stats->steps, 0, lps);
+}

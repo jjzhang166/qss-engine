@@ -150,7 +150,7 @@ DASSL_integrate (SIM_simulator simulate)
   CLC_save_step (simOutput, solution, solution_time, t,
 		 clcData->totalOutputSteps, x, clcData->d, clcData->alg);
   clcData->totalOutputSteps++;
-  getTime (simulator->sTime);
+  getTime (simulator->stats->sTime);
 #ifdef SYNC_RT
   setInitRealTime();
 #endif
@@ -248,14 +248,14 @@ DASSL_integrate (SIM_simulator simulate)
   clcData->totalStepsDASSL += iwork[11];
   clcData->totalJacobians += iwork[12];
   clcData->totalCrossingEvaluations += iwork[35];
-  getTime (simulator->sTime);
-  subTime (simulator->sTime, simulator->iTime);
+  getTime (simulator->stats->sTime);
+  subTime (simulator->stats->sTime, simulator->stats->iTime);
   if (simulator->settings->debug == 0 || simulator->settings->debug > 1)
     {
       SD_print (simulator->simulationLog, "Simulation time (DASSL):");
       SD_print (simulator->simulationLog, "----------------");
       SD_print (simulator->simulationLog, "Miliseconds: %g",
-		getTimeValue (simulator->sTime));
+		getTimeValue (simulator->stats->sTime));
       SD_print (simulator->simulationLog, "Function evaluations: %llu",
 		clcData->funEvaluations);
       //SD_print (simulator->simulationLog, "Scalar function evaluations: %d", clcData->scalarEvaluations);

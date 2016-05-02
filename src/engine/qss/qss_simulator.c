@@ -62,31 +62,14 @@ QSS_Simulator ()
   p->settings = NULL;
   p->simulationLog = NULL;
   p->dt = NULL;
-  p->iTime = checkedMalloc (sizeof(*(p->iTime)));
-  p->sTime = checkedMalloc (sizeof(*(p->sTime)));
-  p->sdTime = checkedMalloc (sizeof(*(p->sdTime)));
-  p->initTime = 0;
-  p->simulationTime = 0;
-  p->saveTime = 0;
-  p->totalSteps = 1;
-  p->reinits = 0;
-  p->memory = 0;
-  p->sequentialMemory = 0;
-  p->extTrans = 0;
-  p->pastEvents = 0;
   p->id = 0;
   p->lpTime = NULL;
   p->lpDtMin = NULL;
-  p->previousTime = 0;
-  p->externalEvent = FALSE;
   p->mailbox = NULL;
   p->inbox = NULL;
   p->ack = NULL;
   p->stats = NULL;
   p->lps = NULL;
-  p->messages = 0;
-  p->messagesTime = 0;
-  p->dtSteps = 0;
   p->dtSynch = NULL;
   return (p);
 }
@@ -99,7 +82,7 @@ QSS_freeSimulator (QSS_simulator simulator)
 		simulator->data->inputs);
   if (simulator->settings->parallel)
     {
-      if (simulator->stats != NULL)
+      if (simulator->id == ROOT_SIMULATOR)
 	{
 	  SD_freeOutput (simulator->output, simulator->data->states,
 			 simulator->data->discretes);
@@ -107,9 +90,9 @@ QSS_freeSimulator (QSS_simulator simulator)
 	  QSS_freeData (simulator->data);
 	  SD_freeSimulationSettings (simulator->settings);
 	  free (simulator->lpTime);
+	  free (simulator->lpDtMin);
 	  QSS_LP_freeDataArray (simulator->lps);
 	  MLB_freeMailbox (simulator->mailbox);
-	  SD_freeStatistics (simulator->stats);
 	}
       else
 	{
@@ -119,6 +102,7 @@ QSS_freeSimulator (QSS_simulator simulator)
 	  FRW_freeFramework (simulator->frw);
 	  QSS_freeDt (simulator->dt);
 	}
+      SD_freeStatistics (simulator->stats);
     }
   else
     {
@@ -131,10 +115,8 @@ QSS_freeSimulator (QSS_simulator simulator)
       QSS_freeData (simulator->data);
       QSS_freeModel (simulator->model);
       SD_freeSimulationSettings (simulator->settings);
+      SD_freeStatistics (simulator->stats);
     }
-  free (simulator->iTime);
-  free (simulator->sTime);
-  free (simulator->sdTime);
   free (simulator);
 }
 
@@ -156,11 +138,11 @@ QSS_simulate (SIM_simulator simulate)
   signal (SIGFPE, fpe_handler);
   feenableexcept (FE_DIVBYZERO);
 #endif
-  getTime (simulator->iTime);
+  getTime (simulator->stats->iTime);
   QSS_initializeDataStructs (simulator);
-  getTime (simulator->sdTime);
-  subTime (simulator->sdTime, simulator->iTime);
-  simulator->initTime = getTimeValue (simulator->sdTime);
+  getTime (simulator->stats->sdTime);
+  subTime (simulator->stats->sdTime, simulator->stats->iTime);
+  simulator->stats->initTime = getTimeValue (simulator->stats->sdTime);
   QSS_CMD_alloc(simulator);
   INT_initialize (integrator, simulate);
   INT_integrate (integrator, simulate);
@@ -173,6 +155,7 @@ QSS_initSimulator (SIM_simulator simulator)
   simulator->state->sim = (void*) QSS_Simulator ();
   ((QSS_simulator) simulator->state->sim)->settings =
       simulator->state->settings;
+  ((QSS_simulator) simulator->state->sim)->stats = SD_Statistics();
   simulator->ops->simulate = QSS_simulate;
   simulator->ops->freeSimulator = QSS_simulatorEnd;
 }

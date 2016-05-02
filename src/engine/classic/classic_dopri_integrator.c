@@ -138,7 +138,7 @@ DOPRI_integrate (SIM_simulator simulate)
   simDataDopri.outvar = outvar;
   simDataDopri.totalOutputSteps = &totalOutputSteps;
   dopri_percentage = 0;
-  getTime (simulator->sTime);
+  getTime (simulator->stats->sTime);
   if (is_sampled)
     {
       CLC_save_step (simOutput, solution, solution_time, tout, totalOutputSteps,
@@ -190,14 +190,14 @@ DOPRI_integrate (SIM_simulator simulate)
 	}
 
     }
-  getTime (simulator->sTime);
-  subTime (simulator->sTime, simulator->iTime);
+  getTime (simulator->stats->sTime);
+  subTime (simulator->stats->sTime, simulator->stats->iTime);
   if (simulator->settings->debug == 0 || simulator->settings->debug > 1)
     {
       SD_print (simulator->simulationLog, "Simulation time (DOPRI):");
       SD_print (simulator->simulationLog, "----------------");
       SD_print (simulator->simulationLog, "Miliseconds: %g",
-		getTimeValue (simulator->sTime));
+		getTimeValue (simulator->stats->sTime));
       SD_print (simulator->simulationLog, "Scalar function evaluations: %d",
 		clcData->scalarEvaluations);
       SD_print (simulator->simulationLog, "Individual Zero Crossings : %d",

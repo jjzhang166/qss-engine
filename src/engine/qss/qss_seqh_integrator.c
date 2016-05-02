@@ -51,6 +51,8 @@ QSS_SEQH_integrate (SIM_simulator simulate)
   SD_simulationSettings settings = simulator->settings;
   SD_simulationLog simulationLog = simulator->simulationLog;
 #endif
+  unsigned long totalSteps = 0;
+  unsigned long reinits = 0;
   double t = qssTime->time;
   int index = qssTime->minIndex;
   QSS_StepType type = qssTime->type;
@@ -79,7 +81,7 @@ QSS_SEQH_integrate (SIM_simulator simulate)
   int **ZS = qssData->ZS;
   int **HD = qssData->HD;
   int **HZ = qssData->HZ;
-  getTime (simulator->iTime);
+  getTime (simulator->stats->iTime);
 #ifdef SYNC_RT
   setInitRealTime();
 #endif
@@ -304,7 +306,7 @@ QSS_SEQH_integrate (SIM_simulator simulate)
 			    }
 			  QA_recomputeNextTimes (quantizer, nSD, SD[j], t,
 			      nextStateTime, x, lqu, q);
-			  simulator->reinits++;
+			  reinits++;
 			}
 		      nHZ = qssData->nHZ[index];
 		      for (i = 0; i < nHZ; i++)
@@ -358,7 +360,7 @@ QSS_SEQH_integrate (SIM_simulator simulate)
       t = qssTime->time;
       index = qssTime->minIndex;
       type = qssTime->type;
-      simulator->totalSteps++;
+      totalSteps++;
 #ifdef DEBUG
       if (settings->debug & SD_DBG_StepInfo)
 	{
@@ -366,9 +368,11 @@ QSS_SEQH_integrate (SIM_simulator simulate)
 	}
 #endif
     }
-  getTime (simulator->sTime);
-  subTime (simulator->sTime, simulator->iTime);
-  simulator->simulationTime = getTimeValue (simulator->sTime);
+  getTime (simulator->stats->sTime);
+  subTime (simulator->stats->sTime, simulator->stats->iTime);
+  simulator->stats->simulationTime = getTimeValue (simulator->stats->sTime);
   QSS_SEQ_saveLog (simulator);
+  simulator->stats->totalSteps = totalSteps;
+  simulator->stats->reinits = reinits;
   QSS_SEQ_printSimulationLog (simulator);
 }

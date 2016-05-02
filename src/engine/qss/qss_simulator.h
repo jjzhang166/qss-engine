@@ -52,32 +52,9 @@ struct QSS_simulator_
   SD_simulationLog simulationLog;  //!<
   QSS_dt dt; //!<
   QSS_dtSynch dtSynch;
-  unsigned long totalSteps;  //!<
-  unsigned long reinits; //!<
-  double memory; //!<
-#ifdef _WIN32
-  struct timeval *iTime;  //!<
-  struct timeval *sTime;//!<
-  struct timeval *sdTime;//!<
-#else
-  struct timespec *iTime;  //!<
-  struct timespec *sTime;  //!<
-  struct timespec *sdTime;  //!<
-#endif
-  double initTime;  //!<
-  double simulationTime;  //!<
-  double saveTime;
-  double sequentialMemory;
-  double previousTime;
-  double messagesTime;
-  unsigned long dtSteps;
-  unsigned long messages;  //!<
-  unsigned long extTrans;  //!<
-  unsigned int pastEvents;  //!<
   int id;  //!< ID of the simulator.
   double *lpTime; //!< Array that contains the time of the last step taken in the LP or \f $ \inf $ $ \f otherwise.
-  double *lpDtMin; //!< Array that contains the average step time for each LP defined in the simulation.
-  bool externalEvent; //!<
+  double *lpDtMin; //!< Array that contains the minimum step time for each LP defined in the simulation.
   MLB_mailbox mailbox; //!<
   IBX_inbox inbox; //!<
   IBX_inbox ack; //!<

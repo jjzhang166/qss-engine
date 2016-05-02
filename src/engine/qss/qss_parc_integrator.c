@@ -71,10 +71,10 @@ QSS_PARC_externalEvent (QSS_simulator simulator, IBX_message message)
   int id = simulator->id;
   MLB_mailbox mailbox = simulator->mailbox;
   double inputTime = message.time;
-  if (inputTime < simulator->previousTime)
+  if (inputTime < qssTime->previousTime)
     {
-      inputTime = simulator->previousTime;
-      simulator->pastEvents++;
+      inputTime = qssTime->previousTime;
+      simulator->stats->pastEvents++;
     }
   qssTime->time = inputTime;
   qssTime->minIndex = message.index;
@@ -83,9 +83,9 @@ QSS_PARC_externalEvent (QSS_simulator simulator, IBX_message message)
   int index = qssTime->minIndex;
   int cf0 = index * coeffs, infCf0;
   QSS_StepType type = qssTime->type;
-  simulator->extTrans++;
+  simulator->stats->extTrans++;
   simulator->lpTime[id] = t;
-  simulator->previousTime = t;
+  qssTime->previousTime = t;
   if (message.sendAck)
     {
       MLB_ack (mailbox, message.from, id);
@@ -95,7 +95,7 @@ QSS_PARC_externalEvent (QSS_simulator simulator, IBX_message message)
   SD_simulationLog simulationLog = simulator->simulationLog;
   if (settings->debug & SD_DBG_ExternalEvent)
     {
-      SD_print (simulationLog, "LP %d external event: index = %d, type = %d, time = %.16lf, gvt = %.16lf, previousTime = %.16lf",id, message.index, message.type, message.time, simulator->lpTime[id], simulator->previousTime);
+      SD_print (simulationLog, "LP %d external event: index = %d, type = %d, time = %.16lf, gvt = %.16lf, previousTime = %.16lf",id, message.index, message.type, message.time, simulator->lpTime[id], qssTime->previousTime);
     }
 #endif
   switch (type)
@@ -149,6 +149,8 @@ QSS_PARC_integrator (QSS_simulator simulator)
   QA_quantizer quantizer = simulator->quantizer;
   SD_output output = simulator->output;
   QSS_LP_data lp = qssData->lp;
+  unsigned long totalSteps = 0;
+  unsigned long messages = 0;
   double t = qssTime->time;
   int index = qssTime->minIndex;
   int cf0, infCf0;
@@ -188,7 +190,7 @@ QSS_PARC_integrator (QSS_simulator simulator)
       SD_print (simulator->simulationLog, "\nBegin Simulation:");
     }
 #endif
-  getTime (simulator->iTime);
+  getTime (simulator->stats->iTime);
   while (TRUE)
     {
       if (t == ft)
@@ -215,16 +217,16 @@ QSS_PARC_integrator (QSS_simulator simulator)
 		  nextMessageTime = IBX_nextMessageTime (inbox);
 		  if (nextMessageTime < qssTime->time)
 		    {
-		      simulator->externalEvent = TRUE;
+		      lp->externalEvent = TRUE;
 		      qssTime->time = nextMessageTime;
-		      if (nextMessageTime < simulator->previousTime)
+		      if (nextMessageTime < qssTime->previousTime)
 			{
-			  qssTime->time = simulator->previousTime;
+			  qssTime->time = qssTime->previousTime;
 			}
 		    }
 		  else
 		    {
-		      simulator->externalEvent = FALSE;
+		      lp->externalEvent = FALSE;
 		    }
 		  t = qssTime->time;
 		  simulator->lpTime[id] = t;
@@ -239,7 +241,7 @@ QSS_PARC_integrator (QSS_simulator simulator)
 	  simulator->lpTime[id] = INF;
 	  break;
 	}
-      if (simulator->externalEvent)
+      if (lp->externalEvent)
 	{
 	  QSS_PARC_externalEvent (simulator, IBX_nextMessage (inbox));
 	  synchronize = NOT_ASSIGNED;
@@ -295,7 +297,7 @@ QSS_PARC_integrator (QSS_simulator simulator)
 		    int lpsEnd = lp->nLPS[synchronize + 1];
 		    for (i = lpsBegin; i < lpsEnd; i++)
 		      {
-			simulator->messages++;
+			messages++;
 			MLB_send (mailbox, lp->lps[i], id, msg);
 		      }
 		  }
@@ -361,9 +363,9 @@ QSS_PARC_integrator (QSS_simulator simulator)
 	    default:
 	      break;
 	    }
-	  simulator->totalSteps++;
+	  totalSteps++;
 	}
-      simulator->previousTime = t;
+      qssTime->previousTime = t;
       if (synchronize >= 0)
 	{
 #ifdef DEBUG
@@ -391,16 +393,16 @@ QSS_PARC_integrator (QSS_simulator simulator)
       nextMessageTime = IBX_nextMessageTime (inbox);
       if (nextMessageTime < qssTime->time)
 	{
-	  simulator->externalEvent = TRUE;
+	  lp->externalEvent = TRUE;
 	  qssTime->time = nextMessageTime;
-	  if (nextMessageTime < simulator->previousTime)
+	  if (nextMessageTime < qssTime->previousTime)
 	    {
-	      qssTime->time = simulator->previousTime;
+	      qssTime->time = qssTime->previousTime;
 	    }
 	}
       else
 	{
-	  simulator->externalEvent = FALSE;
+	  lp->externalEvent = FALSE;
 	}
       t = qssTime->time;
       simulator->lpTime[id] = t;
@@ -411,13 +413,15 @@ QSS_PARC_integrator (QSS_simulator simulator)
 	}
 #endif
     }
-  getTime (simulator->sTime);
-  subTime (simulator->sTime, simulator->iTime);
-  simulator->simulationTime = getTimeValue (simulator->sTime);
+  getTime (simulator->stats->sTime);
+  subTime (simulator->stats->sTime, simulator->stats->iTime);
+  simulator->stats->simulationTime = getTimeValue (simulator->stats->sTime);
   QSS_PAR_removePendingMessages (simulator);
   QSS_PAR_controlPassiveLPS (simulator);
   QSS_PAR_waitFor (simulator);
   QSS_PAR_saveLog (simulator);
+  simulator->stats->totalSteps = totalSteps;
+  simulator->stats->messages = messages;
   QSS_PAR_printSimulationLog (simulator);
   PAR_cleanLPTask (id);
 }

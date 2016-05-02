@@ -82,6 +82,7 @@ QSS_LP_Data (int states, int events, int inputs, int outputs,
     p->qMap = (QSS_idxMap) malloc (totalStates * sizeof(int));
     p->qInMap = (QSS_idxMap) malloc (inStates * sizeof(int));
     p->qOutMap = (QSS_idxMap) malloc (states * sizeof(int));
+    p->externalEvent = FALSE;
     if (events + inEvents > 0)
       {
 	p->eMap = (QSS_idxMap) malloc (totalEvents * sizeof(*p->eMap));
@@ -140,6 +141,7 @@ QSS_LP_copyData (QSS_LP_data data)
     p->qMap = data->qMap;
     p->qInMap = data->qInMap;
     p->qOutMap = data->qOutMap;
+    p->externalEvent = data->externalEvent;
     if (events + inEvents > 0)
       {
 	p->eMap = data->eMap;
@@ -705,6 +707,7 @@ QSS_Time (int states, int events, int inputs, double it,
   p->scheduler = scheduler;
   p->type = ST_State;
   p->noReinit = 1;
+  p->previousTime = it;
   for (i = 0; i < states; i++)
     {
       p->tx[i] = it;

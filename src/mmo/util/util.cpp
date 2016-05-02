@@ -576,7 +576,7 @@ BIF::variableName (VariableInterval vin)
     }
   else
     {
-      varStr = "__" + vi->name ();
+      varStr = "__PAR_" + vi->name ();
     }
   return (varStr);
 }
