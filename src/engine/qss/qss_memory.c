@@ -34,28 +34,42 @@ void
 M_init (LG_log log, QSS_data simData, SD_output simOutput)
 #endif
 {
-  int i, size;
+  int i, size, outIdx;
 #ifdef QSS_PARALLEL
+  int localIdx = 0;
   log->state->size = simData->lp->outputs;
 #else
   log->state->size = simOutput->outputs;
 #endif
-  size = log->state->size;
+  size = simOutput->outputs;
   if (size > 0)
     {
-      log->state->states = (list*) checkedMalloc (size * sizeof(struct list_));
+      log->state->states = (list*) checkedMalloc (log->state->size * sizeof(struct list_));
       for (i = 0; i < size; i++)
 	{
+#ifdef QSS_PARALLEL
+	  if (simData->lp->oMap[i] == NOT_ASSIGNED)
+	    {
+	      continue;
+	    }
+	  else
+	    {
+	      outIdx = localIdx;
+	      localIdx++;
+	    }
+#else
+	  outIdx = i;
+#endif
 	  if (simOutput->commInterval == CI_Dense
 	      || simOutput->commInterval == CI_Sampled)
 	    {
-	      log->state->states[i] = List (
+	      log->state->states[outIdx] = List (
 		  simData->params->nodeSize,
 		  (simData->order + 1) * simOutput->nOS[i] + simOutput->nOD[i]);
 	    }
 	  else
 	    {
-	      log->state->states[i] = List (simData->params->nodeSize, 1);
+	      log->state->states[outIdx] = List (simData->params->nodeSize, 1);
 	    }
 	}
 #ifdef QSS_PARALLEL
@@ -105,11 +119,7 @@ M_toFile (LG_log log)
   int i, j;
   log->state->output->store = SD_File;
   LG_log fileLog = LG_Log (log->state->data, log->state->output);
-#ifdef QSS_PARALLEL
-  int outputs = log->state->data->lp->outputs;
-#else
-  int outputs = log->state->output->outputs;
-#endif
+  int outputs = log->state->size;
   if (log->state->output->commInterval == CI_Step)
     {
       for (i = 0; i < outputs; i++)
@@ -144,15 +154,33 @@ M_toFile (LG_log log)
     {
       int order = log->state->data->order;
       int coeffs = order + 1;
+      int outIdx;
+#ifdef QSS_PARALLEL
+      int localIdx = 0;
+#endif
+      outputs = log->state->output->outputs;
       for (i = 0; i < outputs; i++)
 	{
+#ifdef QSS_PARALLEL
+	  if (log->state->data->lp->oMap[i] == NOT_ASSIGNED)
+	    {
+	      continue;
+	    }
+	  else
+	    {
+	      outIdx = localIdx;
+	      localIdx++;
+	    }
+#else
+	  outIdx = i;
+#endif
 	  int index = 1;
 	  double dt = log->state->output->sampled->period[i];
 	  if (dt == 0)
 	    {
 	      dt = 1e-2;
 	    }
-	  node n = log->state->states[i]->begin;
+	  node n = log->state->states[outIdx]->begin;
 	  while (n)
 	    {
 	      for (j = 0; j < n->used; j++)
@@ -207,7 +235,7 @@ M_toFile (LG_log log)
 			    }
 			}
 		      log->state->output->value (i, tmp1, d, alg, nt, &tmpval);
-		      LG_write (fileLog, i, nt, tmpval);
+		      LG_write (fileLog, outIdx, nt, tmpval);
 		      e += dt;
 		      log->state->output->sampled->nextTime[i] = dt * index++;
 		      nt = log->state->output->sampled->nextTime[i];
