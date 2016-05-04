@@ -28,11 +28,6 @@
 #include <common/utils.h>
 
 /**
- * @brief Minimum number of steps to be taken before considering changing the \f $ \delta t $ \f value.
- */
-#define DT_MIN_STEPS 50
-
-/**
  * @brief \f $ \delta t $ \f synchronization object.
  */
 typedef struct QSS_dtSynch_ *QSS_dtSynch;
@@ -44,6 +39,8 @@ struct QSS_dtSynch_
 {
   int synch; //!< Synchronization flag for \f $ \delta t $ \f update.
   int activeLPS;  //!< Number of active LPs in the simulation.
+  double t;
+  double elapsed;
 #ifdef __linux__
   pthread_mutex_t activeMutex; //!< Active LPS mutex.
   pthread_barrier_t b; //!< \f $ \delta t $ \f synchronization barrier.
@@ -90,7 +87,7 @@ typedef struct QSS_dt_ *QSS_dt;
  * @param
  */
 typedef bool
-(*QSS_dtLogStepFn) (QSS_dt, double, double, double, int);
+(*QSS_dtLogStepFn) (QSS_dt, double, double, double, int, double);
 
 /**
  *
@@ -120,7 +117,9 @@ struct QSS_dtState_
   int dtGlobalLP;
   double dtChanges;
   double avgDt;
-  double t; //!< Current simulation time.
+  double *t; //!< Current simulation time.
+  double *elapsed; //!< Elapsed time.
+  double simTime; //!< Total simulation time.
   SD_simulationLog log;
   SD_Debug debug;
 #ifdef __linux__
@@ -149,7 +148,7 @@ struct QSS_dt_
  */
 QSS_dt
 QSS_Dt (SD_DtSynch synch, double alpha, int outputs,
-	double *gblDtMin, int id, QSS_dtSynch dtSynch, double initDt, char *file, SD_Debug debug);
+	double *gblDtMin, int id, QSS_dtSynch dtSynch, double initDt, char *file, SD_Debug debug, double it, double ft);
 
 /**
  *
@@ -195,7 +194,7 @@ inline void
 QSS_dtCheck (QSS_dt dt);
 
 inline bool
-QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable);
+QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable, double ct);
 
 /**
  * @brief \f $ \delta t $ \f value wrapper.
@@ -212,14 +211,5 @@ QSS_dtValue (QSS_dt dt);
  */
 void
 QSS_dtUpdate (QSS_dt dt);
-
-/**
- * @brief Set the time of the output steps, only used when login DT values.
- *
- * @param t Current time of the simulation.
- *
- */
-void
-QSS_dtSetTime (QSS_dt dt, double t);
 
 #endif /* QSS_DT_H_ */

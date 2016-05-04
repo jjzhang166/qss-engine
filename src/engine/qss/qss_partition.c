@@ -224,6 +224,8 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 	    PaToH_Free ();
 	  }
 	  break;
+	default:
+	  break;
 	}
     }
   if (vwgt != NULL && ewgt != NULL)
@@ -246,6 +248,8 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
       break;
     case SD_Patoh:
       sprintf (fileName, "%s-Patoh-%s-%d.partition", name, graphType, nparts);
+      break;
+    default:
       break;
     }
   file = fopen (fileName, "w");

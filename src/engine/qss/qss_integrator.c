@@ -930,7 +930,7 @@ QSS_PAR_copySimulator (QSS_simulatorInstance *instance)
   p->time = QSS_Time (data->states, data->events, data->inputs, data->it,
 		      root->time->scheduler, root->time->weights);
   p->dt = QSS_Dt (params->dtSynch, params->dt, p->data->lp->outStates,
-		  root->lpDtMin, id, root->dtSynch, p->data->lp->initDt,logFile,root->settings->debug);
+		  root->lpDtMin, id, root->dtSynch, p->data->lp->initDt,logFile,root->settings->debug, root->data->it, root->data->ft);
   p->dtSynch = root->dtSynch;
   p->id = id;
   p->inbox = IBX_Inbox (data->states, 0);

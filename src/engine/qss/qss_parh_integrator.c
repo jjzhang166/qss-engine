@@ -735,13 +735,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
       qssTime->previousTime = t;
       if (synchronize >= 0)
 	{
-#ifdef DEBUG
-          if (settings->debug & SD_DBG_Dt)
-	    {
-	      QSS_dtSetTime (dt, t);
-	    }
-#endif
-	  if (qssTime->noReinit && QSS_dtLogStep (dt, Dq, Dx, Dt, synchronize))
+	  if (qssTime->noReinit && QSS_dtLogStep (dt, Dq, Dx, Dt, synchronize, t))
 	    {
 	      gvt = QSS_PAR_GVT (simulator);
 	      maxAdvanceTime = gvt + QSS_dtValue (dt);
