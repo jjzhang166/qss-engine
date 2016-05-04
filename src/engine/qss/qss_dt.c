@@ -90,7 +90,7 @@ QSS_updateLocalDt (QSS_dt dt)
  *
  * @param dt \f $ \delta t$ \f data structure.
  */
-static void
+void
 QSS_updateDt (QSS_dt dt)
 {
   int id = dt->state->id;

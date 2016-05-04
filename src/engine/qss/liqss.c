@@ -110,7 +110,6 @@ LIQSS_recomputeNextTime (QA_quantizer quantizer, int var, double t,
   int cf0 = var*2, cf1 = cf0+1;
   double *u = quantizer->state->u0;
   double *a = quantizer->state->a;
-  double *dq = quantizer->state->dq;
   if (quantizer->state->lt[var] == t)
     {
       double diffQ;

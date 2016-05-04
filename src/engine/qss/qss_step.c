@@ -187,10 +187,10 @@ ST_write (OUT_output output, QSS_data simData, QSS_time simTime,
 }
 
 #ifdef QSS_PARALLEL
-inline int
+int
 ST_PAR_getSteps (OUT_output output, int var)
 #else
-inline int
+int
 ST_getSteps (OUT_output output, int var)
 #endif
 {
@@ -198,10 +198,10 @@ ST_getSteps (OUT_output output, int var)
 }
 
 #ifdef QSS_PARALLEL
-inline void
+void
 ST_PAR_save (OUT_output output)
 #else
-inline void
+void
 ST_save (OUT_output output)
 #endif
 {

@@ -154,20 +154,32 @@ LG_freeLogOps (LG_logOps v);
  * @param
  * @param
  */
-inline void
-LG_write (LG_log log, int i, double time, double value);
+extern inline void
+LG_write (LG_log log, int i, double time, double value)
+{
+  log->ops->write (log, i, time, value);
+}
+
 /**
  *
  * @param
  * @param
  * @param
  */
-inline void
-LG_writeLine (LG_log log, int i, double time, double *value);
+extern inline void
+LG_writeLine (LG_log log, int i, double time, double *value)
+{
+  log->ops->writeLine (log, i, time, value);
+}
+
 /**
  *
  */
-inline void
-LG_toFile (LG_log log);
+extern inline void
+LG_toFile (LG_log log)
+{
+  log->ops->toFile (log);
+}
+
 
 #endif  /* QSS_LOG_H_ */

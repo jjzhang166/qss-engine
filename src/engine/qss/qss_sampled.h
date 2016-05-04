@@ -38,13 +38,21 @@ SAM_write (OUT_output output, QSS_data simData, QSS_time simTime,
  * @param var
  * @return
  */
-int
-SAM_getSteps (OUT_output output, int var);
+extern inline int
+SAM_getSteps (OUT_output output, int var)
+{
+  return (output->state->steps[var]);
+}
+
 /**
  *
  */
-void
-SAM_save (OUT_output output);
+extern inline void
+SAM_save (OUT_output output)
+{
+  LG_toFile (output->state->log);
+}
+
 /**
  *
  * @param simData
@@ -69,13 +77,21 @@ SAM_PAR_write (OUT_output output, QSS_data simData, QSS_time simTime,
  * @param var
  * @return
  */
-int
-SAM_PAR_getSteps (OUT_output output, int var);
+extern inline int
+SAM_PAR_getSteps (OUT_output output, int var)
+{
+  return (output->state->steps[var]);
+}
+
 /**
  *
  */
-void
-SAM_PAR_save (OUT_output output);
+extern inline void
+SAM_PAR_save (OUT_output output)
+{
+  LG_toFile (output->state->log);
+}
+
 /**
  *
  * @param simData

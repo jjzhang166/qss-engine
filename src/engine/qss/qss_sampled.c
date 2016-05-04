@@ -199,10 +199,10 @@ SAM_write (OUT_output output, QSS_data simData, QSS_time simTime,
 }
 
 #ifdef QSS_PARALLEL
-inline int
+int
 SAM_PAR_getSteps (OUT_output output, int var)
 #else
-inline int
+int
 SAM_getSteps (OUT_output output, int var)
 #endif
 {
@@ -210,10 +210,10 @@ SAM_getSteps (OUT_output output, int var)
 }
 
 #ifdef QSS_PARALLEL
-inline void
+void
 SAM_PAR_save (OUT_output output)
 #else
-inline void
+void
 SAM_save (OUT_output output)
 #endif
 {

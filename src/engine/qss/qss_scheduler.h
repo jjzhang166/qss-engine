@@ -145,8 +145,11 @@ SC_freeScheduler (SC_scheduler scheduler);
  * @param simData
  * @param simTime
  */
-inline void
-SC_update (SC_scheduler scheduler, QSS_data simData, QSS_time simTime);
+extern inline void
+SC_update (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
+{
+  scheduler->ops->update (scheduler,simData,simTime);
+}
 
 /**
  *
@@ -154,7 +157,10 @@ SC_update (SC_scheduler scheduler, QSS_data simData, QSS_time simTime);
  * @param simData
  * @param simTime
  */
-inline void
-SC_setUpdate (SC_scheduler scheduler, BT_upd updFunction);
+extern inline void
+SC_setUpdate (SC_scheduler scheduler, BT_upd updFunction)
+{
+  scheduler->ops->update = updFunction;
+}
 
 #endif  /* QSS_SCHEDULER_H_ */

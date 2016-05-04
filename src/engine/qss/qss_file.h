@@ -30,8 +30,11 @@
  * @param
  * @param
  */
-inline void
-F_write (LG_log log, int, double, double);
+extern inline void
+F_write (LG_log log, int i, double time, double value)
+{
+  fprintf (log->state->files[i], "%.16lf\t%.16lf\n", time, value);
+}
 
 /**
  *
@@ -62,8 +65,11 @@ F_init (LG_log log, QSS_data simData, SD_output simOutput);
  * @param
  * @param
  */
-inline void
-F_PAR_write (LG_log log, int, double, double);
+extern inline void
+F_PAR_write (LG_log log, int i, double time, double value)
+{
+  fprintf (log->state->files[i], "%.16lf\t%.16lf\n", time, value);
+}
 
 /**
  *

@@ -123,7 +123,10 @@ SIM_freeSimulatorState (SIM_simulatorState state);
  *
  * @param simulator
  */
-inline void
-SIM_simulate (SIM_simulator simulator);
+extern inline void
+SIM_simulate (SIM_simulator simulator)
+{
+  simulator->ops->simulate (simulator);
+}
 
 #endif /* SIMULATOR_H_ */

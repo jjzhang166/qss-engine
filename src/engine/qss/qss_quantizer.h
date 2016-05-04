@@ -189,9 +189,13 @@ QA_freeQuantizer (QA_quantizer quantizer);
  * @param lqu
  * @param q
  */
-inline void
+extern inline void
 QA_recomputeNextTimes (QA_quantizer quantizer, int vars, int *inf, double t,
-		       double *nTime, double *x, double * lqu, double *q);
+		       double *nTime, double *x, double * lqu, double *q)
+{
+  quantizer->ops->recomputeNextTimes (quantizer, vars, inf, t, nTime, x, lqu,
+				      q);
+}
 
 /**
  *
@@ -203,9 +207,12 @@ QA_recomputeNextTimes (QA_quantizer quantizer, int vars, int *inf, double t,
  * @param lqu
  * @param q
  */
-inline void
+extern inline void
 QA_recomputeNextTime (QA_quantizer quantizer, int var, double t, double *nTime,
-		      double *x, double *lqu, double *q);
+		      double *x, double *lqu, double *q)
+{
+  quantizer->ops->recomputeNextTime (quantizer, var, t, nTime, x, lqu, q);
+}
 
 /**
  *
@@ -216,9 +223,12 @@ QA_recomputeNextTime (QA_quantizer quantizer, int var, double t, double *nTime,
  * @param x
  * @param lqu
  */
-inline void
+extern inline void
 QA_nextTime (QA_quantizer quantizer, int var, double t, double *nTime,
-	     double *x, double *lqu);
+	     double *x, double *lqu)
+{
+  quantizer->ops->nextTime (quantizer, var, t, nTime, x, lqu);
+}
 
 /**
  *
@@ -228,8 +238,11 @@ QA_nextTime (QA_quantizer quantizer, int var, double t, double *nTime,
  * @param x
  * @param lqu
  */
-inline void
+extern inline void
 QA_updateQuantizedState (QA_quantizer quantizer, int var, double *q, double *x,
-			 double *lqu);
+			 double *lqu)
+{
+  quantizer->ops->updateQuantizedState (quantizer, var, q, x, lqu);
+}
 
 #endif  /* QSS_QUANTIZER_H_ */
