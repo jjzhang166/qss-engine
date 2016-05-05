@@ -60,6 +60,12 @@ double
 normal (double sigma);
 /**
  *
+ *  @param max
+ */
+double 
+randomS (double max);
+/**
+ *
  * @param a
  * @param size
  */

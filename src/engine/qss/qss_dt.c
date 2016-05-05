@@ -177,9 +177,9 @@ DT_ASYNCH_logStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable, dou
       && dt->state->dtMin > dt->state->dtUpperBound)
       || dt->state->dtMin < dt->state->dtLowerBound)
     {
-      dt->state->synch[0] = 1;
       dt->state->elapsed[0] = (ct - dt->state->t[0])/dt->state->simTime;
       dt->state->t[0] = ct;
+      dt->state->synch[0] = 1;
       QSS_updateDt (dt);
       return (TRUE);
     }

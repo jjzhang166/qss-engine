@@ -25,14 +25,12 @@
 void
 shuffle (int *a, int size)
 {
-  gsl_rng_set (_rseed, time (NULL));
   gsl_ran_shuffle (_rseed, a, size, sizeof(int));
 }
 
 unsigned long
 getRandomValue (int n)
 {
-  gsl_rng_set (_rseed, time (NULL));
   unsigned long ret = gsl_rng_get (_rseed) % n;
   return (ret);
 }
@@ -40,22 +38,25 @@ getRandomValue (int n)
 double
 exponential (double mu)
 {
-  gsl_rng_set (_rseed, time (NULL));
   return (gsl_ran_exponential (_rseed, mu));
 }
 
 double
 uniform (double a, double b)
 {
-  gsl_rng_set (_rseed, time (NULL));
   return (gsl_ran_flat (_rseed, a, b));
 }
 
 double
 normal (double sigma)
 {
-  gsl_rng_set (_rseed, time (NULL));
   return (gsl_ran_gaussian (_rseed, sigma));
+}
+
+double 
+randomS (double max)
+{
+  return (max * gsl_rng_uniform (_rseed));
 }
 
 void
