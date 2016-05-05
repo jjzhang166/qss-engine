@@ -1,4 +1,11 @@
 package math
+function random
+		input Real x;
+		output Real y;
+		external "C" y = mmo_random(x) annotation(
+																Library="mmo_math",
+																Include="#include <mmo_math.h>");
+	end random;
 	function rand
 		input Real x;
 		output Real y;
@@ -6,6 +13,13 @@ package math
 																Library="mmo_math",
 																Include="#include <mmo_math.h>");
 	end rand;
+function getRandomMarkedValue
+		input Real x;
+		output Real y;
+		external "C" y = mmo_getRandomMarkedValue(x) annotation(
+																Library="mmo_math",
+																Include="#include <mmo_math.h>");
+	end getRandomMarkedValue;
 	function getRandomValue
 		input Real x;
 		output Real y;
