@@ -213,30 +213,31 @@ FRW_freeFrameworkOps (FRW_frameworkOps o)
 }
 
 void
-FRW_recomputeDerivative (FRW_framework f, QSS_model simModel, QSS_data simData,
-			 QSS_time simTime, int index)
+FRW_recomputeDerivative (FRW_framework f,QSS_model simModel, QSS_data simData, QSS_time simTime,
+			 int index)
 {
   f->ops->recomputeDerivative (f, simModel, simData, simTime, index);
 }
 
 void
-FRW_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
+FRW_recomputeDerivatives (FRW_framework f,QSS_model simModel, QSS_data simData,
 			  QSS_time simTime, int index)
 {
   f->ops->recomputeDerivatives (f, simModel, simData, simTime, index);
 }
 
 void
-FRW_nextEventTime (FRW_framework f, QSS_model simModel, QSS_data simData,
-		   QSS_time simTime, int index)
+FRW_nextEventTime (FRW_framework f,QSS_model simModel, QSS_data simData, QSS_time simTime,
+		   int index)
 {
   f->ops->nextEventTime (f, simModel, simData, simTime, index);
 }
 
 void
-FRW_nextInputTime (FRW_framework f, QSS_model simModel, QSS_data simData,
-		   QSS_time simTime, double elapsed, int var, int index)
+FRW_nextInputTime (FRW_framework f, QSS_model simModel, QSS_data simData, QSS_time simTime,
+		   double elapsed, int var, int index)
 {
   f->ops->nextInputTime (f, simModel, simData, simTime, elapsed, var,
 				 index);
 }
+

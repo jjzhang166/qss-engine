@@ -33,9 +33,9 @@ DEPEXT      := d
 OBJEXT      := o
 
 #Flags, Libraries and Includes
-CFLAGS 		:= -Wall -msse2 -mfpmath=sse -O2 
+CFLAGS 		:= -Wall -msse2 -mfpmath=sse -O3 
 ifeq ($(DEBUG),True)
-CFLAGS 		:= -Wall -msse2 -mfpmath=sse -g -DDEBUG 
+CFLAGS 		:= -Wall -msse2 -mfpmath=sse -g -DDEBUG  
 endif
 LIB         := -lm 
 INC         := -I$(COMMONDIR) -I$(ENGINEDIR)

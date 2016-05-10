@@ -43,21 +43,6 @@ checkedMalloc (unsigned long long len)
 }
 
 #ifdef _WIN32
-double
-getTimeValue (struct timeval *te)
-#else
-double
-getTimeValue (struct timespec *te)
-#endif
-{
-#ifdef _WIN32
-  return (te->tv_usec);
-#else
-  return ((te->tv_sec * 1e3 + te->tv_nsec / 1e6));
-#endif
-}
-
-#ifdef _WIN32
 void
 getTime (struct timeval *te)
 #else
@@ -125,19 +110,6 @@ subTime (struct timespec *v, struct timespec *u)
       v->tv_nsec += 1000000000;
     }
 #endif
-}
-
-int
-sign (double x)
-{
-  if (x >= 0)
-    {
-      return (1);
-    }
-  else
-    {
-      return (-1);
-    }
 }
 
 double
@@ -583,12 +555,6 @@ vectorNext (vector v)
   return (v->values[tmpIter]);
 }
 
-bool
-vectorEnd (vector v)
-{
-  return (v->iter >= v->used);
-}
-
 vMatrix
 VMatrix (int rows, int cols)
 {
@@ -610,18 +576,6 @@ freeVMatrix (vMatrix m, int rows)
       freeVector (m[i]);
     }
   free (m);
-}
-
-void
-cleanVector (int *vector, int value, int size)
-{
-  memset (vector, value, size * sizeof(int));
-}
-
-void
-cleanDoubleVector (double *vector, int value, int size)
-{
-  memset (vector, value, size * sizeof(double));
 }
 
 #ifdef SYNC_RT
@@ -664,30 +618,6 @@ BIT_Vector (int bits)
   memset (b->words, 0, sizeof(*b->words) * b->nwords);
   memset (b->resetMask, 0, sizeof(*b->resetMask) * b->nwords);
   return (b);
-}
-
-void
-BIT_set (BIT_vector b, int bit)
-{
-  b->words[bit >> 5] |= 1 << (bit % BITS_PER_WORD);
-}
-
-void
-BIT_setMask (BIT_vector b, int bit)
-{
-  b->resetMask[bit >> 5] |= 1 << (bit % BITS_PER_WORD);
-}
-
-void
-BIT_clear (BIT_vector b, int bit)
-{
-  b->words[bit >> 5] &= ~(1 << (bit % BITS_PER_WORD));
-}
-
-unsigned long
-BIT_isSet (BIT_vector b, int bit)
-{
-  return (b->words[bit >> 5] & (1 << (bit % BITS_PER_WORD)));
 }
 
 void
@@ -788,37 +718,11 @@ BIT_next (BIT_vector v)
 }
 
 word_t
-BIT_isAnySet (BIT_vector b)
-{
-  return ((b->words[0] & 0xFFFFFFFF) || (b->words[1] & 0xFFFFFFFF));
-}
-
-void
-BIT_clearAll (BIT_vector b)
-{
-  b->words[0] &= b->resetMask[0];
-  b->words[1] &= b->resetMask[1];
-}
-
-void
-BIT_setAll (BIT_vector b)
-{
-  b->words[0] |= SET_ALL;
-  b->words[1] |= SET_ALL;
-}
-
-word_t
 BIT_numberOfSetBits (word_t i)
 {
   i = i - ((i >> 1) & 0x55555555);
   i = (i & 0x33333333) + ((i >> 2) & 0x33333333);
   return ((((i + (i >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24);
-}
-
-word_t
-BIT_setBits (BIT_vector b)
-{
-  return (BIT_numberOfSetBits (b->words[0]) + BIT_numberOfSetBits (b->words[1]));
 }
 
 #ifdef __linux__
@@ -904,34 +808,6 @@ IBX_add (IBX_inbox inbox, int from, IBX_message message)
   pthread_mutex_unlock (&(inbox->receivedMutex));
 }
 
-void
-IBX_ack (IBX_inbox inbox, int from)
-{
-  pthread_mutex_lock (&(inbox->receivedMutex));
-  BIT_set (inbox->received, from);
-  pthread_mutex_unlock (&(inbox->receivedMutex));
-}
-
-word_t
-IBX_checkMail (IBX_inbox inbox)
-{
-  word_t ret;
-  pthread_mutex_lock (&(inbox->receivedMutex));
-  ret = BIT_isAnySet (inbox->received);
-  pthread_mutex_unlock (&(inbox->receivedMutex));
-  return (ret);
-}
-
-word_t
-IBX_ackMessages (IBX_inbox inbox)
-{
-  word_t ret;
-  pthread_mutex_lock (&(inbox->receivedMutex));
-  ret = BIT_setBits (inbox->received);
-  pthread_mutex_unlock (&(inbox->receivedMutex));
-  return (ret);
-}
-
 int
 IBX_compare (const void * a, const void * b)
 {
@@ -948,14 +824,6 @@ IBX_compare (const void * a, const void * b)
       return (1);
     }
   return (0);
-}
-
-void
-IBX_reset (IBX_inbox inbox)
-{
-  pthread_mutex_lock (&(inbox->receivedMutex));
-  BIT_clearAll (inbox->received);
-  pthread_mutex_unlock (&(inbox->receivedMutex));
 }
 
 void
@@ -1006,12 +874,6 @@ IBX_receiveAndAckMessages (IBX_inbox inbox, MLB_mailbox mailbox, int id)
   pthread_mutex_unlock (&(inbox->receivedMutex));
 }
 
-double
-IBX_nextMessageTime (IBX_inbox inbox)
-{
-  return (inbox->orderedMessages[inbox->head].time);
-}
-
 IBX_message
 IBX_nextMessage (IBX_inbox inbox)
 {
@@ -1024,25 +886,6 @@ IBX_nextMessage (IBX_inbox inbox)
   return (msg);
 }
 
-void
-IBX_checkInbox (IBX_inbox inbox)
-{
-  word_t ret = IBX_checkMail (inbox);
-  if (ret)
-    {
-      IBX_receiveMessages (inbox);
-    }
-}
-
-void
-IBX_checkAckInbox (IBX_inbox inbox, MLB_mailbox mailbox, int id)
-{
-  word_t ret = IBX_checkMail (inbox);
-  if (ret)
-    {
-      IBX_receiveAndAckMessages (inbox, mailbox, id);
-    }
-}
 
 void
 IBX_close (IBX_inbox inbox, int dir)
@@ -1088,22 +931,180 @@ MLB_freeMailbox (MLB_mailbox mailbox)
 }
 
 void
-MLB_send (MLB_mailbox mailbox, int to, int from, IBX_message message)
+MLB_close (MLB_mailbox mailbox, int to, int dir)
+{
+  IBX_ack (mailbox->inbox[MSG_ACK][to], dir);
+  IBX_close (mailbox->inbox[MSG_ACK][to], dir);
+}
+
+void
+cleanVector (int *vector, int value, int size)
+{
+  memset (vector, value, size * sizeof(int));
+}
+
+void
+cleanDoubleVector (double *vector, int value, int size)
+{
+  memset (vector, value, size * sizeof(double));
+}
+
+#ifdef _WIN32
+double
+getTimeValue (struct timeval *te)
+#else
+double
+getTimeValue (struct timespec *te)
+#endif
+{
+#ifdef _WIN32
+  return (te->tv_usec);
+#else
+  return ((te->tv_sec * 1e3 + te->tv_nsec / 1e6));
+#endif
+}
+
+int
+sign (double x)
+{
+  if (x >= 0)
+    {
+      return (1);
+    }
+  else
+    {
+      return (-1);
+    }
+}
+
+void
+BIT_set (BIT_vector b, int bit)
+{
+  b->words[bit >> 5] |= 1 << (bit % BITS_PER_WORD);
+}
+
+void
+BIT_clear (BIT_vector b, int bit)
+{
+  b->words[bit >> 5] &= ~(1 << (bit % BITS_PER_WORD));
+}
+
+unsigned long
+BIT_isSet (BIT_vector b, int bit)
+{
+  return (b->words[bit >> 5] & (1 << (bit % BITS_PER_WORD)));
+}
+
+void
+BIT_clearAll(BIT_vector b)
+{
+  b->words[0] &= b->resetMask[0];
+  b->words[1] &= b->resetMask[1];
+}
+
+void
+BIT_setAll (BIT_vector b)
+{
+  b->words[0] |= SET_ALL;
+  b->words[1] |= SET_ALL;
+}
+
+word_t
+BIT_isAnySet(BIT_vector b)
+{
+  return ((b->words[0] & 0xFFFFFFFF) || (b->words[1] & 0xFFFFFFFF));
+}
+
+word_t
+BIT_setBits(BIT_vector b)
+{
+  return (BIT_numberOfSetBits (b->words[0]) + BIT_numberOfSetBits (b->words[1]));
+}
+
+void
+BIT_setMask (BIT_vector b, int bit)
+{
+  b->resetMask[bit >> 5] |= 1 << (bit % BITS_PER_WORD);
+}
+
+void
+IBX_ack(IBX_inbox inbox, int from)
+{
+  pthread_mutex_lock (&(inbox->receivedMutex));
+  BIT_set (inbox->received, from);
+  pthread_mutex_unlock (&(inbox->receivedMutex));
+}
+
+word_t
+IBX_checkMail(IBX_inbox inbox)
+{
+  word_t ret;
+  pthread_mutex_lock (&(inbox->receivedMutex));
+  ret = BIT_isAnySet (inbox->received);
+  pthread_mutex_unlock (&(inbox->receivedMutex));
+  return (ret);
+}
+
+void
+IBX_checkInbox(IBX_inbox inbox)
+{
+  word_t ret = IBX_checkMail (inbox);
+  if (ret)
+    {
+      IBX_receiveMessages (inbox);
+    }
+}
+
+void
+IBX_checkAckInbox(IBX_inbox inbox, MLB_mailbox mailbox, int id)
+{
+  word_t ret = IBX_checkMail (inbox);
+  if (ret)
+    {
+      IBX_receiveAndAckMessages (inbox, mailbox, id);
+    }
+}
+
+word_t
+IBX_ackMessages(IBX_inbox inbox)
+{
+  word_t ret;
+  pthread_mutex_lock (&(inbox->receivedMutex));
+  ret = BIT_setBits (inbox->received);
+  pthread_mutex_unlock (&(inbox->receivedMutex));
+  return (ret);
+}
+
+double
+IBX_nextMessageTime(IBX_inbox inbox)
+{
+  return (inbox->orderedMessages[inbox->head].time);
+}
+
+void
+IBX_reset(IBX_inbox inbox)
+{
+  pthread_mutex_lock (&(inbox->receivedMutex));
+  BIT_clearAll (inbox->received);
+  pthread_mutex_unlock (&(inbox->receivedMutex));
+}
+
+void
+MLB_send(MLB_mailbox mailbox, int to, int from, IBX_message message)
 {
   IBX_add (mailbox->inbox[MSG_EVENT][to], from, message);
 }
 
 void
-MLB_ack (MLB_mailbox mailbox, int to, int from)
+MLB_ack(MLB_mailbox mailbox, int to, int from)
 {
   IBX_ack (mailbox->inbox[MSG_ACK][to], from);
 }
 
-void
-MLB_close (MLB_mailbox mailbox, int to, int dir)
+bool
+vectorEnd (vector v)
 {
-  IBX_ack (mailbox->inbox[MSG_ACK][to], dir);
-  IBX_close (mailbox->inbox[MSG_ACK][to], dir);
+  return (v->iter >= v->used);
 }
 
 #else

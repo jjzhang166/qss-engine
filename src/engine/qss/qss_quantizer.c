@@ -167,35 +167,6 @@ QA_Quantizer (QSS_data simData, QSS_time simTime)
 }
 
 void
-QA_recomputeNextTimes (QA_quantizer quantizer, int vars, int *inf, double t,
-		       double *nTime, double *x, double *lqu, double *q)
-{
-  quantizer->ops->recomputeNextTimes (quantizer, vars, inf, t, nTime, x, lqu,
-				      q);
-}
-
-void
-QA_recomputeNextTime (QA_quantizer quantizer, int var, double t, double *nTime,
-		      double *x, double *lqu, double *q)
-{
-  quantizer->ops->recomputeNextTime (quantizer, var, t, nTime, x, lqu, q);
-}
-
-void
-QA_nextTime (QA_quantizer quantizer, int var, double t, double *nTime,
-	     double *x, double *lqu)
-{
-  quantizer->ops->nextTime (quantizer, var, t, nTime, x, lqu);
-}
-
-void
-QA_updateQuantizedState (QA_quantizer quantizer, int var, double *q, double *x,
-			 double *lqu)
-{
-  quantizer->ops->updateQuantizedState (quantizer, var, q, x, lqu);
-}
-
-void
 QA_freeQuantizerState (QA_quantizerState state)
 {
   if (state->dq != NULL)
@@ -273,4 +244,33 @@ QA_freeQuantizer (QA_quantizer quantizer)
   QA_freeQuantizerState (quantizer->state);
   QA_freeQuantizerOps (quantizer->ops);
   free (quantizer);
+}
+
+void
+QA_recomputeNextTimes (QA_quantizer quantizer, int vars, int *inf, double t,
+		       double *nTime, double *x, double * lqu, double *q)
+{
+  quantizer->ops->recomputeNextTimes (quantizer, vars, inf, t, nTime, x, lqu,
+				      q);
+}
+
+void
+QA_recomputeNextTime (QA_quantizer quantizer, int var, double t, double *nTime,
+		      double *x, double *lqu, double *q)
+{
+  quantizer->ops->recomputeNextTime (quantizer, var, t, nTime, x, lqu, q);
+}
+
+void
+QA_nextTime (QA_quantizer quantizer, int var, double t, double *nTime,
+	     double *x, double *lqu)
+{
+  quantizer->ops->nextTime (quantizer, var, t, nTime, x, lqu);
+}
+
+void
+QA_updateQuantizedState (QA_quantizer quantizer, int var, double *q, double *x,
+			 double *lqu)
+{
+  quantizer->ops->updateQuantizedState (quantizer, var, q, x, lqu);
 }

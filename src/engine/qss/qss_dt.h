@@ -186,11 +186,8 @@ void
 QSS_freeDtState (QSS_dtState state);
 
 
-extern inline bool
-QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable, double ct)
-{
-  return (dt->ops->logStep (dt, Dq, Dx, Dt, variable, ct));
-}
+bool
+QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable, double ct);
 
 /**
  * @brief \f $ \delta t $ \f value wrapper.
@@ -198,11 +195,8 @@ QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable, double 
  * @param \f $ \delta t $ \f data structure.
  * @return \f $ \delta t $ \f value.
  */
-extern inline double
-QSS_dtValue (QSS_dt dt)
-{
-  return (dt->state->dt);
-}
+double
+QSS_dtValue (QSS_dt dt);
 
 /**
  *
@@ -219,13 +213,7 @@ QSS_updateDt (QSS_dt dt);
  * @param dt
  * @return
  */
-extern inline void
-QSS_dtCheck (QSS_dt dt)
-{
-  if (dt->state->synch[0] == 1)
-    {
-      QSS_updateDt (dt);
-    }
-}
+void
+QSS_dtCheck (QSS_dt dt);
 
 #endif /* QSS_DT_H_ */

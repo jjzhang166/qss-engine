@@ -318,12 +318,17 @@ QSS_dtUpdate (QSS_dt dt)
     }
 }
 
-/**
- * \brief Control the synchronization flag.
- *
- * @param dt \f $ \delta t $ \f data structure.
- * @return TRUE (<> 0) if the flag is set, FALSE (0) otherwise.
- */
+bool
+QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable, double ct)
+{
+  return (dt->ops->logStep (dt, Dq, Dx, Dt, variable, ct));
+}
+
+double
+QSS_dtValue (QSS_dt dt)
+{
+  return (dt->state->dt);
+}
 
 void
 QSS_dtCheck (QSS_dt dt)
@@ -334,17 +339,6 @@ QSS_dtCheck (QSS_dt dt)
     }
 }
 
-double
-QSS_dtValue (QSS_dt dt)
-{
-  return (dt->state->dt);
-}
-
-bool
-QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable, double ct)
-{
-  return (dt->ops->logStep (dt, Dq, Dx, Dt, variable, ct));
-}
 
 #else
 

@@ -161,13 +161,9 @@ FRW_freeFrameworkOps (FRW_frameworkOps f);
  * @param simTime
  * @param index
  */
-extern inline void
+void
 FRW_recomputeDerivative (FRW_framework f,QSS_model simModel, QSS_data simData, QSS_time simTime,
-			 int index)
-{
-  f->ops->recomputeDerivative (f, simModel, simData, simTime, index);
-}
-
+			 int index);
 
 /**
  *
@@ -177,12 +173,9 @@ FRW_recomputeDerivative (FRW_framework f,QSS_model simModel, QSS_data simData, Q
  * @param simTime
  * @param index
  */
-extern inline void
+void
 FRW_recomputeDerivatives (FRW_framework f,QSS_model simModel, QSS_data simData,
-			  QSS_time simTime, int index)
-{
-  f->ops->recomputeDerivatives (f, simModel, simData, simTime, index);
-}
+			  QSS_time simTime, int index);
 
 /**
  *
@@ -192,12 +185,9 @@ FRW_recomputeDerivatives (FRW_framework f,QSS_model simModel, QSS_data simData,
  * @param simTime
  * @param index
  */
-extern inline void
+void
 FRW_nextEventTime (FRW_framework f,QSS_model simModel, QSS_data simData, QSS_time simTime,
-		   int index)
-{
-  f->ops->nextEventTime (f, simModel, simData, simTime, index);
-}
+		   int index);
 
 /**
  *
@@ -209,12 +199,8 @@ FRW_nextEventTime (FRW_framework f,QSS_model simModel, QSS_data simData, QSS_tim
  * @param var
  * @param index
  */
-extern inline void
+void
 FRW_nextInputTime (FRW_framework f, QSS_model simModel, QSS_data simData, QSS_time simTime,
-		   double elapsed, int var, int index)
-{
-  f->ops->nextInputTime (f, simModel, simData, simTime, elapsed, var,
-				 index);
-}
+		   double elapsed, int var, int index);
 
 #endif  /* QSS_FRW_H_ */

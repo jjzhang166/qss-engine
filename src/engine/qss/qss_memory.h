@@ -30,12 +30,8 @@
  * @param time
  * @param value
  */
-extern inline void
-M_write (LG_log log, int i, double time, double value)
-{
-  append (log->state->states[i], time, &value);
-}
-
+void
+M_write (LG_log log, int i, double time, double value);
 
 /**
  *
@@ -43,11 +39,8 @@ M_write (LG_log log, int i, double time, double value)
  * @param time
  * @param value
  */
-extern inline void
-M_writeLine (LG_log log, int i, double time, double *value)
-{
-  append (log->state->states[i], time, value);
-}
+void
+M_writeLine (LG_log log, int i, double time, double *value);
 
 /**
  *
@@ -69,11 +62,8 @@ M_init (LG_log log, QSS_data simData, SD_output simOutput);
  * @param time
  * @param value
  */
-extern inline void
-M_PAR_write (LG_log log, int i, double time, double value)
-{
-  append (log->state->states[i], time, &value);
-}
+void
+M_PAR_write (LG_log log, int i, double time, double value);
 
 /**
  *
@@ -81,11 +71,8 @@ M_PAR_write (LG_log log, int i, double time, double value)
  * @param time
  * @param value
  */
-extern inline void
-M_PAR_writeLine (LG_log log, int i, double time, double *value)
-{
-  append (log->state->states[i], time, value);
-}
+void
+M_PAR_writeLine (LG_log log, int i, double time, double *value);
 
 /**
  *

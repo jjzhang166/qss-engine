@@ -143,12 +143,9 @@ OUT_freeOutputOps (OUT_outputOps o);
  * @param simTime
  * @param simOutput
  */
-extern inline void
+void
 OUT_write (OUT_output output, QSS_data simData, QSS_time simTime,
-	   SD_output simOutput)
-{
-  output->ops->write (output, simData, simTime, simOutput);
-}
+	   SD_output simOutput);
 
 /**
  *
@@ -156,20 +153,14 @@ OUT_write (OUT_output output, QSS_data simData, QSS_time simTime,
  * @param var
  * @return
  */
-extern inline int
-OUT_getSteps (OUT_output output, int var)
-{
-  return (output->ops->getSteps (output, var));
-}
+int
+OUT_getSteps (OUT_output output, int var);
 
 /**
  *
  * @param output
  */
-extern inline void
-OUT_save (OUT_output output)
-{
-  output->ops->save (output);
-}
+void
+OUT_save (OUT_output output);
 
 #endif  /* QSS_OUTPUT_H_ */

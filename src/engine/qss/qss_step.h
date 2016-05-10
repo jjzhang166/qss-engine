@@ -38,20 +38,14 @@ ST_write (OUT_output output, QSS_data simData, QSS_time simTime, SD_output simOu
  * @param
  * @return
  */
-extern inline int
-ST_getSteps (OUT_output output, int var)
-{
-  return (output->state->steps[var]);
-}
+int
+ST_getSteps (OUT_output output, int var);
 
 /**
  *
  */
-extern inline void
-ST_save (OUT_output output)
-{
-  LG_toFile (output->state->log);
-}
+void
+ST_save (OUT_output output);
 
 
 /**
@@ -78,20 +72,14 @@ ST_PAR_write (OUT_output output, QSS_data simData, QSS_time simTime, SD_output s
  * @param
  * @return
  */
-extern inline int
-ST_PAR_getSteps (OUT_output output, int var)
-{
-  return (output->state->steps[var]);
-}
+int
+ST_PAR_getSteps (OUT_output output, int var);
 
 /**
  *
  */
-extern inline void
-ST_PAR_save (OUT_output output)
-{
-  LG_toFile (output->state->log);
-}
+void
+ST_PAR_save (OUT_output output);
 
 /**
  *

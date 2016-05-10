@@ -155,19 +155,12 @@ evaluateVectorPoly (double dt, double *p, int order);
  * @param te
  */
 #ifdef _WIN32
-extern inline double
-getTimeValue (struct timeval *te)
+double
+getTimeValue (struct timeval *te);
 #else
-extern inline double
-getTimeValue (struct timespec *te)
+double
+getTimeValue (struct timespec *te);
 #endif
-{
-#ifdef _WIN32
-  return (te->tv_usec);
-#else
-  return ((te->tv_sec * 1e3 + te->tv_nsec / 1e6));
-#endif
-}
 
 /**
  *
@@ -210,18 +203,8 @@ subTime (struct timespec *v, struct timespec *u);
  *
  * If the value is 0, the function returns 1.
  */
-extern inline int
-sign (double x)
-{
-  if (x >= 0)
-    {
-      return (1);
-    }
-  else
-    {
-      return (-1);
-    }
-}
+int
+sign (double x);
 
 /** List data structures */
 
@@ -347,11 +330,8 @@ vectorNext (vector v);
  * @param v
  * @return
  */
-extern inline bool
-vectorEnd (vector v)
-{
-  return (v->iter >= v->used);
-}
+bool
+vectorEnd (vector v);
 
 /**
  *
@@ -461,33 +441,24 @@ BIT_Vector (int bits);
  * @param b
  * @param bit
  */
-extern inline void
-BIT_set (BIT_vector b, int bit)
-{
-  b->words[bit >> 5] |= 1 << (bit % BITS_PER_WORD);
-}
+void
+BIT_set (BIT_vector b, int bit);
 
 /**
  *
  * @param b
  * @param bit
  */
-extern inline void
-BIT_clear (BIT_vector b, int bit)
-{
-  b->words[bit >> 5] &= ~(1 << (bit % BITS_PER_WORD));
-}
+void
+BIT_clear (BIT_vector b, int bit);
 
 /**
  *
  * @param b
  * @param bit
  */
-extern inline unsigned long
-BIT_isSet (BIT_vector b, int bit)
-{
-  return (b->words[bit >> 5] & (1 << (bit % BITS_PER_WORD)));
-}
+unsigned long
+BIT_isSet (BIT_vector b, int bit);
 
 /**
  *
@@ -507,34 +478,23 @@ BIT_print (BIT_vector b);
  *
  * @param b
  */
-extern inline void
-BIT_clearAll(BIT_vector b)
-{
-  b->words[0] &= b->resetMask[0];
-  b->words[1] &= b->resetMask[1];
-}
+void
+BIT_clearAll(BIT_vector b);
 
 /**
  *
  * @param b
  */
-extern inline void
-BIT_setAll (BIT_vector b)
-{
-  b->words[0] |= SET_ALL;
-  b->words[1] |= SET_ALL;
-}
+void
+BIT_setAll (BIT_vector b);
 
 /**
  *
  * @param b
  * @return
  */
-extern inline word_t
-BIT_isAnySet(BIT_vector b)
-{
-  return ((b->words[0] & 0xFFFFFFFF) || (b->words[1] & 0xFFFFFFFF));
-}
+word_t
+BIT_isAnySet(BIT_vector b);
 
 /**
  *
@@ -549,22 +509,16 @@ BIT_numberOfSetBits(word_t i);
  * @param b
  * @return
  */
-extern inline word_t
-BIT_setBits(BIT_vector b)
-{
-  return (BIT_numberOfSetBits (b->words[0]) + BIT_numberOfSetBits (b->words[1]));
-}
+word_t
+BIT_setBits(BIT_vector b);
 
 /**
  *
  * @param b
  * @param bit
  */
-extern inline void
-BIT_setMask (BIT_vector b, int bit)
-{
-  b->resetMask[bit >> 5] |= 1 << (bit % BITS_PER_WORD);
-}
+void
+BIT_setMask (BIT_vector b, int bit);
 
 /**
  *
@@ -717,28 +671,17 @@ IBX_add(IBX_inbox inbox, int from, IBX_message message);
  * @param inbox
  * @param from
  */
-extern inline void
-IBX_ack(IBX_inbox inbox, int from)
-{
-  pthread_mutex_lock (&(inbox->receivedMutex));
-  BIT_set (inbox->received, from);
-  pthread_mutex_unlock (&(inbox->receivedMutex));
-}
+void
+IBX_ack(IBX_inbox inbox, int from);
+
 
 /**
  *
  * @param inbox
  * @return
  */
-extern inline word_t
-IBX_checkMail(IBX_inbox inbox)
-{
-  word_t ret;
-  pthread_mutex_lock (&(inbox->receivedMutex));
-  ret = BIT_isAnySet (inbox->received);
-  pthread_mutex_unlock (&(inbox->receivedMutex));
-  return (ret);
-}
+word_t
+IBX_checkMail(IBX_inbox inbox);
 
 void
 IBX_receiveMessages (IBX_inbox inbox);
@@ -750,15 +693,8 @@ IBX_receiveAndAckMessages (IBX_inbox inbox, MLB_mailbox mailbox, int id);
  *
  * @param inbox
  */
-extern inline void
-IBX_checkInbox(IBX_inbox inbox)
-{
-  word_t ret = IBX_checkMail (inbox);
-  if (ret)
-    {
-      IBX_receiveMessages (inbox);
-    }
-}
+void
+IBX_checkInbox(IBX_inbox inbox);
 
 /**
  *
@@ -766,30 +702,16 @@ IBX_checkInbox(IBX_inbox inbox)
  * @param mailbox
  * @param id
  */
-extern inline void
-IBX_checkAckInbox(IBX_inbox inbox, MLB_mailbox mailbox, int id)
-{
-  word_t ret = IBX_checkMail (inbox);
-  if (ret)
-    {
-      IBX_receiveAndAckMessages (inbox, mailbox, id);
-    }
-}
+void
+IBX_checkAckInbox(IBX_inbox inbox, MLB_mailbox mailbox, int id);
 
 /**
  *
  * @param inbox
  * @return
  */
-extern inline word_t
-IBX_ackMessages(IBX_inbox inbox)
-{
-  word_t ret;
-  pthread_mutex_lock (&(inbox->receivedMutex));
-  ret = BIT_setBits (inbox->received);
-  pthread_mutex_unlock (&(inbox->receivedMutex));
-  return (ret);
-}
+word_t
+IBX_ackMessages(IBX_inbox inbox);
 
 /**
  *
@@ -812,23 +734,15 @@ IBX_receiveAndAckMessages(IBX_inbox inbox, MLB_mailbox mailbox, int id);
  * @param inbox
  * @return
  */
-extern inline double
-IBX_nextMessageTime(IBX_inbox inbox)
-{
-  return (inbox->orderedMessages[inbox->head].time);
-}
+double
+IBX_nextMessageTime(IBX_inbox inbox);
 
 /**
  *
  * @param inbox
  */
-extern inline void
-IBX_reset(IBX_inbox inbox)
-{
-  pthread_mutex_lock (&(inbox->receivedMutex));
-  BIT_clearAll (inbox->received);
-  pthread_mutex_unlock (&(inbox->receivedMutex));
-}
+void
+IBX_reset(IBX_inbox inbox);
 
 /**
  *
@@ -868,11 +782,8 @@ MLB_freeMailbox(MLB_mailbox mailbox);
  * @param from
  * @param message
  */
-extern inline void
-MLB_send(MLB_mailbox mailbox, int to, int from, IBX_message message)
-{
-  IBX_add (mailbox->inbox[MSG_EVENT][to], from, message);
-}
+void
+MLB_send(MLB_mailbox mailbox, int to, int from, IBX_message message);
 
 /**
  *
@@ -880,11 +791,8 @@ MLB_send(MLB_mailbox mailbox, int to, int from, IBX_message message)
  * @param to
  * @param from
  */
-extern inline void
-MLB_ack(MLB_mailbox mailbox, int to, int from)
-{
-  IBX_ack (mailbox->inbox[MSG_ACK][to], from);
-}
+void
+MLB_ack(MLB_mailbox mailbox, int to, int from);
 
 /**
  *
@@ -947,11 +855,8 @@ MLB_freeMailbox(MLB_mailbox mailbox);
  * @param value
  * @param size
  */
-extern inline void
-cleanVector (int *vector, int value, int size)
-{
-  memset (vector, value, size * sizeof(int));
-}
+void
+cleanVector (int *vector, int value, int size);
 
 /**
  *
@@ -959,11 +864,8 @@ cleanVector (int *vector, int value, int size)
  * @param value
  * @param size
  */
-extern inline void
-cleanDoubleVector (double *vector, int value, int size)
-{
-  memset (vector, value, size * sizeof(double));
-}
+void
+cleanDoubleVector (double *vector, int value, int size);
 
 #ifdef SYNC_RT
 
