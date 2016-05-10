@@ -152,11 +152,6 @@ LIQSS_recomputeNextTime (QA_quantizer quantizer, int var, double t,
     {
       nTime[var] = INF;
     }
-  if (isnan(nTime[var]))
-    {
-      printf("tiempo %d %g\n",var,nTime[var]);
-    }
-
 }
 
 #ifdef QSS_PARALLEL
@@ -177,10 +172,6 @@ LIQSS_nextTime (QA_quantizer quantizer, int var, double t, double *nTime,
   else
     {
       nTime[var] = t + fabs (lqu[var] / x[cf1]);
-    }
-  if (isnan(nTime[var]))
-    {
-      printf("tiempo %d %g\n",var,nTime[var]);
     }
 }
 
@@ -206,7 +197,7 @@ LIQSS_updateQuantizedState (QA_quantizer quantizer, int var, double *q,
   if (x[cf1] > 0)
     {
       dx = u[var] + (q[cf0] + lqu[var]) * a[var];
-      if (dx > 0)
+      if (dx >= 0)
 	{
 	  dq[var] = lqu[var];
 	}
@@ -218,7 +209,7 @@ LIQSS_updateQuantizedState (QA_quantizer quantizer, int var, double *q,
   else
     {
       dx = u[var] + (q[cf0] - lqu[var]) * a[var];
-      if (dx < 0)
+      if (dx <= 0)
 	{
 	  dq[var] = -lqu[var];
 	}
@@ -229,10 +220,5 @@ LIQSS_updateQuantizedState (QA_quantizer quantizer, int var, double *q,
     }
   if (dq[var]>2*lqu[var]) dq[var]=2*lqu[var];
   if (dq[var]<-2*lqu[var]) dq[var]=-2*lqu[var];
-  
   q[cf0] += dq[var];
-  if (isnan(q[cf0]))
-    {
-      printf("Variable erronea: %d %g\n",var,q[cf0]);
-    }
 }
