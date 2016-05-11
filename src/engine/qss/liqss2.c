@@ -373,7 +373,7 @@ LIQSS2_solve_single(QA_quantizer quantizer, int i, double *x, double *q, double 
 
 #ifdef QSS_PARALLEL
 void
-PAR_LIQSS2_old_dx(QA_quantizer quantizer, int i, double t, int nSD, double  *x, double *tx)
+LIQSS2_PAR_old_dx(QA_quantizer quantizer, int i, double t, int nSD, double  *x, double *tx)
 #else
 void
 LIQSS2_old_dx(QA_quantizer quantizer, int i, double t, int nSD, double  *x, double *tx)
