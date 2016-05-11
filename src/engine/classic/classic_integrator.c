@@ -68,22 +68,6 @@ CLC_initialize (SIM_simulator simulate)
       s = sign (zc[0]);
       clcData->event[i].zcSign = s;
       clcData->event[i].zcHyst = e / 10.0;
-      if (clcData->event[i].direction == 0 || clcData->event[i].direction == s)
-	{
-	  if (s >= 0)
-	    {
-	      clcModel->events->handlerPos (i, clcData->x, clcData->d,
-					    clcData->alg, t);
-	    }
-	  else
-	    {
-	      clcModel->events->handlerNeg (i, clcData->x, clcData->d,
-					    clcData->alg, t);
-	    }
-	  clcModel->events->zeroCrossing (i, clcData->x, clcData->d,
-					  clcData->alg, t, zc);
-	  clcData->event[i].zcSign = sign (zc[0]);
-	}
     }
 #ifdef DEBUG
   if (settings->debug > 2)
