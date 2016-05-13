@@ -104,6 +104,7 @@ VarInfo_::_processModification ()
 			      else if (am->name ()->compare ("start") == 0)
 				{
 				  _hasStart = true;
+				  break;
 				}
 			    }
 			}

@@ -511,12 +511,12 @@ BIF::generateCode (string variableMap, string variableIndex,
       code.push_back (buffer.str ());
       buffer.str ("");
       code.push_back ("{");
-      for (int j = 0; j < expOrder; j++)
-	{
+/*      for (int j = 0; j < expOrder; j++)
+	{*/
 	  code.push_back (
-	      _reduce (variableMap, variableIndex, j, variableInterval,
+	      _reduce (variableMap, variableIndex, 0,variableInterval,
 		       states));
-	}
+//	}
       code.push_back ("}");
     }
   return (code);
@@ -651,7 +651,7 @@ BuiltInSumFunction::_reduce (string variableMap, string variableIndex,
     }
   else
     {
-      buffer << "\t" << variableMap << "[0] += " << vin.name () << "["
+      buffer << "\t" << variableMap << "[0] += " << variablePrefix << "["
 	  << idx.print (variableIndex) << "];";
     }
   return (buffer.str ());
@@ -697,7 +697,7 @@ BuiltInProductFunction::_reduce (string variableMap, string variableIndex,
     }
   else
     {
-      buffer << "\t" << variableMap << "[0] *= " << vin.name () << "["
+      buffer << "\t" << variableMap << "[0] *= " << variablePrefix << "["
 	  << idx.print (variableIndex) << "];";
     }
   return (buffer.str ());
@@ -930,9 +930,9 @@ BuiltInMinFunction::_reduce (string variableMap, string variableIndex,
     }
   else
     {
-      buffer << "\t if (" << variableMap << "[0] > " << vin.name () << "["
+      buffer << "\t if (" << variableMap << "[0] > " << variablePrefix << "["
 	  << idx.print (variableIndex) << "])" << endl;
-      buffer << "\t \t" << variableMap << "[0] = " << vin.name () << "["
+      buffer << "\t \t" << variableMap << "[0] = " << variablePrefix << "["
 	  << idx.print (variableIndex) << "];";
     }
   return (buffer.str ());
@@ -951,11 +951,11 @@ BuiltInMinFunction::_init (string variableMap, string variableIndex,
   if (hasStates)
     {
       buffer << "\t" << variableMap << "[" << variableIndex << "] = "
-	  << variablePrefix << "[" << idx.offset () << "]" << expOrder << ";";
+	  << variablePrefix << "[" << idx.offset () << expOrder << "];";
     }
   else
     {
-      buffer << "\t" << variableMap << "[0] = " << vin.name () << "[0];";
+      buffer << "\t" << variableMap << "[0] = " << variablePrefix << "[0];";
     }
   return (buffer.str ());
 }
@@ -986,9 +986,9 @@ BuiltInMaxFunction::_reduce (string variableMap, string variableIndex,
     }
   else
     {
-      buffer << "\t if (" << variableMap << "[0] < " << vin.name () << "["
+      buffer << "\t if (" << variableMap << "[0] < " << variablePrefix << "["
 	  << idx.print (variableIndex) << "])" << endl;
-      buffer << "\t \t" << variableMap << "[0] = " << vin.name () << "["
+      buffer << "\t \t" << variableMap << "[0] = " << variablePrefix << "["
 	  << idx.print (variableIndex) << "];";
     }
   return (buffer.str ());
@@ -1007,11 +1007,11 @@ BuiltInMaxFunction::_init (string variableMap, string variableIndex,
   if (hasStates)
     {
       buffer << "\t" << variableMap << "[" << variableIndex << "] = "
-	  << variablePrefix << "[" << idx.offset () << "]" << expOrder << ";";
+	  << variablePrefix << "[" << idx.offset () << expOrder << "];";
     }
   else
     {
-      buffer << "\t" << variableMap << "[0] = " << vin.name () << "[0];";
+      buffer << "\t" << variableMap << "[0] = " << variablePrefix << "[0];";
     }
   return (buffer.str ());
 }
