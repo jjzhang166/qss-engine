@@ -1,6 +1,6 @@
 model advection
 	parameter Real alpha=0.5,mu=1000;
-	constant Integer N = 1000;
+	constant Integer N = 20000;
 	Real u[N];
 	initial algorithm
 	for i in 1:N/3 loop
@@ -17,7 +17,10 @@ model advection
 	experiment(
 		MMO_Description="Advection",
 		MMO_Solver=LIQSS2,
-		MMO_Output={u[N],y=u[1]},
+		MMO_SymDiff=false,
+		MMO_LPS=2,
+		MMO_DT_Min=1,
+		MMO_Output={u[N]},
 		StartTime=0.0,
 		StopTime=1.0,
 		Tolerance={1e-3},
