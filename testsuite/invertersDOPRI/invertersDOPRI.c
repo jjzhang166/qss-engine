@@ -11,9 +11,9 @@
 #include <classic/classic_model.h>
 static CLC_data modelData = NULL;
 
-double __UOP = 0;
-double __G = 0;
-double __UTH = 0;
+double __PAR_UOP = 0;
+double __PAR_G = 0;
+double __PAR_UTH = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -32,7 +32,7 @@ MOD_definition(double *x, double *d, double *alg, double t, double *dx)
 		dx[0] = d[(1)];
 	for(i = 1; i <= 501; i++)
 	{
-		dx[i] = __UOP-x[(i) * 1]-__G*(d[(i+1)]*pow((x[(i-1) * 1]-__UTH),2.0)-d[(i+502)]*pow((x[(i-1) * 1]-x[(i) * 1]-__UTH),2.0));
+		dx[i] = __PAR_UOP-x[(i) * 1]-__PAR_G*(d[(i+1)]*pow((x[(i-1) * 1]-__PAR_UTH),2.0)-d[(i+502)]*pow((x[(i-1) * 1]-x[(i) * 1]-__PAR_UTH),2.0));
 	}
 }
 
@@ -48,11 +48,11 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 		default:
 			if(i >= 0 && i <= 500)
 			{
-				zc[0] = x[(i) * 1]-(__UTH);
+				zc[0] = x[(i) * 1]-(__PAR_UTH);
 			}
 			if(i >= 501 && i <= 1001)
 			{
-				zc[0] = x[(i-501) * 1]-x[(i-500) * 1]-(__UTH);
+				zc[0] = x[(i-501) * 1]-x[(i-500) * 1]-(__PAR_UTH);
 			}
 	}
 }
@@ -135,9 +135,9 @@ CLC_initializeDataStructs(CLC_simulator simulator)
 modelData = simulator->data;
 
 	// Allocate main data structures.
-	__UOP = 5.0;
-	__G = 100.0;
-	__UTH = 1.0;
+	__PAR_UOP = 5.0;
+	__PAR_G = 100.0;
+	__PAR_UTH = 1.0;
 	modelData->d[(0)] = 5.0;
 	// Initialize model code.
 	for(i0 = 0; i0 <= 249; i0++)

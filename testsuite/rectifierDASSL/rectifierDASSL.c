@@ -11,12 +11,12 @@
 #include <classic/classic_model.h>
 static CLC_data modelData = NULL;
 
-double __Ron = 0;
-double __Roff = 0;
-double __U = 0;
-double __L = 0;
-double __R = 0;
-double __w = 0;
+double __PAR_Ron = 0;
+double __PAR_Roff = 0;
+double __PAR_U = 0;
+double __PAR_L = 0;
+double __PAR_R = 0;
+double __PAR_w = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -31,8 +31,8 @@ void
 MOD_definition(double *x, double *d, double *alg, double t, double *dx)
 {
 	modelData->scalarEvaluations++;
-		dx[0] = 1000.0*(__U*sin(__w*t)-x[0]);
-		dx[1] = (x[0]-x[1]*(__R+d[(0)]))/__L;
+		dx[0] = 1000.0*(__PAR_U*sin(__PAR_w*t)-x[0]);
+		dx[1] = (x[0]-x[1]*(__PAR_R+d[(0)]))/__PAR_L;
 }
 
 void
@@ -56,7 +56,7 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 	switch(i)
 	{
 		case 1:
-			d[(0)] = __Ron;
+			d[(0)] = __PAR_Ron;
 			return;
 	}
 }
@@ -67,7 +67,7 @@ MOD_handlerNeg(int i, double *x, double *d, double *alg, double t)
 	switch(i)
 	{
 		case 0:
-			d[(0)] = __Roff;
+			d[(0)] = __PAR_Roff;
 			return;
 	}
 }
@@ -97,12 +97,12 @@ CLC_initializeDataStructs(CLC_simulator simulator)
 modelData = simulator->data;
 
 	// Allocate main data structures.
-	__Ron = 1.000000000000000081803054e-05;
-	__Roff = 1.000000000000000000000000e+05;
-	__U = 311.0;
-	__L = 1.000000000000000020816682e-03;
-	__R = 10.0;
-	__w = 3.141600000000000250111043e+02;
+	__PAR_Ron = 1.000000000000000081803054e-05;
+	__PAR_Roff = 1.000000000000000000000000e+05;
+	__PAR_U = 311.0;
+	__PAR_L = 1.000000000000000020816682e-03;
+	__PAR_R = 10.0;
+	__PAR_w = 3.141600000000000250111043e+02;
 	modelData->d[(0)] = 1.000000000000000000000000e+05;
 	// Initialize model code.
 		modelData->event[0].direction = -1;

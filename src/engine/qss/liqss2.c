@@ -256,39 +256,7 @@ LIQSS2_updateQuantizedState (QA_quantizer quantizer, int var, double *q,
 		}
 	    }
 	}
-	else
-	{ // A[i][i] =0
-		if(x[i2]!=0)
-		{
-			if(x[i2]>0)
-			{
-				q[i0]=x[i0]-lqu[i];
-			}
-			else
-			{
-				q[i0]=x[i0]+lqu[i];
-			}
-			h=sqrt(2*(x[i0]-q[i0])/x[i2]);
-			q[i1]=x[i1]+x[i2]*h;
-		}
-		else
-		{
-				q[i0]=x[i0];
-				q[i1]=x[i1];
-		}
-	} 
-}
-
-#ifdef QSS_PARALLEL
-void
-LIQSS2_PAR_old_dx(QA_quantizer quantizer, int i, double t, int nSD, double  *x, double *tx)
-#else
-void
-LIQSS2_old_dx(QA_quantizer quantizer, int i, double t, int nSD, double  *x, double *tx)
-#endif
-{
-	int m, j, j0,j1,j2;
-	if(t>0)
+      else
 	{
 	  dx = a[var] * a[var] * (q[cf0] - lqu[var]) + a[var] * u0[var]
 	      + u1[var];

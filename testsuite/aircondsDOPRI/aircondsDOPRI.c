@@ -12,11 +12,11 @@
 #include <classic/classic_model.h>
 static CLC_data modelData = NULL;
 
-double __CAP[200];
-double __RES[200];
-double __POT[200];
-double __THA = 0;
-double __pmax = 0;
+double __PAR_CAP[200];
+double __PAR_RES[200];
+double __PAR_POT[200];
+double __PAR_THA = 0;
+double __PAR_pmax = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -34,7 +34,7 @@ MOD_definition(double *x, double *d, double *alg, double t, double *dx)
 	modelData->scalarEvaluations++;
 	for(i = 0; i <= 199; i++)
 	{
-		dx[i] = (__THA/__RES[(i)]-__POT[(i)]*d[(i+1)]-x[(i) * 1]/__RES[(i)]+d[(i+601)]/__RES[(i)])/__CAP[(i)];
+		dx[i] = (__PAR_THA/__PAR_RES[(i)]-__PAR_POT[(i)]*d[(i+1)]-x[(i) * 1]/__PAR_RES[(i)]+d[(i+601)]/__PAR_RES[(i)])/__PAR_CAP[(i)];
 	}
 }
 
@@ -66,7 +66,7 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 	if(i >= 0 && i <= 199)
 	{
 		d[(i+1)] = 1.0;
-		d[(0)] = d[(0)]+__POT[(i)];
+		d[(0)] = d[(0)]+__PAR_POT[(i)];
 	}
 	if(i >= 200 && i <= 399)
 	{
@@ -91,7 +91,7 @@ MOD_handlerNeg(int i, double *x, double *d, double *alg, double t)
 	if(t>0.0)
 	{
 		d[(i+1)] = 0.0;
-		d[(0)] = d[(0)]-__POT[(i)];
+		d[(0)] = d[(0)]-__PAR_POT[(i)];
 	}
 	}
 }
@@ -118,16 +118,16 @@ CLC_initializeDataStructs(CLC_simulator simulator)
 modelData = simulator->data;
 
 	// Allocate main data structures.
-	__THA = 32.0;
-	__pmax = 0.0;
+	__PAR_THA = 32.0;
+	__PAR_pmax = 0.0;
 	// Initialize model code.
 	for(i2 = 0; i2 <= 199; i2++)
 	{
 		modelData->x[(i2) * 1] = __math__rand(4.0)+18.0;
-		__CAP[(i2)] = __math__rand(100.0)+550.0;
-		__RES[(i2)] = __math__rand(4.000000000000000222044605e-01)+1.800000000000000044408921e+00;
-		__POT[(i2)] = __math__rand(2.0)+13.0;
-		__pmax = __pmax+__POT[(i2)];
+		__PAR_CAP[(i2)] = __math__rand(100.0)+550.0;
+		__PAR_RES[(i2)] = __math__rand(4.000000000000000222044605e-01)+1.800000000000000044408921e+00;
+		__PAR_POT[(i2)] = __math__rand(2.0)+13.0;
+		__PAR_pmax = __PAR_pmax+__PAR_POT[(i2)];
 		modelData->d[(i2+401)] = 1.0;
 		modelData->d[(i2+601)] = __math__rand(2.0)-1.0;
 		modelData->d[(i2+201)] = 20.0;
