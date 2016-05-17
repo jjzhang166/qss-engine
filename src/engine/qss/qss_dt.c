@@ -360,7 +360,7 @@ QSS_freeDtSynch(QSS_dtSynch dtSynch)
 
 QSS_dt
 QSS_Dt (SD_DtSynch synch, double alpha, int outputs,
-    double *gblDtMin, int id, QSS_dtSynch dtSynch, double initDt, char *file, SD_Debug debug)
+	double *gblDtMin, int id, QSS_dtSynch dtSynch, double initDt, char *file, SD_Debug debug, double it, double ft)
   {
     return (NULL);
   }
@@ -408,7 +408,7 @@ QSS_dtValue (QSS_dt dt)
   }
 
 bool
-QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable)
+QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable, double ct)
   {
     return TRUE;
   }

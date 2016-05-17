@@ -487,7 +487,13 @@ QSS_PARH_integrator (QSS_simulator simulator)
 		qssModel->events->zeroCrossing (index, q, d, a, t, zc);
 		// Zero crossing function change.
 		s = sign (zc[0]);
-		if (event[index].zcSign != s || xOrder == 1)
+		double et = INF;
+                if (event[index].zcSign == s)
+                  {
+		    FRW_nextEventTime (frw, qssModel, qssData, qssTime, index);
+		    et = qssTime->nextEventTime[index];
+		  }
+		if (event[index].zcSign != s || xOrder == 1 || et == t)
 		  {
 		    if (event[index].direction == 0
 			|| event[index].direction == s)
@@ -701,7 +707,14 @@ QSS_PARH_integrator (QSS_simulator simulator)
 		  {
 		    synchronize = NOT_ASSIGNED;
 		  }
-		FRW_nextEventTime (frw, qssModel, qssData, qssTime, index);
+		if (et == t)
+	          {
+		    qssTime->nextEventTime[index] = INF;
+		  }
+		else
+		  {
+		    FRW_nextEventTime (frw, qssModel, qssData, qssTime, index);
+		  }
 	      }
 	      break;
 	    case ST_Input:

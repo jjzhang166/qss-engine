@@ -1,3 +1,10 @@
+2016-05-17  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/liqss2.c (LIQSS2_init): Cleaned code.
+	* engine/qss/qss_dt.c (QSS_Dt): Cleaned code.
+	* engine/qss/qss_parh_integrator.c (QSS_PARH_integrator): Modified events handler execution. 
+	* engine/qss/qss_seqh_integrator.c (QSS_SEQH_integrate): Modified events handler execution.
+
 2016-04-29  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* engine/qss/qss_dt.c

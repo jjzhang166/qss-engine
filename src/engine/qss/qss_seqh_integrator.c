@@ -1,6 +1,6 @@
 /*****************************************************************************
 
-arro    This file is part of QSS Solver.
+    This file is part of QSS Solver.
 
     QSS Solver is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -205,7 +205,13 @@ QSS_SEQH_integrate (SIM_simulator simulate)
 		}
 	      qssModel->events->zeroCrossing (index, q, d, a, t, zc);
 	      s = sign (zc[0]);
-	      if (event[index].zcSign != s || xOrder == 1)
+	      double et = INF;
+	      if (event[index].zcSign == s)
+		{
+		  FRW_nextEventTime (frw, qssModel, qssData, qssTime, index);
+		  et = qssTime->nextEventTime[index];
+		}
+	      if (event[index].zcSign != s || xOrder == 1 || et == t)
 		{
 		  if (event[index].direction == 0 || event[index].direction == s)
 		    {
@@ -350,7 +356,14 @@ QSS_SEQH_integrate (SIM_simulator simulate)
 		      event[index].zcSign = sign (zc[0]);
 		    }
 		}
-	      FRW_nextEventTime (frw, qssModel, qssData, qssTime, index);
+	      if (et == t)
+		{
+		  qssTime->nextEventTime[index] = INF;
+		}
+	      else
+		{
+	          FRW_nextEventTime (frw, qssModel, qssData, qssTime, index);
+		}
 	    }
 	  break;
 	default:
