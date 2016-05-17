@@ -529,7 +529,6 @@ MmomeGui::_plotScript ()
   int l = _data.length ();
   _data = _data.remove (l - 2, 1);
   _data.append ("\n");
-  _data.append ("pause mouse close\n");
   if (file.write (_data.toStdString ().c_str ()) == -1)
     {
       QMessageBox::critical (
