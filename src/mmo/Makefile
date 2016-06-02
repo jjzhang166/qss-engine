@@ -122,7 +122,7 @@ clean:
 ifeq ($(OS),win32)
 	$(RMS) $(DEPS) $(TARGET) $(ASTOBJ) $(GENERATOROBJ) $(IROBJ) $(PARSEROBJ) $(UTILOBJ)
 else
-	$(RMS) $(DEPS) $(TARGET) $(ASTOBJ) $(GENERATOROBJ) $(IROBJ) $(PARSEROBJ) $(UTILOBJ) parser/mocc_parser.cpp parser/mocc_scanner.cpp parser/mocc_parser.h   
+	$(RMS) $(DEPS) $(TARGET) $(ASTOBJ) $(GENERATOROBJ) $(IROBJ) $(PARSEROBJ) $(UTILOBJ) parser/mocc_parser.cpp parser/mocc_scanner.cpp parser/mocc_parser.h -rf usr
 endif
 
 help:
