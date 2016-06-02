@@ -268,7 +268,7 @@ MmomeGui::on_actionMicroModelica_Language_Scpefication_triggered ()
 void
 MmomeGui::_run_finished (int exitCode, QProcess::ExitStatus exitStatus)
 {
-  if (exitStatus == QProcess::NormalExit)
+  if (exitStatus == QProcess::NormalExit && exitStatus !=0)
     {
       _compiler_msg->setPlainText (
 	  _compiler_msg->toPlainText () + QString ("\n")
@@ -288,8 +288,15 @@ MmomeGui::_run_finished (int exitCode, QProcess::ExitStatus exitStatus)
   else
     {
       _compiler_msg->setPlainText (
+	  _compiler_msg->toPlainText () + QString ("\n")
+	      + _proc->readAllStandardError ());
+      QByteArray logs = _proc->readAllStandardOutput ();
+      _compiler_msg->setPlainText (
+	  _compiler_msg->toPlainText () + QString ("\n") + logs);
+      _compiler_msg->setPlainText (
 	  _compiler_msg->toPlainText () + "Simulation failed. Exit code: "
-	      + QString (exitCode));
+	      + QString("%1").arg(exitCode));
+      QMessageBox::critical(this,"Error",QString("Simulation failed. Exit code: %1").arg(exitCode));
     }
   delete _proc;
   _proc = NULL;

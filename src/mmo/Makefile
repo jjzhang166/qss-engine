@@ -23,15 +23,15 @@ DEPEXT      := d
 OBJEXT      := o
 
 #Flags, Libraries and Includes
-LIB 		:= -lginac 
+LIB 		:= -L./usr/lib/ -lginac -lcln -lgmp
 ifeq ($(OS),win32)
 LIB 		:= -L/local/lib -lginac -lcln -lgmp
 endif
-CXXFLAGS 	:= -Wno-write-strings -Wall 
+CXXFLAGS 	:= -Wno-write-strings -Wall -std=c++11
 ifeq ($(DEBUG),True)
 CXXFLAGS 	+= -DYY_MCC_Parser_DEBUG -g  
 endif
-INC         := -I$(SRCDIR) 
+INC         := -I$(SRCDIR) -I./usr/include
 ifeq ($(OS),win32)
 INC 		+= -I/local/include -I/GnuWin32/include
 endif
@@ -62,8 +62,14 @@ UTILOBJ=$(addprefix $(BUILDDIR)/util_, $(notdir $(UTILSRC:.cpp=.o)))
 # Make dependencies
 DEPS = $(ASTOBJ:.o=.d) $(GENERATOROBJ:.o=.d) $(IROBJ:.o=.d) $(PARSEROBJ:.o=.d) $(UTILOBJ:.o=.d)
 
-all: mmoc 
+all: usr/lib/libginac.a mmoc 
 
+usr/lib/libginac.a:
+	echo "Building deterministic GiNaC" 
+	cd 3rdParty ; tar xvjf ginac-1.7.0.tar.bz2
+	cd 3rdParty/ginac-1.7.0; ./configure --prefix=`pwd`/../../usr --disable-shared; make -j 4 install
+  
+  
 $(BUILDDIR)/ast_%.o : $(ASTDIR)/%.cpp $(ASTDIR)/%.h $(PARSERDIR)/mocc_parser.cpp $(PARSERDIR)/mocc_scanner.cpp
 	$(CXX) $(INC) $(CXXFLAGS) -MM -MT $@ -MF $(patsubst %.o,%.d,$@) $<
 	$(CXX) $(INC) -c $< -o $@ $(CXXFLAGS)
