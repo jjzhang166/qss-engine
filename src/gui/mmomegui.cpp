@@ -268,7 +268,7 @@ MmomeGui::on_actionMicroModelica_Language_Scpefication_triggered ()
 void
 MmomeGui::_run_finished (int exitCode, QProcess::ExitStatus exitStatus)
 {
-  if (exitStatus == QProcess::NormalExit && exitStatus !=0)
+  if (exitStatus == QProcess::NormalExit && exitCode ==0)
     {
       _compiler_msg->setPlainText (
 	  _compiler_msg->toPlainText () + QString ("\n")

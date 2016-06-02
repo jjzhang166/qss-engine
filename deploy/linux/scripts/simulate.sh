@@ -21,7 +21,6 @@
 #       PROJECT: QSS Solver
 #       VERSION: 3.1
 #===================================================================================
-set -e
 
 FILE=$1
 
@@ -73,6 +72,7 @@ if [ "$PARALLEL" == "true" ]; then
 	fi
 fi
 
+set -e
 $MMOC_BUILD/$FILE/$FILE
 
 rm -rf hkmetis
