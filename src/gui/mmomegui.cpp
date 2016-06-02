@@ -296,7 +296,6 @@ MmomeGui::_run_finished (int exitCode, QProcess::ExitStatus exitStatus)
       _compiler_msg->setPlainText (
 	  _compiler_msg->toPlainText () + "Simulation failed. Exit code: "
 	      + QString("%1").arg(exitCode));
-      QMessageBox::critical(this,"Error",QString("Simulation failed. Exit code: %1").arg(exitCode));
     }
   delete _proc;
   _proc = NULL;
