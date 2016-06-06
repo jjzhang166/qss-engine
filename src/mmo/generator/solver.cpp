@@ -513,7 +513,7 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
   for (map<int, int>::iterator it = simpleZCNDeps.begin ();
       it != simpleZCNDeps.end (); it++)
     {
-      buffer << "modelData->nHZ[" << it->first << "] = " << it->second << ";";
+      buffer << "modelData->nHZ[" << it->first << "] += " << it->second << ";";
       _writer->write (&buffer, WR_ALLOC_LD_HZ);
     }
 }
