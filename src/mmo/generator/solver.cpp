@@ -69,11 +69,13 @@ string
 QSS_::initData ()
 {
   stringstream buffer;
+  MMO_Annotation annot = _model->annotation ();
   buffer << "simulator->data = QSS_Data(" << _model->states () << ","
       << _model->discretes () << "," << _model->evs () << ","
       << _model->inputs () << "," << _model->algs () << ",\"" << _name << "\");"
       << endl;
-  buffer << "QSS_data modelData = simulator->data;" << endl;
+  buffer << "  QSS_data modelData = simulator->data;" << endl;
+  buffer << "  const double t = " << annot->initialTime () << ";" <<endl;
   return (buffer.str ());
 }
 
@@ -1968,12 +1970,14 @@ Classic_::~Classic_ ()
 string
 Classic_::initData ()
 {
+  MMO_Annotation annot = _model->annotation ();
   stringstream buffer;
   buffer << "simulator->data = CLC_Data(" << _model->states () << ","
       << _model->discretes () << "," << _model->evs () << ","
       << _model->inputs () << "," << _model->algs () << ",\"" << _name << "\");"
       << endl;
-  buffer << "modelData = simulator->data;" << endl;
+  buffer << "  modelData = simulator->data;" << endl;
+  buffer << "  const double t = " << annot->initialTime () << ";" <<endl;
   return (buffer.str ());
 }
 

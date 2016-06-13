@@ -56,7 +56,8 @@ QSS_SEQ_printSimulationLog (QSS_simulator simulator)
 {
   SD_print (simulator->simulationLog, "Simulation time: %g ms",
 	    simulator->stats->simulationTime);
-  SD_print (simulator->simulationLog, "CPU time per transition: %g",
+  if (simulator->stats->totalSteps)
+    SD_print (simulator->simulationLog, "CPU time per transition: %g",
 	    simulator->stats->simulationTime / simulator->stats->totalSteps);
   int nOutputs = simulator->output->outputs;
   if (nOutputs > 0)
