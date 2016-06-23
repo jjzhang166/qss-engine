@@ -55,6 +55,6 @@ model TYSON
 		StartTime=0.0,
 		StopTime=100,
 		Tolerance={1e-3},
-		AbsTolerance={1e-3}
+		AbsTolerance={1e-6}
 	));
 end TYSON;

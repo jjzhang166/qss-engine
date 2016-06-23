@@ -32,8 +32,8 @@ model cuk
 	when iD<0 then
 		  Rd := ROff;
 	end when;
-
 	annotation(
+
 	experiment(
 		MMO_Description="Cuk converter with non-solved stiffness.",
 		MMO_Solver=LIQSS2,

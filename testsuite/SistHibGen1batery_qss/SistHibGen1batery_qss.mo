@@ -878,7 +878,7 @@ algorithm
 
 	experiment(
 		MMO_Description="",
-		MMO_Solver=QSS2,
+		MMO_Solver=LIQSS2,
 		MMO_SymDiff=false,
 		MMO_Output={boost_panel1_mmt1_potActFiltrada,batteryAndBockBoost1_voltageControl_intErr,batteryAndBockBoost1_battery_Qt,batteryAndBockBoost1_battery1_Qt,batteryAndBockBoost1_battery2_Qt,boost_panel2_mmt1_potActFiltrada,boost_panel3_mmt1_potActFiltrada,boost_panel4_mmt1_potActFiltrada,capacitor2_v,boost_panel4_capacitor1_v,boost_panel4_boost1_inductor_i,boost_panel3_capacitor1_v,boost_panel3_boost1_inductor_i,boost_panel2_capacitor1_v,boost_panel2_boost1_inductor_i,boost_panel1_capacitor1_v,boost_panel1_boost1_inductor_i,batteryAndBockBoost1_bookBoostPWMcontrol1_intErr,batteryAndBockBoost1_bookBoostDB_inductor_i},
 		StartTime=0.0,

@@ -8,63 +8,64 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __tau;
-double __vrest;
-double __vthres;
-double __Trefrac;
-double __Eex;
-double __Einh;
-double __tauex;
-double __tauinh;
-double __dgex;
-double __dgin;
-double __Period;
-double __lastTime;
-int __reverse__SNmap1[1000];
-int __SNmap1[1000];
-int __reverse__NNmap1[1000];
-int __NNmap1[1000];
-int __reverse__NNmap2[1000];
-int __NNmap2[1000];
-int __reverse__NNmap3[1000];
-int __NNmap3[1000];
-int __reverse__NNmap4[1000];
-int __NNmap4[1000];
-int __reverse__NNmap5[1000];
-int __NNmap5[1000];
-int __reverse__NNmap6[1000];
-int __NNmap6[1000];
-int __reverse__NNmap7[1000];
-int __NNmap7[1000];
-int __reverse__NNmap8[1000];
-int __NNmap8[1000];
-int __reverse__NNmap9[1000];
-int __NNmap9[1000];
-int __reverse__NNmap10[1000];
-int __NNmap10[1000];
-int __reverse__NNmap11[1000];
-int __NNmap11[1000];
-int __reverse__NNmap12[1000];
-int __NNmap12[1000];
-int __reverse__NNmap13[1000];
-int __NNmap13[1000];
-int __reverse__NNmap14[1000];
-int __NNmap14[1000];
-int __reverse__NNmap15[1000];
-int __NNmap15[1000];
-int __reverse__NNmap16[1000];
-int __NNmap16[1000];
-int __reverse__NNmap17[1000];
-int __NNmap17[1000];
-int __reverse__NNmap18[1000];
-int __NNmap18[1000];
-int __reverse__NNmap19[1000];
-int __NNmap19[1000];
-int __reverse__NNmap20[1000];
-int __NNmap20[1000];
+double __PAR_tau = 0;
+double __PAR_vrest = 0;
+double __PAR_vthres = 0;
+double __PAR_Trefrac = 0;
+double __PAR_Eex = 0;
+double __PAR_Einh = 0;
+double __PAR_tauex = 0;
+double __PAR_tauinh = 0;
+double __PAR_dgex = 0;
+double __PAR_dgin = 0;
+double __PAR_Period = 0;
+double __PAR_lastTime = 0;
+int __reverse__PAR_SNmap1[1000];
+int __PAR_SNmap1[1000];
+int __reverse__PAR_NNmap1[1000];
+int __PAR_NNmap1[1000];
+int __reverse__PAR_NNmap2[1000];
+int __PAR_NNmap2[1000];
+int __reverse__PAR_NNmap3[1000];
+int __PAR_NNmap3[1000];
+int __reverse__PAR_NNmap4[1000];
+int __PAR_NNmap4[1000];
+int __reverse__PAR_NNmap5[1000];
+int __PAR_NNmap5[1000];
+int __reverse__PAR_NNmap6[1000];
+int __PAR_NNmap6[1000];
+int __reverse__PAR_NNmap7[1000];
+int __PAR_NNmap7[1000];
+int __reverse__PAR_NNmap8[1000];
+int __PAR_NNmap8[1000];
+int __reverse__PAR_NNmap9[1000];
+int __PAR_NNmap9[1000];
+int __reverse__PAR_NNmap10[1000];
+int __PAR_NNmap10[1000];
+int __reverse__PAR_NNmap11[1000];
+int __PAR_NNmap11[1000];
+int __reverse__PAR_NNmap12[1000];
+int __PAR_NNmap12[1000];
+int __reverse__PAR_NNmap13[1000];
+int __PAR_NNmap13[1000];
+int __reverse__PAR_NNmap14[1000];
+int __PAR_NNmap14[1000];
+int __reverse__PAR_NNmap15[1000];
+int __PAR_NNmap15[1000];
+int __reverse__PAR_NNmap16[1000];
+int __PAR_NNmap16[1000];
+int __reverse__PAR_NNmap17[1000];
+int __PAR_NNmap17[1000];
+int __reverse__PAR_NNmap18[1000];
+int __PAR_NNmap18[1000];
+int __reverse__PAR_NNmap19[1000];
+int __PAR_NNmap19[1000];
+int __reverse__PAR_NNmap20[1000];
+int __PAR_NNmap20[1000];
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -72,7 +73,7 @@ MOD_settings(SD_simulationSettings settings)
 	 settings->debug = 0;
 	 settings->parallel = FALSE;
 	 settings->hybrid = TRUE;
-	 settings->method = 6;
+	 settings->method = 5;
 }
 
 void
@@ -82,17 +83,17 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	j = i;
 	if(j >=0 && j <= 999)
 	{
-		dx[1] = d[(j)]*((__vrest-x[(j) * 4])+x[(j+1000) * 4]*(__Eex-x[(j) * 4])+x[(j+2000) * 4]*(__Einh-x[(j) * 4]))/__tau;
+		dx[1] = d[(j)]*((__PAR_vrest-x[(j) * 4])+x[(j+1000) * 4]*(__PAR_Eex-x[(j) * 4])+x[(j+2000) * 4]*(__PAR_Einh-x[(j) * 4]))/__PAR_tau;
 	}
 	j = i-1000;
 	if(j >=0 && j <= 999)
 	{
-		dx[1] = -x[(j+1000) * 4]/__tauex;
+		dx[1] = -x[(j+1000) * 4]/__PAR_tauex;
 	}
 	j = i-2000;
 	if(j >=0 && j <= 999)
 	{
-		dx[1] = -x[(j+2000) * 4]/__tauinh;
+		dx[1] = -x[(j+2000) * 4]/__PAR_tauinh;
 	}
 }
 
@@ -103,19 +104,19 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	j = i;
 	if(j >=0 && j <= 999)
 	{
-		der[(j) * 4 + 1] = d[(j)]*((__vrest-x[(j) * 4])+x[(j+1000) * 4]*(__Eex-x[(j) * 4])+x[(j+2000) * 4]*(__Einh-x[(j) * 4]))/__tau;
+		der[(j) * 4 + 1] = d[(j)]*((__PAR_vrest-x[(j) * 4])+x[(j+1000) * 4]*(__PAR_Eex-x[(j) * 4])+x[(j+2000) * 4]*(__PAR_Einh-x[(j) * 4]))/__PAR_tau;
 	}
 	j = i-1000;
 	if(j >=0 && j <= 999)
 	{
-		der[(j) * 4 + 1] = d[(j)]*((__vrest-x[(j) * 4])+x[(j+1000) * 4]*(__Eex-x[(j) * 4])+x[(j+2000) * 4]*(__Einh-x[(j) * 4]))/__tau;
-		der[(j+1000) * 4 + 1] = -x[(j+1000) * 4]/__tauex;
+		der[(j) * 4 + 1] = d[(j)]*((__PAR_vrest-x[(j) * 4])+x[(j+1000) * 4]*(__PAR_Eex-x[(j) * 4])+x[(j+2000) * 4]*(__PAR_Einh-x[(j) * 4]))/__PAR_tau;
+		der[(j+1000) * 4 + 1] = -x[(j+1000) * 4]/__PAR_tauex;
 	}
 	j = i-2000;
 	if(j >=0 && j <= 999)
 	{
-		der[(j) * 4 + 1] = d[(j)]*((__vrest-x[(j) * 4])+x[(j+1000) * 4]*(__Eex-x[(j) * 4])+x[(j+2000) * 4]*(__Einh-x[(j) * 4]))/__tau;
-		der[(j+2000) * 4 + 1] = -x[(j+2000) * 4]/__tauinh;
+		der[(j) * 4 + 1] = d[(j)]*((__PAR_vrest-x[(j) * 4])+x[(j+1000) * 4]*(__PAR_Eex-x[(j) * 4])+x[(j+2000) * 4]*(__PAR_Einh-x[(j) * 4]))/__PAR_tau;
+		der[(j+2000) * 4 + 1] = -x[(j+2000) * 4]/__PAR_tauinh;
 	}
 }
 
@@ -124,15 +125,15 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 {
 	if(i >= 0 && i <= 799)
 	{
-		zc[0] = x[(i) * 4]-(__vthres);
+		zc[0] = x[(i) * 4]-(__PAR_vthres);
 	}
 	if(i >= 1000 && i <= 1999)
 	{
-		zc[0] = t-(d[(i)]+__Trefrac);
+		zc[0] = t-(d[(i)]+__PAR_Trefrac);
 	}
 	if(i >= 800 && i <= 999)
 	{
-		zc[0] = x[(i) * 4]-(__vthres);
+		zc[0] = x[(i) * 4]-(__PAR_vthres);
 	}
 	if(i >= 2000 && i <= 2099)
 	{
@@ -140,7 +141,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 	}
 	if(i >= 2100 && i <= 2199)
 	{
-		zc[0] = t-(__lastTime);
+		zc[0] = t-(__PAR_lastTime);
 	}
 }
 
@@ -149,27 +150,27 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 {
 	if(i >= 0 && i <= 799)
 	{
-		x[(i) * 4] = __vrest;
-		x[(__NNmap1[i]+999) * 4] = x[(__NNmap1[i]+999) * 4]+__dgex;
-		x[(__NNmap2[i]+999) * 4] = x[(__NNmap2[i]+999) * 4]+__dgex;
-		x[(__NNmap3[i]+999) * 4] = x[(__NNmap3[i]+999) * 4]+__dgex;
-		x[(__NNmap4[i]+999) * 4] = x[(__NNmap4[i]+999) * 4]+__dgex;
-		x[(__NNmap5[i]+999) * 4] = x[(__NNmap5[i]+999) * 4]+__dgex;
-		x[(__NNmap6[i]+999) * 4] = x[(__NNmap6[i]+999) * 4]+__dgex;
-		x[(__NNmap7[i]+999) * 4] = x[(__NNmap7[i]+999) * 4]+__dgex;
-		x[(__NNmap8[i]+999) * 4] = x[(__NNmap8[i]+999) * 4]+__dgex;
-		x[(__NNmap9[i]+999) * 4] = x[(__NNmap9[i]+999) * 4]+__dgex;
-		x[(__NNmap10[i]+999) * 4] = x[(__NNmap10[i]+999) * 4]+__dgex;
-		x[(__NNmap11[i]+999) * 4] = x[(__NNmap11[i]+999) * 4]+__dgex;
-		x[(__NNmap12[i]+999) * 4] = x[(__NNmap12[i]+999) * 4]+__dgex;
-		x[(__NNmap13[i]+999) * 4] = x[(__NNmap13[i]+999) * 4]+__dgex;
-		x[(__NNmap14[i]+999) * 4] = x[(__NNmap14[i]+999) * 4]+__dgex;
-		x[(__NNmap15[i]+999) * 4] = x[(__NNmap15[i]+999) * 4]+__dgex;
-		x[(__NNmap16[i]+999) * 4] = x[(__NNmap16[i]+999) * 4]+__dgex;
-		x[(__NNmap17[i]+999) * 4] = x[(__NNmap17[i]+999) * 4]+__dgex;
-		x[(__NNmap18[i]+999) * 4] = x[(__NNmap18[i]+999) * 4]+__dgex;
-		x[(__NNmap19[i]+999) * 4] = x[(__NNmap19[i]+999) * 4]+__dgex;
-		x[(__NNmap20[i]+999) * 4] = x[(__NNmap20[i]+999) * 4]+__dgex;
+		x[(i) * 4] = __PAR_vrest;
+		x[(__PAR_NNmap1[i]+999) * 4] = x[(__PAR_NNmap1[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap2[i]+999) * 4] = x[(__PAR_NNmap2[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap3[i]+999) * 4] = x[(__PAR_NNmap3[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap4[i]+999) * 4] = x[(__PAR_NNmap4[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap5[i]+999) * 4] = x[(__PAR_NNmap5[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap6[i]+999) * 4] = x[(__PAR_NNmap6[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap7[i]+999) * 4] = x[(__PAR_NNmap7[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap8[i]+999) * 4] = x[(__PAR_NNmap8[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap9[i]+999) * 4] = x[(__PAR_NNmap9[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap10[i]+999) * 4] = x[(__PAR_NNmap10[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap11[i]+999) * 4] = x[(__PAR_NNmap11[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap12[i]+999) * 4] = x[(__PAR_NNmap12[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap13[i]+999) * 4] = x[(__PAR_NNmap13[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap14[i]+999) * 4] = x[(__PAR_NNmap14[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap15[i]+999) * 4] = x[(__PAR_NNmap15[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap16[i]+999) * 4] = x[(__PAR_NNmap16[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap17[i]+999) * 4] = x[(__PAR_NNmap17[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap18[i]+999) * 4] = x[(__PAR_NNmap18[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap19[i]+999) * 4] = x[(__PAR_NNmap19[i]+999) * 4]+__PAR_dgex;
+		x[(__PAR_NNmap20[i]+999) * 4] = x[(__PAR_NNmap20[i]+999) * 4]+__PAR_dgex;
 		d[(i)] = 0.0;
 		d[(i+1000)] = t;
 	}
@@ -179,34 +180,34 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 	}
 	if(i >= 800 && i <= 999)
 	{
-		x[(i) * 4] = __vrest;
-		x[(__NNmap1[i]+1999) * 4] = x[(__NNmap1[i]+1999) * 4]+__dgin;
-		x[(__NNmap2[i]+1999) * 4] = x[(__NNmap2[i]+1999) * 4]+__dgin;
-		x[(__NNmap3[i]+1999) * 4] = x[(__NNmap3[i]+1999) * 4]+__dgin;
-		x[(__NNmap4[i]+1999) * 4] = x[(__NNmap4[i]+1999) * 4]+__dgin;
-		x[(__NNmap5[i]+1999) * 4] = x[(__NNmap5[i]+1999) * 4]+__dgin;
-		x[(__NNmap6[i]+1999) * 4] = x[(__NNmap6[i]+1999) * 4]+__dgin;
-		x[(__NNmap7[i]+1999) * 4] = x[(__NNmap7[i]+1999) * 4]+__dgin;
-		x[(__NNmap8[i]+1999) * 4] = x[(__NNmap8[i]+1999) * 4]+__dgin;
-		x[(__NNmap9[i]+1999) * 4] = x[(__NNmap9[i]+1999) * 4]+__dgin;
-		x[(__NNmap10[i]+1999) * 4] = x[(__NNmap10[i]+1999) * 4]+__dgin;
-		x[(__NNmap11[i]+1999) * 4] = x[(__NNmap11[i]+1999) * 4]+__dgin;
-		x[(__NNmap12[i]+1999) * 4] = x[(__NNmap12[i]+1999) * 4]+__dgin;
-		x[(__NNmap13[i]+1999) * 4] = x[(__NNmap13[i]+1999) * 4]+__dgin;
-		x[(__NNmap14[i]+1999) * 4] = x[(__NNmap14[i]+1999) * 4]+__dgin;
-		x[(__NNmap15[i]+1999) * 4] = x[(__NNmap15[i]+1999) * 4]+__dgin;
-		x[(__NNmap16[i]+1999) * 4] = x[(__NNmap16[i]+1999) * 4]+__dgin;
-		x[(__NNmap17[i]+1999) * 4] = x[(__NNmap17[i]+1999) * 4]+__dgin;
-		x[(__NNmap18[i]+1999) * 4] = x[(__NNmap18[i]+1999) * 4]+__dgin;
-		x[(__NNmap19[i]+1999) * 4] = x[(__NNmap19[i]+1999) * 4]+__dgin;
-		x[(__NNmap20[i]+1999) * 4] = x[(__NNmap20[i]+1999) * 4]+__dgin;
+		x[(i) * 4] = __PAR_vrest;
+		x[(__PAR_NNmap1[i]+1999) * 4] = x[(__PAR_NNmap1[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap2[i]+1999) * 4] = x[(__PAR_NNmap2[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap3[i]+1999) * 4] = x[(__PAR_NNmap3[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap4[i]+1999) * 4] = x[(__PAR_NNmap4[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap5[i]+1999) * 4] = x[(__PAR_NNmap5[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap6[i]+1999) * 4] = x[(__PAR_NNmap6[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap7[i]+1999) * 4] = x[(__PAR_NNmap7[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap8[i]+1999) * 4] = x[(__PAR_NNmap8[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap9[i]+1999) * 4] = x[(__PAR_NNmap9[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap10[i]+1999) * 4] = x[(__PAR_NNmap10[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap11[i]+1999) * 4] = x[(__PAR_NNmap11[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap12[i]+1999) * 4] = x[(__PAR_NNmap12[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap13[i]+1999) * 4] = x[(__PAR_NNmap13[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap14[i]+1999) * 4] = x[(__PAR_NNmap14[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap15[i]+1999) * 4] = x[(__PAR_NNmap15[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap16[i]+1999) * 4] = x[(__PAR_NNmap16[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap17[i]+1999) * 4] = x[(__PAR_NNmap17[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap18[i]+1999) * 4] = x[(__PAR_NNmap18[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap19[i]+1999) * 4] = x[(__PAR_NNmap19[i]+1999) * 4]+__PAR_dgin;
+		x[(__PAR_NNmap20[i]+1999) * 4] = x[(__PAR_NNmap20[i]+1999) * 4]+__PAR_dgin;
 		d[(i)] = 0.0;
 		d[(i+1000)] = t;
 	}
 	if(i >= 2000 && i <= 2099)
 	{
-		x[(__SNmap1[i-2000]+999) * 4] = x[(__SNmap1[i-2000]+999) * 4]+__dgex;
-		d[(i)] = t+__math__rand(__Period);
+		x[(__PAR_SNmap1[i-2000]+999) * 4] = x[(__PAR_SNmap1[i-2000]+999) * 4]+__PAR_dgex;
+		d[(i)] = t+__math__rand(__PAR_Period);
 	}
 	if(i >= 2100 && i <= 2199)
 	{
@@ -240,18 +241,18 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__tau = 20.0;
-	__vrest = -60.0;
-	__vthres = -50.0;
-	__Trefrac = 5.0;
-	__Eex = 0.0;
-	__Einh = -80.0;
-	__tauex = 5.0;
-	__tauinh = 10.0;
-	__dgex = 5.000000000000000000000000e-01;
-	__dgin = 1.250000000000000000000000e+00;
-	__Period = 10.0;
-	__lastTime = 10.0;
+	__PAR_tau = 20.0;
+	__PAR_vrest = -60.0;
+	__PAR_vthres = -50.0;
+	__PAR_Trefrac = 5.0;
+	__PAR_Eex = 0.0;
+	__PAR_Einh = -80.0;
+	__PAR_tauex = 5.0;
+	__PAR_tauinh = 10.0;
+	__PAR_dgex = 5.000000000000000000000000e-01;
+	__PAR_dgin = 1.250000000000000000000000e+00;
+	__PAR_Period = 10.0;
+	__PAR_lastTime = 10.0;
 	modelData->d[(0)] = 1.0;
 	modelData->d[(2100)] = 0.0;
 	for(i = 0; i <= 99;i++)
@@ -266,51 +267,51 @@ QSS_data modelData = simulator->data;
 	// Initialize model code.
 	for(i2 = 0; i2 <= 99; i2++)
 	{
-		__SNmap1[(i2)] = __math__rand(1000)+1.0;
-	__reverse__SNmap1[__SNmap1[(i2)]-1] = i2+1;
+		__PAR_SNmap1[(i2)] = __math__rand(1000)+1.0;
+	__reverse__PAR_SNmap1[__PAR_SNmap1[(i2)]-1] = i2+1;
 	}
 	for(i4 = 0; i4 <= 999; i4++)
 	{
-		__NNmap1[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap1[__NNmap1[(i4)]-1] = i4+1;
-		__NNmap2[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap2[__NNmap2[(i4)]-1] = i4+1;
-		__NNmap3[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap3[__NNmap3[(i4)]-1] = i4+1;
-		__NNmap4[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap4[__NNmap4[(i4)]-1] = i4+1;
-		__NNmap5[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap5[__NNmap5[(i4)]-1] = i4+1;
-		__NNmap6[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap6[__NNmap6[(i4)]-1] = i4+1;
-		__NNmap7[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap7[__NNmap7[(i4)]-1] = i4+1;
-		__NNmap8[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap8[__NNmap8[(i4)]-1] = i4+1;
-		__NNmap9[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap9[__NNmap9[(i4)]-1] = i4+1;
-		__NNmap10[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap10[__NNmap10[(i4)]-1] = i4+1;
-		__NNmap11[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap11[__NNmap11[(i4)]-1] = i4+1;
-		__NNmap12[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap12[__NNmap12[(i4)]-1] = i4+1;
-		__NNmap13[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap13[__NNmap13[(i4)]-1] = i4+1;
-		__NNmap14[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap14[__NNmap14[(i4)]-1] = i4+1;
-		__NNmap15[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap15[__NNmap15[(i4)]-1] = i4+1;
-		__NNmap16[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap16[__NNmap16[(i4)]-1] = i4+1;
-		__NNmap17[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap17[__NNmap17[(i4)]-1] = i4+1;
-		__NNmap18[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap18[__NNmap18[(i4)]-1] = i4+1;
-		__NNmap19[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap19[__NNmap19[(i4)]-1] = i4+1;
-		__NNmap20[(i4)] = __math__rand(1000)+1.0;
-	__reverse__NNmap20[__NNmap20[(i4)]-1] = i4+1;
+		__PAR_NNmap1[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap1[__PAR_NNmap1[(i4)]-1] = i4+1;
+		__PAR_NNmap2[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap2[__PAR_NNmap2[(i4)]-1] = i4+1;
+		__PAR_NNmap3[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap3[__PAR_NNmap3[(i4)]-1] = i4+1;
+		__PAR_NNmap4[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap4[__PAR_NNmap4[(i4)]-1] = i4+1;
+		__PAR_NNmap5[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap5[__PAR_NNmap5[(i4)]-1] = i4+1;
+		__PAR_NNmap6[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap6[__PAR_NNmap6[(i4)]-1] = i4+1;
+		__PAR_NNmap7[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap7[__PAR_NNmap7[(i4)]-1] = i4+1;
+		__PAR_NNmap8[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap8[__PAR_NNmap8[(i4)]-1] = i4+1;
+		__PAR_NNmap9[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap9[__PAR_NNmap9[(i4)]-1] = i4+1;
+		__PAR_NNmap10[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap10[__PAR_NNmap10[(i4)]-1] = i4+1;
+		__PAR_NNmap11[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap11[__PAR_NNmap11[(i4)]-1] = i4+1;
+		__PAR_NNmap12[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap12[__PAR_NNmap12[(i4)]-1] = i4+1;
+		__PAR_NNmap13[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap13[__PAR_NNmap13[(i4)]-1] = i4+1;
+		__PAR_NNmap14[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap14[__PAR_NNmap14[(i4)]-1] = i4+1;
+		__PAR_NNmap15[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap15[__PAR_NNmap15[(i4)]-1] = i4+1;
+		__PAR_NNmap16[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap16[__PAR_NNmap16[(i4)]-1] = i4+1;
+		__PAR_NNmap17[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap17[__PAR_NNmap17[(i4)]-1] = i4+1;
+		__PAR_NNmap18[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap18[__PAR_NNmap18[(i4)]-1] = i4+1;
+		__PAR_NNmap19[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap19[__PAR_NNmap19[(i4)]-1] = i4+1;
+		__PAR_NNmap20[(i4)] = __math__rand(1000)+1.0;
+	__reverse__PAR_NNmap20[__PAR_NNmap20[(i4)]-1] = i4+1;
 	}
 	for(i = 0; i <= 999; i++)
 	{
@@ -509,107 +510,107 @@ QSS_data modelData = simulator->data;
 
 	for(i = 0; i <= 799; i++)
 	{
-		modelData->event[i].LHSSt[events[i]++] = __NNmap1[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap10[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap11[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap12[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap13[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap14[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap15[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap16[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap17[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap18[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap19[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap2[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap20[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap3[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap4[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap5[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap6[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap7[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap8[i]+999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap9[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap1[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap10[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap11[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap12[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap13[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap14[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap15[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap16[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap17[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap18[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap19[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap2[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap20[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap3[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap4[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap5[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap6[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap7[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap8[i]+999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap9[i]+999;
 		modelData->event[i].LHSSt[events[i]++] = i;
 	}
 	for(i = 800; i <= 999; i++)
 	{
-		modelData->event[i].LHSSt[events[i]++] = __NNmap1[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap10[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap11[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap12[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap13[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap14[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap15[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap16[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap17[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap18[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap19[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap2[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap20[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap3[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap4[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap5[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap6[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap7[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap8[i]+1999;
-		modelData->event[i].LHSSt[events[i]++] = __NNmap9[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap1[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap10[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap11[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap12[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap13[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap14[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap15[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap16[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap17[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap18[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap19[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap2[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap20[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap3[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap4[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap5[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap6[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap7[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap8[i]+1999;
+		modelData->event[i].LHSSt[events[i]++] = __PAR_NNmap9[i]+1999;
 		modelData->event[i].LHSSt[events[i]++] = i;
 	}
 	for(i = 0; i <= 99; i++)
 	{
-	modelData->event[i+2000].LHSSt[events[i+2000]++] = __SNmap1[i]+999;
+	modelData->event[i+2000].LHSSt[events[i+2000]++] = __PAR_SNmap1[i]+999;
 	}
 		cleanVector(events,0,2200);
 
 	for(i = 0; i <= 799; i++)
 	{
-		modelData->event[i].RHSSt[events[i]++] = __NNmap1[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap10[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap11[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap12[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap13[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap14[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap15[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap16[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap17[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap18[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap19[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap2[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap20[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap3[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap4[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap5[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap6[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap7[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap8[i]+999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap9[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap1[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap10[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap11[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap12[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap13[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap14[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap15[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap16[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap17[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap18[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap19[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap2[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap20[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap3[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap4[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap5[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap6[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap7[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap8[i]+999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap9[i]+999;
 	}
 	for(i = 800; i <= 999; i++)
 	{
-		modelData->event[i].RHSSt[events[i]++] = __NNmap1[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap10[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap11[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap12[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap13[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap14[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap15[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap16[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap17[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap18[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap19[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap2[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap20[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap3[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap4[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap5[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap6[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap7[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap8[i]+1999;
-		modelData->event[i].RHSSt[events[i]++] = __NNmap9[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap1[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap10[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap11[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap12[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap13[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap14[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap15[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap16[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap17[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap18[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap19[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap2[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap20[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap3[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap4[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap5[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap6[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap7[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap8[i]+1999;
+		modelData->event[i].RHSSt[events[i]++] = __PAR_NNmap9[i]+1999;
 	}
 	for(i = 0; i <= 99; i++)
 	{
-	modelData->event[i+2000].RHSSt[events[i+2000]++] = __SNmap1[i]+999;
+	modelData->event[i+2000].RHSSt[events[i+2000]++] = __PAR_SNmap1[i]+999;
 	}
 		cleanVector(events,0,2200);
 

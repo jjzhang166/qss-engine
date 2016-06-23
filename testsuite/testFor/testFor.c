@@ -7,14 +7,15 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __ax;
-double __ay;
-double __r;
-double __dx;
-double __dy;
+double __PAR_ax = 0;
+double __PAR_ay = 0;
+double __PAR_r = 0;
+double __PAR_dx = 0;
+double __PAR_dy = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -32,13 +33,13 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	switch(i)
 	{
 		case 0:
-			dx[1] = (-x[0]*__ax/__dx)+(-x[0]*__ay/__dy);
+			dx[1] = (-x[0]*__PAR_ax/__PAR_dx)+(-x[0]*__PAR_ay/__PAR_dy);
 			return;
 		default:
 			j = i;
 			if(j >=1 && j <= 1)
 			{
-				dx[1] = (-x[(j) * 3]+x[(j-1) * 3])*__ax/__dx+(-x[(j) * 3]*__ay/__dy);
+				dx[1] = (-x[(j) * 3]+x[(j-1) * 3])*__PAR_ax/__PAR_dx+(-x[(j) * 3]*__PAR_ay/__PAR_dy);
 			}
 	}
 }
@@ -50,18 +51,18 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	switch(i)
 	{
 		case 0:
-			der[0 + 1] = (-x[0]*__ax/__dx)+(-x[0]*__ay/__dy);
+			der[0 + 1] = (-x[0]*__PAR_ax/__PAR_dx)+(-x[0]*__PAR_ay/__PAR_dy);
 			break;
 	}
 	j = i+1;
 	if(j >=1 && j <= 1)
 	{
-		der[(j) * 3 + 1] = (-x[(j) * 3]+x[(j-1) * 3])*__ax/__dx+(-x[(j) * 3]*__ay/__dy);
+		der[(j) * 3 + 1] = (-x[(j) * 3]+x[(j-1) * 3])*__PAR_ax/__PAR_dx+(-x[(j) * 3]*__PAR_ay/__PAR_dy);
 	}
 	j = i;
 	if(j >=1 && j <= 1)
 	{
-		der[(j) * 3 + 1] = (-x[(j) * 3]+x[(j-1) * 3])*__ax/__dx+(-x[(j) * 3]*__ay/__dy);
+		der[(j) * 3 + 1] = (-x[(j) * 3]+x[(j-1) * 3])*__PAR_ax/__PAR_dx+(-x[(j) * 3]*__PAR_ay/__PAR_dy);
 	}
 }
 
@@ -88,11 +89,11 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__ax = 1.0;
-	__ay = 1.0;
-	__r = 1000.0;
-	__dx = 10.0/100;
-	__dy = 10.0/100;
+	__PAR_ax = 1.0;
+	__PAR_ay = 1.0;
+	__PAR_r = 1000.0;
+	__PAR_dx = 10.0/100;
+	__PAR_dy = 10.0/100;
 	// Initialize model code.
 	for(i0 = 0; i0 <= 1; i0++)
 	{

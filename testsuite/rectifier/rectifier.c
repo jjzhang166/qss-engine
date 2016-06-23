@@ -7,15 +7,16 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __Ron;
-double __Roff;
-double __U;
-double __L;
-double __R;
-double __w;
+double __PAR_Ron = 0;
+double __PAR_Roff = 0;
+double __PAR_U = 0;
+double __PAR_L = 0;
+double __PAR_R = 0;
+double __PAR_w = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -32,10 +33,10 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	switch(i)
 	{
 		case 0:
-			dx[1] = 1000.0*(__U*sin(__w*t)-x[0]);
+			dx[1] = 1000.0*(__PAR_U*sin(__PAR_w*t)-x[0]);
 			return;
 		case 1:
-			dx[1] = (x[0]-x[3]*(__R+d[(0)]))/__L;
+			dx[1] = (x[0]-x[3]*(__PAR_R+d[(0)]))/__PAR_L;
 			return;
 	}
 }
@@ -46,11 +47,11 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	switch(i)
 	{
 		case 0:
-			der[0 + 1] = 1000.0*(__U*sin(__w*t)-x[0]);
-			der[3 + 1] = (x[0]-x[3]*(__R+d[(0)]))/__L;
+			der[0 + 1] = 1000.0*(__PAR_U*sin(__PAR_w*t)-x[0]);
+			der[3 + 1] = (x[0]-x[3]*(__PAR_R+d[(0)]))/__PAR_L;
 			return;
 		case 1:
-			der[3 + 1] = (x[0]-x[3]*(__R+d[(0)]))/__L;
+			der[3 + 1] = (x[0]-x[3]*(__PAR_R+d[(0)]))/__PAR_L;
 			return;
 	}
 }
@@ -75,7 +76,7 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 	switch(i)
 	{
 		case 1:
-			d[(0)] = __Ron;
+			d[(0)] = __PAR_Ron;
 			return;
 	}
 }
@@ -86,7 +87,7 @@ MOD_handlerNeg(int i, double *x, double *d, double *alg, double t)
 	switch(i)
 	{
 		case 0:
-			d[(0)] = __Roff;
+			d[(0)] = __PAR_Roff;
 			return;
 	}
 }
@@ -118,13 +119,13 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__Ron = 1.000000000000000081803054e-05;
-	__Roff = 1.000000000000000000000000e+05;
-	__U = 311.0;
-	__L = 1.000000000000000020816682e-03;
-	__R = 10.0;
-	__w = 3.141600000000000250111043e+02;
-	modelData->d[(0)] = 1.000000000000000000000000e+05;
+	__PAR_Ron = 1.000000000000000081803054e-05;
+	__PAR_Roff = 1.000000000000000000000000e+05;
+	__PAR_U = 311.0;
+	__PAR_L = 1.000000000000000020816682e-03;
+	__PAR_R = 10.0;
+	__PAR_w = 3.141600000000000250111043e+02;
+	modelData->d[(0)] = 1.000000000000000081803054e-05;
 	// Initialize model code.
 	modelData->nDS[0] = 1;
 	modelData->nDS[1] = 2;

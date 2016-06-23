@@ -7,40 +7,41 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __QSSIntegrator_1_p[4];
-double __QSSIntegrator_1_x0 = 0;
-double __QSSIntegrator_2_p[4];
-double __QSSIntegrator_2_x0 = 0;
-double __WSum_3_p[9];
-double __WSum_3_w[2];
-double __WSum_11_p[9];
-double __WSum_11_w[2];
-double __qss_switch_12_p[1];
-double __qss_switch_12_level = 0;
-double __qss_switch_13_p[1];
-double __qss_switch_13_level = 0;
-double __Constant_14_p[1];
-double __Constant_14_k = 0;
-double __Constant_15_p[1];
-double __Constant_15_k = 0;
-double __square_sci_16_p[3];
-double __square_sci_16_amplitude = 0;
-double __square_sci_16_freq = 0;
-double __square_sci_16_DC = 0;
-double __hysteretic_18_p[4];
-double __hysteretic_18_xl = 0;
-double __hysteretic_18_xu = 0;
-double __hysteretic_18_yl = 0;
-double __hysteretic_18_yu = 0;
-double __qss_switch_19_p[1];
-double __qss_switch_19_level = 0;
-double __WSum_20_p[9];
-double __WSum_20_w[2];
-double __WSum_21_p[9];
-double __WSum_21_w[2];
+double __PAR_QSSIntegrator_1_p[4];
+double __PAR_QSSIntegrator_1_x0 = 0;
+double __PAR_QSSIntegrator_2_p[4];
+double __PAR_QSSIntegrator_2_x0 = 0;
+double __PAR_WSum_3_p[9];
+double __PAR_WSum_3_w[2];
+double __PAR_WSum_11_p[9];
+double __PAR_WSum_11_w[2];
+double __PAR_qss_switch_12_p[1];
+double __PAR_qss_switch_12_level = 0;
+double __PAR_qss_switch_13_p[1];
+double __PAR_qss_switch_13_level = 0;
+double __PAR_Constant_14_p[1];
+double __PAR_Constant_14_k = 0;
+double __PAR_Constant_15_p[1];
+double __PAR_Constant_15_k = 0;
+double __PAR_square_sci_16_p[3];
+double __PAR_square_sci_16_amplitude = 0;
+double __PAR_square_sci_16_freq = 0;
+double __PAR_square_sci_16_DC = 0;
+double __PAR_hysteretic_18_p[4];
+double __PAR_hysteretic_18_xl = 0;
+double __PAR_hysteretic_18_xu = 0;
+double __PAR_hysteretic_18_yl = 0;
+double __PAR_hysteretic_18_yu = 0;
+double __PAR_qss_switch_19_p[1];
+double __PAR_qss_switch_19_level = 0;
+double __PAR_WSum_20_p[9];
+double __PAR_WSum_20_w[2];
+double __PAR_WSum_21_p[9];
+double __PAR_WSum_21_w[2];
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -59,12 +60,12 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 		case 0:
 			alg[16] = x[0];
 			alg[20] = x[4];
-			alg[76] = alg[16]*__WSum_20_w[0]+alg[20]*__WSum_20_w[1];
+			alg[76] = alg[16]*__PAR_WSum_20_w[0]+alg[20]*__PAR_WSum_20_w[1];
 			alg[80] = alg[76];
 			dx[1] = alg[80];
 			return;
 		case 1:
-			alg[0] = __Constant_14_k;
+			alg[0] = __PAR_Constant_14_k;
 			alg[4] = 100000.0;
 			alg[24] = alg[4];
 			alg[32] = alg[0];
@@ -74,7 +75,7 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 			alg[52] = alg[24]*d[(1)]+alg[32]*(1.0-d[(1)]);
 			alg[64] = alg[52];
 			alg[68] = alg[48];
-			alg[72] = alg[64]*__WSum_3_w[0]+alg[68]*__WSum_3_w[1];
+			alg[72] = alg[64]*__PAR_WSum_3_w[0]+alg[68]*__PAR_WSum_3_w[1];
 			alg[84] = alg[72];
 			alg[88] = 1.0/alg[84];
 			alg[92] = alg[88];
@@ -91,10 +92,10 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 			alg[136] = alg[100]*alg[104];
 			alg[140] = alg[136];
 			alg[144] = alg[132];
-			alg[148] = alg[140]*__WSum_11_w[0]+alg[144]*__WSum_11_w[1];
+			alg[148] = alg[140]*__PAR_WSum_11_w[0]+alg[144]*__PAR_WSum_11_w[1];
 			alg[152] = alg[148];
 			alg[156] = x[0];
-			alg[184] = alg[152]*__WSum_21_w[0]+alg[156]*__WSum_21_w[1];
+			alg[184] = alg[152]*__PAR_WSum_21_w[0]+alg[156]*__PAR_WSum_21_w[1];
 			alg[188] = alg[184];
 			dx[1] = alg[188];
 			return;
@@ -107,7 +108,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	switch(i)
 	{
 		case 0:
-			alg[0] = __Constant_14_k;
+			alg[0] = __PAR_Constant_14_k;
 			alg[4] = 100000.0;
 			alg[16] = x[0];
 			alg[20] = x[4];
@@ -119,8 +120,8 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 			alg[52] = alg[24]*d[(1)]+alg[32]*(1.0-d[(1)]);
 			alg[64] = alg[52];
 			alg[68] = alg[48];
-			alg[72] = alg[64]*__WSum_3_w[0]+alg[68]*__WSum_3_w[1];
-			alg[76] = alg[16]*__WSum_20_w[0]+alg[20]*__WSum_20_w[1];
+			alg[72] = alg[64]*__PAR_WSum_3_w[0]+alg[68]*__PAR_WSum_3_w[1];
+			alg[76] = alg[16]*__PAR_WSum_20_w[0]+alg[20]*__PAR_WSum_20_w[1];
 			alg[80] = alg[76];
 			alg[84] = alg[72];
 			alg[88] = 1.0/alg[84];
@@ -138,16 +139,16 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 			alg[136] = alg[100]*alg[104];
 			alg[140] = alg[136];
 			alg[144] = alg[132];
-			alg[148] = alg[140]*__WSum_11_w[0]+alg[144]*__WSum_11_w[1];
+			alg[148] = alg[140]*__PAR_WSum_11_w[0]+alg[144]*__PAR_WSum_11_w[1];
 			alg[152] = alg[148];
 			alg[156] = x[0];
-			alg[184] = alg[152]*__WSum_21_w[0]+alg[156]*__WSum_21_w[1];
+			alg[184] = alg[152]*__PAR_WSum_21_w[0]+alg[156]*__PAR_WSum_21_w[1];
 			alg[188] = alg[184];
 			der[0 + 1] = alg[80];
 			der[4 + 1] = alg[188];
 			return;
 		case 1:
-			alg[0] = __Constant_14_k;
+			alg[0] = __PAR_Constant_14_k;
 			alg[4] = 100000.0;
 			alg[16] = x[0];
 			alg[20] = x[4];
@@ -159,8 +160,8 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 			alg[52] = alg[24]*d[(1)]+alg[32]*(1.0-d[(1)]);
 			alg[64] = alg[52];
 			alg[68] = alg[48];
-			alg[72] = alg[64]*__WSum_3_w[0]+alg[68]*__WSum_3_w[1];
-			alg[76] = alg[16]*__WSum_20_w[0]+alg[20]*__WSum_20_w[1];
+			alg[72] = alg[64]*__PAR_WSum_3_w[0]+alg[68]*__PAR_WSum_3_w[1];
+			alg[76] = alg[16]*__PAR_WSum_20_w[0]+alg[20]*__PAR_WSum_20_w[1];
 			alg[80] = alg[76];
 			alg[84] = alg[72];
 			alg[88] = 1.0/alg[84];
@@ -178,10 +179,10 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 			alg[136] = alg[100]*alg[104];
 			alg[140] = alg[136];
 			alg[144] = alg[132];
-			alg[148] = alg[140]*__WSum_11_w[0]+alg[144]*__WSum_11_w[1];
+			alg[148] = alg[140]*__PAR_WSum_11_w[0]+alg[144]*__PAR_WSum_11_w[1];
 			alg[152] = alg[148];
 			alg[156] = x[0];
-			alg[184] = alg[152]*__WSum_21_w[0]+alg[156]*__WSum_21_w[1];
+			alg[184] = alg[152]*__PAR_WSum_21_w[0]+alg[156]*__PAR_WSum_21_w[1];
 			alg[188] = alg[184];
 			der[0 + 1] = alg[80];
 			der[4 + 1] = alg[188];
@@ -197,7 +198,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 		case 0:
 			alg[8] = d[(2)];
 			alg[40] = alg[8];
-			zc[0] = alg[40]-(__qss_switch_12_level);
+			zc[0] = alg[40]-(__PAR_qss_switch_12_level);
 			return;
 		case 1:
 			alg[12] = d[(4)];
@@ -208,7 +209,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			zc[0] = t-(d[(3)]);
 			return;
 		case 3:
-			alg[0] = __Constant_14_k;
+			alg[0] = __PAR_Constant_14_k;
 			alg[4] = 100000.0;
 			alg[24] = alg[4];
 			alg[32] = alg[0];
@@ -220,7 +221,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			alg[60] = 1.0/alg[56];
 			alg[64] = alg[52];
 			alg[68] = alg[48];
-			alg[72] = alg[64]*__WSum_3_w[0]+alg[68]*__WSum_3_w[1];
+			alg[72] = alg[64]*__PAR_WSum_3_w[0]+alg[68]*__PAR_WSum_3_w[1];
 			alg[84] = alg[72];
 			alg[88] = 1.0/alg[84];
 			alg[92] = alg[88];
@@ -237,7 +238,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			alg[136] = alg[100]*alg[104];
 			alg[140] = alg[136];
 			alg[144] = alg[132];
-			alg[148] = alg[140]*__WSum_11_w[0]+alg[144]*__WSum_11_w[1];
+			alg[148] = alg[140]*__PAR_WSum_11_w[0]+alg[144]*__PAR_WSum_11_w[1];
 			alg[160] = alg[60];
 			alg[164] = alg[148];
 			alg[168] = alg[160]*alg[164];
@@ -245,10 +246,10 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			alg[180] = alg[168];
 			alg[192] = alg[172]*d[(5)]+alg[180]*(1.0-d[(5)]);
 			alg[196] = alg[192];
-			zc[0] = alg[196]-(__hysteretic_18_xu);
+			zc[0] = alg[196]-(__PAR_hysteretic_18_xu);
 			return;
 		case 4:
-			alg[0] = __Constant_14_k;
+			alg[0] = __PAR_Constant_14_k;
 			alg[4] = 100000.0;
 			alg[24] = alg[4];
 			alg[32] = alg[0];
@@ -260,7 +261,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			alg[60] = 1.0/alg[56];
 			alg[64] = alg[52];
 			alg[68] = alg[48];
-			alg[72] = alg[64]*__WSum_3_w[0]+alg[68]*__WSum_3_w[1];
+			alg[72] = alg[64]*__PAR_WSum_3_w[0]+alg[68]*__PAR_WSum_3_w[1];
 			alg[84] = alg[72];
 			alg[88] = 1.0/alg[84];
 			alg[92] = alg[88];
@@ -277,7 +278,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			alg[136] = alg[100]*alg[104];
 			alg[140] = alg[136];
 			alg[144] = alg[132];
-			alg[148] = alg[140]*__WSum_11_w[0]+alg[144]*__WSum_11_w[1];
+			alg[148] = alg[140]*__PAR_WSum_11_w[0]+alg[144]*__PAR_WSum_11_w[1];
 			alg[160] = alg[60];
 			alg[164] = alg[148];
 			alg[168] = alg[160]*alg[164];
@@ -285,7 +286,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			alg[180] = alg[168];
 			alg[192] = alg[172]*d[(5)]+alg[180]*(1.0-d[(5)]);
 			alg[196] = alg[192];
-			zc[0] = alg[196]-(__hysteretic_18_xl);
+			zc[0] = alg[196]-(__PAR_hysteretic_18_xl);
 			return;
 		case 5:
 			alg[12] = d[(4)];
@@ -308,7 +309,7 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 			return;
 		case 2:
 			d[(2)] = 1.0-d[(2)];
-			d[(3)] = t+d[(2)]*__square_sci_16_DC/10000.0+(1.0-d[(2)])*(1.0-__square_sci_16_DC)/10000.0;
+			d[(3)] = t+d[(2)]*__PAR_square_sci_16_DC/10000.0+(1.0-d[(2)])*(1.0-__PAR_square_sci_16_DC)/10000.0;
 			return;
 		case 3:
 			d[(4)] = 1.0;
@@ -331,7 +332,7 @@ MOD_handlerNeg(int i, double *x, double *d, double *alg, double t)
 			d[(1)] = 0.0;
 			return;
 		case 4:
-			d[(4)] = __hysteretic_18_yl;
+			d[(4)] = __PAR_hysteretic_18_yl;
 			return;
 		case 5:
 			d[(5)] = 0.0;
@@ -369,30 +370,30 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__QSSIntegrator_1_x0 = 0.0;
-	__QSSIntegrator_2_x0 = 0.0;
-	__qss_switch_12_level = 5.000000000000000000000000e-01;
-	__qss_switch_13_level = 0.0;
-	__Constant_14_k = 1.000000000000000081803054e-05;
-	__Constant_15_k = 100000.0;
-	__square_sci_16_amplitude = 1.0;
-	__square_sci_16_freq = 10000.0;
-	__square_sci_16_DC = 50.0/100.0;
-	__hysteretic_18_xl = ((((-9.999999999999999547481118e-07))));
-	__hysteretic_18_xu = 9.999999999999999547481118e-07;
-	__hysteretic_18_yl = ((((-1.0))));
-	__hysteretic_18_yu = 1.0;
-	__qss_switch_19_level = 0.0;
+	__PAR_QSSIntegrator_1_x0 = 0.0;
+	__PAR_QSSIntegrator_2_x0 = 0.0;
+	__PAR_qss_switch_12_level = 5.000000000000000000000000e-01;
+	__PAR_qss_switch_13_level = 0.0;
+	__PAR_Constant_14_k = 1.000000000000000081803054e-05;
+	__PAR_Constant_15_k = 100000.0;
+	__PAR_square_sci_16_amplitude = 1.0;
+	__PAR_square_sci_16_freq = 10000.0;
+	__PAR_square_sci_16_DC = 50.0/100.0;
+	__PAR_hysteretic_18_xl = ((((-9.999999999999999547481118e-07))));
+	__PAR_hysteretic_18_xu = 9.999999999999999547481118e-07;
+	__PAR_hysteretic_18_yl = ((((-1.0))));
+	__PAR_hysteretic_18_yu = 1.0;
+	__PAR_qss_switch_19_level = 0.0;
 	modelData->x[4] = 0.0;
 	modelData->x[0] = 0.0;
 	modelData->d[(2)] = 1.0;
 	modelData->d[(3)] = 0.0;
 	// Initialize model code.
-	if(modelData->alg[40]>__qss_switch_12_level)
+	if(modelData->alg[40]>__PAR_qss_switch_12_level)
 	{
 		modelData->d[(0)] = 1.0;
 	}
-	else if(modelData->alg[40]<__qss_switch_12_level)
+	else if(modelData->alg[40]<__PAR_qss_switch_12_level)
 	{
 		modelData->d[(0)] = 0.0;
 	}
@@ -404,14 +405,14 @@ QSS_data modelData = simulator->data;
 	{
 		modelData->d[(1)] = 0.0;
 	}
-		modelData->d[(3)] = __square_sci_16_DC/10000.0;
-	if(modelData->alg[196]>__hysteretic_18_xu)
+		modelData->d[(3)] = __PAR_square_sci_16_DC/10000.0;
+	if(modelData->alg[196]>__PAR_hysteretic_18_xu)
 	{
 		modelData->d[(4)] = 1.0;
 	}
-	if(modelData->alg[196]<__hysteretic_18_xl)
+	if(modelData->alg[196]<__PAR_hysteretic_18_xl)
 	{
-		modelData->d[(4)] = __hysteretic_18_yl;
+		modelData->d[(4)] = __PAR_hysteretic_18_yl;
 	}
 	if(modelData->alg[176]>0.0)
 	{
@@ -421,77 +422,77 @@ QSS_data modelData = simulator->data;
 	{
 		modelData->d[(5)] = 0.0;
 	}
-		__QSSIntegrator_1_p[(0)] = 0.0;
-		__QSSIntegrator_1_p[(1)] = 1.000000000000000055511151e-01;
-		__QSSIntegrator_1_p[(2)] = 1.000000000000000020816682e-03;
-		__QSSIntegrator_1_p[(3)] = 0.0;
-		__QSSIntegrator_2_p[(0)] = 0.0;
-		__QSSIntegrator_2_p[(1)] = 1.000000000000000020816682e-03;
-		__QSSIntegrator_2_p[(2)] = 1.000000000000000020816682e-03;
-		__QSSIntegrator_2_p[(3)] = 0.0;
-		__WSum_3_p[(0)] = 1.0;
-		__WSum_3_p[(1)] = 1.0;
-		__WSum_3_p[(2)] = 0.0;
-		__WSum_3_p[(3)] = 0.0;
-		__WSum_3_p[(4)] = 0.0;
-		__WSum_3_p[(5)] = 0.0;
-		__WSum_3_p[(6)] = 0.0;
-		__WSum_3_p[(7)] = 0.0;
-		__WSum_3_p[(8)] = 2.0;
+		__PAR_QSSIntegrator_1_p[(0)] = 0.0;
+		__PAR_QSSIntegrator_1_p[(1)] = 1.000000000000000055511151e-01;
+		__PAR_QSSIntegrator_1_p[(2)] = 1.000000000000000020816682e-03;
+		__PAR_QSSIntegrator_1_p[(3)] = 0.0;
+		__PAR_QSSIntegrator_2_p[(0)] = 0.0;
+		__PAR_QSSIntegrator_2_p[(1)] = 1.000000000000000020816682e-03;
+		__PAR_QSSIntegrator_2_p[(2)] = 1.000000000000000020816682e-03;
+		__PAR_QSSIntegrator_2_p[(3)] = 0.0;
+		__PAR_WSum_3_p[(0)] = 1.0;
+		__PAR_WSum_3_p[(1)] = 1.0;
+		__PAR_WSum_3_p[(2)] = 0.0;
+		__PAR_WSum_3_p[(3)] = 0.0;
+		__PAR_WSum_3_p[(4)] = 0.0;
+		__PAR_WSum_3_p[(5)] = 0.0;
+		__PAR_WSum_3_p[(6)] = 0.0;
+		__PAR_WSum_3_p[(7)] = 0.0;
+		__PAR_WSum_3_p[(8)] = 2.0;
 	for(i26 = 0; i26 <= 1; i26++)
 	{
-		__WSum_3_w[(i26)] = __WSum_3_p[(i26)];
+		__PAR_WSum_3_w[(i26)] = __PAR_WSum_3_p[(i26)];
 	}
-		__WSum_11_p[(0)] = 24.0;
-		__WSum_11_p[(1)] = ((((-1.0))));
-		__WSum_11_p[(2)] = 0.0;
-		__WSum_11_p[(3)] = 0.0;
-		__WSum_11_p[(4)] = 0.0;
-		__WSum_11_p[(5)] = 0.0;
-		__WSum_11_p[(6)] = 0.0;
-		__WSum_11_p[(7)] = 0.0;
-		__WSum_11_p[(8)] = 2.0;
+		__PAR_WSum_11_p[(0)] = 24.0;
+		__PAR_WSum_11_p[(1)] = ((((-1.0))));
+		__PAR_WSum_11_p[(2)] = 0.0;
+		__PAR_WSum_11_p[(3)] = 0.0;
+		__PAR_WSum_11_p[(4)] = 0.0;
+		__PAR_WSum_11_p[(5)] = 0.0;
+		__PAR_WSum_11_p[(6)] = 0.0;
+		__PAR_WSum_11_p[(7)] = 0.0;
+		__PAR_WSum_11_p[(8)] = 2.0;
 	for(i27 = 0; i27 <= 1; i27++)
 	{
-		__WSum_11_w[(i27)] = __WSum_11_p[(i27)];
+		__PAR_WSum_11_w[(i27)] = __PAR_WSum_11_p[(i27)];
 	}
-		__qss_switch_12_p[(0)] = 5.000000000000000000000000e-01;
-		__qss_switch_13_p[(0)] = 0.0;
-		__Constant_14_p[(0)] = 1.000000000000000081803054e-05;
-		__Constant_15_p[(0)] = 100000.0;
-		__square_sci_16_p[(0)] = 1.0;
-		__square_sci_16_p[(1)] = 10000.0;
-		__square_sci_16_p[(2)] = 50.0;
-		__hysteretic_18_p[(0)] = ((((-9.999999999999999547481118e-07))));
-		__hysteretic_18_p[(1)] = 9.999999999999999547481118e-07;
-		__hysteretic_18_p[(2)] = ((((-1.0))));
-		__hysteretic_18_p[(3)] = 1.0;
-		__qss_switch_19_p[(0)] = 0.0;
-		__WSum_20_p[(0)] = ((((-1000.0))));
-		__WSum_20_p[(1)] = 10000.0;
-		__WSum_20_p[(2)] = 0.0;
-		__WSum_20_p[(3)] = 0.0;
-		__WSum_20_p[(4)] = 0.0;
-		__WSum_20_p[(5)] = 0.0;
-		__WSum_20_p[(6)] = 0.0;
-		__WSum_20_p[(7)] = 0.0;
-		__WSum_20_p[(8)] = 2.0;
+		__PAR_qss_switch_12_p[(0)] = 5.000000000000000000000000e-01;
+		__PAR_qss_switch_13_p[(0)] = 0.0;
+		__PAR_Constant_14_p[(0)] = 1.000000000000000081803054e-05;
+		__PAR_Constant_15_p[(0)] = 100000.0;
+		__PAR_square_sci_16_p[(0)] = 1.0;
+		__PAR_square_sci_16_p[(1)] = 10000.0;
+		__PAR_square_sci_16_p[(2)] = 50.0;
+		__PAR_hysteretic_18_p[(0)] = ((((-9.999999999999999547481118e-07))));
+		__PAR_hysteretic_18_p[(1)] = 9.999999999999999547481118e-07;
+		__PAR_hysteretic_18_p[(2)] = ((((-1.0))));
+		__PAR_hysteretic_18_p[(3)] = 1.0;
+		__PAR_qss_switch_19_p[(0)] = 0.0;
+		__PAR_WSum_20_p[(0)] = ((((-1000.0))));
+		__PAR_WSum_20_p[(1)] = 10000.0;
+		__PAR_WSum_20_p[(2)] = 0.0;
+		__PAR_WSum_20_p[(3)] = 0.0;
+		__PAR_WSum_20_p[(4)] = 0.0;
+		__PAR_WSum_20_p[(5)] = 0.0;
+		__PAR_WSum_20_p[(6)] = 0.0;
+		__PAR_WSum_20_p[(7)] = 0.0;
+		__PAR_WSum_20_p[(8)] = 2.0;
 	for(i28 = 0; i28 <= 1; i28++)
 	{
-		__WSum_20_w[(i28)] = __WSum_20_p[(i28)];
+		__PAR_WSum_20_w[(i28)] = __PAR_WSum_20_p[(i28)];
 	}
-		__WSum_21_p[(0)] = 10000.0;
-		__WSum_21_p[(1)] = ((((-10000.0))));
-		__WSum_21_p[(2)] = 0.0;
-		__WSum_21_p[(3)] = 0.0;
-		__WSum_21_p[(4)] = 0.0;
-		__WSum_21_p[(5)] = 0.0;
-		__WSum_21_p[(6)] = 0.0;
-		__WSum_21_p[(7)] = 0.0;
-		__WSum_21_p[(8)] = 2.0;
+		__PAR_WSum_21_p[(0)] = 10000.0;
+		__PAR_WSum_21_p[(1)] = ((((-10000.0))));
+		__PAR_WSum_21_p[(2)] = 0.0;
+		__PAR_WSum_21_p[(3)] = 0.0;
+		__PAR_WSum_21_p[(4)] = 0.0;
+		__PAR_WSum_21_p[(5)] = 0.0;
+		__PAR_WSum_21_p[(6)] = 0.0;
+		__PAR_WSum_21_p[(7)] = 0.0;
+		__PAR_WSum_21_p[(8)] = 2.0;
 	for(i29 = 0; i29 <= 1; i29++)
 	{
-		__WSum_21_w[(i29)] = __WSum_21_p[(i29)];
+		__PAR_WSum_21_w[(i29)] = __PAR_WSum_21_p[(i29)];
 	}
 		modelData->d[(5)] = 1.0;
 		modelData->d[(4)] = 1.0;

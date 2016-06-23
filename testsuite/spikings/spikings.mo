@@ -29,8 +29,8 @@ model spikings
       		reinit(u[i],u[i]+d[i]);
     	end when;
 	end for;
-
 	annotation(
+
 	experiment(
 		MMO_Description="Spiking Neurons.",
 		MMO_Solver=LIQSS2,

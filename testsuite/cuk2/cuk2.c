@@ -7,19 +7,20 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __C;
-double __L;
-double __R;
-double __U;
-double __T;
-double __DC;
-double __ROn;
-double __ROff;
-double __C1;
-double __L1;
+double __PAR_C = 0;
+double __PAR_L = 0;
+double __PAR_R = 0;
+double __PAR_U = 0;
+double __PAR_T = 0;
+double __PAR_DC = 0;
+double __PAR_ROn = 0;
+double __PAR_ROff = 0;
+double __PAR_C1 = 0;
+double __PAR_L1 = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -36,20 +37,20 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	switch(i)
 	{
 		case 0:
-			alg[0] = (__L*x[3]+__L*x[9])/__L1;
+			alg[0] = (__PAR_L*x[3]+__PAR_L*x[9])/__PAR_L1;
 			alg[3] = (d[(1)]*(x[9]+alg[0])-x[0])/(d[(0)]+d[(1)]);
-			dx[1] = (alg[3]-x[9])/__C1;
+			dx[1] = (alg[3]-x[9])/__PAR_C1;
 			return;
 		case 1:
-			dx[1] = (__U+x[6]-x[0])/__L;
+			dx[1] = (__PAR_U+x[6]-x[0])/__PAR_L;
 			return;
 		case 2:
-			dx[1] = (x[9]-x[6]/__R)/__C;
+			dx[1] = (x[9]-x[6]/__PAR_R)/__PAR_C;
 			return;
 		case 3:
-			alg[0] = (__L*x[3]+__L*x[9])/__L1;
+			alg[0] = (__PAR_L*x[3]+__PAR_L*x[9])/__PAR_L1;
 			alg[3] = (d[(1)]*(x[9]+alg[0])-x[0])/(d[(0)]+d[(1)]);
-			dx[1] = (-x[6]-alg[3]*d[(0)])/__L;
+			dx[1] = (-x[6]-alg[3]*d[(0)])/__PAR_L;
 			return;
 	}
 }
@@ -60,31 +61,31 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	switch(i)
 	{
 		case 0:
-			alg[0] = (__L*x[3]+__L*x[9])/__L1;
+			alg[0] = (__PAR_L*x[3]+__PAR_L*x[9])/__PAR_L1;
 			alg[3] = (d[(1)]*(x[9]+alg[0])-x[0])/(d[(0)]+d[(1)]);
-			der[0 + 1] = (alg[3]-x[9])/__C1;
-			der[3 + 1] = (__U+x[6]-x[0])/__L;
-			der[9 + 1] = (-x[6]-alg[3]*d[(0)])/__L;
+			der[0 + 1] = (alg[3]-x[9])/__PAR_C1;
+			der[3 + 1] = (__PAR_U+x[6]-x[0])/__PAR_L;
+			der[9 + 1] = (-x[6]-alg[3]*d[(0)])/__PAR_L;
 			return;
 		case 1:
-			alg[0] = (__L*x[3]+__L*x[9])/__L1;
+			alg[0] = (__PAR_L*x[3]+__PAR_L*x[9])/__PAR_L1;
 			alg[3] = (d[(1)]*(x[9]+alg[0])-x[0])/(d[(0)]+d[(1)]);
-			der[0 + 1] = (alg[3]-x[9])/__C1;
-			der[9 + 1] = (-x[6]-alg[3]*d[(0)])/__L;
+			der[0 + 1] = (alg[3]-x[9])/__PAR_C1;
+			der[9 + 1] = (-x[6]-alg[3]*d[(0)])/__PAR_L;
 			return;
 		case 2:
-			alg[0] = (__L*x[3]+__L*x[9])/__L1;
+			alg[0] = (__PAR_L*x[3]+__PAR_L*x[9])/__PAR_L1;
 			alg[3] = (d[(1)]*(x[9]+alg[0])-x[0])/(d[(0)]+d[(1)]);
-			der[3 + 1] = (__U+x[6]-x[0])/__L;
-			der[6 + 1] = (x[9]-x[6]/__R)/__C;
-			der[9 + 1] = (-x[6]-alg[3]*d[(0)])/__L;
+			der[3 + 1] = (__PAR_U+x[6]-x[0])/__PAR_L;
+			der[6 + 1] = (x[9]-x[6]/__PAR_R)/__PAR_C;
+			der[9 + 1] = (-x[6]-alg[3]*d[(0)])/__PAR_L;
 			return;
 		case 3:
-			alg[0] = (__L*x[3]+__L*x[9])/__L1;
+			alg[0] = (__PAR_L*x[3]+__PAR_L*x[9])/__PAR_L1;
 			alg[3] = (d[(1)]*(x[9]+alg[0])-x[0])/(d[(0)]+d[(1)]);
-			der[0 + 1] = (alg[3]-x[9])/__C1;
-			der[6 + 1] = (x[9]-x[6]/__R)/__C;
-			der[9 + 1] = (-x[6]-alg[3]*d[(0)])/__L;
+			der[0 + 1] = (alg[3]-x[9])/__PAR_C1;
+			der[6 + 1] = (x[9]-x[6]/__PAR_R)/__PAR_C;
+			der[9 + 1] = (-x[6]-alg[3]*d[(0)])/__PAR_L;
 			return;
 	}
 }
@@ -98,10 +99,10 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			zc[0] = t-(d[(2)]);
 			return;
 		case 1:
-			zc[0] = t-d[(3)]-__DC*__T-(0.0);
+			zc[0] = t-d[(3)]-__PAR_DC*__PAR_T-(0.0);
 			return;
 		case 2:
-			alg[0] = (__L*x[3]+__L*x[9])/__L1;
+			alg[0] = (__PAR_L*x[3]+__PAR_L*x[9])/__PAR_L1;
 			alg[3] = (d[(1)]*(x[9]+alg[0])-x[0])/(d[(0)]+d[(1)]);
 			zc[0] = d[(4)]*alg[3]-(0.0);
 			return;
@@ -115,12 +116,12 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 	{
 		case 0:
 			d[(3)] = d[(2)];
-			d[(2)] = d[(2)]+__T;
-			d[(1)] = __ROn;
+			d[(2)] = d[(2)]+__PAR_T;
+			d[(1)] = __PAR_ROn;
 			return;
 		case 1:
-			d[(1)] = __ROff;
-			d[(0)] = __ROn;
+			d[(1)] = __PAR_ROff;
+			d[(0)] = __PAR_ROn;
 			d[(4)] = 1.0;
 			return;
 	}
@@ -132,7 +133,7 @@ MOD_handlerNeg(int i, double *x, double *d, double *alg, double t)
 	switch(i)
 	{
 		case 2:
-			d[(0)] = __ROff;
+			d[(0)] = __PAR_ROff;
 			d[(4)] = 0.0;
 			return;
 	}
@@ -147,7 +148,7 @@ MOD_output(int i, double *x, double *d, double *alg, double t, double *out)
 			out[0] = x[9];
 			return;
 		case 1:
-			alg[0] = (__L*x[3]+__L*x[9])/__L1;
+			alg[0] = (__PAR_L*x[3]+__PAR_L*x[9])/__PAR_L1;
 			out[0] = alg[0];
 			return;
 		case 2:
@@ -171,18 +172,18 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__C = 1.000000000000000047921736e-04;
-	__L = 1.000000000000000047921736e-04;
-	__R = 10.0;
-	__U = 24.0;
-	__T = 1.000000000000000047921736e-04;
-	__DC = 2.500000000000000000000000e-01;
-	__ROn = 1.000000000000000081803054e-05;
-	__ROff = 1.000000000000000000000000e+05;
-	__C1 = 1.000000000000000047921736e-04;
-	__L1 = 1.000000000000000047921736e-04;
+	__PAR_C = 1.000000000000000047921736e-04;
+	__PAR_L = 1.000000000000000047921736e-04;
+	__PAR_R = 10.0;
+	__PAR_U = 24.0;
+	__PAR_T = 1.000000000000000047921736e-04;
+	__PAR_DC = 2.500000000000000000000000e-01;
+	__PAR_ROn = 1.000000000000000081803054e-05;
+	__PAR_ROff = 1.000000000000000000000000e+05;
+	__PAR_C1 = 1.000000000000000047921736e-04;
+	__PAR_L1 = 1.000000000000000047921736e-04;
 	// Initialize model code.
-		modelData->d[(2)] = __T;
+		modelData->d[(2)] = __PAR_T;
 		modelData->d[(1)] = 1.000000000000000000000000e+05;
 		modelData->d[(0)] = 1.000000000000000000000000e+05;
 	modelData->nDS[0] = 1;

@@ -7,17 +7,18 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __QSSIntegrator_1_p[4];
-double __QSSIntegrator_1_x0;
-double __QSSIntegrator_2_p[4];
-double __QSSIntegrator_2_x0;
-double __WSum_3_p[9];
-double __WSum_3_w[2];
-double __WSum_4_p[9];
-double __WSum_4_w[2];
+double __PAR_QSSIntegrator_1_p[4];
+double __PAR_QSSIntegrator_1_x0 = 0;
+double __PAR_QSSIntegrator_2_p[4];
+double __PAR_QSSIntegrator_2_x0 = 0;
+double __PAR_WSum_3_p[9];
+double __PAR_WSum_3_w[2];
+double __PAR_WSum_4_p[9];
+double __PAR_WSum_4_w[2];
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -49,10 +50,10 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	}
 	for(j2 = 0; j2 <= 1; j2++)
 	{
-		tmp0[0] += alg[(j2+5) * 4 + 0] * __WSum_4_w[j2];
-		tmp0[1] += alg[(j2+5) * 4 + 1] * __WSum_4_w[j2];
-		tmp0[2] += alg[(j2+5) * 4 + 2] * __WSum_4_w[j2];
-		tmp0[3] += alg[(j2+5) * 4 + 3] * __WSum_4_w[j2];
+		tmp0[0] += alg[(j2+5) * 4 + 0] * __PAR_WSum_4_w[j2];
+		tmp0[1] += alg[(j2+5) * 4 + 1] * __PAR_WSum_4_w[j2];
+		tmp0[2] += alg[(j2+5) * 4 + 2] * __PAR_WSum_4_w[j2];
+		tmp0[3] += alg[(j2+5) * 4 + 3] * __PAR_WSum_4_w[j2];
 	}
 			alg[28] = tmp0[0];
 			alg[36] = alg[28];
@@ -70,10 +71,10 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	}
 	for(j3 = 0; j3 <= 1; j3++)
 	{
-		tmp1[0] += alg[(j3+3) * 4 + 0] * __WSum_3_w[j3];
-		tmp1[1] += alg[(j3+3) * 4 + 1] * __WSum_3_w[j3];
-		tmp1[2] += alg[(j3+3) * 4 + 2] * __WSum_3_w[j3];
-		tmp1[3] += alg[(j3+3) * 4 + 3] * __WSum_3_w[j3];
+		tmp1[0] += alg[(j3+3) * 4 + 0] * __PAR_WSum_3_w[j3];
+		tmp1[1] += alg[(j3+3) * 4 + 1] * __PAR_WSum_3_w[j3];
+		tmp1[2] += alg[(j3+3) * 4 + 2] * __PAR_WSum_3_w[j3];
+		tmp1[3] += alg[(j3+3) * 4 + 3] * __PAR_WSum_3_w[j3];
 	}
 			alg[32] = tmp1[0];
 			alg[40] = alg[32];
@@ -105,10 +106,10 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	}
 	for(j2 = 0; j2 <= 1; j2++)
 	{
-		tmp0[0] += alg[(j2+5) * 4 + 0] * __WSum_4_w[j2];
-		tmp0[1] += alg[(j2+5) * 4 + 1] * __WSum_4_w[j2];
-		tmp0[2] += alg[(j2+5) * 4 + 2] * __WSum_4_w[j2];
-		tmp0[3] += alg[(j2+5) * 4 + 3] * __WSum_4_w[j2];
+		tmp0[0] += alg[(j2+5) * 4 + 0] * __PAR_WSum_4_w[j2];
+		tmp0[1] += alg[(j2+5) * 4 + 1] * __PAR_WSum_4_w[j2];
+		tmp0[2] += alg[(j2+5) * 4 + 2] * __PAR_WSum_4_w[j2];
+		tmp0[3] += alg[(j2+5) * 4 + 3] * __PAR_WSum_4_w[j2];
 	}
 			alg[28] = tmp0[0];
 	for(j3 = 0;j3 < 4; j3++)
@@ -117,10 +118,10 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	}
 	for(j3 = 0; j3 <= 1; j3++)
 	{
-		tmp1[0] += alg[(j3+3) * 4 + 0] * __WSum_3_w[j3];
-		tmp1[1] += alg[(j3+3) * 4 + 1] * __WSum_3_w[j3];
-		tmp1[2] += alg[(j3+3) * 4 + 2] * __WSum_3_w[j3];
-		tmp1[3] += alg[(j3+3) * 4 + 3] * __WSum_3_w[j3];
+		tmp1[0] += alg[(j3+3) * 4 + 0] * __PAR_WSum_3_w[j3];
+		tmp1[1] += alg[(j3+3) * 4 + 1] * __PAR_WSum_3_w[j3];
+		tmp1[2] += alg[(j3+3) * 4 + 2] * __PAR_WSum_3_w[j3];
+		tmp1[3] += alg[(j3+3) * 4 + 3] * __PAR_WSum_3_w[j3];
 	}
 			alg[32] = tmp1[0];
 			alg[36] = alg[28];
@@ -142,10 +143,10 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	}
 	for(j2 = 0; j2 <= 1; j2++)
 	{
-		tmp0[0] += alg[(j2+5) * 4 + 0] * __WSum_4_w[j2];
-		tmp0[1] += alg[(j2+5) * 4 + 1] * __WSum_4_w[j2];
-		tmp0[2] += alg[(j2+5) * 4 + 2] * __WSum_4_w[j2];
-		tmp0[3] += alg[(j2+5) * 4 + 3] * __WSum_4_w[j2];
+		tmp0[0] += alg[(j2+5) * 4 + 0] * __PAR_WSum_4_w[j2];
+		tmp0[1] += alg[(j2+5) * 4 + 1] * __PAR_WSum_4_w[j2];
+		tmp0[2] += alg[(j2+5) * 4 + 2] * __PAR_WSum_4_w[j2];
+		tmp0[3] += alg[(j2+5) * 4 + 3] * __PAR_WSum_4_w[j2];
 	}
 			alg[28] = tmp0[0];
 	for(j3 = 0;j3 < 4; j3++)
@@ -154,10 +155,10 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	}
 	for(j3 = 0; j3 <= 1; j3++)
 	{
-		tmp1[0] += alg[(j3+3) * 4 + 0] * __WSum_3_w[j3];
-		tmp1[1] += alg[(j3+3) * 4 + 1] * __WSum_3_w[j3];
-		tmp1[2] += alg[(j3+3) * 4 + 2] * __WSum_3_w[j3];
-		tmp1[3] += alg[(j3+3) * 4 + 3] * __WSum_3_w[j3];
+		tmp1[0] += alg[(j3+3) * 4 + 0] * __PAR_WSum_3_w[j3];
+		tmp1[1] += alg[(j3+3) * 4 + 1] * __PAR_WSum_3_w[j3];
+		tmp1[2] += alg[(j3+3) * 4 + 2] * __PAR_WSum_3_w[j3];
+		tmp1[3] += alg[(j3+3) * 4 + 3] * __PAR_WSum_3_w[j3];
 	}
 			alg[32] = tmp1[0];
 			alg[36] = alg[28];
@@ -194,50 +195,50 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__QSSIntegrator_1_x0 = 5.000000000000000000000000e-01;
-	__QSSIntegrator_2_x0 = 5.000000000000000000000000e-01;
+	__PAR_QSSIntegrator_1_x0 = 5.000000000000000000000000e-01;
+	__PAR_QSSIntegrator_2_x0 = 5.000000000000000000000000e-01;
 	for(i = 0; i <= 0;i++)
 	{
-		modelData->x[(i+1) * 4] = __QSSIntegrator_1_x0;
+		modelData->x[(i+1) * 4] = __PAR_QSSIntegrator_1_x0;
 	}
 	for(i = 0; i <= 0;i++)
 	{
-		modelData->x[i * 4] = __QSSIntegrator_2_x0;
+		modelData->x[i * 4] = __PAR_QSSIntegrator_2_x0;
 	}
 	// Initialize model code.
-		__QSSIntegrator_1_p[(0)] = 0.0;
-		__QSSIntegrator_1_p[(1)] = 9.999999999999999547481118e-07;
-		__QSSIntegrator_1_p[(2)] = 1.000000000000000020816682e-03;
-		__QSSIntegrator_1_p[(3)] = 5.000000000000000000000000e-01;
-		__QSSIntegrator_2_p[(0)] = 0.0;
-		__QSSIntegrator_2_p[(1)] = 9.999999999999999547481118e-07;
-		__QSSIntegrator_2_p[(2)] = 1.000000000000000020816682e-03;
-		__QSSIntegrator_2_p[(3)] = 5.000000000000000000000000e-01;
-		__WSum_3_p[(0)] = 1.000000000000000055511151e-01;
-		__WSum_3_p[(1)] = (-1.000000000000000055511151e-01);
-		__WSum_3_p[(2)] = 0.0;
-		__WSum_3_p[(3)] = 0.0;
-		__WSum_3_p[(4)] = 0.0;
-		__WSum_3_p[(5)] = 0.0;
-		__WSum_3_p[(6)] = 0.0;
-		__WSum_3_p[(7)] = 0.0;
-		__WSum_3_p[(8)] = 2.0;
+		__PAR_QSSIntegrator_1_p[(0)] = 0.0;
+		__PAR_QSSIntegrator_1_p[(1)] = 9.999999999999999547481118e-07;
+		__PAR_QSSIntegrator_1_p[(2)] = 1.000000000000000020816682e-03;
+		__PAR_QSSIntegrator_1_p[(3)] = 5.000000000000000000000000e-01;
+		__PAR_QSSIntegrator_2_p[(0)] = 0.0;
+		__PAR_QSSIntegrator_2_p[(1)] = 9.999999999999999547481118e-07;
+		__PAR_QSSIntegrator_2_p[(2)] = 1.000000000000000020816682e-03;
+		__PAR_QSSIntegrator_2_p[(3)] = 5.000000000000000000000000e-01;
+		__PAR_WSum_3_p[(0)] = 1.000000000000000055511151e-01;
+		__PAR_WSum_3_p[(1)] = (-1.000000000000000055511151e-01);
+		__PAR_WSum_3_p[(2)] = 0.0;
+		__PAR_WSum_3_p[(3)] = 0.0;
+		__PAR_WSum_3_p[(4)] = 0.0;
+		__PAR_WSum_3_p[(5)] = 0.0;
+		__PAR_WSum_3_p[(6)] = 0.0;
+		__PAR_WSum_3_p[(7)] = 0.0;
+		__PAR_WSum_3_p[(8)] = 2.0;
 	for(i4 = 0; i4 <= 1; i4++)
 	{
-		__WSum_3_w[(i4)] = __WSum_3_p[(i4)];
+		__PAR_WSum_3_w[(i4)] = __PAR_WSum_3_p[(i4)];
 	}
-		__WSum_4_p[(0)] = 1.000000000000000055511151e-01;
-		__WSum_4_p[(1)] = (-1.000000000000000055511151e-01);
-		__WSum_4_p[(2)] = 0.0;
-		__WSum_4_p[(3)] = 0.0;
-		__WSum_4_p[(4)] = 0.0;
-		__WSum_4_p[(5)] = 0.0;
-		__WSum_4_p[(6)] = 0.0;
-		__WSum_4_p[(7)] = 0.0;
-		__WSum_4_p[(8)] = 2.0;
+		__PAR_WSum_4_p[(0)] = 1.000000000000000055511151e-01;
+		__PAR_WSum_4_p[(1)] = (-1.000000000000000055511151e-01);
+		__PAR_WSum_4_p[(2)] = 0.0;
+		__PAR_WSum_4_p[(3)] = 0.0;
+		__PAR_WSum_4_p[(4)] = 0.0;
+		__PAR_WSum_4_p[(5)] = 0.0;
+		__PAR_WSum_4_p[(6)] = 0.0;
+		__PAR_WSum_4_p[(7)] = 0.0;
+		__PAR_WSum_4_p[(8)] = 2.0;
 	for(i5 = 0; i5 <= 1; i5++)
 	{
-		__WSum_4_w[(i5)] = __WSum_4_p[(i5)];
+		__PAR_WSum_4_w[(i5)] = __PAR_WSum_4_p[(i5)];
 	}
 	modelData->nDS[0]++;
 	modelData->nDS[0]++;

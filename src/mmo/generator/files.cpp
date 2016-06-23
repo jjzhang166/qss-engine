@@ -40,7 +40,7 @@
 #include "generator_utils.h"
 #include "solver.h"
 
-#ifdef linux
+#ifdef	__linux__
 #include <sys/stat.h>
 #endif
 
@@ -223,7 +223,7 @@ MMO_Files_::run ()
     }
   _writer->print ("cd $cwd");
   _writer->clearFile ();
-#ifdef linux
+#ifdef	__linux__
   chmod (fname.c_str (),
   S_IRUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
 #endif

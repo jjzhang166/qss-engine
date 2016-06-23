@@ -7,15 +7,16 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __alpha;
-double __u;
-double __qBC;
-double __x0;
-double __x[10000];
-double __beta;
+double __PAR_alpha = 0;
+double __PAR_u = 0;
+double __PAR_qBC = 0;
+double __PAR_x0 = 0;
+double __PAR_x[10000];
+double __PAR_beta = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -33,16 +34,16 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	switch(i)
 	{
 		case 0:
-			dx[1] = __u*(-x[0]+x[29997])*10000+__beta*(x[3]-2.0*x[0]+x[29997])*pow(10000,2.0);
+			dx[1] = __PAR_u*(-x[0]+x[29997])*10000+__PAR_beta*(x[3]-2.0*x[0]+x[29997])*pow(10000,2.0);
 			return;
 		case 9999:
-			dx[1] = __u*(-x[29997]+x[29994])*10000+__beta*(x[0]-2.0*x[29997]+x[29994])*pow(10000,2.0);
+			dx[1] = __PAR_u*(-x[29997]+x[29994])*10000+__PAR_beta*(x[0]-2.0*x[29997]+x[29994])*pow(10000,2.0);
 			return;
 		default:
 			j = i;
 			if(j >=1 && j <= 9998)
 			{
-				dx[1] = __u*(-x[(j) * 3]+x[(j-1) * 3])*10000+__beta*(x[(j+1) * 3]-2.0*x[(j) * 3]+x[(j-1) * 3])*pow(10000,2.0);
+				dx[1] = __PAR_u*(-x[(j) * 3]+x[(j-1) * 3])*10000+__PAR_beta*(x[(j+1) * 3]-2.0*x[(j) * 3]+x[(j-1) * 3])*pow(10000,2.0);
 			}
 	}
 }
@@ -54,34 +55,34 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	switch(i)
 	{
 		case 0:
-			der[0 + 1] = __u*(-x[0]+x[29997])*10000+__beta*(x[3]-2.0*x[0]+x[29997])*pow(10000,2.0);
-			der[29997 + 1] = __u*(-x[29997]+x[29994])*10000+__beta*(x[0]-2.0*x[29997]+x[29994])*pow(10000,2.0);
+			der[0 + 1] = __PAR_u*(-x[0]+x[29997])*10000+__PAR_beta*(x[3]-2.0*x[0]+x[29997])*pow(10000,2.0);
+			der[29997 + 1] = __PAR_u*(-x[29997]+x[29994])*10000+__PAR_beta*(x[0]-2.0*x[29997]+x[29994])*pow(10000,2.0);
 			break;
 		case 1:
-			der[0 + 1] = __u*(-x[0]+x[29997])*10000+__beta*(x[3]-2.0*x[0]+x[29997])*pow(10000,2.0);
+			der[0 + 1] = __PAR_u*(-x[0]+x[29997])*10000+__PAR_beta*(x[3]-2.0*x[0]+x[29997])*pow(10000,2.0);
 			break;
 		case 9998:
-			der[29997 + 1] = __u*(-x[29997]+x[29994])*10000+__beta*(x[0]-2.0*x[29997]+x[29994])*pow(10000,2.0);
+			der[29997 + 1] = __PAR_u*(-x[29997]+x[29994])*10000+__PAR_beta*(x[0]-2.0*x[29997]+x[29994])*pow(10000,2.0);
 			break;
 		case 9999:
-			der[0 + 1] = __u*(-x[0]+x[29997])*10000+__beta*(x[3]-2.0*x[0]+x[29997])*pow(10000,2.0);
-			der[29997 + 1] = __u*(-x[29997]+x[29994])*10000+__beta*(x[0]-2.0*x[29997]+x[29994])*pow(10000,2.0);
+			der[0 + 1] = __PAR_u*(-x[0]+x[29997])*10000+__PAR_beta*(x[3]-2.0*x[0]+x[29997])*pow(10000,2.0);
+			der[29997 + 1] = __PAR_u*(-x[29997]+x[29994])*10000+__PAR_beta*(x[0]-2.0*x[29997]+x[29994])*pow(10000,2.0);
 			break;
 	}
 	j = i+1;
 	if(j >=1 && j <= 9998)
 	{
-		der[(j) * 3 + 1] = __u*(-x[(j) * 3]+x[(j-1) * 3])*10000+__beta*(x[(j+1) * 3]-2.0*x[(j) * 3]+x[(j-1) * 3])*pow(10000,2.0);
+		der[(j) * 3 + 1] = __PAR_u*(-x[(j) * 3]+x[(j-1) * 3])*10000+__PAR_beta*(x[(j+1) * 3]-2.0*x[(j) * 3]+x[(j-1) * 3])*pow(10000,2.0);
 	}
 	j = i;
 	if(j >=1 && j <= 9998)
 	{
-		der[(j) * 3 + 1] = __u*(-x[(j) * 3]+x[(j-1) * 3])*10000+__beta*(x[(j+1) * 3]-2.0*x[(j) * 3]+x[(j-1) * 3])*pow(10000,2.0);
+		der[(j) * 3 + 1] = __PAR_u*(-x[(j) * 3]+x[(j-1) * 3])*10000+__PAR_beta*(x[(j+1) * 3]-2.0*x[(j) * 3]+x[(j-1) * 3])*pow(10000,2.0);
 	}
 	j = i-1;
 	if(j >=1 && j <= 9998)
 	{
-		der[(j) * 3 + 1] = __u*(-x[(j) * 3]+x[(j-1) * 3])*10000+__beta*(x[(j+1) * 3]-2.0*x[(j) * 3]+x[(j-1) * 3])*pow(10000,2.0);
+		der[(j) * 3 + 1] = __PAR_u*(-x[(j) * 3]+x[(j-1) * 3])*10000+__PAR_beta*(x[(j+1) * 3]-2.0*x[(j) * 3]+x[(j-1) * 3])*pow(10000,2.0);
 	}
 }
 
@@ -108,16 +109,16 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__alpha = 100.0;
-	__u = 1.000000000000000000000000e+00;
-	__qBC = 1.000000000000000000000000e+00;
-	__x0 = 5.000000000000000000000000e-01;
-	__beta = 0.000000000000000000000000e+00;
+	__PAR_alpha = 100.0;
+	__PAR_u = 1.000000000000000000000000e+00;
+	__PAR_qBC = 1.000000000000000000000000e+00;
+	__PAR_x0 = 5.000000000000000000000000e-01;
+	__PAR_beta = 0.000000000000000000000000e+00;
 	// Initialize model code.
 	for(i0 = 0; i0 <= 9999; i0++)
 	{
-		__x[(i0)] = 1.000000000000000000000000e+00*(i0+1)/10000;
-		modelData->x[(i0) * 3] = pow(2.717999999999999971578291e+00,(-__alpha*pow((__x[(i0)]-__x0),2.0)));
+		__PAR_x[(i0)] = 1.000000000000000000000000e+00*(i0+1)/10000;
+		modelData->x[(i0) * 3] = pow(2.717999999999999971578291e+00,(-__PAR_alpha*pow((__PAR_x[(i0)]-__PAR_x0),2.0)));
 	}
 	modelData->nDS[0] = 3;
 	modelData->nDS[9999] = 3;

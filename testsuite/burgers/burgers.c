@@ -7,15 +7,16 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __beta;
-double __x0;
-double __pi;
-double __x[1000];
-double __inVal;
-double __outVal;
+double __PAR_beta = 0;
+double __PAR_x0 = 0;
+double __PAR_pi = 0;
+double __PAR_x[1000];
+double __PAR_inVal = 0;
+double __PAR_outVal = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -137,17 +138,25 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__beta = 100.0;
-	__x0 = 5.000000000000000000000000e-01;
-	__pi = 3.141589999999999882618340e+00;
-	__inVal = 1.0;
-	__outVal = 1.0;
+	__PAR_beta = 100.0;
+	__PAR_x0 = 5.000000000000000000000000e-01;
+	__PAR_pi = 3.141589999999999882618340e+00;
+	__PAR_inVal = 1.0;
+	__PAR_outVal = 1.0;
 	modelData->d[(0)] = 0.0;
 	// Initialize model code.
 	for(i0 = 0; i0 <= 999; i0++)
 	{
-		__x[(i0)] = 1.000000000000000000000000e+00*(i0+1)/1000;
-		modelData->x[(i0) * 3] = sin(__pi*2.0*__x[(i0)]);
+		__PAR_x[(i0)] = 1.000000000000000000000000e+00*(i0+1)/1000;
+		modelData->x[(i0) * 3] = sin(__PAR_pi*2.0*__PAR_x[(i0)]);
+	if(modelData->x[(i0) * 3]>0.0)
+	{
+		modelData->d[(i0)] = 1.0;
+	}
+	else
+	{
+		modelData->d[(i0)] = 0.0;
+	}
 	}
 	modelData->nDS[0] = 3;
 	for(i = 1; i <= 998; i++)

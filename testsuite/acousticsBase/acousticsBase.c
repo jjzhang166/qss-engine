@@ -7,20 +7,21 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __K0;
-double __rho0;
-double __c0;
-double __Z0;
-double __u0;
-double __beta;
-double __x0;
-double __gam;
-double __x[200];
-double __inVal;
-double __outVal;
+double __PAR_K0 = 0;
+double __PAR_rho0 = 0;
+double __PAR_c0 = 0;
+double __PAR_Z0 = 0;
+double __PAR_u0 = 0;
+double __PAR_beta = 0;
+double __PAR_x0 = 0;
+double __PAR_gam = 0;
+double __PAR_x[200];
+double __PAR_inVal = 0;
+double __PAR_outVal = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -38,27 +39,27 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	switch(i)
 	{
 		case 0:
-			dx[1] = __K0*(-x[600]+x[1197])*200;
+			dx[1] = __PAR_K0*(-x[600]+x[1197])*200;
 			return;
 		case 200:
-			dx[1] = 1.0/__rho0*(-x[3]+x[0])*200;
+			dx[1] = 1.0/__PAR_rho0*(-x[3]+x[0])*200;
 			return;
 		case 199:
-			dx[1] = __K0*(-x[1197]+x[1194])*200;
+			dx[1] = __PAR_K0*(-x[1197]+x[1194])*200;
 			return;
 		case 399:
-			dx[1] = 1.0/__rho0*(-x[0]+x[597])*200;
+			dx[1] = 1.0/__PAR_rho0*(-x[0]+x[597])*200;
 			return;
 		default:
 			j = i;
 			if(j >=1 && j <= 198)
 			{
-				dx[1] = __K0*(-x[(j+200) * 3]+x[(j+199) * 3])*200;
+				dx[1] = __PAR_K0*(-x[(j+200) * 3]+x[(j+199) * 3])*200;
 			}
 			j = i-200;
 			if(j >=1 && j <= 198)
 			{
-				dx[1] = 1.0/__rho0*(-x[(j+1) * 3]+x[(j) * 3])*200;
+				dx[1] = 1.0/__PAR_rho0*(-x[(j+1) * 3]+x[(j) * 3])*200;
 			}
 	}
 }
@@ -70,45 +71,45 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	switch(i)
 	{
 		case 0:
-			der[600 + 1] = 1.0/__rho0*(-x[3]+x[0])*200;
-			der[1197 + 1] = 1.0/__rho0*(-x[0]+x[597])*200;
+			der[600 + 1] = 1.0/__PAR_rho0*(-x[3]+x[0])*200;
+			der[1197 + 1] = 1.0/__PAR_rho0*(-x[0]+x[597])*200;
 			return;
 		case 1:
-			der[600 + 1] = 1.0/__rho0*(-x[3]+x[0])*200;
+			der[600 + 1] = 1.0/__PAR_rho0*(-x[3]+x[0])*200;
 			break;
 		case 199:
-			der[1197 + 1] = 1.0/__rho0*(-x[0]+x[597])*200;
+			der[1197 + 1] = 1.0/__PAR_rho0*(-x[0]+x[597])*200;
 			break;
 		case 200:
-			der[0 + 1] = __K0*(-x[600]+x[1197])*200;
+			der[0 + 1] = __PAR_K0*(-x[600]+x[1197])*200;
 			break;
 		case 398:
-			der[597 + 1] = __K0*(-x[1197]+x[1194])*200;
+			der[597 + 1] = __PAR_K0*(-x[1197]+x[1194])*200;
 			break;
 		case 399:
-			der[0 + 1] = __K0*(-x[600]+x[1197])*200;
-			der[597 + 1] = __K0*(-x[1197]+x[1194])*200;
+			der[0 + 1] = __PAR_K0*(-x[600]+x[1197])*200;
+			der[597 + 1] = __PAR_K0*(-x[1197]+x[1194])*200;
 			return;
 	}
 	j = i;
 	if(j >=1 && j <= 198)
 	{
-		der[(j+200) * 3 + 1] = 1.0/__rho0*(-x[(j+1) * 3]+x[(j) * 3])*200;
+		der[(j+200) * 3 + 1] = 1.0/__PAR_rho0*(-x[(j+1) * 3]+x[(j) * 3])*200;
 	}
 	j = i-1;
 	if(j >=1 && j <= 198)
 	{
-		der[(j+200) * 3 + 1] = 1.0/__rho0*(-x[(j+1) * 3]+x[(j) * 3])*200;
+		der[(j+200) * 3 + 1] = 1.0/__PAR_rho0*(-x[(j+1) * 3]+x[(j) * 3])*200;
 	}
 	j = i-199;
 	if(j >=1 && j <= 198)
 	{
-		der[(j) * 3 + 1] = __K0*(-x[(j+200) * 3]+x[(j+199) * 3])*200;
+		der[(j) * 3 + 1] = __PAR_K0*(-x[(j+200) * 3]+x[(j+199) * 3])*200;
 	}
 	j = i-200;
 	if(j >=1 && j <= 198)
 	{
-		der[(j) * 3 + 1] = __K0*(-x[(j+200) * 3]+x[(j+199) * 3])*200;
+		der[(j) * 3 + 1] = __PAR_K0*(-x[(j+200) * 3]+x[(j+199) * 3])*200;
 	}
 }
 
@@ -142,14 +143,14 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__K0 = 1.000000000000000000000000e+00;
-	__rho0 = 1.000000000000000000000000e+00;
-	__u0 = 0.0;
-	__beta = 1000.0;
-	__x0 = 2.500000000000000000000000e-01;
-	__gam = 0.000000000000000000000000e+00;
-	__inVal = 0.0;
-	__outVal = 1.0;
+	__PAR_K0 = 1.000000000000000000000000e+00;
+	__PAR_rho0 = 1.000000000000000000000000e+00;
+	__PAR_u0 = 0.0;
+	__PAR_beta = 1000.0;
+	__PAR_x0 = 2.500000000000000000000000e-01;
+	__PAR_gam = 0.000000000000000000000000e+00;
+	__PAR_inVal = 0.0;
+	__PAR_outVal = 1.0;
 	for(i = 0; i <= 199;i++)
 	{
 		modelData->x[(i+200) * 3] = 0.000000000000000000000000e+00;
@@ -157,11 +158,11 @@ QSS_data modelData = simulator->data;
 	// Initialize model code.
 	for(i0 = 0; i0 <= 199; i0++)
 	{
-		__x[(i0)] = 1.000000000000000000000000e+00*(i0+1)/200;
-		modelData->x[(i0) * 3] = pow(2.717999999999999971578291e+00,(-__beta*pow((__x[(i0)]-__x0),2.0)));
+		__PAR_x[(i0)] = 1.000000000000000000000000e+00*(i0+1)/200;
+		modelData->x[(i0) * 3] = pow(2.717999999999999971578291e+00,(-__PAR_beta*pow((__PAR_x[(i0)]-__PAR_x0),2.0)));
 	}
-		__c0 = sqrt(__K0/__rho0);
-		__Z0 = __rho0*__c0;
+		__PAR_c0 = sqrt(__PAR_K0/__PAR_rho0);
+		__PAR_Z0 = __PAR_rho0*__PAR_c0;
 	modelData->nDS[0] = 2;
 	modelData->nDS[200] = 2;
 	for(i = 1; i <= 198; i++)

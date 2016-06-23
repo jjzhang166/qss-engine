@@ -7,21 +7,22 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __K0;
-double __rho0;
-double __c0;
-double __Z0;
-double __u0;
-double __beta;
-double __x0;
-double __gam;
-double __x[100];
-double __inVal;
-double __outVal;
-double __p0[100];
+double __PAR_K0 = 0;
+double __PAR_rho0 = 0;
+double __PAR_c0 = 0;
+double __PAR_Z0 = 0;
+double __PAR_u0 = 0;
+double __PAR_beta = 0;
+double __PAR_x0 = 0;
+double __PAR_gam = 0;
+double __PAR_x[100];
+double __PAR_inVal = 0;
+double __PAR_outVal = 0;
+double __PAR_p0[100];
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -39,27 +40,27 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	switch(i)
 	{
 		case 0:
-			dx[1] = (__u0-__c0)*(-x[3]+x[0])*100;
+			dx[1] = (__PAR_u0-__PAR_c0)*(-x[3]+x[0])*100;
 			return;
 		case 100:
-			dx[1] = (__u0+__c0)*(-x[300]+x[597])*100;
+			dx[1] = (__PAR_u0+__PAR_c0)*(-x[300]+x[597])*100;
 			return;
 		case 99:
-			dx[1] = (__u0-__c0)*(-x[0]+x[297])*100;
+			dx[1] = (__PAR_u0-__PAR_c0)*(-x[0]+x[297])*100;
 			return;
 		case 199:
-			dx[1] = (__u0+__c0)*(-x[597]+x[594])*100;
+			dx[1] = (__PAR_u0+__PAR_c0)*(-x[597]+x[594])*100;
 			return;
 		default:
 			j = i;
 			if(j >=1 && j <= 98)
 			{
-				dx[1] = (__u0-__c0)*(-x[(j+1) * 3]+x[(j) * 3])*100;
+				dx[1] = (__PAR_u0-__PAR_c0)*(-x[(j+1) * 3]+x[(j) * 3])*100;
 			}
 			j = i-100;
 			if(j >=1 && j <= 98)
 			{
-				dx[1] = (__u0+__c0)*(-x[(j+100) * 3]+x[(j+99) * 3])*100;
+				dx[1] = (__PAR_u0+__PAR_c0)*(-x[(j+100) * 3]+x[(j+99) * 3])*100;
 			}
 	}
 }
@@ -71,45 +72,45 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	switch(i)
 	{
 		case 0:
-			der[0 + 1] = (__u0-__c0)*(-x[3]+x[0])*100;
-			der[297 + 1] = (__u0-__c0)*(-x[0]+x[297])*100;
+			der[0 + 1] = (__PAR_u0-__PAR_c0)*(-x[3]+x[0])*100;
+			der[297 + 1] = (__PAR_u0-__PAR_c0)*(-x[0]+x[297])*100;
 			return;
 		case 1:
-			der[0 + 1] = (__u0-__c0)*(-x[3]+x[0])*100;
+			der[0 + 1] = (__PAR_u0-__PAR_c0)*(-x[3]+x[0])*100;
 			break;
 		case 99:
-			der[297 + 1] = (__u0-__c0)*(-x[0]+x[297])*100;
+			der[297 + 1] = (__PAR_u0-__PAR_c0)*(-x[0]+x[297])*100;
 			break;
 		case 100:
-			der[300 + 1] = (__u0+__c0)*(-x[300]+x[597])*100;
+			der[300 + 1] = (__PAR_u0+__PAR_c0)*(-x[300]+x[597])*100;
 			break;
 		case 198:
-			der[597 + 1] = (__u0+__c0)*(-x[597]+x[594])*100;
+			der[597 + 1] = (__PAR_u0+__PAR_c0)*(-x[597]+x[594])*100;
 			break;
 		case 199:
-			der[300 + 1] = (__u0+__c0)*(-x[300]+x[597])*100;
-			der[597 + 1] = (__u0+__c0)*(-x[597]+x[594])*100;
+			der[300 + 1] = (__PAR_u0+__PAR_c0)*(-x[300]+x[597])*100;
+			der[597 + 1] = (__PAR_u0+__PAR_c0)*(-x[597]+x[594])*100;
 			return;
 	}
 	j = i;
 	if(j >=1 && j <= 98)
 	{
-		der[(j) * 3 + 1] = (__u0-__c0)*(-x[(j+1) * 3]+x[(j) * 3])*100;
+		der[(j) * 3 + 1] = (__PAR_u0-__PAR_c0)*(-x[(j+1) * 3]+x[(j) * 3])*100;
 	}
 	j = i-1;
 	if(j >=1 && j <= 98)
 	{
-		der[(j) * 3 + 1] = (__u0-__c0)*(-x[(j+1) * 3]+x[(j) * 3])*100;
+		der[(j) * 3 + 1] = (__PAR_u0-__PAR_c0)*(-x[(j+1) * 3]+x[(j) * 3])*100;
 	}
 	j = i-99;
 	if(j >=1 && j <= 98)
 	{
-		der[(j+100) * 3 + 1] = (__u0+__c0)*(-x[(j+100) * 3]+x[(j+99) * 3])*100;
+		der[(j+100) * 3 + 1] = (__PAR_u0+__PAR_c0)*(-x[(j+100) * 3]+x[(j+99) * 3])*100;
 	}
 	j = i-100;
 	if(j >=1 && j <= 98)
 	{
-		der[(j+100) * 3 + 1] = (__u0+__c0)*(-x[(j+100) * 3]+x[(j+99) * 3])*100;
+		der[(j+100) * 3 + 1] = (__PAR_u0+__PAR_c0)*(-x[(j+100) * 3]+x[(j+99) * 3])*100;
 	}
 }
 
@@ -141,23 +142,23 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__K0 = 1.000000000000000000000000e+00;
-	__rho0 = 1.000000000000000000000000e+00;
-	__u0 = 0.0;
-	__beta = 100.0;
-	__x0 = 5.000000000000000000000000e-01;
-	__gam = 0.000000000000000000000000e+00;
-	__inVal = 0.0;
-	__outVal = 1.0;
+	__PAR_K0 = 1.000000000000000000000000e+00;
+	__PAR_rho0 = 1.000000000000000000000000e+00;
+	__PAR_u0 = 0.0;
+	__PAR_beta = 100.0;
+	__PAR_x0 = 5.000000000000000000000000e-01;
+	__PAR_gam = 0.000000000000000000000000e+00;
+	__PAR_inVal = 0.0;
+	__PAR_outVal = 1.0;
 	// Initialize model code.
-		__c0 = sqrt(__K0/__rho0);
-		__Z0 = __rho0*__c0;
+		__PAR_c0 = sqrt(__PAR_K0/__PAR_rho0);
+		__PAR_Z0 = __PAR_rho0*__PAR_c0;
 	for(i1 = 0; i1 <= 99; i1++)
 	{
-		__x[(i1)] = 1.000000000000000000000000e+00*(i1+1)/100;
-		__p0[(i1)] = pow(2.717999999999999971578291e+00,(-__beta*pow((__x[(i1)]-__x0),2.0)))*cos(__gam*(__x[(i1)]-__x0));
-		modelData->x[(i1) * 3] = 1.0/2.0/__Z0*(-__p0[(i1)]);
-		modelData->x[(i1+100) * 3] = 1.0/2.0/__Z0*__p0[(i1)];
+		__PAR_x[(i1)] = 1.000000000000000000000000e+00*(i1+1)/100;
+		__PAR_p0[(i1)] = pow(2.717999999999999971578291e+00,(-__PAR_beta*pow((__PAR_x[(i1)]-__PAR_x0),2.0)))*cos(__PAR_gam*(__PAR_x[(i1)]-__PAR_x0));
+		modelData->x[(i1) * 3] = 1.0/2.0/__PAR_Z0*(-__PAR_p0[(i1)]);
+		modelData->x[(i1+100) * 3] = 1.0/2.0/__PAR_Z0*__PAR_p0[(i1)];
 	}
 	modelData->nDS[0] = 2;
 	modelData->nDS[100] = 2;

@@ -8,23 +8,24 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __Cza;
-double __kout;
-double __kiz;
-double __kpz;
-double __Ccw;
-double __kcw;
-double __Tcwsp;
-double __kicw;
-double __kpcw;
-double __Qcmax;
-double __p1;
-double __p2;
-double __p3;
-double __Tzasp;
+double __PAR_Cza = 0;
+double __PAR_kout = 0;
+double __PAR_kiz = 0;
+double __PAR_kpz = 0;
+double __PAR_Ccw = 0;
+double __PAR_kcw = 0;
+double __PAR_Tcwsp = 0;
+double __PAR_kicw = 0;
+double __PAR_kpcw = 0;
+double __PAR_Qcmax = 0;
+double __PAR_p1 = 0;
+double __PAR_p2 = 0;
+double __PAR_p3 = 0;
+double __PAR_Tzasp = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -44,11 +45,11 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	switch(i)
 	{
 		case 30:
-			alg[66] = 0.000000000000000000000000e+00+(1.0-d[(20)])*(d[(21)]*__Qcmax+(1.0-d[(21)])*(__kpcw*(x[93]-__Tcwsp)+x[90]));
-			dx[1] = __kicw/__kpcw*(alg[66]-x[90]);
+			alg[66] = 0.000000000000000000000000e+00+(1.0-d[(20)])*(d[(21)]*__PAR_Qcmax+(1.0-d[(21)])*(__PAR_kpcw*(x[93]-__PAR_Tcwsp)+x[90]));
+			dx[1] = __PAR_kicw/__PAR_kpcw*(alg[66]-x[90]);
 			return;
 		case 31:
-			alg[66] = 0.000000000000000000000000e+00+(1.0-d[(20)])*(d[(21)]*__Qcmax+(1.0-d[(21)])*(__kpcw*(x[93]-__Tcwsp)+x[90]));
+			alg[66] = 0.000000000000000000000000e+00+(1.0-d[(20)])*(d[(21)]*__PAR_Qcmax+(1.0-d[(21)])*(__PAR_kpcw*(x[93]-__PAR_Tcwsp)+x[90]));
 	for(j25 = 0;j25 < 3; j25++)
 	{
 		tmp22[j25] = 0;
@@ -59,26 +60,26 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 		tmp22[1] += x[(j25+10) * 3 + 1];
 		tmp22[2] += x[(j25+10) * 3 + 2];
 	}
-			dx[1] = (tmp22[0]-alg[66])/__Ccw;
+			dx[1] = (tmp22[0]-alg[66])/__PAR_Ccw;
 			return;
 		default:
 			j = i;
 			if(j >=0 && j <= 9)
 			{
-				dx[1] = -__kiz/__kpz*x[(j) * 3]+__kiz/__kpz*(d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__kpz*(x[(j+20) * 3]-__Tzasp)+x[(j) * 3])));
+				dx[1] = -__PAR_kiz/__PAR_kpz*x[(j) * 3]+__PAR_kiz/__PAR_kpz*(d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__PAR_kpz*(x[(j+20) * 3]-__PAR_Tzasp)+x[(j) * 3])));
 			}
 			j = i-10;
 			if(j >=0 && j <= 9)
 			{
-				alg[(j+1) * 3] = d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__kpz*(x[(j+20) * 3]-__Tzasp)+x[(j) * 3]));
-				dx[1] = alg[(j+1) * 3]*__kcw*(x[(j+20) * 3]-x[93])-x[(j+10) * 3];
+				alg[(j+1) * 3] = d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__PAR_kpz*(x[(j+20) * 3]-__PAR_Tzasp)+x[(j) * 3]));
+				dx[1] = alg[(j+1) * 3]*__PAR_kcw*(x[(j+20) * 3]-x[93])-x[(j+10) * 3];
 			}
 			j = i-20;
 			if(j >=0 && j <= 9)
 			{
 				alg[0] = 26.0+4.0*sin(t/3600.0/24.0*6.280000000000000248689958e+00)+9.999999999999999451532715e-21*x[87];
-				alg[(j+11) * 3] = (__p1*pow(x[(j+20) * 3],2.0)+__p2*x[(j+20) * 3]+__p3)*d[(j)];
-				dx[1] = (-x[(j+10) * 3]+__kout*(alg[0]-x[(j+20) * 3])+alg[(j+11) * 3])/__Cza;
+				alg[(j+11) * 3] = (__PAR_p1*pow(x[(j+20) * 3],2.0)+__PAR_p2*x[(j+20) * 3]+__PAR_p3)*d[(j)];
+				dx[1] = (-x[(j+10) * 3]+__PAR_kout*(alg[0]-x[(j+20) * 3])+alg[(j+11) * 3])/__PAR_Cza;
 			}
 	}
 }
@@ -96,16 +97,16 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 			alg[0] = 26.0+4.0*sin(t/3600.0/24.0*6.280000000000000248689958e+00)+9.999999999999999451532715e-21*x[87];
 			for(j = 0;j <= 9; j++)
 			{
-				alg[(j+11) * 3] = (__p1*pow(x[(j+20) * 3],2.0)+__p2*x[(j+20) * 3]+__p3)*d[(j)];
+				alg[(j+11) * 3] = (__PAR_p1*pow(x[(j+20) * 3],2.0)+__PAR_p2*x[(j+20) * 3]+__PAR_p3)*d[(j)];
 			}
 			for(j = 0; j <= 9; j++)
 			{
-				der[(j+20) * 3 + 1] = (-x[(j+10) * 3]+__kout*(alg[0]-x[(j+20) * 3])+alg[(j+11) * 3])/__Cza;
+				der[(j+20) * 3 + 1] = (-x[(j+10) * 3]+__PAR_kout*(alg[0]-x[(j+20) * 3])+alg[(j+11) * 3])/__PAR_Cza;
 			}
 			break;
 		case 30:
-			alg[66] = 0.000000000000000000000000e+00+(1.0-d[(20)])*(d[(21)]*__Qcmax+(1.0-d[(21)])*(__kpcw*(x[93]-__Tcwsp)+x[90]));
-			der[90 + 1] = __kicw/__kpcw*(alg[66]-x[90]);
+			alg[66] = 0.000000000000000000000000e+00+(1.0-d[(20)])*(d[(21)]*__PAR_Qcmax+(1.0-d[(21)])*(__PAR_kpcw*(x[93]-__PAR_Tcwsp)+x[90]));
+			der[90 + 1] = __PAR_kicw/__PAR_kpcw*(alg[66]-x[90]);
 	for(j25 = 0;j25 < 3; j25++)
 	{
 		tmp22[j25] = 0;
@@ -116,7 +117,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp22[1] += x[(j25+10) * 3 + 1];
 		tmp22[2] += x[(j25+10) * 3 + 2];
 	}
-			der[93 + 1] = (tmp22[0]-alg[66])/__Ccw;
+			der[93 + 1] = (tmp22[0]-alg[66])/__PAR_Ccw;
 			return;
 		case 31:
 			for(j = 0;j <= 9; j++)
@@ -124,15 +125,15 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 				j26 = j;
 			if (j26 >= 0 && j26 <= 9)
 			{
-				alg[(j+1) * 3] = d[(j26+32)]+(1.0-d[(j26+32)])*(0.0+(1.0-d[(j26+22)])*(__kpz*(x[(j26+20) * 3]-__Tzasp)+x[(j26) * 3]));
+				alg[(j+1) * 3] = d[(j26+32)]+(1.0-d[(j26+32)])*(0.0+(1.0-d[(j26+22)])*(__PAR_kpz*(x[(j26+20) * 3]-__PAR_Tzasp)+x[(j26) * 3]));
 			}
 			}
-			alg[66] = 0.000000000000000000000000e+00+(1.0-d[(20)])*(d[(21)]*__Qcmax+(1.0-d[(21)])*(__kpcw*(x[93]-__Tcwsp)+x[90]));
+			alg[66] = 0.000000000000000000000000e+00+(1.0-d[(20)])*(d[(21)]*__PAR_Qcmax+(1.0-d[(21)])*(__PAR_kpcw*(x[93]-__PAR_Tcwsp)+x[90]));
 			for(j = 0; j <= 9; j++)
 			{
-				der[(j+10) * 3 + 1] = alg[(j+1) * 3]*__kcw*(x[(j+20) * 3]-x[93])-x[(j+10) * 3];
+				der[(j+10) * 3 + 1] = alg[(j+1) * 3]*__PAR_kcw*(x[(j+20) * 3]-x[93])-x[(j+10) * 3];
 			}
-			der[90 + 1] = __kicw/__kpcw*(alg[66]-x[90]);
+			der[90 + 1] = __PAR_kicw/__PAR_kpcw*(alg[66]-x[90]);
 	for(j25 = 0;j25 < 3; j25++)
 	{
 		tmp22[j25] = 0;
@@ -143,39 +144,39 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp22[1] += x[(j25+10) * 3 + 1];
 		tmp22[2] += x[(j25+10) * 3 + 2];
 	}
-			der[93 + 1] = (tmp22[0]-alg[66])/__Ccw;
+			der[93 + 1] = (tmp22[0]-alg[66])/__PAR_Ccw;
 			break;
 	}
 	j = i;
 	if(j >=0 && j <= 9)
 	{
-		alg[(j+1) * 3] = d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__kpz*(x[(j+20) * 3]-__Tzasp)+x[(j) * 3]));
-		der[(j) * 3 + 1] = -__kiz/__kpz*x[(j) * 3]+__kiz/__kpz*(d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__kpz*(x[(j+20) * 3]-__Tzasp)+x[(j) * 3])));
-		der[(j+10) * 3 + 1] = alg[(j+1) * 3]*__kcw*(x[(j+20) * 3]-x[93])-x[(j+10) * 3];
+		alg[(j+1) * 3] = d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__PAR_kpz*(x[(j+20) * 3]-__PAR_Tzasp)+x[(j) * 3]));
+		der[(j) * 3 + 1] = -__PAR_kiz/__PAR_kpz*x[(j) * 3]+__PAR_kiz/__PAR_kpz*(d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__PAR_kpz*(x[(j+20) * 3]-__PAR_Tzasp)+x[(j) * 3])));
+		der[(j+10) * 3 + 1] = alg[(j+1) * 3]*__PAR_kcw*(x[(j+20) * 3]-x[93])-x[(j+10) * 3];
 	}
 	j = i-10;
 	if(j >=0 && j <= 9)
 	{
 		alg[0] = 26.0+4.0*sin(t/3600.0/24.0*6.280000000000000248689958e+00)+9.999999999999999451532715e-21*x[87];
-		alg[(j+1) * 3] = d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__kpz*(x[(j+20) * 3]-__Tzasp)+x[(j) * 3]));
-		alg[(j+11) * 3] = (__p1*pow(x[(j+20) * 3],2.0)+__p2*x[(j+20) * 3]+__p3)*d[(j)];
-		der[(j+10) * 3 + 1] = alg[(j+1) * 3]*__kcw*(x[(j+20) * 3]-x[93])-x[(j+10) * 3];
-		der[(j+20) * 3 + 1] = (-x[(j+10) * 3]+__kout*(alg[0]-x[(j+20) * 3])+alg[(j+11) * 3])/__Cza;
+		alg[(j+1) * 3] = d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__PAR_kpz*(x[(j+20) * 3]-__PAR_Tzasp)+x[(j) * 3]));
+		alg[(j+11) * 3] = (__PAR_p1*pow(x[(j+20) * 3],2.0)+__PAR_p2*x[(j+20) * 3]+__PAR_p3)*d[(j)];
+		der[(j+10) * 3 + 1] = alg[(j+1) * 3]*__PAR_kcw*(x[(j+20) * 3]-x[93])-x[(j+10) * 3];
+		der[(j+20) * 3 + 1] = (-x[(j+10) * 3]+__PAR_kout*(alg[0]-x[(j+20) * 3])+alg[(j+11) * 3])/__PAR_Cza;
 	}
 	j = i-20;
 	if(j >=0 && j <= 9)
 	{
 		alg[0] = 26.0+4.0*sin(t/3600.0/24.0*6.280000000000000248689958e+00)+9.999999999999999451532715e-21*x[87];
-		alg[(j+1) * 3] = d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__kpz*(x[(j+20) * 3]-__Tzasp)+x[(j) * 3]));
-		alg[(j+11) * 3] = (__p1*pow(x[(j+20) * 3],2.0)+__p2*x[(j+20) * 3]+__p3)*d[(j)];
-		der[(j) * 3 + 1] = -__kiz/__kpz*x[(j) * 3]+__kiz/__kpz*(d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__kpz*(x[(j+20) * 3]-__Tzasp)+x[(j) * 3])));
-		der[(j+10) * 3 + 1] = alg[(j+1) * 3]*__kcw*(x[(j+20) * 3]-x[93])-x[(j+10) * 3];
-		der[(j+20) * 3 + 1] = (-x[(j+10) * 3]+__kout*(alg[0]-x[(j+20) * 3])+alg[(j+11) * 3])/__Cza;
+		alg[(j+1) * 3] = d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__PAR_kpz*(x[(j+20) * 3]-__PAR_Tzasp)+x[(j) * 3]));
+		alg[(j+11) * 3] = (__PAR_p1*pow(x[(j+20) * 3],2.0)+__PAR_p2*x[(j+20) * 3]+__PAR_p3)*d[(j)];
+		der[(j) * 3 + 1] = -__PAR_kiz/__PAR_kpz*x[(j) * 3]+__PAR_kiz/__PAR_kpz*(d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__PAR_kpz*(x[(j+20) * 3]-__PAR_Tzasp)+x[(j) * 3])));
+		der[(j+10) * 3 + 1] = alg[(j+1) * 3]*__PAR_kcw*(x[(j+20) * 3]-x[93])-x[(j+10) * 3];
+		der[(j+20) * 3 + 1] = (-x[(j+10) * 3]+__PAR_kout*(alg[0]-x[(j+20) * 3])+alg[(j+11) * 3])/__PAR_Cza;
 	}
 	j = i-10;
 	if(j >=0 && j <= 9)
 	{
-		alg[66] = 0.000000000000000000000000e+00+(1.0-d[(20)])*(d[(21)]*__Qcmax+(1.0-d[(21)])*(__kpcw*(x[93]-__Tcwsp)+x[90]));
+		alg[66] = 0.000000000000000000000000e+00+(1.0-d[(20)])*(d[(21)]*__PAR_Qcmax+(1.0-d[(21)])*(__PAR_kpcw*(x[93]-__PAR_Tcwsp)+x[90]));
 	for(j25 = 0;j25 < 3; j25++)
 	{
 		tmp22[j25] = 0;
@@ -186,7 +187,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp22[1] += x[(j25+10) * 3 + 1];
 		tmp22[2] += x[(j25+10) * 3 + 2];
 	}
-		der[93 + 1] = (tmp22[0]-alg[66])/__Ccw;
+		der[93 + 1] = (tmp22[0]-alg[66])/__PAR_Ccw;
 	}
 }
 
@@ -196,10 +197,10 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 	switch(i)
 	{
 		case 30:
-			zc[0] = __kpcw*(x[93]-__Tcwsp)+x[90]-(0.0);
+			zc[0] = __PAR_kpcw*(x[93]-__PAR_Tcwsp)+x[90]-(0.0);
 			return;
 		case 31:
-			zc[0] = __kpcw*(x[93]-__Tcwsp)+x[90]-(__Qcmax);
+			zc[0] = __PAR_kpcw*(x[93]-__PAR_Tcwsp)+x[90]-(__PAR_Qcmax);
 			return;
 		default:
 			if(i >= 0 && i <= 9)
@@ -208,11 +209,11 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			}
 			if(i >= 10 && i <= 19)
 			{
-				zc[0] = __kpz*(x[(i+10) * 3]-__Tzasp)+x[(i-10) * 3]-(0.0);
+				zc[0] = __PAR_kpz*(x[(i+10) * 3]-__PAR_Tzasp)+x[(i-10) * 3]-(0.0);
 			}
 			if(i >= 20 && i <= 29)
 			{
-				zc[0] = __kpz*(x[(i) * 3]-__Tzasp)+x[(i-20) * 3]-(1.0);
+				zc[0] = __PAR_kpz*(x[(i) * 3]-__PAR_Tzasp)+x[(i-20) * 3]-(1.0);
 			}
 	}
 }
@@ -294,25 +295,25 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__Cza = 6.092000000000000000000000e+06;
-	__kout = 4.625000000000000000000000e+02;
-	__kiz = 5.000000000000000104083409e-04;
-	__kpz = 1.0;
-	__Ccw = (1.041800000000000000000000e+07+3.334000000000000074606987e+00*1.000000000000000000000000e+06)*10;
-	__kcw = 2.633910000000000195541361e+02;
-	__Tcwsp = 10.0;
-	__kicw = 5.000000000000000000000000e-01*10;
-	__kpcw = 6000.0*10;
-	__Qcmax = 3000.0*10;
-	__p1 = -2.199000000000000121236354e-01;
-	__p2 = 5.059700000000000308375547e+00;
-	__p3 = 8.491679999999999495230441e+01;
-	__Tzasp = 23.0;
+	__PAR_Cza = 6.092000000000000000000000e+06;
+	__PAR_kout = 4.625000000000000000000000e+02;
+	__PAR_kiz = 5.000000000000000104083409e-04;
+	__PAR_kpz = 1.0;
+	__PAR_Ccw = (1.041800000000000000000000e+07+3.334000000000000074606987e+00*1.000000000000000000000000e+06)*10;
+	__PAR_kcw = 2.633910000000000195541361e+02;
+	__PAR_Tcwsp = 10.0;
+	__PAR_kicw = 5.000000000000000000000000e-01*10;
+	__PAR_kpcw = 6000.0*10;
+	__PAR_Qcmax = 3000.0*10;
+	__PAR_p1 = -2.199000000000000121236354e-01;
+	__PAR_p2 = 5.059700000000000308375547e+00;
+	__PAR_p3 = 8.491679999999999495230441e+01;
+	__PAR_Tzasp = 23.0;
 	for(i = 0; i <= 9;i++)
 	{
 		modelData->x[(i+10) * 3] = 0.0;
 	}
-	modelData->x[93] = __Tcwsp;
+	modelData->x[93] = __PAR_Tcwsp;
 	for(i = 0; i <= 9;i++)
 	{
 		modelData->x[(i+20) * 3] = 23.0;
