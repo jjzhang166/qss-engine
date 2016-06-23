@@ -250,7 +250,7 @@ SO_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
       e = simTime->time - simTime->tq[w];
       if (e > 0)
 	{
-	  advanceTime (w * 3, e, q, 1);
+	  integrateState (w * 3, e, q, 1);
 	  simTime->tq[w] = simTime->time;
 	}
       int nDS = simData->nDS[w];
@@ -261,7 +261,7 @@ SO_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
 	  int infCf0 = j * 3;
 	  if (e > 0)
 	    {
-	      advanceTime (infCf0, e, q, 1);
+	      integrateState (infCf0, e, q, 1);
 	    }
 	  simTime->tq[j] = simTime->time;
 	  tmp1[infCf0] = evaluatePoly (infCf0, f->state->delta, q, 1);
@@ -316,7 +316,7 @@ SO_recomputeDerivative (FRW_framework f, QSS_model simModel, QSS_data simData,
   e = simTime->time - simTime->tq[index];
   if (e > 0)
     {
-      advanceTime (index * 3, e, q, 1);
+      integrateState (index * 3, e, q, 1);
       simTime->tq[index] = simTime->time;
     }
   int nDS = simData->nDS[index];
@@ -327,7 +327,7 @@ SO_recomputeDerivative (FRW_framework f, QSS_model simModel, QSS_data simData,
       int infCf0 = j * 3;
       if (e > 0)
 	{
-	  advanceTime (infCf0, e, q, 1);
+	  integrateState (infCf0, e, q, 1);
 	}
       simTime->tq[j] = simTime->time;
       tmp1[infCf0] = evaluatePoly (infCf0, f->state->delta, q, 1);
@@ -458,7 +458,7 @@ TO_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
       e = simTime->time - simTime->tq[w];
       if (e > 0)
 	{
-	  advanceTime (w * 4, e, q, 2);
+	  integrateState (w * 4, e, q, 2);
 	  simTime->tq[w] = simTime->time;
 	}
       int nDS = simData->nDS[w];
@@ -468,7 +468,7 @@ TO_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
 	  e = simTime->time - simTime->tq[j];
 	  if (e > 0)
 	    {
-	      advanceTime (j * 4, e, q, 2);
+	      integrateState (j * 4, e, q, 2);
 	    }
 	  simTime->tq[j] = simTime->time;
 	  tmp1[j * 4] = evaluatePoly (j * 4, f->state->delta, q, 2);
@@ -533,7 +533,7 @@ TO_recomputeDerivative (FRW_framework f, QSS_model simModel, QSS_data simData,
   e = simTime->time - simTime->tq[index];
   if (e > 0)
     {
-      advanceTime (index * 4, e, q, 2);
+      integrateState (index * 4, e, q, 2);
       simTime->tq[index] = simTime->time;
     }
   int nDS = simData->nDS[index];
@@ -544,7 +544,7 @@ TO_recomputeDerivative (FRW_framework f, QSS_model simModel, QSS_data simData,
       e = simTime->time - simTime->tq[j];
       if (e > 0)
 	{
-	  advanceTime (j * 4, e, q, 2);
+	  integrateState (j * 4, e, q, 2);
 	}
       simTime->tq[j] = simTime->time;
       tmp1[j * 4] = evaluatePoly (j * 4, f->state->delta, q, 2);
@@ -594,7 +594,7 @@ SYM_recomputeDerivative (FRW_framework f, QSS_model simModel, QSS_data simData,
   e = simTime->time - simTime->tq[index];
   if (e > 0)
     {
-      advanceTime (cf0, e, q, qOrder);
+      integrateState (cf0, e, q, qOrder);
       simTime->tq[index] = simTime->time;
     }
   int nDS = simData->nDS[index];
@@ -604,7 +604,7 @@ SYM_recomputeDerivative (FRW_framework f, QSS_model simModel, QSS_data simData,
       e = simTime->time - simTime->tq[j];
       if (e > 0)
 	{
-	  advanceTime (j * coeffs, e, q, qOrder);
+	  integrateState (j * coeffs, e, q, qOrder);
 	}
       simTime->tq[j] = simTime->time;
     }
@@ -639,7 +639,7 @@ SYM_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
       e = simTime->time - simTime->tq[w];
       if (e > 0)
 	{
-	  advanceTime (w * coeffs, e, q, order);
+	  integrateState (w * coeffs, e, q, order);
 	  simTime->tq[w] = simTime->time;
 	}
       int nDS = simData->nDS[w];
@@ -649,7 +649,7 @@ SYM_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
 	  e = simTime->time - simTime->tq[j];
 	  if (e > 0)
 	    {
-	      advanceTime (j * coeffs, e, q, order);
+	      integrateState (j * coeffs, e, q, order);
 	    }
 	  simTime->tq[j] = simTime->time;
 	}
@@ -686,7 +686,7 @@ SYM_nextEventTime (FRW_framework f, QSS_model simModel, QSS_data simData,
       e = simTime->time - simTime->tq[j];
       if (e > 0)
 	{
-	  advanceTime (j * coeffs, e, q, order);
+	  integrateState (j * coeffs, e, q, order);
 	}
       simTime->tq[j] = simTime->time;
     }
