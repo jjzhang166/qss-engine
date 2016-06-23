@@ -313,7 +313,7 @@ minPosRoot (double *coeff, int order)
 }
 
 void
-advanceTime (int i, double dt, double *p, int order)
+integrateState (int i, double dt, double *p, int order)
 {
   int i0 = i;
   switch (order)

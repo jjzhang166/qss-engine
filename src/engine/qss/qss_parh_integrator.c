@@ -385,7 +385,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
 		// Internal trajectory change.
 		Dt = t - tx[index];
 		elapsed = x[cf0];
-		advanceTime (cf0, Dt, x, xOrder);
+		integrateState (cf0, Dt, x, xOrder);
 		Dx = x[cf0] - elapsed;
 		tx[index] = t;
 		lqu[index] = dQRel[index] * fabs (x[cf0]);
@@ -480,7 +480,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
 		    elapsed = t - tq[j];
 		    if (elapsed > 0)
 		      {
-			advanceTime (j * coeffs, elapsed, q, qOrder);
+			integrateState (j * coeffs, elapsed, q, qOrder);
 			tq[j] = t;
 		      }
 		  }

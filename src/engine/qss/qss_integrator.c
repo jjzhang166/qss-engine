@@ -52,6 +52,241 @@ QSS_SEQ_saveLog (QSS_simulator simulator)
 }
 
 void
+QSS_generateWeights (QSS_simulator simulator)
+{
+  if (simulator->settings->debug & SD_DBG_VarChanges)
+    {
+      FILE* vweights = NULL;
+      FILE* eweights = NULL;
+      FILE* heweights = NULL;
+      int *vwgts = NULL, max, N;
+      double norm;
+      if (simulator->settings->debug & SD_DBG_Weights)
+	{
+	  int *xadj = NULL, *adjncy = NULL, *hevars = NULL, edges = 0;
+	  char fileName[256];
+	  strcpy (fileName, simulator->output->name);
+	  strcat (fileName, ".vweights");
+	  vweights = fopen (fileName, "wb");
+	  strcpy (fileName, simulator->output->name);
+	  strcat (fileName, ".ewgts");
+	  eweights = fopen (fileName, "wb");
+	  strcpy (fileName, simulator->output->name);
+	  strcat (fileName, ".hewgts");
+	  heweights = fopen (fileName, "wb");
+	  int states = simulator->data->states;
+	  int events = simulator->data->events;
+	  int vsize = states + events, eiter;
+	  vwgts = (int*) checkedMalloc (vsize * sizeof(int));
+	  cleanVector (vwgts, 0, vsize);
+	  simulator->data->params->pm = SD_MetisCut;
+	  if (GRP_readGraph (simulator->output->name, simulator->data, &xadj,
+			     &adjncy, &edges, 0, NULL, NULL, 0, NULL)
+	      == GRP_ReadError)
+	    {
+	      fprintf (stderr, "Could not read generated graph files.\n");
+	      abort ();
+	    }
+	  N = edges;
+	  max = (2 * 1e9) / N;
+	  norm = 0;
+	  for (eiter = 0; eiter < states; eiter++)
+	    {
+	      if (simulator->simulationLog->states[eiter] > norm)
+		{
+		  norm = simulator->simulationLog->states[eiter];
+		}
+	    }
+	  for (eiter = states; eiter < events; eiter++)
+	    {
+	      if (simulator->simulationLog->handlers[eiter] > norm)
+		{
+		  norm = simulator->simulationLog->handlers[eiter];
+		}
+	    }
+	  for (eiter = 0; eiter < states; eiter++)
+	    {
+	      int init = xadj[eiter], end = xadj[eiter + 1], iter;
+	      for (iter = init; iter < end; iter++)
+		{
+		  int val = simulator->simulationLog->states[eiter] + 1;
+		  int inf = adjncy[iter];
+		  if (inf < states)
+		    {
+		      if (inf == eiter + 1
+			  && !QSS_influenced (simulator->data, eiter, inf, ST_State))
+			{
+			  val = 1;
+			}
+		      else
+			{
+			  val += simulator->simulationLog->states[inf] + 1;
+			}
+		    }
+		  else
+		    {
+		      val += (simulator->simulationLog->handlers[inf - states]
+			  + 1) * 100
+			  * (simulator->data->event[inf - states].nLHSSt + 1);
+		    }
+		  val = ((double) val / norm) * max;
+		  fwrite (&val, sizeof(int), 1, eweights);
+		}
+	    }
+	  for (eiter = states; eiter < vsize; eiter++)
+	    {
+	      int init = xadj[eiter], end = xadj[eiter + 1], iter;
+	      for (iter = init; iter < end; iter++)
+		{
+		  int val = (simulator->simulationLog->handlers[eiter - states]
+		      + 1) * 100
+		      * (simulator->data->event[eiter - states].nLHSSt + 1);
+		  int inf = adjncy[iter];
+		  if (inf < states)
+		    {
+		      val += simulator->simulationLog->states[inf] + 1;
+		    }
+		  else
+		    {
+		      if (inf == eiter + 1
+			  && !QSS_influenced (simulator->data, eiter - states,
+					      inf - states, ST_Event))
+			{
+			  val = 1;
+			}
+		      else
+			{
+			  val +=
+			      (simulator->simulationLog->handlers[inf - states]
+				  + 1) * 100
+				  * (simulator->data->event[inf - states].nLHSSt
+				      + 1);
+			}
+		    }
+		  val = (val / norm) * max;
+		  fwrite (&val, sizeof(int), 1, eweights);
+		}
+	    }
+	  free (xadj);
+	  free (adjncy);
+	  xadj = NULL;
+	  adjncy = NULL;
+	  simulator->data->params->pm = SD_Patoh;
+	  if (GRP_readGraph (simulator->output->name, simulator->data, &xadj,
+			     &adjncy, &edges, 0, NULL, NULL, 1, &hevars)
+	      == GRP_ReadError)
+	    {
+	      fprintf (stderr, "Could not read generated graph files.\n");
+	      abort ();
+	    }
+	  for (eiter = 0; eiter < edges; eiter++)
+	    {
+	      int var = hevars[eiter];
+	      if (var < states)
+		{
+		  int val = simulator->simulationLog->states[var] + 1;
+		  val = ((double) val / norm) * max;
+		  fwrite (&val, sizeof(int), 1, heweights);
+		}
+	      else
+		{
+		  int val = (simulator->simulationLog->handlers[var - states]
+		      + 1) * 10
+		      * (simulator->data->event[var - states].nLHSSt + 1);
+		  val = ((double) val / norm) * max;
+		  fwrite (&val, sizeof(int), 1, heweights);
+		}
+	    }
+	  free (xadj);
+	  free (adjncy);
+	  free (hevars);
+	}
+      SD_print (simulator->simulationLog, "State Variables:");
+      int forUL = simulator->data->states, j;
+      for (j = 0; j < forUL; j++)
+	{
+	  if (simulator->settings->debug & SD_DBG_Weights)
+	    {
+	      vwgts[j] += simulator->simulationLog->states[j] + 1;
+	      int nDS = simulator->data->nDS[j], iter;
+	      for (iter = 0; iter < nDS; iter++)
+		{
+		  int vwgt = simulator->data->DS[j][iter];
+		  vwgts[j] += simulator->simulationLog->states[vwgt];
+		}
+	    }
+	  SD_print (simulator->simulationLog, "Variable %d changes: %d", j,
+		    simulator->simulationLog->states[j]);
+	}
+      if (simulator->data->events > 0)
+	{
+	  int states = simulator->data->states;
+	  SD_print (simulator->simulationLog, "Handler execution:");
+	  forUL = simulator->data->events;
+	  for (j = 0; j < forUL; j++)
+	    {
+	      if (simulator->settings->debug & SD_DBG_Weights)
+		{
+		  vwgts[states + j] += (simulator->simulationLog->handlers[j]
+		      + 1) * (simulator->data->event[j].nLHSSt + 1);
+		  int nZS = simulator->data->nZS[j], iter;
+		  for (iter = 0; iter < nZS; iter++)
+		    {
+		      int vwgt = simulator->data->ZS[j][iter];
+		      vwgts[states + j] +=
+			  simulator->simulationLog->states[vwgt];
+		    }
+		  int nHD = simulator->data->nHD[j];
+		  for (iter = 0; iter < nHD; iter++)
+		    {
+		      int vwgt = simulator->data->HD[j][iter];
+		      vwgts[vwgt] += simulator->simulationLog->handlers[j];
+		    }
+		  int nHZ = simulator->data->nHZ[j];
+		  for (iter = 0; iter < nHZ; iter++)
+		    {
+		      int vwgt = simulator->data->HZ[j][iter];
+		      vwgts[states + vwgt] +=
+			  simulator->simulationLog->handlers[j];
+		    }
+		  int nLHSSt = simulator->data->event[j].nLHSSt;
+		  for (iter = 0; iter < nLHSSt; iter++)
+		    {
+		      int vwgt = simulator->data->event[j].LHSSt[iter];
+		      vwgts[vwgt] += simulator->simulationLog->handlers[j];
+		    }
+		}
+	      SD_print (simulator->simulationLog, "Handler %d:  %d", j,
+			simulator->simulationLog->handlers[j]);
+	    }
+	}
+      if (simulator->settings->debug & SD_DBG_Weights)
+	{
+	  int forUL = simulator->data->states + simulator->data->events;
+	  N = forUL;
+	  max = (2 * 1e9) / N;
+	  norm = 0;
+	  for (j = 0; j < forUL; j++)
+	    {
+	      if (vwgts[j] > norm)
+		{
+		  norm = vwgts[j];
+		}
+	    }
+	  for (j = 0; j < forUL; j++)
+	    {
+	      vwgts[j] = ((double) vwgts[j] / norm) * max;
+	      fwrite (&(vwgts[j]), sizeof(int), 1, vweights);
+	    }
+	  free (vwgts);
+	  fclose (vweights);
+	  fclose (eweights);
+	  fclose (heweights);
+	}
+    }
+}
+
+void
 QSS_SEQ_printSimulationLog (QSS_simulator simulator)
 {
   SD_print (simulator->simulationLog, "Simulation time: %g ms",
@@ -85,200 +320,7 @@ QSS_SEQ_printSimulationLog (QSS_simulator simulator)
       simulator->simulationLog, "Total time: %g ms",
       simulator->stats->initTime + simulator->stats->simulationTime + simulator->stats->saveTime);
 #ifdef DEBUG
-  if (simulator->settings->debug & SD_DBG_VarChanges)
-    {
-      FILE *vweights;
-      FILE *eweights;
-      FILE *heweights;
-      int *vwgts = NULL, max, N;
-      double norm;
-      if (simulator->settings->debug & SD_DBG_Weights)
-	{
-	  int *xadj = NULL, *adjncy = NULL, *hevars = NULL, edges = 0;
-	  char fileName[256];
-	  strcpy (fileName, simulator->output->name);
-	  strcat (fileName, ".vweights");
-	  vweights = fopen (fileName, "wb");
-	  strcpy (fileName, simulator->output->name);
-	  strcat (fileName, ".ewgts");
-	  eweights = fopen (fileName, "wb");
-	  strcpy (fileName, simulator->output->name);
-	  strcat (fileName, ".hewgts");
-	  heweights = fopen (fileName, "wb");
-	  int states = simulator->data->states;
-	  int events = simulator->data->events;
-	  int vsize = states + events, eiter;
-	  vwgts = (int *) checkedMalloc (vsize * sizeof (int));
-	  cleanVector(vwgts,0,vsize);
-	  simulator->data->params->pm = SD_MetisCut;
-	  if (GRP_readGraph (simulator->output->name, simulator->data, &xadj, &adjncy, &edges, 0, NULL, NULL, 0, NULL) == GRP_ReadError)
-	    {
-	      fprintf (stderr, "Could not read generated graph files.\n");
-	      abort();
-	    }
-	  N = edges;
-	  max = (2 * 1e9) / N;
-	  norm = 0;
-	  for (eiter = 0; eiter < states; eiter++)
-	    {
-	      if (simulator->simulationLog->states[eiter] > norm)
-		{
-		  norm = simulator->simulationLog->states[eiter];
-		}
-	    }
-	  for (eiter = states; eiter < events; eiter++)
-	    {
-	      if (simulator->simulationLog->handlers[eiter] > norm)
-		{
-		  norm = simulator->simulationLog->handlers[eiter];
-		}
-	    }
-	  for (eiter = 0; eiter < states; eiter++)
-	    {
-	      int init = xadj[eiter], end = xadj[eiter+1], iter;
-	      for (iter = init; iter < end; iter++)
-		{
-		  int val = simulator->simulationLog->states[eiter] + 1;
-		  int inf = adjncy[iter];
-		  if (inf < states)
-		    {
-		      val += simulator->simulationLog->states[inf] + 1;
-		    }
-		  else
-		    {
-		      val += (simulator->simulationLog->handlers[inf - states] + 1) * 10 * (simulator->data->event[inf - states].nLHSSt + 1);
-		    }
-		  val = ((double)val / norm) * max;
-		  fwrite (&val, sizeof(int), 1, eweights);
-		}
-	    }
-	  for (eiter = states; eiter < vsize; eiter++)
-	    {
-	      int init = xadj[eiter], end = xadj[eiter+1], iter;
-	      for (iter = init; iter < end; iter++)
-		{
-		  int val = (simulator->simulationLog->handlers[eiter - states] + 1) * 10 * (simulator->data->event[eiter - states].nLHSSt + 1);
-		  int inf = adjncy[iter];
-		  if (inf < states)
-		    {
-		      val += simulator->simulationLog->states[inf] + 1;
-		    }
-		  else
-		    {
-		      val += (simulator->simulationLog->handlers[inf - states] + 1) * 10 * (simulator->data->event[inf - states].nLHSSt + 1);
-		    }
-		  val = (val / norm) * max;
-		  fwrite (&val, sizeof(int), 1, eweights);
-		}
-	    }
-	  free (xadj);
-	  free (adjncy);
-	  xadj = NULL;
-	  adjncy = NULL;
-	  simulator->data->params->pm = SD_Patoh;
-	  if (GRP_readGraph (simulator->output->name, simulator->data, &xadj, &adjncy, &edges, 0, NULL, NULL, 1, &hevars) == GRP_ReadError)
-	    {
-	      fprintf (stderr, "Could not read generated graph files.\n");
-	      abort();
-	    }
-	  for (eiter = 0; eiter < edges; eiter++)
-	    {
-	      int var = hevars[eiter];
-	      if (var < states)
-		{
-		  int val = simulator->simulationLog->states[var] + 1;
-		  val = ((double)val / norm) * max;
-		  fwrite (&val, sizeof(int), 1, heweights);
-		}
-	      else
-		{
-		  int val = (simulator->simulationLog->handlers[var-states] + 1) * 10 * (simulator->data->event[var - states].nLHSSt + 1);
-		  val = ((double)val / norm) * max;
-		  fwrite (&val, sizeof(int), 1, heweights);
-		}
-	    }
-	  free (xadj);
-	  free (adjncy);
-	  free (hevars);
-	}
-      SD_print (simulator->simulationLog, "State Variables:");
-      int forUL = simulator->data->states, j;
-      for (j = 0; j < forUL; j++)
-	{
-	  if (simulator->settings->debug & SD_DBG_Weights)
-	    {
-	      vwgts[j] += simulator->simulationLog->states[j] + 1;
-	      int nDS = simulator->data->nDS[j], iter;
-	      for (iter = 0; iter < nDS; iter++)
-		{
-		  int vwgt = simulator->data->DS[j][iter];
-		  vwgts[j] += simulator->simulationLog->states[vwgt];
-		}
-	    }
-	  SD_print (simulator->simulationLog, "Variable %d changes: %d", j, simulator->simulationLog->states[j]);
-	}
-      if (simulator->data->events > 0)
-	{
-	  int states = simulator->data->states;
-	  SD_print (simulator->simulationLog, "Handler execution:");
-	  forUL = simulator->data->events;
-	  for (j = 0; j < forUL; j++)
-	    {
-	      if (simulator->settings->debug & SD_DBG_Weights)
-		{
-		  vwgts[states + j] += (simulator->simulationLog->handlers[j] + 1) * (simulator->data->event[j].nLHSSt + 1);
-		  int nZS = simulator->data->nZS[j], iter;
-		  for (iter = 0; iter < nZS; iter++)
-		    {
-		      int vwgt = simulator->data->ZS[j][iter];
-		      vwgts[states + j] += simulator->simulationLog->states[vwgt];
-		    }
-		  int nHD = simulator->data->nHD[j];
-		  for (iter = 0; iter < nHD; iter++)
-		    {
-		      int vwgt = simulator->data->HD[j][iter];
-		      vwgts[vwgt] += simulator->simulationLog->handlers[j];
-		    }
-		  int nHZ = simulator->data->nHZ[j];
-		  for (iter = 0; iter < nHZ; iter++)
-		    {
-		      int vwgt = simulator->data->HZ[j][iter];
-		      vwgts[states + vwgt] += simulator->simulationLog->handlers[j];
-		    }
-		  int nLHSSt = simulator->data->event[j].nLHSSt;
-		  for (iter = 0; iter < nLHSSt; iter++)
-		    {
-		      int vwgt = simulator->data->event[j].LHSSt[iter];
-		      vwgts[vwgt] += simulator->simulationLog->handlers[j];
-		    }
-		}
-	      SD_print (simulator->simulationLog, "Handler %d:  %d", j, simulator->simulationLog->handlers[j]);
-	    }
-	}
-      if (simulator->settings->debug & SD_DBG_Weights)
-	{
-	  int forUL = simulator->data->states + simulator->data->events;
-	  N = forUL;
-	  max = (2 * 1e9) / N;
-	  norm = 0;
-	  for (j = 0; j < forUL; j++)
-	    {
-	      if (vwgts[j] > norm)
-		{
-		  norm =vwgts[j];
-		}
-	    }
-	  for (j = 0; j < forUL; j++)
-	    {
-	      vwgts[j] = ((double)vwgts[j] / norm) * max;
-	      fwrite (&(vwgts[j]), sizeof(int), 1, vweights);
-	    }
-	  free (vwgts);
-	  fclose (vweights);
-	  fclose (eweights);
-	  fclose (heweights);
-	}
-    }
+  QSS_generateWeights (simulator);
 #endif
   SD_print (simulator->simulationLog, "");
 }

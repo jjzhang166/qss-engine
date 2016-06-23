@@ -108,7 +108,7 @@ QSS_SEQC_integrate (SIM_simulator simulate)
 #endif
 	    cf0 = index * coeffs;
 	    elapsed = t - tx[index];
-	    advanceTime (cf0, elapsed, x, xOrder);
+	    integrateState (cf0, elapsed, x, xOrder);
 	    tx[index] = t;
 	    lqu[index] = dQRel[index] * fabs (x[cf0]);
 	    if (lqu[index] < dQMin[index])

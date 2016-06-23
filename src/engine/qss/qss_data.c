@@ -770,3 +770,31 @@ QSS_freeModel (QSS_model model)
   free (model->events);
   free (model);
 }
+
+bool
+QSS_influenced (QSS_data data, int variable, int inf, QSS_StepType type)
+{
+  if (type == ST_State)
+    {
+      int nSD = data->nSD[variable], iter;
+      for (iter = 0; iter < nSD; iter++)
+	{
+	  if (inf == data->SD[variable][iter])
+	    {
+	      return (TRUE);
+	    }
+	}
+    }
+  else if (type == ST_Event)
+    {
+      int nHZ = data->nHZ[variable], iter;
+      for (iter = 0; iter < nHZ; iter++)
+	{
+	  if (inf == data->HZ[variable][iter])
+	    {
+	      return (TRUE);
+	    }
+	}
+    }
+  return (FALSE);
+}

@@ -271,7 +271,7 @@ QSS_PARC_integrator (QSS_simulator simulator)
 		// Internal trajectory change.
 		Dt = t - tx[index];
 		elapsed = x[cf0];
-		advanceTime (cf0, Dt, x, xOrder);
+		integrateState (cf0, Dt, x, xOrder);
 		Dx = x[cf0] - elapsed;
 		tx[index] = t;
 		lqu[index] = dQRel[index] * fabs (x[cf0]);

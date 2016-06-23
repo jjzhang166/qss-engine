@@ -530,4 +530,15 @@ typedef void
 (*QSS_setData) (QSS_data, QSS_time, SD_output, QSS_model,
 		SD_simulationSettings);
 
+/**
+ *
+ * @param simulator
+ * @param variable
+ * @param inf
+ * @param type
+ * @return
+ */
+bool
+QSS_influenced (QSS_data data, int variable, int inf, QSS_StepType type);
+
 #endif /* QSS_DATA_H_ */

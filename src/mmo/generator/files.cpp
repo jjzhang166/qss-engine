@@ -399,30 +399,46 @@ MMO_Files_::graph ()
   ofstream tmp3 (tmp3FileName.c_str (), ios::out | ios::binary);
   tmp3.seekp (0);
   int nvtxs = _model->evs () + _model->states ();
+  int w;
+  map<int, set<int> > wmap;
+  map<int, set<int> > hwmap;
   int i, size = 0, states = _model->states ();
   for (i = 0; i < nvtxs; i++)
     {
+      if (graph[i].find(i+1) == graph[i].end() && i < nvtxs - 1)
+	{
+	  graph[i].insert(i+1);
+	  wmap[i].insert(i+1);
+	}
+      if (hGraph[i].find(i+1) == hGraph[i].end() && i < nvtxs - 1)
+      	{
+      	  hGraph[i].insert(i+1);
+      	  hwmap[i].insert(i+1);
+      	}
       size += graph[i].size ();
       matrix.write ((char*) &size, sizeof(int));
     }
-  int w = 1;
   int hedges = hGraph.size();
   for (i = 0; i < states; i++)
     {
       set<int>::iterator it;
       for (it = graph[i].begin (); it != graph[i].end (); it++)
 	{
-	  w = 1;
+	  w = 10;
 	  int inf = *it;
 	  matrix.write ((char*) &inf, sizeof(int));
 	  if (inf >= states)
 	    {
-	      w = 10;
+	      w = 100;
+	    }
+	  if (wmap[i].find(i+1) != wmap[i].end())
+	    {
+	      w = 1;
 	    }
 	  wMatrix.write ((char*) &w, sizeof(int));
 	}
     }
-  w = 10;
+  w = 100;
   for (i = states; i < nvtxs; i++)
     {
       set<int>::iterator it;
@@ -430,6 +446,10 @@ MMO_Files_::graph ()
 	{
 	  int inf = *it;
 	  matrix.write ((char*) &inf, sizeof(int));
+	  if (wmap[i].find(i+1) != wmap[i].end())
+	    {
+	      w = 1;
+	    }
 	  wMatrix.write ((char*) &w, sizeof(int));
 	}
     }
@@ -438,15 +458,19 @@ MMO_Files_::graph ()
   for (int i = 0; i < nvtxs; i++)
     {
       set<int>::iterator it;
-      w = 1;
+      w = 10;
       if (i >= states)
 	{
-	  w = 10;
+	  w = 100;
 	}
       for (it = hGraph[i].begin (); it != hGraph[i].end (); ++it)
 	{
 	  int inf = *it;
 	  tmp2.write ((char*) &inf, sizeof(int));
+	  if (hwmap[i].find(i+1) != hwmap[i].end())
+	    {
+	      w = 1;
+	    }
 	  hwMatrix.write ((char*) &w, sizeof(int));
 	}
       if (!hGraph[i].empty ())

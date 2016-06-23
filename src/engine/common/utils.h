@@ -127,7 +127,7 @@ minPosRoot (double *coeff, int order) __attribute__((hot));
  * As a side effect, changes the values of the coefficient matrix.
  */
 void
-advanceTime (int, double, double*, int) __attribute__((hot));
+integrateState (int, double, double*, int) __attribute__((hot));
 
 /*! \brief Evaluates \f$ p(t) = a_0 + a_1 t + ... + a_{n-1} t^{n-1} \f$ 
  *

@@ -91,7 +91,7 @@ PAR_initLPTasks (int lp)
       retCode = PAR_ERR_GET_AFFINITY_MASK;
     }
   struct sched_param p;
-  p.__sched_priority = 10;
+  p.__sched_priority = sched_get_priority_max(SCHED_FIFO);
   pthread_setschedparam (pthread_self (), SCHED_FIFO, &p);
   pthread_barrier_wait (&b);
   return (retCode);
