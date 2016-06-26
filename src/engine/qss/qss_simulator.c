@@ -101,6 +101,8 @@ QSS_freeSimulator (QSS_simulator simulator)
 	  SC_freeScheduler (simulator->scheduler);
 	  FRW_freeFramework (simulator->frw);
 	  QSS_freeDt (simulator->dt);
+//	  QSS_LP_freeData(simulator->data->lp);
+//	  QSS_freeData (simulator->data);
 	}
       SD_freeStatistics (simulator->stats);
     }

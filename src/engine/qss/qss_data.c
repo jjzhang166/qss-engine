@@ -26,6 +26,7 @@
 #include "../common/settings.h"
 
 static bool QSS_allocBuffer = FALSE;
+static bool QSS_hardCopyStruct = TRUE;
 
 void
 QSS_setReinitBuffer (bool b)
@@ -34,7 +35,7 @@ QSS_setReinitBuffer (bool b)
 }
 
 QSS_reinit
-QSS_Reinit()
+QSS_Reinit ()
 {
   if (QSS_allocBuffer == FALSE)
     {
@@ -52,136 +53,222 @@ QSS_Reinit()
 }
 
 void
-QSS_freeReinit(QSS_reinit reinit)
+QSS_freeReinit (QSS_reinit reinit)
 {
   free (reinit);
 }
 
-
 QSS_LP_data
-QSS_LP_Data (int states, int events, int inputs, int outputs,
-    int inStates, int inEvents, int totalStates,
-    int totalEvents, int totalOutputs, int nLPS, int lps)
-  {
-    QSS_LP_data p = checkedMalloc (sizeof(*p));
-    p->nLPSCount = nLPS;
-    p->lpsCount = lps;
-    p->totalStates = totalStates;
-    p->totalEvents = totalEvents;
-    p->totalOutputs = totalOutputs;
-    p->states = states;
-    p->events = events;
-    p->inputs = inputs;
-    p->outputs = outputs;
-    p->outStates = 0;
-    p->inStates = inStates;
-    p->inEvents = inEvents;
-    p->initDt = 0;
-    p->nLPS = (int *) malloc ((nLPS + 1) * sizeof(int));
-    p->lps = (int *) malloc (lps * sizeof(int));
-    p->qMap = (QSS_idxMap) malloc (totalStates * sizeof(int));
-    p->qInMap = (QSS_idxMap) malloc (inStates * sizeof(int));
-    p->qOutMap = (QSS_idxMap) malloc (states * sizeof(int));
-    p->externalEvent = FALSE;
-    if (events + inEvents > 0)
-      {
-	p->eMap = (QSS_idxMap) malloc (totalEvents * sizeof(*p->eMap));
-	p->eInMap = (QSS_idxMap) malloc (inEvents * sizeof(*p->eInMap));
-	p->eOutMap = (QSS_idxMap) malloc (events * sizeof(*p->eInMap));
-	cleanVector(p->eMap,NOT_ASSIGNED,totalEvents);
-      }
-    else
-      {
-	p->eMap = NULL;
-	p->eInMap = NULL;
-	p->eOutMap = NULL;
-      }
-    p->iMap = NULL;
-    cleanVector(p->qMap,NOT_ASSIGNED,totalStates);
-    cleanVector(p->nLPS,0,nLPS+1);
-    cleanVector(p->lps,0,lps);
-    if (outputs)
-      {
-	p->oMap = (QSS_idxMap) malloc (totalOutputs * sizeof(int));
-	cleanVector(p->oMap,NOT_ASSIGNED,totalOutputs);
-      }
-    else
-      {
-	p->oMap = NULL;
-      }
-    return (p);
-  }
+QSS_LP_Data (int states, int events, int inputs, int outputs, int inStates,
+	     int inEvents, int totalStates, int totalEvents, int totalOutputs,
+	     int nLPS, int lps)
+{
+  QSS_LP_data p = checkedMalloc (sizeof(*p));
+  p->nLPSCount = nLPS;
+  p->lpsCount = lps;
+  p->totalStates = totalStates;
+  p->totalEvents = totalEvents;
+  p->totalOutputs = totalOutputs;
+  p->states = states;
+  p->events = events;
+  p->inputs = inputs;
+  p->outputs = outputs;
+  p->outStates = 0;
+  p->inStates = inStates;
+  p->inEvents = inEvents;
+  p->initDt = 0;
+  p->nLPS = (int *) malloc ((nLPS + 1) * sizeof(int));
+  p->lps = (int *) malloc (lps * sizeof(int));
+  p->qMap = (QSS_idxMap) malloc (totalStates * sizeof(int));
+  p->qInMap = (QSS_idxMap) malloc (inStates * sizeof(int));
+  p->qOutMap = (QSS_idxMap) malloc (states * sizeof(int));
+  p->externalEvent = FALSE;
+  if (events + inEvents > 0)
+    {
+      p->eMap = (QSS_idxMap) malloc (totalEvents * sizeof(*p->eMap));
+      p->eInMap = (QSS_idxMap) malloc (inEvents * sizeof(*p->eInMap));
+      p->eOutMap = (QSS_idxMap) malloc (events * sizeof(*p->eInMap));
+      cleanVector (p->eMap, NOT_ASSIGNED, totalEvents);
+    }
+  else
+    {
+      p->eMap = NULL;
+      p->eInMap = NULL;
+      p->eOutMap = NULL;
+    }
+  p->iMap = NULL;
+  cleanVector (p->qMap, NOT_ASSIGNED, totalStates);
+  cleanVector (p->nLPS, 0, nLPS + 1);
+  cleanVector (p->lps, 0, lps);
+  if (outputs)
+    {
+      p->oMap = (QSS_idxMap) malloc (totalOutputs * sizeof(int));
+      cleanVector (p->oMap, NOT_ASSIGNED, totalOutputs);
+    }
+  else
+    {
+      p->oMap = NULL;
+    }
+  return (p);
+}
+
+void
+QSS_LP_copyStructure (QSS_LP_data data, QSS_LP_data p)
+{
+  int totalStates = data->totalStates;
+  int totalEvents = data->totalEvents;
+  int totalOutputs = data->totalOutputs;
+  int states = data->states;
+  int events = data->events;
+  int inStates = data->inStates;
+  int outputs = data->outputs;
+  int inEvents = data->inEvents;
+  int nLPS = data->nLPSCount;
+  int lps = data->lpsCount;
+  if (QSS_hardCopyStruct)
+    {
+      p->nLPS = (int *) malloc ((nLPS + 1) * sizeof(int));
+      p->lps = (int *) malloc (lps * sizeof(int));
+      p->qMap = (QSS_idxMap) malloc (totalStates * sizeof(int));
+      p->qInMap = (QSS_idxMap) malloc (inStates * sizeof(int));
+      p->qOutMap = (QSS_idxMap) malloc (states * sizeof(int));
+      int i;
+      for (i = 0; i < nLPS + 1; i++)
+	{
+	  p->nLPS[i] = data->nLPS[i];
+	}
+      for (i = 0; i < lps; i++)
+	{
+	  p->lps[i] = data->lps[i];
+	}
+      for (i = 0; i < totalStates; i++)
+	{
+	  p->qMap[i] = data->qMap[i];
+	}
+      for (i = 0; i < inStates; i++)
+	{
+	  p->qInMap[i] = data->qInMap[i];
+	}
+      for (i = 0; i < states; i++)
+	{
+	  p->qOutMap[i] = data->qOutMap[i];
+	}
+      if (events + inEvents > 0)
+	{
+	  p->eMap = (QSS_idxMap) malloc (totalEvents * sizeof(*p->eMap));
+	  p->eInMap = (QSS_idxMap) malloc (inEvents * sizeof(*p->eInMap));
+	  p->eOutMap = (QSS_idxMap) malloc (events * sizeof(*p->eInMap));
+	  for (i = 0; i < totalEvents; i++)
+	    {
+	      p->eMap[i] = data->eMap[i];
+	    }
+	  for (i = 0; i < inEvents; i++)
+	    {
+	      p->eInMap[i] = data->eInMap[i];
+	    }
+	  for (i = 0; i < events; i++)
+	    {
+	      p->eOutMap[i] = data->eOutMap[i];
+	    }
+	}
+      else
+	{
+	  p->eMap = NULL;
+	  p->eInMap = NULL;
+	  p->eOutMap = NULL;
+	}
+      if (outputs)
+	{
+	  p->oMap = (QSS_idxMap) malloc (totalOutputs * sizeof(int));
+	  for (i = 0; i < totalOutputs; i++)
+	    {
+	      p->oMap[i] = data->oMap[i];
+	    }
+	}
+      else
+	{
+	  p->oMap = NULL;
+	}
+    }
+  else
+    {
+      p->nLPS = data->nLPS;
+      p->lps = data->lps;
+      p->qMap = data->qMap;
+      p->qInMap = data->qInMap;
+      p->qOutMap = data->qOutMap;
+      p->externalEvent = data->externalEvent;
+      if (events + inEvents > 0)
+	{
+	  p->eMap = data->eMap;
+	  p->eInMap = data->eInMap;
+	  p->eOutMap = data->eOutMap;
+	}
+      else
+	{
+	  p->eMap = NULL;
+	  p->eInMap = NULL;
+	  p->eOutMap = NULL;
+	}
+      if (outputs)
+	{
+	  p->oMap = data->oMap;
+	}
+      else
+	{
+	  p->oMap = NULL;
+	}
+    }
+  p->iMap = NULL;
+}
 
 QSS_LP_data
 QSS_LP_copyData (QSS_LP_data data)
-  {
-    QSS_LP_data p = checkedMalloc (sizeof(*p));
-    int totalStates = data->totalStates;
-    int totalEvents = data->totalEvents;
-    int totalOutputs = data->totalOutputs;
-    int states = data->states;
-    int events = data->events;
-    int inputs = data->inputs;
-    int inStates = data->inStates;
-    int outputs = data->outputs;
-    int inEvents = data->inEvents;
-    p->totalStates = totalStates;
-    p->totalEvents = totalEvents;
-    p->totalOutputs = totalOutputs;
-    p->states = states;
-    p->events = events;
-    p->inputs = inputs;
-    p->outputs = outputs;
-    p->outStates = data->outStates;
-    p->inStates = inStates;
-    p->inEvents = inEvents;
-    p->initDt = data->initDt;
-    p->nLPS = data->nLPS;
-    p->lps = data->lps;
-    p->qMap = data->qMap;
-    p->qInMap = data->qInMap;
-    p->qOutMap = data->qOutMap;
-    p->externalEvent = data->externalEvent;
-    if (events + inEvents > 0)
-      {
-	p->eMap = data->eMap;
-	p->eInMap = data->eInMap;
-	p->eOutMap = data->eOutMap;
-      }
-    else
-      {
-	p->eMap = NULL;
-	p->eInMap = NULL;
-	p->eOutMap = NULL;
-      }
-    p->iMap = NULL;
-    if (outputs)
-      {
-	p->oMap = data->oMap;
-      }
-    else
-      {
-	p->oMap = NULL;
-      }
-    return (p);
-  }
+{
+  QSS_LP_data p = checkedMalloc (sizeof(*p));
+  int totalStates = data->totalStates;
+  int totalEvents = data->totalEvents;
+  int totalOutputs = data->totalOutputs;
+  int states = data->states;
+  int events = data->events;
+  int inputs = data->inputs;
+  int inStates = data->inStates;
+  int outputs = data->outputs;
+  int inEvents = data->inEvents;
+  p->totalStates = totalStates;
+  p->totalEvents = totalEvents;
+  p->totalOutputs = totalOutputs;
+  p->states = states;
+  p->events = events;
+  p->inputs = inputs;
+  p->outputs = outputs;
+  p->outStates = data->outStates;
+  p->inStates = inStates;
+  p->inEvents = inEvents;
+  p->initDt = data->initDt;
+  p->externalEvent = data->externalEvent;
+  p->nLPSCount = data->nLPSCount;
+  p->nLPS = data->nLPS;
+  QSS_LP_copyStructure (data, p);
+  return (p);
+}
 
 QSS_LP_dataArray
 QSS_LP_DataArray (int size)
-  {
-    QSS_LP_dataArray p = (QSS_LP_dataArray) checkedMalloc (sizeof(*p));
-    p->lp = (QSS_LP_data*) checkedMalloc (sizeof(QSS_LP_data)*size);
-    p->size = size;
-    int i;
-    for (i = 0; i < size; i++)
-      {
-        p->lp[i] = NULL;
-      }
-    return (p);
-  }
+{
+  QSS_LP_dataArray p = (QSS_LP_dataArray) checkedMalloc (sizeof(*p));
+  p->lp = (QSS_LP_data*) checkedMalloc (sizeof(QSS_LP_data) * size);
+  p->size = size;
+  int i;
+  for (i = 0; i < size; i++)
+    {
+      p->lp[i] = NULL;
+    }
+  return (p);
+}
 
 void
-QSS_LP_freeDataArray(QSS_LP_dataArray array)
+QSS_LP_freeDataArray (QSS_LP_dataArray array)
 {
   int i, size = array->size;
   for (i = 0; i < size; i++)
@@ -196,49 +283,49 @@ QSS_LP_freeDataArray(QSS_LP_dataArray array)
 
 void
 QSS_LP_freeData (QSS_LP_data data)
-  {
-    if (data == NULL)
-      {
-	return;
-      }
-    if (data->nLPS != NULL)
-      {
-	free (data->nLPS);
-      }
-    if (data->lps != NULL)
-      {
-	free (data->lps);
-      }
-    if (data->qOutMap != NULL)
-      {
-	free (data->qOutMap);
-      }
-    if (data->eOutMap != NULL)
-      {
-	free (data->eOutMap);
-      }
-    if (data->qMap != NULL)
-      {
-	free (data->qMap);
-      }
-    if (data->qInMap != NULL)
-      {
-	free (data->qInMap);
-      }
-    if (data->eMap != NULL)
-      {
-	free (data->eMap);
-      }
-    if (data->eInMap != NULL)
-      {
-	free (data->eInMap);
-      }
-    if (data->iMap != NULL)
-      {
-	free (data->iMap);
-      }
-    free (data);
-  }
+{
+  if (data == NULL)
+    {
+      return;
+    }
+  if (data->nLPS != NULL)
+    {
+      free (data->nLPS);
+    }
+  if (data->lps != NULL)
+    {
+      free (data->lps);
+    }
+  if (data->qOutMap != NULL)
+    {
+      free (data->qOutMap);
+    }
+  if (data->eOutMap != NULL)
+    {
+      free (data->eOutMap);
+    }
+  if (data->qMap != NULL)
+    {
+      free (data->qMap);
+    }
+  if (data->qInMap != NULL)
+    {
+      free (data->qInMap);
+    }
+  if (data->eMap != NULL)
+    {
+      free (data->eMap);
+    }
+  if (data->eInMap != NULL)
+    {
+      free (data->eInMap);
+    }
+  if (data->iMap != NULL)
+    {
+      free (data->iMap);
+    }
+  free (data);
+}
 
 QSS_event
 QSS_Event (QSS_zc zeroCrossing, QSS_hnd handlerPos, QSS_hnd handlerNeg)
@@ -266,8 +353,8 @@ QSS_Data (int states, int discretes, int events, int inputs, int algs,
   SET_settings settings = SET_Settings (fileName);
   if (settings == NULL)
     {
-      printf("Error: Could not open ini file\n");
-      exit(-1);
+      printf ("Error: Could not open ini file\n");
+      exit (-1);
     }
   QSS_data p = checkedMalloc (sizeof(*p));
   int i, order = settings->order;
@@ -320,13 +407,13 @@ QSS_Data (int states, int discretes, int events, int inputs, int algs,
       p->HZ = (int**) malloc (events * sizeof(int*));
       if (settings->lps > 0)
 	{
-	p->nSH = (int*) malloc (states * sizeof(int));
-      p->SH = (int**) malloc (states * sizeof(int*));
+	  p->nSH = (int*) malloc (states * sizeof(int));
+	  p->SH = (int**) malloc (states * sizeof(int*));
 	}
       else
 	{
-      p->nSH = NULL;
-      p->SH = NULL;
+	  p->nSH = NULL;
+	  p->SH = NULL;
 	}
     }
   else
@@ -369,7 +456,7 @@ QSS_Data (int states, int discretes, int events, int inputs, int algs,
       cleanVector (p->nSZ, 0, states);
       if (settings->lps > 0)
 	{
-      cleanVector (p->nSH, 0, states);
+	  cleanVector (p->nSH, 0, states);
 	}
     }
   if (sameDQMin == 0 || sameDQRel == 0)
@@ -412,6 +499,228 @@ QSS_Data (int states, int discretes, int events, int inputs, int algs,
   return (p);
 }
 
+void
+QSS_dataCopyStructure (QSS_data data, QSS_data p)
+{
+  int i;
+  int states = data->states;
+  int events = data->events;
+  int inputs = data->inputs;
+  if (QSS_hardCopyStruct)
+    {
+      int j, iter;
+      p->dQMin = (double*) malloc (states * sizeof(double));
+      p->dQRel = (double*) malloc (states * sizeof(double));
+      p->nSD = (int*) malloc (states * sizeof(int));
+      p->nDS = (int*) malloc (states * sizeof(int));
+      p->SD = (int**) malloc (states * sizeof(int*));
+      p->DS = (int**) malloc (states * sizeof(int*));
+      if (events)
+	{
+	  p->nSZ = (int*) malloc (states * sizeof(int));
+	  p->SZ = (int**) malloc (states * sizeof(int*));
+	}
+      for (i = 0; i < states; i++)
+	{
+	  p->dQMin[i] = data->dQMin[i];
+	  p->dQRel[i] = data->dQRel[i];
+	  p->nSD[i] = data->nSD[i];
+	  p->nDS[i] = data->nDS[i];
+	  p->SD[i] =
+	      (p->nSD[i] > 0) ? (int*) malloc (p->nSD[i] * sizeof(int)) : NULL;
+	  if (p->SD[i] != NULL)
+	    {
+	      iter = p->nSD[i];
+	      for (j = 0; j < iter; j++)
+		{
+		  p->SD[j] = data->SD[j];
+		}
+	    }
+	  p->DS[i] =
+	      (p->nDS[i] > 0) ? (int*) malloc (p->nDS[i] * sizeof(int)) : NULL;
+	  if (p->DS[i] != NULL)
+	    {
+	      iter = p->nDS[i];
+	      for (j = 0; j < iter; j++)
+		{
+		  p->DS[j] = data->DS[j];
+		}
+	    }
+	  if (events)
+	    {
+	      p->SZ[i] =
+		  (p->nSZ[i] > 0) ?
+		      (int*) malloc (p->nSZ[i] * sizeof(int)) : NULL;
+	      if (p->SZ[i] != NULL)
+		{
+		  iter = p->nSZ[i];
+		  for (j = 0; j < iter; j++)
+		    {
+		      p->SZ[j] = data->SZ[j];
+		    }
+		}
+	    }
+	}
+      if (events)
+	{
+	  p->nZS = (int*) malloc (events * sizeof(int));
+	  p->nHD = (int*) malloc (events * sizeof(int));
+	  p->nHZ = (int*) malloc (events * sizeof(int));
+	  p->ZS = (int**) malloc (events * sizeof(int*));
+	  p->HD = (int**) malloc (events * sizeof(int*));
+	  p->HZ = (int**) malloc (events * sizeof(int*));
+	  for (i = 0; i < events; i++)
+	    {
+	      p->nZS[i] = data->nZS[i];
+	      p->nHD[i] = data->nHD[i];
+	      p->nHZ[i] = data->nHZ[i];
+	      p->ZS[i] =
+		  (p->nZS[i] > 0) ?
+		      (int*) malloc (p->nZS[i] * sizeof(int)) : NULL;
+	      if (p->ZS[i] != NULL)
+		{
+		  iter = p->nZS[i];
+		  for (j = 0; j < iter; j++)
+		    {
+		      p->ZS[j] = data->ZS[j];
+		    }
+		}
+	      p->HD[i] =
+		  (p->nHD[i] > 0) ?
+		      (int*) malloc (p->nHD[i] * sizeof(int)) : NULL;
+	      if (p->HD[i] != NULL)
+		{
+		  iter = p->nHD[i];
+		  for (j = 0; j < iter; j++)
+		    {
+		      p->HD[j] = data->HD[j];
+		    }
+		}
+	      p->HZ[i] =
+		  (p->nHZ[i] > 0) ?
+		      (int*) malloc (p->nHZ[i] * sizeof(int)) : NULL;
+	      if (p->HZ[i] != NULL)
+		{
+		  iter = p->nHZ[i];
+		  for (j = 0; j < iter; j++)
+		    {
+		      p->HZ[j] = data->HZ[j];
+		    }
+		}
+	      p->event[i].LHSSt =
+		  (p->event[i].nLHSSt > 0) ?
+		      (int*) malloc (p->event[i].nLHSSt * sizeof(int)) : NULL;
+	      if (p->event[i].LHSSt != NULL)
+		{
+		  iter = p->event[i].nLHSSt;
+		  for (j = 0; j < iter; j++)
+		    {
+		      p->event[i].LHSSt[j] = data->event[i].LHSSt[j];
+		    }
+		}
+	      p->event[i].LHSDsc =
+		  (p->event[i].nLHSDsc > 0) ?
+		      (int*) malloc (p->event[i].nLHSDsc * sizeof(int)) : NULL;
+	      if (p->event[i].LHSDsc != NULL)
+		{
+		  iter = p->event[i].nLHSDsc;
+		  for (j = 0; j < iter; j++)
+		    {
+		      p->event[i].LHSDsc[j] = data->event[i].LHSDsc[j];
+		    }
+		}
+	      p->event[i].RHSSt =
+		  (p->event[i].nRHSSt > 0) ?
+		      (int*) malloc (p->event[i].nRHSSt * sizeof(int)) : NULL;
+	      if (p->event[i].RHSSt != NULL)
+		{
+		  iter = p->event[i].nRHSSt;
+		  for (j = 0; j < iter; j++)
+		    {
+		      p->event[i].RHSSt[j] = data->event[i].RHSSt[j];
+		    }
+		}
+	    }
+	}
+      else
+	{
+	  p->nSZ = NULL;
+	  p->nZS = NULL;
+	  p->nHD = NULL;
+	  p->nHZ = NULL;
+	  p->SZ = NULL;
+	  p->ZS = NULL;
+	  p->HD = NULL;
+	  p->HZ = NULL;
+	  p->nSH = NULL;
+	  p->SH = NULL;
+	}
+      if (inputs)
+	{
+	  p->TD = (int*) malloc (inputs * sizeof(int));
+	  for (i = 0; i < inputs; i++)
+	    {
+	      p->TD[i] = data->TD[i];
+	    }
+	}
+      else
+	{
+	  p->TD = NULL;
+	}
+      p->params = SD_copyParameters (data->params);
+    }
+  else
+    {
+      p->dQMin = data->dQMin;
+      p->dQRel = data->dQRel;
+      p->nSD = data->nSD;
+      p->nDS = data->nDS;
+      p->SD = data->SD;
+      p->DS = data->DS;
+      if (events)
+	{
+	  p->nSZ = data->nSZ;
+	  p->nZS = data->nZS;
+	  p->nHD = data->nHD;
+	  p->nHZ = data->nHZ;
+	  p->SZ = data->SZ;
+	  p->ZS = data->ZS;
+	  p->HD = data->HD;
+	  p->HZ = data->HZ;
+	  for (i = 0; i < events; i++)
+	    {
+	      p->event[i].LHSSt = data->event[i].LHSSt;
+	      p->event[i].LHSDsc = data->event[i].LHSDsc;
+	      p->event[i].RHSSt = data->event[i].RHSSt;
+	    }
+	}
+      else
+	{
+	  p->nSZ = NULL;
+	  p->nZS = NULL;
+	  p->nHD = NULL;
+	  p->nHZ = NULL;
+	  p->SZ = NULL;
+	  p->ZS = NULL;
+	  p->HD = NULL;
+	  p->HZ = NULL;
+	}
+      if (inputs)
+	{
+	  p->TD = data->TD;
+	}
+      else
+	{
+	  p->TD = NULL;
+	}
+      if (events)
+	{
+	  p->event = data->event;
+	}
+      p->params = data->params;
+    }
+}
+
 QSS_data
 QSS_copyData (QSS_data data)
 {
@@ -433,8 +742,6 @@ QSS_copyData (QSS_data data)
   p->solver = data->solver;
   p->it = data->it;
   p->ft = data->ft;
-  p->dQMin = data->dQMin;
-  p->dQRel = data->dQRel;
   p->lqu = (double*) malloc (states * sizeof(double));
   cleanDoubleVector (p->lqu, 0, states);
   if (discretes)
@@ -454,20 +761,16 @@ QSS_copyData (QSS_data data)
   if (algs)
     {
       p->alg = (double*) malloc (algs * xOrder * sizeof(double));
-      cleanDoubleVector(p->alg, 0, algs * xOrder);
+      cleanDoubleVector (p->alg, 0, algs * xOrder);
     }
   else
     {
       p->alg = NULL;
     }
   p->tmp1 = (double*) malloc (states * xOrder * sizeof(double));
-  cleanDoubleVector(p->tmp1, 0, states * xOrder);
+  cleanDoubleVector (p->tmp1, 0, states * xOrder);
   p->tmp2 = (double*) malloc (states * xOrder * sizeof(double));
-  cleanDoubleVector(p->tmp2, 0, states * xOrder);
-  p->nSD = data->nSD;
-  p->nDS = data->nDS;
-  p->SD = data->SD;
-  p->DS = data->DS;
+  cleanDoubleVector (p->tmp2, 0, states * xOrder);
   for (i = 0; i < states; i++)
     {
       p->x[i * xOrder] = data->x[i * xOrder];
@@ -475,42 +778,13 @@ QSS_copyData (QSS_data data)
     }
   if (events)
     {
-      p->nSZ = data->nSZ;
-      p->nZS = data->nZS;
-      p->nHD = data->nHD;
-      p->nHZ = data->nHZ;
-      p->SZ = data->SZ;
-      p->ZS = data->ZS;
-      p->HD = data->HD;
-      p->HZ = data->HZ;
-    }
-  else
-    {
-      p->nSZ = NULL;
-      p->nZS = NULL;
-      p->nHD = NULL;
-      p->nHZ = NULL;
-      p->SZ = NULL;
-      p->ZS = NULL;
-      p->HD = NULL;
-      p->HZ = NULL;
-    }
-  if (inputs)
-    {
-      p->TD = data->TD;
-    }
-  else
-    {
-      p->TD = NULL;
-    }
-  if (events)
-    {
       p->event = data->event;
+      p->event = SD_copyEventData (events, data->event);
     }
-  p->params = data->params;
   p->lp = NULL;
   p->nSH = NULL;
   p->SH = NULL;
+  QSS_dataCopyStructure (data, p);
   return (p);
 }
 
@@ -533,11 +807,11 @@ QSS_allocDataMatrix (QSS_data data)
 		  (int*) malloc (data->nSZ[i] * sizeof(int)) : NULL;
 	  if (data->nSH != NULL)
 	    {
-	  data->SH[i] =
-	  	      (data->nSH[i] > 0) ?
-	  		  (int*) malloc (data->nSH[i] * sizeof(int)) : NULL;
+	      data->SH[i] =
+		  (data->nSH[i] > 0) ?
+		      (int*) malloc (data->nSH[i] * sizeof(int)) : NULL;
 	    }
-	    }
+	}
     }
   for (i = 0; i < events; i++)
     {
@@ -684,7 +958,7 @@ QSS_Time (int states, int events, int inputs, double it,
 	{
 	  p->weights = NULL;
 	}
-      p->reinits = QSS_Reinit();
+      p->reinits = QSS_Reinit ();
     }
   else
     {
@@ -743,7 +1017,7 @@ QSS_freeTime (QSS_time simTime, int events, int inputs)
       free (simTime->nextEventTime);
       if (simTime->reinits != NULL)
 	{
-	      QSS_freeReinit(simTime->reinits);
+	  QSS_freeReinit (simTime->reinits);
 	}
     }
   if (inputs)
