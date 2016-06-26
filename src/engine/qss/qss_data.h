@@ -276,6 +276,12 @@ QSS_LP_copyData (QSS_LP_data data);
  *
  */
 void
+QSS_LP_clean (QSS_LP_data data);
+
+/**
+ *
+ */
+void
 QSS_LP_freeData (QSS_LP_data data);
 
 /**

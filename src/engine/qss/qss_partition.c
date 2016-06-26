@@ -318,6 +318,8 @@ PRT_freePartition (PRT_partition partition)
       free (partition->outputs[i]);
     }
   free (partition->outputs);
+  free (partition->values);
+  free (partition);
 }
 
 #else

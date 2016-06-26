@@ -791,6 +791,7 @@ IBX_freeInbox (IBX_inbox inbox)
     {
       free (inbox->states);
     }
+  BIT_freeVector(inbox->received);
   pthread_mutex_destroy (&(inbox->receivedMutex));
   free (inbox);
 }
@@ -927,6 +928,9 @@ MLB_freeMailbox (MLB_mailbox mailbox)
 	  IBX_freeInbox (mailbox->inbox[1][i]);
 	}
     }
+  free (mailbox->inbox[0]);
+  free (mailbox->inbox[1]);
+  free (mailbox->inbox);
   free (mailbox);
 }
 

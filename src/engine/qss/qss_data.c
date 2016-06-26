@@ -248,7 +248,7 @@ QSS_LP_copyData (QSS_LP_data data)
   p->initDt = data->initDt;
   p->externalEvent = data->externalEvent;
   p->nLPSCount = data->nLPSCount;
-  p->nLPS = data->nLPS;
+  p->lpsCount = data->lpsCount;
   QSS_LP_copyStructure (data, p);
   return (p);
 }
@@ -270,15 +270,28 @@ QSS_LP_DataArray (int size)
 void
 QSS_LP_freeDataArray (QSS_LP_dataArray array)
 {
-  int i, size = array->size;
-  for (i = 0; i < size; i++)
+  if (!QSS_hardCopyStruct)
     {
-      if (array->lp[i] != NULL)
+      int i, size = array->size;
+      for (i = 0; i < size; i++)
 	{
-	  free (array->lp[i]);
+	  if (array->lp[i] != NULL)
+	    {
+	      QSS_LP_freeData (array->lp[i]);
+	    }
 	}
     }
+  free (array->lp);
   free (array);
+}
+
+void
+QSS_LP_clean (QSS_LP_data data)
+{
+  if (QSS_hardCopyStruct)
+    {
+      QSS_LP_freeData (data);
+    }
 }
 
 void
@@ -533,7 +546,7 @@ QSS_dataCopyStructure (QSS_data data, QSS_data p)
 	      iter = p->nSD[i];
 	      for (j = 0; j < iter; j++)
 		{
-		  p->SD[j] = data->SD[j];
+		  p->SD[i][j] = data->SD[i][j];
 		}
 	    }
 	  p->DS[i] =
@@ -543,11 +556,12 @@ QSS_dataCopyStructure (QSS_data data, QSS_data p)
 	      iter = p->nDS[i];
 	      for (j = 0; j < iter; j++)
 		{
-		  p->DS[j] = data->DS[j];
+		  p->DS[i][j] = data->DS[i][j];
 		}
 	    }
 	  if (events)
 	    {
+	      p->nSZ[i] = data->nSZ[i];
 	      p->SZ[i] =
 		  (p->nSZ[i] > 0) ?
 		      (int*) malloc (p->nSZ[i] * sizeof(int)) : NULL;
@@ -556,7 +570,7 @@ QSS_dataCopyStructure (QSS_data data, QSS_data p)
 		  iter = p->nSZ[i];
 		  for (j = 0; j < iter; j++)
 		    {
-		      p->SZ[j] = data->SZ[j];
+		      p->SZ[i][j] = data->SZ[i][j];
 		    }
 		}
 	    }
@@ -582,7 +596,7 @@ QSS_dataCopyStructure (QSS_data data, QSS_data p)
 		  iter = p->nZS[i];
 		  for (j = 0; j < iter; j++)
 		    {
-		      p->ZS[j] = data->ZS[j];
+		      p->ZS[i][j] = data->ZS[i][j];
 		    }
 		}
 	      p->HD[i] =
@@ -593,7 +607,7 @@ QSS_dataCopyStructure (QSS_data data, QSS_data p)
 		  iter = p->nHD[i];
 		  for (j = 0; j < iter; j++)
 		    {
-		      p->HD[j] = data->HD[j];
+		      p->HD[i][j] = data->HD[i][j];
 		    }
 		}
 	      p->HZ[i] =
@@ -604,7 +618,7 @@ QSS_dataCopyStructure (QSS_data data, QSS_data p)
 		  iter = p->nHZ[i];
 		  for (j = 0; j < iter; j++)
 		    {
-		      p->HZ[j] = data->HZ[j];
+		      p->HZ[i][j] = data->HZ[i][j];
 		    }
 		}
 	      p->event[i].LHSSt =
@@ -928,6 +942,10 @@ QSS_freeData (QSS_data data)
 	  free (data->nSH);
 	}
     }
+  if (data->lp != NULL)
+    {
+      QSS_LP_freeData (data->lp);
+    }
   SD_freeEventData (data->event, data->events);
   SD_freeParameters (data->params);
   free (data);
@@ -1044,6 +1062,11 @@ QSS_freeModel (QSS_model model)
   free (model->events);
   free (model);
 }
+
+/**
+ * This should be deprecated
+ *
+ */
 
 bool
 QSS_influenced (QSS_data data, int variable, int inf, QSS_StepType type)

@@ -965,7 +965,7 @@ QSS_PAR_copySimulator (QSS_simulatorInstance *instance)
   sprintf(logFile, "%s", root->output->name);
   p->data = QSS_copyData (data);
   p->data->lp = QSS_LP_copyData (root->lps->lp[id]);
- // QSS_LP_freeData(root->lps->lp[id]);
+  QSS_LP_clean (root->lps->lp[id]);
   p->lpTime = root->lpTime;
   p->model = root->model;
   p->output = root->output;

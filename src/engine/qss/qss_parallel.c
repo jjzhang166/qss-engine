@@ -119,6 +119,7 @@ PAR_createLPTasks (QSS_sim simulate, QSS_simulator simulator)
     {
       pthread_join (tasks[i], NULL);
     }
+  free (tasks);
   return (PAR_NO_ERROR);
 }
 

@@ -87,12 +87,13 @@ QSS_freeSimulator (QSS_simulator simulator)
 	  SD_freeOutput (simulator->output, simulator->data->states,
 			 simulator->data->discretes);
 	  QSS_freeModel (simulator->model);
-	  QSS_freeData (simulator->data);
 	  SD_freeSimulationSettings (simulator->settings);
 	  free (simulator->lpTime);
 	  free (simulator->lpDtMin);
 	  QSS_LP_freeDataArray (simulator->lps);
 	  MLB_freeMailbox (simulator->mailbox);
+	  QSS_freeDtSynch(simulator->dtSynch);
+	  QSS_freeData (simulator->data);
 	}
       else
 	{
@@ -101,8 +102,7 @@ QSS_freeSimulator (QSS_simulator simulator)
 	  SC_freeScheduler (simulator->scheduler);
 	  FRW_freeFramework (simulator->frw);
 	  QSS_freeDt (simulator->dt);
-//	  QSS_LP_freeData(simulator->data->lp);
-//	  QSS_freeData (simulator->data);
+	  QSS_freeData (simulator->data);
 	}
       SD_freeStatistics (simulator->stats);
     }
@@ -149,6 +149,7 @@ QSS_simulate (SIM_simulator simulate)
   INT_initialize (integrator, simulate);
   INT_integrate (integrator, simulate);
   INT_freeIntegrator (integrator);
+  QSS_CMD_free();
 }
 
 void
