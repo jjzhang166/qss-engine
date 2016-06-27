@@ -391,6 +391,9 @@ QSS_copyData (QSS_data data);
 void
 QSS_freeData (QSS_data data);
 
+void
+QSS_cleanData (QSS_data data);
+
 /**
  *
  * @param data

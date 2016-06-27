@@ -171,6 +171,16 @@ SD_freeEventData (SD_eventData events, int size)
   free (events);
 }
 
+void
+SD_cleanEventData(SD_eventData events, int size)
+{
+  if (events == NULL)
+    {
+      return;
+    }
+  free (events);
+}
+
 SD_parameters
 SD_Parameters (double derDelta, double zcHyst, double minStep, int symDiff,
 	       int lps, int nodeSize, SD_PartitionMethod pm, double dt, SD_DtSynch synch)

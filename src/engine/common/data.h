@@ -278,7 +278,6 @@ SD_EventData (int size);
  *
  * @param size
  * @param events
- * @return
  */
 SD_eventData
 SD_copyEventData (int size, SD_eventData events);
@@ -290,6 +289,9 @@ SD_copyEventData (int size, SD_eventData events);
  */
 void
 SD_freeEventData (SD_eventData events, int size);
+
+void
+SD_cleanEventData(SD_eventData events, int size);
 
 /**
  *

@@ -26,7 +26,7 @@
 #include "../common/settings.h"
 
 static bool QSS_allocBuffer = FALSE;
-static bool QSS_hardCopyStruct = TRUE;
+static bool QSS_hardCopyStruct = FALSE;
 
 void
 QSS_setReinitBuffer (bool b)
@@ -727,10 +727,6 @@ QSS_dataCopyStructure (QSS_data data, QSS_data p)
 	{
 	  p->TD = NULL;
 	}
-      if (events)
-	{
-	  p->event = data->event;
-	}
       p->params = data->params;
     }
 }
@@ -792,7 +788,6 @@ QSS_copyData (QSS_data data)
     }
   if (events)
     {
-      p->event = data->event;
       p->event = SD_copyEventData (events, data->event);
     }
   p->lp = NULL;
@@ -949,6 +944,34 @@ QSS_freeData (QSS_data data)
   SD_freeEventData (data->event, data->events);
   SD_freeParameters (data->params);
   free (data);
+}
+
+void
+QSS_cleanData (QSS_data data)
+{
+  if (QSS_hardCopyStruct)
+    {
+      QSS_freeData(data);
+    }
+  else
+    {
+      free (data->lqu);
+        if (data->discretes)
+          {
+            free (data->d);
+          }
+        if (data->algs)
+          {
+            free (data->alg);
+          }
+        free (data->x);
+        free (data->q);
+        free (data->tmp1);
+        free (data->tmp2);
+        SD_cleanEventData(data->event, data->events);
+        free (data->lp);
+        free (data);
+    }
 }
 
 QSS_time
