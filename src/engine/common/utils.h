@@ -623,7 +623,6 @@ struct IBX_inbox_
   int head; //!<
   int tail; //!<
   int size; //!<
-  double *states; //!<
 };
 
 /**
@@ -637,7 +636,6 @@ typedef struct MLB_mailbox_ *MLB_mailbox;
 struct MLB_mailbox_
 {
   IBX_inbox **inbox; //!< Inbox data structure used to send and receive simulation events.
-  IBX_inbox **synch; //!< Inbox data structure used to send and receive simulation \f $ \delta t $ \f information.
   int size; //!<
 };
 
