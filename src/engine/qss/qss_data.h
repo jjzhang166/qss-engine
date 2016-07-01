@@ -389,6 +389,14 @@ QSS_copyData (QSS_data data);
  * @param data
  */
 void
+QSS_orderDataMatrix(QSS_data data);
+
+
+/**
+ *
+ * @param data
+ */
+void
 QSS_freeData (QSS_data data);
 
 void

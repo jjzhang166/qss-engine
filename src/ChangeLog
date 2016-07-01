@@ -1,15 +1,103 @@
+2016-07-01  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/qss_simulator.c
+	(QSS_simulate): Added a call to QSS_orderDataMatrix before the simulation
+	begins.
+	* mmo/generator/solver.cpp
+	(QSS_::_indexDependencies): Fix, always print the dependencies range using the
+	influenced index.
+	* engine/qss/qss_data.c
+	(QSS_orderDataMatrix): New function that sorts in increasing order the
+	structural matrices of the model.
+	* engine/qss/qss_data.h: Added QSS_orderDataMAtrix function.
+	* engine/qss/qss_parh_integrator.c
+	(QSS_PARH_externalEvent): Moved SZ evaluation inside the influenced quantized
+	state variables block.
+
+2016-06-28  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/common/utils.c
+	(IBX_Inbox): Removed states from inbox structure.
+	(IBX_freeInbox): Removed states from inbox structure.
+	(IBX_add): Removed states from inbox structure.
+	* engine/common/utils.h: Removed states from inbox structure.
+	* .settings/language.settings.xml: New file.
+	* gui/mmome.pro.user: New file.
+	* mmo/usr/bin/ginsh: New file.
+	* mmo/usr/bin/viewgar: New file.
+	* mmo/usr/include/ginac/add.h: New file.
+	* mmo/usr/include/ginac/archive.h: New file.
+	* mmo/usr/include/ginac/assertion.h: New file.
+	* mmo/usr/include/ginac/basic.h: New file.
+	* mmo/usr/include/ginac/class_info.h: New file.
+	* mmo/usr/include/ginac/clifford.h: New file.
+	* mmo/usr/include/ginac/color.h: New file.
+	* mmo/usr/include/ginac/compiler.h: New file.
+	* mmo/usr/include/ginac/constant.h: New file.
+	* mmo/usr/include/ginac/container.h: New file.
+	* mmo/usr/include/ginac/ex.h: New file.
+	* mmo/usr/include/ginac/excompiler.h: New file.
+	* mmo/usr/include/ginac/expair.h: New file.
+	* mmo/usr/include/ginac/expairseq.h: New file.
+	* mmo/usr/include/ginac/exprseq.h: New file.
+	* mmo/usr/include/ginac/factor.h: New file.
+	* mmo/usr/include/ginac/fail.h: New file.
+	* mmo/usr/include/ginac/fderivative.h: New file.
+	* mmo/usr/include/ginac/flags.h: New file.
+	* mmo/usr/include/ginac/function.h: New file.
+	* mmo/usr/include/ginac/ginac.h: New file.
+	* mmo/usr/include/ginac/hash_map.h: New file.
+	* mmo/usr/include/ginac/idx.h: New file.
+	* mmo/usr/include/ginac/indexed.h: New file.
+	* mmo/usr/include/ginac/inifcns.h: New file.
+	* mmo/usr/include/ginac/integral.h: New file.
+	* mmo/usr/include/ginac/lst.h: New file.
+	* mmo/usr/include/ginac/matrix.h: New file.
+	* mmo/usr/include/ginac/mul.h: New file.
+	* mmo/usr/include/ginac/ncmul.h: New file.
+	* mmo/usr/include/ginac/normal.h: New file.
+	* mmo/usr/include/ginac/numeric.h: New file.
+	* mmo/usr/include/ginac/operators.h: New file.
+	* mmo/usr/include/ginac/parse_context.h: New file.
+	* mmo/usr/include/ginac/parser.h: New file.
+	* mmo/usr/include/ginac/power.h: New file.
+	* mmo/usr/include/ginac/print.h: New file.
+	* mmo/usr/include/ginac/pseries.h: New file.
+	* mmo/usr/include/ginac/ptr.h: New file.
+	* mmo/usr/include/ginac/registrar.h: New file.
+	* mmo/usr/include/ginac/relational.h: New file.
+	* mmo/usr/include/ginac/structure.h: New file.
+	* mmo/usr/include/ginac/symbol.h: New file.
+	* mmo/usr/include/ginac/symmetry.h: New file.
+	* mmo/usr/include/ginac/tensor.h: New file.
+	* mmo/usr/include/ginac/version.h: New file.
+	* mmo/usr/include/ginac/wildcard.h: New file.
+	* mmo/usr/lib/libginac.a: New file.
+	* mmo/usr/lib/libginac.la: New file.
+	* mmo/usr/lib/pkgconfig/ginac.pc: New file.
+	* mmo/usr/libexec/ginac-excompiler: New file.
+	* mmo/usr/share/info/dir: New file.
+	* mmo/usr/share/info/ginac-examples.info: New file.
+	* mmo/usr/share/info/ginac.info: New file.
+	* mmo/usr/share/man/man1/ginsh.1: New file.
+	* mmo/usr/share/man/man1/viewgar.1: New file.
+
 2016-05-17  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* gui/mmomegui.cpp
 	(MmomeGui::_plotScript): rollback gnuplot script.
 	* tools/sbml/Makefile: Added sbml macro
-	
+
 2016-05-17  Joaquin  <joaquin.f.fernandez@gmail.com>
 
-	* engine/qss/liqss2.c (LIQSS2_init): Cleaned code.
-	* engine/qss/qss_dt.c (QSS_Dt): Cleaned code.
-	* engine/qss/qss_parh_integrator.c (QSS_PARH_integrator): Modified events handler execution. 
-	* engine/qss/qss_seqh_integrator.c (QSS_SEQH_integrate): Modified events handler execution.
+	* engine/qss/liqss2.c
+	(LIQSS2_init): Cleaned code.
+	* engine/qss/qss_dt.c
+	(QSS_Dt): Cleaned code.
+	* engine/qss/qss_parh_integrator.c
+	(QSS_PARH_integrator): Modified events handler execution.
+	* engine/qss/qss_seqh_integrator.c
+	(QSS_SEQH_integrate): Modified events handler execution.
 
 2016-04-29  Joaquin  <joaquin.f.fernandez@gmail.com>
 

@@ -336,6 +336,11 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
       break;
     case IDX_SUBSET:
       {
+	Index tmp(infIdx);
+	if (dIdx->hasMap())
+	  {
+	    tmp.setMap(*dIdx);
+	  }
 	int begin = idx.mappedBegin () + infDIdx->lowValue ()
 	    - dIdx->lowValue ();
 	buffer << "for(i = " << begin << "; i <= "
@@ -348,7 +353,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 	buffer << indent << allocStr << "[i]++;";
 	_writer->write (&buffer, alloc);
 	buffer << indent << initStr << "[i][" << counter << "[i]++] = "
-	<< infIdx.print ("i", -begin + infIdx.begin() - idx.begin()) << ";";
+	<< tmp.print ("i", -begin + infIdx.begin() - idx.begin()) << ";";
 	_writer->write (&buffer, init);
 	buffer << "}";
 	_writer->write (&buffer, alloc, false);
@@ -367,6 +372,11 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
       break;
     case IDX_SUBSET_OF:
       {
+	Index tmp (infIdx);
+	if (dIdx->hasMap ())
+	  {
+	    tmp.setMap (*dIdx);
+	  }
 	buffer << "for(i = " << idx.mappedBegin () << "; i <= "
 	    << idx.mappedEnd () << "; i++)";
 	_writer->write (&buffer, alloc, false);
@@ -377,7 +387,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 	buffer << indent << allocStr << "[i]++;";
 	_writer->write (&buffer, alloc);
 	buffer << indent << initStr << "[i][" << counter << "[i]++] = "
-	    << dIdx->print ("i", -dIdx->offset () + infIdx.mappedBegin ())
+	    << tmp.print ("i", - idx.mappedBegin () + idx.begin())
 	    << ";";
 	_writer->write (&buffer, init);
 	buffer << "}";

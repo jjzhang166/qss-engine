@@ -845,6 +845,69 @@ QSS_allocDataMatrix (QSS_data data)
     }
 }
 
+int
+QSS_intCmp(const void *x, const void *y)
+{
+  int xx = *(int*)x, yy = *(int*)y;
+  if (xx < yy) return (-1);
+  if (xx > yy) return  (1);
+  return (0);
+}
+
+void
+QSS_orderDataMatrix(QSS_data data)
+{
+  int i, states = data->states, events = data->events;
+  for (i = 0; i < states; i++)
+    {
+      if (data->SD[i] != NULL)
+	{
+	  qsort (data->SD[i], data->nSD[i], sizeof(int), QSS_intCmp);
+	}
+      if (data->DS[i] != NULL)
+	{
+	  qsort (data->DS[i], data->nDS[i], sizeof(int), QSS_intCmp);
+	}
+      if (events)
+	{
+	  if (data->SZ[i] != NULL)
+	    {
+	      qsort (data->SZ[i], data->nSZ[i], sizeof(int), QSS_intCmp);
+	    }
+	}
+    }
+  for (i = 0; i < events; i++)
+    {
+      if (data->ZS[i] != NULL)
+	{
+	  qsort (data->ZS[i], data->nZS[i], sizeof(int), QSS_intCmp);
+	}
+      if (data->HD[i] != NULL)
+	{
+	  qsort (data->HD[i], data->nHD[i], sizeof(int), QSS_intCmp);
+	}
+      if (data->HZ[i] != NULL)
+	{
+	  qsort (data->HZ[i], data->nHZ[i], sizeof(int), QSS_intCmp);
+	}
+      if (data->event[i].LHSSt != NULL)
+	{
+	  qsort (data->event[i].LHSSt, data->event[i].nLHSSt, sizeof(int),
+		 QSS_intCmp);
+	}
+      if (data->event[i].LHSDsc != NULL)
+	{
+	  qsort (data->event[i].LHSDsc, data->event[i].nLHSDsc, sizeof(int),
+		 QSS_intCmp);
+	}
+      if (data->event[i].RHSSt != NULL)
+	{
+	  qsort (data->event[i].RHSSt, data->event[i].nRHSSt, sizeof(int),
+		 QSS_intCmp);
+	}
+    }
+}
+
 void
 QSS_freeData (QSS_data data)
 {

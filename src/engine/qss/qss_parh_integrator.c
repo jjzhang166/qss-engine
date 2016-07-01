@@ -190,14 +190,14 @@ QSS_PARH_externalEvent (QSS_simulator simulator, IBX_message message)
 					    lqu, q);
 		    }
 		}
-	    }
-	  nSZ = qssData->nSZ[j];
-	  for (h = 0; h < nSZ; h++)
-	    {
-	      k = SZ[j][h];
-	      if (eMap[k] != NOT_ASSIGNED)
+	      nSZ = qssData->nSZ[j];
+	      for (i = 0; i < nSZ; i++)
 		{
-		  FRW_nextEventTime (frw, qssModel, qssData, qssTime, k);
+		  k = qssData->SZ[j][i];
+		  if (eMap[k] != NOT_ASSIGNED)
+		    {
+		      FRW_nextEventTime (frw, qssModel, qssData, qssTime, k);
+		    }
 		}
 	    }
 	}
@@ -295,7 +295,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
   int **HD = qssData->HD;
   int **HZ = qssData->HZ;
   const QSS_idxMap eMap = lp->eMap;
-  t = QSS_PAR_passiveInitialization(simulator,QSS_PARH_externalEvent);
+  t = QSS_PAR_passiveInitialization (simulator, QSS_PARH_externalEvent);
   double gvt = QSS_PAR_GVT (simulator);
   double maxAdvanceTime = gvt + QSS_dtValue (dt);
 #ifdef DEBUG
@@ -309,7 +309,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
     {
       if (t == ft)
 	{
-	  t = QSS_PAR_passiveLP(simulator, QSS_PARH_externalEvent);
+	  t = QSS_PAR_passiveLP (simulator, QSS_PARH_externalEvent);
 	}
       else
 	{
@@ -488,8 +488,8 @@ QSS_PARH_integrator (QSS_simulator simulator)
 		// Zero crossing function change.
 		s = sign (zc[0]);
 		double et = INF;
-                if (event[index].zcSign == s)
-                  {
+		if (event[index].zcSign == s)
+		  {
 		    FRW_nextEventTime (frw, qssModel, qssData, qssTime, index);
 		    et = qssTime->nextEventTime[index];
 		  }
@@ -583,7 +583,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
 				for (updIdx = 1; updIdx <= xOrder; updIdx++)
 				  {
 				    msg.value[nLHSDsc + updIdx + i * coeffs] =
-					NOT_ASSIGNED;
+				    NOT_ASSIGNED;
 				  }
 			      }
 			  }
@@ -708,7 +708,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
 		    synchronize = NOT_ASSIGNED;
 		  }
 		if (et == t)
-	          {
+		  {
 		    qssTime->nextEventTime[index] = INF;
 		  }
 		else
@@ -748,7 +748,8 @@ QSS_PARH_integrator (QSS_simulator simulator)
       qssTime->previousTime = t;
       if (synchronize >= 0)
 	{
-	  if (qssTime->noReinit && QSS_dtLogStep (dt, Dq, Dx, Dt, synchronize, t))
+	  if (qssTime->noReinit
+	      && QSS_dtLogStep (dt, Dq, Dx, Dt, synchronize, t))
 	    {
 	      gvt = QSS_PAR_GVT (simulator);
 	      maxAdvanceTime = gvt + QSS_dtValue (dt);
@@ -804,7 +805,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
 void *
 QSS_PARH_runSimulation (void *sim)
 {
-  QSS_PAR_runSimulation(sim, QSS_PARH_integrator);
+  QSS_PAR_runSimulation (sim, QSS_PARH_integrator);
   return (NULL);
 }
 
@@ -819,7 +820,7 @@ QSS_PARH_integrate (SIM_simulator simulate)
 #else
 void
 QSS_PARH_integrate (SIM_simulator simulate)
-{
-  return;
-}
+  {
+    return;
+  }
 #endif

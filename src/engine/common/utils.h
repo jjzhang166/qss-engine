@@ -572,7 +572,7 @@ BIT_next (BIT_vector v);
 /**
  *
  */
-#define MESSAGE_SIZE 128
+#define MESSAGE_SIZE 1400
 
 /**
  *
