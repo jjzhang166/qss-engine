@@ -191,9 +191,9 @@ QSS_PARH_externalEvent (QSS_simulator simulator, IBX_message message)
 		    }
 		}
 	      nSZ = qssData->nSZ[j];
-	      for (i = 0; i < nSZ; i++)
+	      for (h = 0; h < nSZ; h++)
 		{
-		  k = qssData->SZ[j][i];
+		  k = qssData->SZ[j][h];
 		  if (eMap[k] != NOT_ASSIGNED)
 		    {
 		      FRW_nextEventTime (frw, qssModel, qssData, qssTime, k);
