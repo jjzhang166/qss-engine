@@ -960,7 +960,6 @@ QSS_PAR_copySimulator (QSS_simulatorInstance *instance)
   QSS_simulator root = instance->root;
   int id = instance->id;
   QSS_data data = root->data;
-  SD_parameters params = data->params;
   char logFile[128];
   sprintf(logFile, "%s", root->output->name);
   p->data = QSS_copyData (data);
@@ -973,8 +972,7 @@ QSS_PAR_copySimulator (QSS_simulatorInstance *instance)
   p->stats = SD_Statistics();
   p->time = QSS_Time (data->states, data->events, data->inputs, data->it,
 		      root->time->scheduler, root->time->weights);
-  p->dt = QSS_Dt (params->dtSynch, params->dt, p->data->lp->outStates,
-		  root->lpDtMin, id, root->dtSynch, p->data->lp->initDt,logFile,root->settings->debug, root->data->it, root->data->ft);
+  p->dt = QSS_Dt (root->lpDtMin, id, root->dtSynch, logFile, root->settings->debug, p->data, p->time);
   p->dtSynch = root->dtSynch;
   p->id = id;
   p->inbox = IBX_Inbox (data->states, 0);
@@ -1480,7 +1478,7 @@ QSS_PAR_synchronize (QSS_simulator simulator, int synchronize,
 	  qssTime->minIndex = index;
 	  qssTime->type = type;
 	}
-      QSS_dtCheck (dt);
+      QSS_synchDt (dt);
     }
   IBX_reset (ack);
 }
@@ -1543,7 +1541,7 @@ QSS_PAR_passiveLP (QSS_simulator simulator,
 	      t = qssTime->time;
 	    }
 	  simulator->lpTime[id] = t;
-	  QSS_dtCheck (dt);
+	  QSS_synchDt (dt);
 	  if (t != ft)
 	    {
 	      break;
@@ -1556,7 +1554,7 @@ QSS_PAR_passiveLP (QSS_simulator simulator,
 	  gvt = QSS_PAR_GVT (simulator);
 	  sample = 0;
 	}
-      QSS_dtCheck (dt);
+      QSS_synchDt (dt);
     }
   return (t);
 }
@@ -1578,7 +1576,7 @@ QSS_PAR_waitFor(QSS_simulator simulator)
 	  return;
 	}
       pthread_mutex_unlock (m);
-      QSS_dtCheck (simulator->dt);
+      QSS_synchDt (simulator->dt);
     }
 }
 

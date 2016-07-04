@@ -149,7 +149,8 @@ typedef enum
 typedef enum
 {
   SD_DT_Fixed,       //!<
-  SD_DT_Asynchronous //!<
+  SD_DT_Adaptive, //!<
+  SD_DT_AdaptiveDiscrete
 } SD_DtSynch;
 
 

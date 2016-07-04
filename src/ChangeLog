@@ -1,3 +1,15 @@
+2016-07-04  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/qss_lp.c
+	(LP_initializeDataStructs): Automatically detect discrete adaptive dt strategy.
+	* engine/qss/qss_dt.c
+	(QSS_updateDt): Partially implemented discrete adaptive dt strategy.
+	* engine/qss/qss_parc_integrator.c
+	(QSS_PARC_integrator): Modified dt check policy.
+	* engine/qss/qss_dt.h: Partially implemented discrete adaptive dt strategy.
+	* engine/qss/qss_parh_integrator.c: Modified SZ for index loop.
+	(QSS_PARH_integrator): Modified dt check policy.
+
 2016-07-01  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* engine/qss/qss_simulator.c

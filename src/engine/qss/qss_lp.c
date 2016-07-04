@@ -405,10 +405,19 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
       simulator->lps->lp[partitionNumber]->qOutMap[outputMap[partitionNumber]++] =
 	  i;
     }
+  autonomous = TRUE;
   for (i = 0; i < lps; i++)
     {
       simulator->lps->lp[i]->outStates = nLPSMap[i];
+      if (nLPSMap[i] > 0)
+	{
+	  autonomous = FALSE;
+	}
     }
+  if (autonomous == TRUE && simulatorData->params->dtSynch == SD_DT_Adaptive)
+      {
+        simulatorData->params->dtSynch = SD_DT_AdaptiveDiscrete;
+      }
   cleanVector (outputMap, 0, lps);
   int handlerNumber = 0;
   for (i = beginHandlers; i < endHandlers; i++)
@@ -473,6 +482,14 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
         if (autonomous == TRUE)
           {
             lp->initDt = INF;
+          }
+        else if (simulatorData->params->dtSynch == SD_DT_Fixed)
+          {
+            lp->initDt = simulatorData->params->dt;
+          }
+        else
+          {
+            lp->initDt = 0;
           }
       }
   free (outputMap);

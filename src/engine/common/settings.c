@@ -111,7 +111,7 @@ _getDtSynch (const char *sol)
     }
   else if (!strcmp (sol, "SD_DT_Asynchronous"))
     {
-      return (SD_DT_Asynchronous);
+      return (SD_DT_Adaptive);
     }
   return (SD_DT_Fixed);
 }
@@ -173,7 +173,7 @@ SET_Settings (char *fname)
   p->nDQMin = 0;
   p->nDQRel = 0;
   p->pm = SD_MetisCut;
-  p->dtSynch = SD_DT_Asynchronous;
+  p->dtSynch = SD_DT_Adaptive;
   if (config_lookup_float (cf, "minstep", &dres))
     {
       if (dres == 0)

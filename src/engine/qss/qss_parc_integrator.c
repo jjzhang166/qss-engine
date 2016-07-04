@@ -231,7 +231,7 @@ QSS_PARC_integrator (QSS_simulator simulator)
 		  t = qssTime->time;
 		  simulator->lpTime[id] = t;
 		}
-	      QSS_dtCheck (dt);
+	      QSS_synchDt (dt);
 	      gvt = QSS_PAR_GVT (simulator);
 	      maxAdvanceTime = gvt + QSS_dtValue (dt);
 	    }
@@ -366,9 +366,14 @@ QSS_PARC_integrator (QSS_simulator simulator)
 	  totalSteps++;
 	}
       qssTime->previousTime = t;
+      if (QSS_dtCheck (dt))
+	{
+	  gvt = QSS_PAR_GVT (simulator);
+          maxAdvanceTime = gvt + QSS_dtValue (dt);
+	}
       if (synchronize >= 0)
 	{
-	  if (QSS_dtLogStep (dt, lqu[index], Dx, Dt, synchronize, t))
+	  if (QSS_dtLogStep (dt, lqu[index], Dx, Dt, synchronize))
 	    {
 	      gvt = QSS_PAR_GVT (simulator);
 	      maxAdvanceTime = gvt + QSS_dtValue (dt);
