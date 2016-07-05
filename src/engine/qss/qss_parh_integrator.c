@@ -345,7 +345,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
 		  t = qssTime->time;
 		  simulator->lpTime[id] = t;
 		}
-	      QSS_synchDt (dt);
+	      QSS_dtCheck (dt);
 	      gvt = QSS_PAR_GVT (simulator);
 	      maxAdvanceTime = gvt + QSS_dtValue (dt);
 	    }
@@ -746,20 +746,22 @@ QSS_PARH_integrator (QSS_simulator simulator)
 	  totalSteps++;
 	}
       qssTime->previousTime = t;
-      if (QSS_dtCheck (dt))
-  	{
-  	  gvt = QSS_PAR_GVT (simulator);
-            maxAdvanceTime = gvt + QSS_dtValue (dt);
-  	}
       if (synchronize >= 0)
 	{
-	  if (qssTime->noReinit
-	      && QSS_dtLogStep (dt, Dq, Dx, Dt, synchronize))
+	  if (qssTime->noReinit && QSS_dtLogOutput (dt, Dq, Dx, Dt, synchronize))
 	    {
 	      gvt = QSS_PAR_GVT (simulator);
 	      maxAdvanceTime = gvt + QSS_dtValue (dt);
 	    }
 	  QSS_PAR_synchronize (simulator, synchronize, QSS_PARH_externalEvent);
+	}
+      else
+	{
+	  if (QSS_dtLogStep (dt, Dq, Dx, Dt))
+	    {
+	      gvt = QSS_PAR_GVT (simulator);
+	      maxAdvanceTime = gvt + QSS_dtValue (dt);
+	    }
 	}
       SC_update (scheduler, qssData, qssTime);
       if (qssTime->time == ft)

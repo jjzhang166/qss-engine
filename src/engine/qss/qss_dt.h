@@ -88,10 +88,10 @@ typedef struct QSS_dt_ *QSS_dt;
  * @param
  */
 typedef bool
-(*QSS_dtLogStepFn) (QSS_dt, double, double, double, int);
+(*QSS_dtLogOutputFn) (QSS_dt, double, double, double, int);
 
 typedef bool
-(*QSS_dtCheckFn) (QSS_dt);
+(*QSS_dtLogStepFn) (QSS_dt, double, double, double);
 
 /**
  *
@@ -99,7 +99,7 @@ typedef bool
 struct QSS_dtOps_
 {
   QSS_dtLogStepFn logStep; //!<
-  QSS_dtCheckFn dtCheck; //!<
+  QSS_dtLogOutputFn logOutput; //!<
 };
 
 /**
@@ -127,6 +127,8 @@ struct QSS_dtState_
   double *t; //!< Current simulation time.
   double *elapsed; //!< Elapsed time.
   double simTime; //!< Total simulation time.
+  QSS_idxMap dscMap;
+  QSS_idxMap qMap;
   SD_simulationLog log;
   SD_Debug debug;
   QSS_time time;
@@ -194,9 +196,8 @@ QSS_DtState ();
 void
 QSS_freeDtState (QSS_dtState state);
 
-
 bool
-QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable);
+QSS_dtLogOutput (QSS_dt dt, double Dq, double Dx, double Dt, int variable);
 
 /**
  * @brief \f $ \delta t $ \f value wrapper.
@@ -212,10 +213,10 @@ QSS_dtValue (QSS_dt dt);
  * @param dt
  */
 void
-QSS_dtUpdate (QSS_dt dt);
+QSS_dtFinish (QSS_dt dt);
 
 void
-QSS_updateDt (QSS_dt dt);
+QSS_dtUpdate (QSS_dt dt);
 
 /**
  *
@@ -223,9 +224,9 @@ QSS_updateDt (QSS_dt dt);
  * @return
  */
 bool
-QSS_dtCheck (QSS_dt dt);
+QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt);
 
 void
-QSS_synchDt (QSS_dt dt);
+QSS_dtCheck (QSS_dt dt);
 
 #endif /* QSS_DT_H_ */

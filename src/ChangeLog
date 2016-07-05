@@ -1,3 +1,39 @@
+2016-07-05  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/common/utils.h:
+	* engine/qss/qss_data.c
+	(QSS_LP_Data): Added discrete variables map.
+	(QSS_LP_copyStructure): Added discrete variables map.
+	(QSS_LP_copyData): Added discrete variables map.
+	(QSS_LP_freeData): Added discrete variables map.
+	* engine/qss/qss_data.h: Added discrete variables map.
+	* engine/qss/qss_dt.c
+	(QSS_dtUpdate): Modified function name.
+	(DT_ADAPTIVE_DISCRETE_LogStep): Adaptive Dt strategy interface.
+	(QSS_Dt): Modified paramater passing interface.
+	(QSS_DtState): Added discrete variable and state variable map.
+	(QSS_dtFinish): Modified function name, former dtupdate.
+	(QSS_dtLogOutput): New interface operation.
+	(QSS_dtLogStep): New interface operation.
+	(QSS_dtSetTime): Removed obsolete function-
+	* engine/qss/qss_dt.h:
+	* engine/qss/qss_lp.c
+	(LP_processPartition): Process indirect discrete influences.
+	* engine/qss/qss_partition.c
+	(PRT_Partition): Alloc data structures for indirect discrete influences.
+	(PRT_freePartition): Free data structures for indirect discrete influences.
+	(QSS_PARC_integrator): Call dtLogStep after each non output step.
+	(LP_initializeDataStructs): Compute indirect discrete influences if needed.
+	(Implementation not completed)
+	* engine/qss/qss_partition.h: Added data
+	structures for indirect discrete influences.
+	* engine/qss/qss_parh_integrator.c
+	(QSS_PARH_integrator): Call dtLogStep after each non output step.
+	* engine/qss/qss_integrator.c
+	(QSS_PAR_waitFor): Call dtFinish instead of dtUpdate.
+	(QSS_PAR_printSimulationLog): Change dtChanges field print type.
+	(QSS_PAR_synchronize): Call dtCheck at the end of the while loop.
+	(QSS_PAR_passiveLP): Call dtFinish instead of dtUpdate.	
 2016-07-04  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* engine/qss/qss_lp.c

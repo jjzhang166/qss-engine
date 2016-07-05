@@ -700,7 +700,7 @@ QSS_PAR_printSimulationLog (QSS_simulator simulator)
 	  0);
   SD_print (simulator->simulationLog, "Dt sum: %g",
   	    simulator->dt->state->avgDt);
-  SD_print (simulator->simulationLog, "Dt changes: %g",
+  SD_print (simulator->simulationLog, "Dt changes: %d",
   	    simulator->dt->state->dtChanges);
   if (simulator->dt->state->dtChanges > 0)
       {
@@ -1478,7 +1478,7 @@ QSS_PAR_synchronize (QSS_simulator simulator, int synchronize,
 	  qssTime->minIndex = index;
 	  qssTime->type = type;
 	}
-      QSS_synchDt (dt);
+      QSS_dtCheck (dt);
     }
   IBX_reset (ack);
 }
@@ -1541,7 +1541,7 @@ QSS_PAR_passiveLP (QSS_simulator simulator,
 	      t = qssTime->time;
 	    }
 	  simulator->lpTime[id] = t;
-	  QSS_synchDt (dt);
+	  QSS_dtCheck (dt);
 	  if (t != ft)
 	    {
 	      break;
@@ -1554,7 +1554,7 @@ QSS_PAR_passiveLP (QSS_simulator simulator,
 	  gvt = QSS_PAR_GVT (simulator);
 	  sample = 0;
 	}
-      QSS_synchDt (dt);
+      QSS_dtCheck (dt);
     }
   return (t);
 }
@@ -1562,7 +1562,7 @@ QSS_PAR_passiveLP (QSS_simulator simulator,
 void
 QSS_PAR_waitFor(QSS_simulator simulator)
 {
-  QSS_dtUpdate (simulator->dt);
+  QSS_dtFinish (simulator->dt);
   pthread_mutex_t *m = &(simulator->dtSynch->activeMutex);
   pthread_mutex_lock (m);
   simulator->dtSynch->activeLPS--;
@@ -1576,7 +1576,7 @@ QSS_PAR_waitFor(QSS_simulator simulator)
 	  return;
 	}
       pthread_mutex_unlock (m);
-      QSS_synchDt (simulator->dt);
+      QSS_dtCheck (simulator->dt);
     }
 }
 

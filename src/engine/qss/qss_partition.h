@@ -34,11 +34,15 @@ struct PRT_partition_
 {
   int *values; //!<
   int *nOutputs; //!<
+  int *nDsc;
+  int **dscInf;
+  int **asgDscInf;
   int **outputs; //!<
   int beginStates; //!<
   int endStates; //!<
   int beginHandlers; //!<
   int endHandlers; //!<
+  int lps;
 };
 
 /**

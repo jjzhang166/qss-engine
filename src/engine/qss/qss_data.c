@@ -77,11 +77,13 @@ QSS_LP_Data (int states, int events, int inputs, int outputs, int inStates,
   p->inStates = inStates;
   p->inEvents = inEvents;
   p->initDt = 0;
+  p->dscInf = 0;
   p->nLPS = (int *) malloc ((nLPS + 1) * sizeof(int));
   p->lps = (int *) malloc (lps * sizeof(int));
   p->qMap = (QSS_idxMap) malloc (totalStates * sizeof(int));
   p->qInMap = (QSS_idxMap) malloc (inStates * sizeof(int));
   p->qOutMap = (QSS_idxMap) malloc (states * sizeof(int));
+  p->dscMap = NULL;
   p->externalEvent = FALSE;
   if (events + inEvents > 0)
     {
@@ -125,6 +127,7 @@ QSS_LP_copyStructure (QSS_LP_data data, QSS_LP_data p)
   int inEvents = data->inEvents;
   int nLPS = data->nLPSCount;
   int lps = data->lpsCount;
+  int dscInf = data->dscInf;
   if (QSS_hardCopyStruct)
     {
       p->nLPS = (int *) malloc ((nLPS + 1) * sizeof(int));
@@ -197,6 +200,7 @@ QSS_LP_copyStructure (QSS_LP_data data, QSS_LP_data p)
       p->qMap = data->qMap;
       p->qInMap = data->qInMap;
       p->qOutMap = data->qOutMap;
+      p->dscMap = data->dscMap;
       p->externalEvent = data->externalEvent;
       if (events + inEvents > 0)
 	{
@@ -249,6 +253,7 @@ QSS_LP_copyData (QSS_LP_data data)
   p->externalEvent = data->externalEvent;
   p->nLPSCount = data->nLPSCount;
   p->lpsCount = data->lpsCount;
+  p->dscInf = data->dscInf;
   QSS_LP_copyStructure (data, p);
   return (p);
 }
@@ -336,6 +341,10 @@ QSS_LP_freeData (QSS_LP_data data)
   if (data->iMap != NULL)
     {
       free (data->iMap);
+    }
+  if (data->dscMap != NULL)
+    {
+      free (data->dscMap);
     }
   free (data);
 }
