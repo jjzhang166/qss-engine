@@ -1442,7 +1442,7 @@ QSS_PAR_initialize (SIM_simulator simulate)
 
 void
 QSS_PAR_synchronize (QSS_simulator simulator, int synchronize,
-		     QSS_externaEventHandler externalEvent)
+		     QSS_externaEventHandler externalEvent, QSS_internalEventHandler internalEvent)
 {
   QSS_data qssData = simulator->data;
   QSS_time qssTime = simulator->time;
@@ -1473,6 +1473,11 @@ QSS_PAR_synchronize (QSS_simulator simulator, int synchronize,
 	{
 	  externalEvent (simulator, IBX_nextMessage (inbox));
 	  SC_update (scheduler, qssData, qssTime);
+	  while (qssTime->time == stepTime)
+	    {
+	      internalEvent (simulator);
+	      SC_update (scheduler, qssData, qssTime);
+	    }
 	  qssTime->time = stepTime;
 	  qssTime->minValue = stepTime;
 	  qssTime->minIndex = index;

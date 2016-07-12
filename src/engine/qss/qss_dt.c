@@ -277,7 +277,6 @@ QSS_Dt (double *gblDtMin, int id, QSS_dtSynch dtSynch, char *file,
       p->state->qMap = data->lp->qMap;
       p->state->outputs = data->lp->dscInf;
       lclOutputs = data->lp->dscInf;
-      p->state->alpha /= 10;
     }
   if (lclOutputs == 0)
     {

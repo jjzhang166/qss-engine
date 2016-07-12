@@ -130,6 +130,12 @@ QSS_PARC_externalEvent (QSS_simulator simulator, IBX_message message)
 }
 
 void
+QSS_PARC_internalEvent (QSS_simulator simulator)
+{
+  return;
+}
+
+void
 QSS_PARC_integrator (QSS_simulator simulator)
 {
   int code = PAR_initLPTasks (simulator->id);
@@ -372,7 +378,7 @@ QSS_PARC_integrator (QSS_simulator simulator)
 	      gvt = QSS_PAR_GVT (simulator);
 	      maxAdvanceTime = gvt + QSS_dtValue (dt);
 	    }
-	  QSS_PAR_synchronize (simulator, synchronize, QSS_PARC_externalEvent);
+	  QSS_PAR_synchronize (simulator, synchronize, QSS_PARC_externalEvent, QSS_PARC_internalEvent);
 	}
       else
 	{

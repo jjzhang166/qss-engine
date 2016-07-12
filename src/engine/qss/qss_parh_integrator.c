@@ -234,6 +234,330 @@ QSS_PARH_externalEvent (QSS_simulator simulator, IBX_message message)
 }
 
 void
+QSS_PARH_internalEvent (QSS_simulator simulator)
+{
+  int i, j;
+  double elapsed, Dt = 0, Dq = 0, Dx = 0;
+  QSS_data qssData = simulator->data;
+  QSS_time qssTime = simulator->time;
+  FRW_framework frw = simulator->frw;
+  OUT_output log = simulator->log;
+  SC_scheduler scheduler = simulator->scheduler;
+  QSS_model qssModel = simulator->model;
+  QA_quantizer quantizer = simulator->quantizer;
+  SD_output output = simulator->output;
+  QSS_LP_data lp = qssData->lp;
+  unsigned long totalSteps = 0;
+  unsigned long reinits = 0;
+  unsigned long messages = 0;
+  double t = qssTime->time;
+  int index = qssTime->minIndex;
+  int cf0, infCf0;
+  QSS_StepType type = qssTime->type;
+  int nSD, nOutputs = lp->outputs;
+  QSS_dt dt = simulator->dt;
+  const double ft = qssData->ft;
+  const int xOrder = qssData->order;
+  const int qOrder = xOrder - 1;
+  const int coeffs = xOrder + 1;
+  double *tq = qssTime->tq;
+  double *tx = qssTime->tx;
+  double *nextStateTime = qssTime->nextStateTime;
+  double *dQRel = qssData->dQRel;
+  double *dQMin = qssData->dQMin;
+  double *lqu = qssData->lqu;
+  double *x = qssData->x;
+  double *q = qssData->q;
+  int **SD = qssData->SD;
+  int *TD = qssData->TD;
+  const QSS_idxMap qMap = lp->qMap;
+  int id = simulator->id;
+  IBX_inbox inbox = simulator->inbox;
+  MLB_mailbox mailbox = simulator->mailbox;
+  double nextMessageTime;
+  int synchronize = NOT_ASSIGNED;
+#ifdef DEBUG
+  SD_simulationSettings settings = simulator->settings;
+  SD_simulationLog simulationLog = simulator->simulationLog;
+#endif
+  double *a = qssData->alg;
+  int nSZ, nLHSSt, nRHSSt, nHD, nHZ, nLHSDsc;
+  SD_eventData event = qssData->event;
+  double *d = qssData->d;
+  double *tmp1 = qssData->tmp1;
+  int **SZ = qssData->SZ;
+  int **ZS = qssData->ZS;
+  int **HD = qssData->HD;
+  int **HZ = qssData->HZ;
+  const QSS_idxMap eMap = lp->eMap;
+  index = qssTime->minIndex;
+  type = qssTime->type;
+  cf0 = index * coeffs;
+  switch (type)
+    {
+    case ST_State:
+      {
+	synchronize = qMap[index];
+	// Internal trajectory change.
+	Dt = t - tx[index];
+	elapsed = x[cf0];
+	integrateState (cf0, Dt, x, xOrder);
+	Dx = x[cf0] - elapsed;
+	tx[index] = t;
+	lqu[index] = dQRel[index] * fabs (x[cf0]);
+	if (lqu[index] < dQMin[index])
+	  {
+	    lqu[index] = dQMin[index];
+	  }
+	Dq = lqu[index];
+	QA_updateQuantizedState (quantizer, index, q, x, lqu);
+	tq[index] = t;
+	QA_nextTime (quantizer, index, t, nextStateTime, x, lqu);
+	// Derivative change.
+	int inf = 0;
+	nSD = qssData->nSD[index];
+	for (i = 0; i < nSD; i++)
+	  {
+	    j = SD[index][i];
+	    if (qMap[j] != NOT_ASSIGNED)
+	      {
+		elapsed = t - tx[j];
+		infCf0 = j * coeffs;
+		if (elapsed > 0)
+		  {
+		    x[infCf0] = evaluatePoly (infCf0, elapsed, x, xOrder);
+		    tx[j] = t;
+		  }
+		inf++;
+	      }
+	  }
+	if (inf)
+	  {
+	    FRW_recomputeDerivatives (frw, qssModel, qssData, qssTime, index);
+	    QA_recomputeNextTimes (quantizer, nSD, qssData->SD[index], t,
+				   nextStateTime, x, lqu, q);
+	  }
+	nSZ = qssData->nSZ[index];
+	for (i = 0; i < nSZ; i++)
+	  {
+	    j = qssData->SZ[index][i];
+	    if (eMap[j] != NOT_ASSIGNED)
+	      {
+		FRW_nextEventTime (frw, qssModel, qssData, qssTime, j);
+	      }
+	  }
+	if (nOutputs)
+	  {
+	    if (output->nSO[index])
+	      {
+		OUT_write (log, qssData, qssTime, output);
+	      }
+	  }
+      }
+      break;
+    case ST_Event:
+      {
+	double zc[4];
+	int s;
+	int nZS = qssData->nZS[index];
+	synchronize = eMap[index];
+	for (i = 0; i < nZS; i++)
+	  {
+	    j = ZS[index][i];
+	    elapsed = t - tq[j];
+	    if (elapsed > 0)
+	      {
+		integrateState (j * coeffs, elapsed, q, qOrder);
+		tq[j] = t;
+	      }
+	  }
+	qssModel->events->zeroCrossing (index, q, d, a, t, zc);
+	// Zero crossing function change.
+	s = sign (zc[0]);
+	double et = INF;
+	if (event[index].zcSign == s)
+	  {
+	    FRW_nextEventTime (frw, qssModel, qssData, qssTime, index);
+	    et = qssTime->nextEventTime[index];
+	  }
+	if (event[index].zcSign != s || xOrder == 1 || et == t)
+	  {
+	    if (event[index].direction == 0 || event[index].direction == s)
+	      {
+		nRHSSt = event[index].nRHSSt;
+		for (i = 0; i < nRHSSt; i++)
+		  {
+		    j = event[index].RHSSt[i];
+		    elapsed = t - tq[j];
+		    infCf0 = j * coeffs;
+		    if (elapsed > 0)
+		      {
+			tmp1[infCf0] = evaluatePoly (infCf0, elapsed, q,
+						     qOrder);
+		      }
+		    else
+		      {
+			tmp1[infCf0] = q[infCf0];
+		      }
+		  }
+		nLHSSt = event[index].nLHSSt;
+		for (i = 0; i < nLHSSt; i++)
+		  {
+		    j = event[index].LHSSt[i];
+		    infCf0 = j * coeffs;
+		    elapsed = t - tq[j];
+		    if (elapsed > 0)
+		      {
+			tmp1[infCf0] = evaluatePoly (infCf0, elapsed, q,
+						     qOrder);
+		      }
+		    else
+		      {
+			tmp1[infCf0] = q[infCf0];
+		      }
+		  }
+		if (s >= 0)
+		  {
+		    qssModel->events->handlerPos (index, tmp1, d, a, t);
+		  }
+		else
+		  {
+		    qssModel->events->handlerNeg (index, tmp1, d, a, t);
+		  }
+		nLHSDsc = event[index].nLHSDsc;
+		for (i = 0; i < nLHSSt; i++)
+		  {
+		    j = event[index].LHSSt[i];
+		    infCf0 = j * coeffs;
+		    if (qMap[j] != NOT_ASSIGNED)
+		      {
+			x[infCf0] = tmp1[infCf0];
+			tx[j] = t;
+			lqu[j] = dQRel[j] * fabs (x[infCf0]);
+			if (lqu[j] < dQMin[j])
+			  {
+			    lqu[j] = dQMin[j];
+			  }
+			QA_updateQuantizedState (quantizer, j, q, x, lqu);
+			tq[j] = t;
+			reinits++;
+		      }
+		  }
+		qssModel->events->zeroCrossing (index, q, d, a, t, zc);
+		event[index].zcSign = sign (zc[0]);
+		for (i = 0; i < nLHSSt; i++)
+		  {
+		    j = event[index].LHSSt[i];
+		    if (qMap[j] != NOT_ASSIGNED)
+		      {
+			QA_nextTime (quantizer, j, t, nextStateTime, x, lqu);
+			int k, h;
+			int inf = 0;
+			nSD = qssData->nSD[j];
+			for (h = 0; h < nSD; h++)
+			  {
+			    k = SD[j][h];
+			    if (qMap[k] != NOT_ASSIGNED)
+			      {
+				elapsed = t - tx[k];
+				infCf0 = k * coeffs;
+				if (elapsed > 0)
+				  {
+				    x[infCf0] = evaluatePoly (infCf0, elapsed,
+							      x, xOrder);
+				    tx[k] = t;
+				  }
+				inf++;
+			      }
+			  }
+			if (inf)
+			  {
+			    FRW_recomputeDerivatives (frw, qssModel, qssData,
+						      qssTime, j);
+			    QA_recomputeNextTimes (quantizer, nSD, SD[j], t,
+						   nextStateTime, x, lqu, q);
+			  }
+			nSZ = qssData->nSZ[j];
+			for (h = 0; h < nSZ; h++)
+			  {
+			    k = SZ[j][h];
+			    if (k != index)
+			      {
+				FRW_nextEventTime (frw, qssModel, qssData,
+						   qssTime, k);
+			      }
+			  }
+		      }
+		  }
+		nHZ = qssData->nHZ[index];
+		for (i = 0; i < nHZ; i++)
+		  {
+		    j = HZ[index][i];
+		    if (j != index && eMap[j] != NOT_ASSIGNED)
+		      {
+			FRW_nextEventTime (frw, qssModel, qssData, qssTime, j);
+		      }
+		  }
+		nHD = qssData->nHD[index];
+		int inf = 0;
+		for (i = 0; i < nHD; i++)
+		  {
+		    j = HD[index][i];
+		    if (qMap[j] != NOT_ASSIGNED)
+		      {
+			elapsed = t - tx[j];
+			if (elapsed > 0)
+			  {
+			    infCf0 = j * coeffs;
+			    x[infCf0] = evaluatePoly (infCf0, elapsed, x,
+						      xOrder);
+			    tx[j] = t;
+			  }
+			inf++;
+			FRW_recomputeDerivative (frw, simulator->model, qssData,
+						 qssTime, j);
+		      }
+		  }
+		if (inf)
+		  {
+		    QA_recomputeNextTimes (quantizer, nHD, HD[index], t,
+					   nextStateTime, x, lqu, q);
+		  }
+		if (nOutputs)
+		  {
+		    if (event[index].nLHSSt)
+		      {
+			OUT_write (log, qssData, qssTime, output);
+		      }
+		  }
+	      }
+	    else
+	      {
+		event[index].zcSign = sign (zc[0]);
+		synchronize = NOT_ASSIGNED;
+	      }
+	  }
+	else
+	  {
+	    synchronize = NOT_ASSIGNED;
+	  }
+	if (et == t)
+	  {
+	    qssTime->nextEventTime[index] = INF;
+	  }
+	else
+	  {
+	    FRW_nextEventTime (frw, qssModel, qssData, qssTime, index);
+	  }
+      }
+      break;
+    default:
+      break;
+    }
+  simulator->stats->totalSteps++;
+}
+
+void
 QSS_PARH_integrator (QSS_simulator simulator)
 {
   int code = PAR_initLPTasks (simulator->id);
@@ -748,12 +1072,13 @@ QSS_PARH_integrator (QSS_simulator simulator)
       qssTime->previousTime = t;
       if (synchronize >= 0)
 	{
-	  if (qssTime->noReinit && QSS_dtLogOutput (dt, Dq, Dx, Dt, synchronize))
+	  if (qssTime->noReinit
+	      && QSS_dtLogOutput (dt, Dq, Dx, Dt, synchronize))
 	    {
 	      gvt = QSS_PAR_GVT (simulator);
 	      maxAdvanceTime = gvt + QSS_dtValue (dt);
 	    }
-	  QSS_PAR_synchronize (simulator, synchronize, QSS_PARH_externalEvent);
+	  QSS_PAR_synchronize (simulator, synchronize, QSS_PARH_externalEvent, QSS_PARH_internalEvent);
 	}
       else
 	{
@@ -802,7 +1127,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
   QSS_PAR_controlPassiveLPS (simulator);
   QSS_PAR_waitFor (simulator);
   QSS_PAR_saveLog (simulator);
-  simulator->stats->totalSteps = totalSteps;
+  simulator->stats->totalSteps += totalSteps;
   simulator->stats->reinits = reinits;
   simulator->stats->messages = messages;
   QSS_PAR_printSimulationLog (simulator);
