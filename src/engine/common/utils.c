@@ -313,7 +313,7 @@ minPosRoot (double *coeff, int order)
 }
 
 void
-advanceTime (int i, double dt, double *p, int order)
+integrateState (int i, double dt, double *p, int order)
 {
   int i0 = i;
   switch (order)
@@ -764,15 +764,6 @@ IBX_Inbox (int states, int ack)
   p->head = 0;
   p->tail = 0;
   p->size = 0;
-  if (states > 0)
-    {
-      p->states = (double*) checkedMalloc (states * sizeof(double));
-      cleanDoubleVector (p->states, 0, states);
-    }
-  else
-    {
-      p->states = NULL;
-    }
   return (p);
 }
 
@@ -787,10 +778,7 @@ IBX_freeInbox (IBX_inbox inbox)
     {
       free (inbox->orderedMessages);
     }
-  if (inbox->states)
-    {
-      free (inbox->states);
-    }
+  BIT_freeVector(inbox->received);
   pthread_mutex_destroy (&(inbox->receivedMutex));
   free (inbox);
 }
@@ -801,10 +789,6 @@ IBX_add (IBX_inbox inbox, int from, IBX_message message)
   inbox->messages[from] = message;
   pthread_mutex_lock (&(inbox->receivedMutex));
   BIT_set (inbox->received, from);
-  if (message.type == 0)
-    {
-      inbox->states[message.index] = message.time;
-    }
   pthread_mutex_unlock (&(inbox->receivedMutex));
 }
 
@@ -927,6 +911,9 @@ MLB_freeMailbox (MLB_mailbox mailbox)
 	  IBX_freeInbox (mailbox->inbox[1][i]);
 	}
     }
+  free (mailbox->inbox[0]);
+  free (mailbox->inbox[1]);
+  free (mailbox->inbox);
   free (mailbox);
 }
 

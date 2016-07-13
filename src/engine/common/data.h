@@ -149,7 +149,8 @@ typedef enum
 typedef enum
 {
   SD_DT_Fixed,       //!<
-  SD_DT_Asynchronous //!<
+  SD_DT_Adaptive, //!<
+  SD_DT_AdaptiveDiscrete
 } SD_DtSynch;
 
 
@@ -278,7 +279,6 @@ SD_EventData (int size);
  *
  * @param size
  * @param events
- * @return
  */
 SD_eventData
 SD_copyEventData (int size, SD_eventData events);
@@ -290,6 +290,9 @@ SD_copyEventData (int size, SD_eventData events);
  */
 void
 SD_freeEventData (SD_eventData events, int size);
+
+void
+SD_cleanEventData(SD_eventData events, int size);
 
 /**
  *

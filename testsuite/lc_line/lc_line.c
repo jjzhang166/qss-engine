@@ -7,6 +7,7 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 

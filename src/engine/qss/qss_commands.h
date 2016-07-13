@@ -35,6 +35,9 @@ QSS_CMD_terminate ();
 void
 QSS_CMD_init (QSS_simulator simulator);
 
+void
+QSS_CMD_free ();
+
 /**
  *
  */

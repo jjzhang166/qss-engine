@@ -8,17 +8,18 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __CAP[200];
-double __RES[200];
-double __POT[200];
-double __THA;
-double __pmax;
-double __Kp;
-double __Ki;
-double __tref;
+double __PAR_CAP[200];
+double __PAR_RES[200];
+double __PAR_POT[200];
+double __PAR_THA = 0;
+double __PAR_pmax = 0;
+double __PAR_Kp = 0;
+double __PAR_Ki = 0;
+double __PAR_tref = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -36,13 +37,13 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	switch(i)
 	{
 		case 200:
-			dx[1] = d[(203)]-d[(1)]/__pmax;
+			dx[1] = d[(203)]-d[(1)]/__PAR_pmax;
 			return;
 		default:
 			j = i;
 			if(j >=0 && j <= 199)
 			{
-				dx[1] = (__THA/__RES[(j)]-__POT[(j)]*d[(j+2)]-x[(j) * 4]/__RES[(j)]+d[(205)]/__RES[(j)])/__CAP[(j)];
+				dx[1] = (__PAR_THA/__PAR_RES[(j)]-__PAR_POT[(j)]*d[(j+2)]-x[(j) * 4]/__PAR_RES[(j)]+d[(205)]/__PAR_RES[(j)])/__PAR_CAP[(j)];
 			}
 	}
 }
@@ -54,7 +55,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	j = i;
 	if(j >=0 && j <= 199)
 	{
-		der[(j) * 4 + 1] = (__THA/__RES[(j)]-__POT[(j)]*d[(j+2)]-x[(j) * 4]/__RES[(j)]+d[(205)]/__RES[(j)])/__CAP[(j)];
+		der[(j) * 4 + 1] = (__PAR_THA/__PAR_RES[(j)]-__PAR_POT[(j)]*d[(j+2)]-x[(j) * 4]/__PAR_RES[(j)]+d[(205)]/__PAR_RES[(j)])/__PAR_CAP[(j)];
 	}
 }
 
@@ -75,7 +76,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 		default:
 			if(i >= 0 && i <= 199)
 			{
-				zc[0] = x[(i) * 4]-__tref-d[(202)]+d[(i+2)]-5.000000000000000000000000e-01-(0.0);
+				zc[0] = x[(i) * 4]-__PAR_tref-d[(202)]+d[(i+2)]-5.000000000000000000000000e-01-(0.0);
 			}
 	}
 }
@@ -95,13 +96,13 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 			d[(204)] = d[(204)]+1.0;
 			d[(205)] = __math__rand(2.0)-1.0;
 			d[(1)] = d[(0)];
-			d[(202)] = __Kp*(d[(1)]/__pmax-d[(203)])-__Ki*x[800];
+			d[(202)] = __PAR_Kp*(d[(1)]/__PAR_pmax-d[(203)])-__PAR_Ki*x[800];
 			return;
 		default:
 			if(i >= 0 && i <= 199)
 			{
 				d[(i+2)] = 1.0;
-				d[(0)] = d[(0)]+__POT[(i)];
+				d[(0)] = d[(0)]+__PAR_POT[(i)];
 			}
 	}
 }
@@ -111,11 +112,8 @@ MOD_handlerNeg(int i, double *x, double *d, double *alg, double t)
 {
 	if(i >= 0 && i <= 199)
 	{
-	if(t>0.0)
-	{
 		d[(i+2)] = 0.0;
-		d[(0)] = d[(0)]-__POT[(i)];
-	}
+		d[(0)] = d[(0)]-__PAR_POT[(i)];
 	}
 }
 
@@ -144,11 +142,11 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__THA = 32.0;
-	__pmax = 0.0;
-	__Kp = 1.0;
-	__Ki = 1.0;
-	__tref = 20.0;
+	__PAR_THA = 32.0;
+	__PAR_pmax = 0.0;
+	__PAR_Kp = 1.0;
+	__PAR_Ki = 1.0;
+	__PAR_tref = 20.0;
 	modelData->d[(204)] = 1.0;
 	modelData->d[(205)] = __math__rand(2.0)-1.0;
 	modelData->d[(203)] = 5.000000000000000000000000e-01;
@@ -156,10 +154,15 @@ QSS_data modelData = simulator->data;
 	for(i2 = 0; i2 <= 199; i2++)
 	{
 		modelData->x[(i2) * 4] = __math__rand(4.0)+18.0;
-		__CAP[(i2)] = __math__rand(100.0)+550.0;
-		__RES[(i2)] = __math__rand(4.000000000000000222044605e-01)+1.800000000000000044408921e+00;
-		__POT[(i2)] = __math__rand(2.000000000000000111022302e-01)+13.0;
-		__pmax = __pmax+__POT[(i2)];
+		__PAR_CAP[(i2)] = __math__rand(100.0)+550.0;
+		__PAR_RES[(i2)] = __math__rand(4.000000000000000222044605e-01)+1.800000000000000044408921e+00;
+		__PAR_POT[(i2)] = __math__rand(2.000000000000000111022302e-01)+13.0;
+		__PAR_pmax = __PAR_pmax+__PAR_POT[(i2)];
+	if(modelData->x[(i2) * 4]-__PAR_tref-modelData->d[(202)]+modelData->d[(i2+2)]-5.000000000000000000000000e-01>0.0)
+	{
+		modelData->d[(i2+2)] = 1.0;
+		modelData->d[(0)] = modelData->d[(0)]+__PAR_POT[(i2)];
+	}
 	}
 	for(i = 0; i <= 199; i++)
 	{

@@ -44,7 +44,6 @@
 #include <qss/qss_parallel.h>
 #include <qss/qss_lp.h>
 
-
 void
 QSS_PARC_externalEvent (QSS_simulator simulator, IBX_message message)
 {
@@ -131,6 +130,12 @@ QSS_PARC_externalEvent (QSS_simulator simulator, IBX_message message)
 }
 
 void
+QSS_PARC_internalEvent (QSS_simulator simulator)
+{
+  return;
+}
+
+void
 QSS_PARC_integrator (QSS_simulator simulator)
 {
   int code = PAR_initLPTasks (simulator->id);
@@ -139,7 +144,7 @@ QSS_PARC_integrator (QSS_simulator simulator)
       QSS_PAR_printParallelLog (simulator, code);
     }
   int i, j;
-  double elapsed, Dt, Dx;
+  double elapsed, Dt = 0, Dx = 0;
   QSS_data qssData = simulator->data;
   QSS_time qssTime = simulator->time;
   FRW_framework frw = simulator->frw;
@@ -181,8 +186,8 @@ QSS_PARC_integrator (QSS_simulator simulator)
   SD_simulationSettings settings = simulator->settings;
   SD_simulationLog simulationLog = simulator->simulationLog;
 #endif
-  t = QSS_PAR_passiveInitialization(simulator,QSS_PARC_externalEvent);
-  double gvt= QSS_PAR_GVT (simulator);
+  t = QSS_PAR_passiveInitialization (simulator, QSS_PARC_externalEvent);
+  double gvt = QSS_PAR_GVT (simulator);
   double maxAdvanceTime = gvt + QSS_dtValue (dt);
 #ifdef DEBUG
   if (settings->debug & SD_DBG_StepInfo)
@@ -195,7 +200,7 @@ QSS_PARC_integrator (QSS_simulator simulator)
     {
       if (t == ft)
 	{
-	  t = QSS_PAR_passiveLP(simulator, QSS_PARC_externalEvent);
+	  t = QSS_PAR_passiveLP (simulator, QSS_PARC_externalEvent);
 	}
       else
 	{
@@ -271,7 +276,7 @@ QSS_PARC_integrator (QSS_simulator simulator)
 		// Internal trajectory change.
 		Dt = t - tx[index];
 		elapsed = x[cf0];
-		advanceTime (cf0, Dt, x, xOrder);
+		integrateState (cf0, Dt, x, xOrder);
 		Dx = x[cf0] - elapsed;
 		tx[index] = t;
 		lqu[index] = dQRel[index] * fabs (x[cf0]);
@@ -368,12 +373,20 @@ QSS_PARC_integrator (QSS_simulator simulator)
       qssTime->previousTime = t;
       if (synchronize >= 0)
 	{
-	  if (QSS_dtLogStep (dt, lqu[index], Dx, Dt, synchronize, t))
+	  if (QSS_dtLogOutput (dt, lqu[index], Dx, Dt, synchronize))
 	    {
 	      gvt = QSS_PAR_GVT (simulator);
 	      maxAdvanceTime = gvt + QSS_dtValue (dt);
 	    }
-	  QSS_PAR_synchronize (simulator, synchronize, QSS_PARC_externalEvent);
+	  QSS_PAR_synchronize (simulator, synchronize, QSS_PARC_externalEvent, QSS_PARC_internalEvent);
+	}
+      else
+	{
+	  if (QSS_dtLogStep (dt, lqu[index], Dx, Dt))
+	    {
+	      gvt = QSS_PAR_GVT (simulator);
+	      maxAdvanceTime = gvt + QSS_dtValue (dt);
+	    }
 	}
       SC_update (scheduler, qssData, qssTime);
       if (qssTime->time == ft)
@@ -423,7 +436,7 @@ QSS_PARC_integrator (QSS_simulator simulator)
 void *
 QSS_PARC_runSimulation (void *sim)
 {
-  QSS_PAR_runSimulation(sim, QSS_PARC_integrator);
+  QSS_PAR_runSimulation (sim, QSS_PARC_integrator);
   return (NULL);
 }
 
@@ -439,8 +452,8 @@ QSS_PARC_integrate (SIM_simulator simulate)
 #else
 void
 QSS_PARC_integrate (SIM_simulator simulate)
-{
-  return;
-}
+  {
+    return;
+  }
 
 #endif

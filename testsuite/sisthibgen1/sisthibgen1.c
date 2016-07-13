@@ -8,22 +8,23 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __Cboost = 0;
-double __Lboost = 0;
-double __R = 0;
-double __ROn = 0;
-double __ROff = 0;
-double __Tboost[2];
-double __Cpvin = 0;
-double __Cbus = 0;
-double __Rshunt = 0;
-double __iLoad = 0;
-double __TContMaxPot = 0;
-double __UlineRef = 0;
-double __deltaVpvRefMPPT = 0;
+double __PAR_Cboost = 0;
+double __PAR_Lboost = 0;
+double __PAR_R = 0;
+double __PAR_ROn = 0;
+double __PAR_ROff = 0;
+double __PAR_Tboost[2];
+double __PAR_Cpvin = 0;
+double __PAR_Cbus = 0;
+double __PAR_Rshunt = 0;
+double __PAR_iLoad = 0;
+double __PAR_TContMaxPot = 0;
+double __PAR_UlineRef = 0;
+double __PAR_deltaVpvRefMPPT = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -44,14 +45,14 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	switch(i)
 	{
 		case 10:
-			dx[1] = __UlineRef-x[33];
+			dx[1] = __PAR_UlineRef-x[33];
 			return;
 		case 11:
 			for(j4 = 0; j4 <= 1; j4++)
 			{
 					alg[(j4+8) * 3] = (x[(j4+2) * 3]-x[33])/1.000000000000000055511151e-01;
 			}
-			alg[30] = 2.0*x[30]+5.000000000000000277555756e-02*(__UlineRef-x[33]);
+			alg[30] = 2.0*x[30]+5.000000000000000277555756e-02*(__PAR_UlineRef-x[33]);
 	for(j5 = 0;j5 < 3; j5++)
 	{
 		tmp1[j5] = 0;
@@ -62,26 +63,26 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 		tmp1[1] += alg[(j5+8) * 3 + 1];
 		tmp1[2] += alg[(j5+8) * 3 + 2];
 	}
-			dx[1] = (tmp1[0]+alg[30])/__Cbus;
+			dx[1] = (tmp1[0]+alg[30])/__PAR_Cbus;
 			return;
 		default:
 			j = i;
 			if(j >=0 && j <= 1)
 			{
 				alg[(j) * 3] = __ipvsolver(x[(j) * 3],1,60,d[(10)],d[(j+11)],1.000000000000000081803054e-05,6.0,d[(j+19)]);
-				dx[1] = (alg[(j) * 3]-x[(j+4) * 3])/__Cpvin;
+				dx[1] = (alg[(j) * 3]-x[(j+4) * 3])/__PAR_Cpvin;
 			}
 			j = i-2;
 			if(j >=0 && j <= 1)
 			{
 				alg[(j+4) * 3] = ((d[(j+4)])*x[(j+4) * 3]-80.0-0.0)/((d[(j+2)])+(d[(j+4)]));
-				dx[1] = (alg[(j+4) * 3]-0.0/__R-0.0/1.000000000000000055511151e-01)/__Cboost;
+				dx[1] = (alg[(j+4) * 3]-0.0/__PAR_R-0.0/1.000000000000000055511151e-01)/__PAR_Cboost;
 			}
 			j = i-4;
 			if(j >=0 && j <= 1)
 			{
 				alg[(j+4) * 3] = ((d[(j+4)])*x[(j+4) * 3]-80.0-0.0)/((d[(j+2)])+(d[(j+4)]));
-				dx[1] = (x[(j) * 3]-d[(j+4)]*(x[(j+4) * 3]-alg[(j+4) * 3]))/__Lboost;
+				dx[1] = (x[(j) * 3]-d[(j+4)]*(x[(j+4) * 3]-alg[(j+4) * 3]))/__PAR_Lboost;
 			}
 			j = i-6;
 			if(j >=0 && j <= 1)
@@ -113,7 +114,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	{
 			alg[(j7+8) * 3] = (x[(j7+2) * 3]-x[33])/1.000000000000000055511151e-01;
 	}
-			alg[30] = 2.0*x[30]+5.000000000000000277555756e-02*(__UlineRef-x[33]);
+			alg[30] = 2.0*x[30]+5.000000000000000277555756e-02*(__PAR_UlineRef-x[33]);
 	for(j5 = 0;j5 < 3; j5++)
 	{
 		tmp1[j5] = 0;
@@ -124,15 +125,15 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp1[1] += alg[(j5+8) * 3 + 1];
 		tmp1[2] += alg[(j5+8) * 3 + 2];
 	}
-			der[33 + 1] = (tmp1[0]+alg[30])/__Cbus;
+			der[33 + 1] = (tmp1[0]+alg[30])/__PAR_Cbus;
 			return;
 		case 11:
 			for(j8 = 0; j8 <= 1; j8++)
 	{
 			alg[(j8+8) * 3] = (x[(j8+2) * 3]-x[33])/1.000000000000000055511151e-01;
 	}
-			alg[30] = 2.0*x[30]+5.000000000000000277555756e-02*(__UlineRef-x[33]);
-			der[30 + 1] = __UlineRef-x[33];
+			alg[30] = 2.0*x[30]+5.000000000000000277555756e-02*(__PAR_UlineRef-x[33]);
+			der[30 + 1] = __PAR_UlineRef-x[33];
 	for(j5 = 0;j5 < 3; j5++)
 	{
 		tmp1[j5] = 0;
@@ -143,7 +144,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp1[1] += alg[(j5+8) * 3 + 1];
 		tmp1[2] += alg[(j5+8) * 3 + 2];
 	}
-			der[33 + 1] = (tmp1[0]+alg[30])/__Cbus;
+			der[33 + 1] = (tmp1[0]+alg[30])/__PAR_Cbus;
 			return;
 	}
 	j = i;
@@ -151,8 +152,8 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	{
 		alg[(j) * 3] = __ipvsolver(x[(j) * 3],1,60,d[(10)],d[(j+11)],1.000000000000000081803054e-05,6.0,d[(j+19)]);
 		alg[(j+4) * 3] = ((d[(j+4)])*x[(j+4) * 3]-80.0-0.0)/((d[(j+2)])+(d[(j+4)]));
-		der[(j) * 3 + 1] = (alg[(j) * 3]-x[(j+4) * 3])/__Cpvin;
-		der[(j+4) * 3 + 1] = (x[(j) * 3]-d[(j+4)]*(x[(j+4) * 3]-alg[(j+4) * 3]))/__Lboost;
+		der[(j) * 3 + 1] = (alg[(j) * 3]-x[(j+4) * 3])/__PAR_Cpvin;
+		der[(j+4) * 3 + 1] = (x[(j) * 3]-d[(j+4)]*(x[(j+4) * 3]-alg[(j+4) * 3]))/__PAR_Lboost;
 		der[(j+6) * 3 + 1] = d[(j+17)]-x[(j) * 3];
 		der[(j+8) * 3 + 1] = (x[(j) * 3]-x[(j+8) * 3])*100.0;
 	}
@@ -163,7 +164,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	{
 		alg[(j6+8) * 3] = (x[(j6+2) * 3]-x[33])/1.000000000000000055511151e-01;
 	}
-		alg[30] = 2.0*x[30]+5.000000000000000277555756e-02*(__UlineRef-x[33]);
+		alg[30] = 2.0*x[30]+5.000000000000000277555756e-02*(__PAR_UlineRef-x[33]);
 	for(j5 = 0;j5 < 3; j5++)
 	{
 		tmp1[j5] = 0;
@@ -174,16 +175,16 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp1[1] += alg[(j5+8) * 3 + 1];
 		tmp1[2] += alg[(j5+8) * 3 + 2];
 	}
-		der[33 + 1] = (tmp1[0]+alg[30])/__Cbus;
+		der[33 + 1] = (tmp1[0]+alg[30])/__PAR_Cbus;
 	}
 	j = i-4;
 	if(j >=0 && j <= 1)
 	{
 		alg[(j) * 3] = __ipvsolver(x[(j) * 3],1,60,d[(10)],d[(j+11)],1.000000000000000081803054e-05,6.0,d[(j+19)]);
 		alg[(j+4) * 3] = ((d[(j+4)])*x[(j+4) * 3]-80.0-0.0)/((d[(j+2)])+(d[(j+4)]));
-		der[(j) * 3 + 1] = (alg[(j) * 3]-x[(j+4) * 3])/__Cpvin;
-		der[(j+2) * 3 + 1] = (alg[(j+4) * 3]-0.0/__R-0.0/1.000000000000000055511151e-01)/__Cboost;
-		der[(j+4) * 3 + 1] = (x[(j) * 3]-d[(j+4)]*(x[(j+4) * 3]-alg[(j+4) * 3]))/__Lboost;
+		der[(j) * 3 + 1] = (alg[(j) * 3]-x[(j+4) * 3])/__PAR_Cpvin;
+		der[(j+2) * 3 + 1] = (alg[(j+4) * 3]-0.0/__PAR_R-0.0/1.000000000000000055511151e-01)/__PAR_Cboost;
+		der[(j+4) * 3 + 1] = (x[(j) * 3]-d[(j+4)]*(x[(j+4) * 3]-alg[(j+4) * 3]))/__PAR_Lboost;
 	}
 	j = i-8;
 	if(j >=0 && j <= 1)
@@ -201,7 +202,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 	}
 	if(i >= 2 && i <= 3)
 	{
-		zc[0] = t-d[(i+6)]-d[(i-2)]*__Tboost[(i-2)]-(0.0);
+		zc[0] = t-d[(i+6)]-d[(i-2)]*__PAR_Tboost[(i-2)]-(0.0);
 	}
 	if(i >= 4 && i <= 5)
 	{
@@ -226,11 +227,11 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 	if(i >= 0 && i <= 1)
 	{
 		d[(i+8)] = d[(i+6)];
-		d[(i+6)] = d[(i+6)]+__Tboost[(i)];
+		d[(i+6)] = d[(i+6)]+__PAR_Tboost[(i)];
 		alg[(i) * 3] = __ipvsolver(x[(i) * 3],1,60,d[(10)],d[(i+11)],1.000000000000000081803054e-05,6.0,d[(i+19)]);
 		d[(i+19)] = alg[(i) * 3];
-		d[(i+4)] = __ROn;
-		d[(i+23)] = d[(i+23)]+(d[(i+17)]-x[(i) * 3])*__Tboost[(i)];
+		d[(i+4)] = __PAR_ROn;
+		d[(i+23)] = d[(i+23)]+(d[(i+17)]-x[(i) * 3])*__PAR_Tboost[(i)];
 		d[(i)] = 8.499999999999999777955395e-01-2.999999999999999888977698e-01*(d[(i+17)]-x[(i) * 3])-d[(i+23)]*6.0;
 	if((d[(i)]>9.799999999999999822364316e-01))
 	{
@@ -243,15 +244,15 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 	}
 	if(i >= 2 && i <= 3)
 	{
-		d[(i+2)] = __ROff;
+		d[(i+2)] = __PAR_ROff;
 	}
 	if(i >= 6 && i <= 7)
 	{
-		d[(i-4)] = __ROn;
+		d[(i-4)] = __PAR_ROn;
 	}
 	if(i >= 8 && i <= 9)
 	{
-		d[(i+7)] = d[(i+7)]+__TContMaxPot;
+		d[(i+7)] = d[(i+7)]+__PAR_TContMaxPot;
 		d[(i+17)] = d[(i+19)];
 		alg[(i-8) * 3] = __ipvsolver(x[(i-8) * 3],1,60,d[(10)],d[(i+3)],1.000000000000000081803054e-05,6.0,d[(i+11)]);
 		alg[(i-6) * 3] = x[(i-8) * 3]*alg[(i-8) * 3];
@@ -260,17 +261,17 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 		d[(i+23)] = d[(i+25)];
 		d[(i+25)] = d[(i+9)];
 		d[(i+27)] = d[(i+25)]-d[(i+23)];
-	if((fabs(d[(i+27)])>1.000000000000000055511151e-01*__deltaVpvRefMPPT))
+	if((fabs(d[(i+27)])>1.000000000000000055511151e-01*__PAR_deltaVpvRefMPPT))
 	{
 	if((d[(i+21)]!=0.0))
 	{
 	if((d[(i+21)]/d[(i+27)]>0.0))
 	{
-		d[(i+9)] = d[(i+9)]+__deltaVpvRefMPPT;
+		d[(i+9)] = d[(i+9)]+__PAR_deltaVpvRefMPPT;
 	}
 	else
 	{
-		d[(i+9)] = d[(i+9)]-__deltaVpvRefMPPT;
+		d[(i+9)] = d[(i+9)]-__PAR_deltaVpvRefMPPT;
 	}
 	}
 		d[(i+9)] = 30.0;
@@ -283,7 +284,7 @@ MOD_handlerNeg(int i, double *x, double *d, double *alg, double t)
 {
 	if(i >= 4 && i <= 5)
 	{
-		d[(i-2)] = __ROff;
+		d[(i-2)] = __PAR_ROff;
 	}
 }
 
@@ -333,17 +334,17 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__Cboost = 4.700000000000000184574578e-03;
-	__Lboost = 1.499999999999999944488849e-02;
-	__R = 1.000000000000000000000000e+03;
-	__ROn = 1.000000000000000081803054e-05;
-	__ROff = 1.000000000000000000000000e+05;
-	__Cpvin = 4.700000000000000184574578e-03;
-	__Cbus = 1.000000000000000047921736e-04;
-	__Rshunt = 1.000000000000000020816682e-02;
-	__iLoad = 1.000000000000000055511151e-01;
-	__UlineRef = 48.0;
-	__deltaVpvRefMPPT = 5.000000000000000000000000e-01;
+	__PAR_Cboost = 4.700000000000000184574578e-03;
+	__PAR_Lboost = 1.499999999999999944488849e-02;
+	__PAR_R = 1.000000000000000000000000e+03;
+	__PAR_ROn = 1.000000000000000081803054e-05;
+	__PAR_ROff = 1.000000000000000000000000e+05;
+	__PAR_Cpvin = 4.700000000000000184574578e-03;
+	__PAR_Cbus = 1.000000000000000047921736e-04;
+	__PAR_Rshunt = 1.000000000000000020816682e-02;
+	__PAR_iLoad = 1.000000000000000055511151e-01;
+	__PAR_UlineRef = 48.0;
+	__PAR_deltaVpvRefMPPT = 5.000000000000000000000000e-01;
 	for(i = 0; i <= 1;i++)
 	{
 		modelData->d[(i+27)] = 0.0;
@@ -402,16 +403,16 @@ QSS_data modelData = simulator->data;
 	for(i10 = 0; i10 <= 1; i10++)
 	{
 		modelData->d[(i10+11)] = 80.0;
-		__TContMaxPot = 2.000000000000000111022302e-01;
-		modelData->d[(i10+15)] = __TContMaxPot;
+		__PAR_TContMaxPot = 2.000000000000000111022302e-01;
+		modelData->d[(i10+15)] = __PAR_TContMaxPot;
 	}
 	for(i11 = 0; i11 <= 1; i11++)
 	{
 		modelData->d[(i11+4)] = 1.000000000000000000000000e+05;
 		modelData->d[(i11+2)] = 1.000000000000000000000000e+05;
-		__Tboost[(i11)] = 2.000000000000000163606108e-05;
+		__PAR_Tboost[(i11)] = 2.000000000000000163606108e-05;
 		modelData->d[(i11)] = 9.000000000000000222044605e-01;
-		modelData->d[(i11+6)] = __Tboost[(i11)];
+		modelData->d[(i11+6)] = __PAR_Tboost[(i11)];
 	}
 	for(i = 0; i <= 1; i++)
 	{

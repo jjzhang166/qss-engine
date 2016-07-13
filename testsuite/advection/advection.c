@@ -7,16 +7,17 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __alpha;
-double __mu;
+double __PAR_alpha = 0;
+double __PAR_mu = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
 {
-	 settings->debug = 9;
+	 settings->debug = 0;
 	 settings->parallel = FALSE;
 	 settings->hybrid = FALSE;
 	 settings->method = 4;
@@ -29,15 +30,13 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	switch(i)
 	{
 		case 0:
-			dx[1] = (-x[0]+1.0)*1000-__mu*x[0]*(x[0]-__alpha)*(x[0]-1.0);
-			dx[2] = (-x[1]*__mu*x[0]*(x[0]-__alpha)-(-1.0+x[0])*x[1]*__mu*x[0]-(-1.0+x[0])*x[1]*__mu*(x[0]-__alpha)-x[1]*1000)/2;
+			dx[1] = (-x[0]+1.0)*1000-__PAR_mu*x[0]*(x[0]-__PAR_alpha)*(x[0]-1.0);
 			return;
 		default:
 			j = i;
 			if(j >=1 && j <= 999)
 			{
-				dx[1] = (-x[(j) * 3]+x[(j-1) * 3])*1000-__mu*x[(j) * 3]*(x[(j) * 3]-__alpha)*(x[(j) * 3]-1.0);
-				dx[2] = (-__mu*x[(j) * 3]*x[(j) * 3 + 1]*(-1.0+x[(j) * 3])+__mu*(__alpha-x[(j) * 3])*x[(j) * 3 + 1]*(-1.0+x[(j) * 3])+1000*(x[(j-1) * 3 + 1]-x[(j) * 3 + 1])+__mu*(__alpha-x[(j) * 3])*x[(j) * 3]*x[(j) * 3 + 1])/2;
+				dx[1] = (-x[(j) * 3]+x[(j-1) * 3])*1000-__PAR_mu*x[(j) * 3]*(x[(j) * 3]-__PAR_alpha)*(x[(j) * 3]-1.0);
 			}
 	}
 }
@@ -49,21 +48,18 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	switch(i)
 	{
 		case 0:
-			der[0 + 1] = (-x[0]+1.0)*1000-__mu*x[0]*(x[0]-__alpha)*(x[0]-1.0);
-			der[0 + 2] = (-x[1]*__mu*x[0]*(x[0]-__alpha)-(-1.0+x[0])*x[1]*__mu*x[0]-(-1.0+x[0])*x[1]*__mu*(x[0]-__alpha)-x[1]*1000)/2;
+			der[0 + 1] = (-x[0]+1.0)*1000-__PAR_mu*x[0]*(x[0]-__PAR_alpha)*(x[0]-1.0);
 			break;
 	}
 	j = i+1;
 	if(j >=1 && j <= 999)
 	{
-		der[(j) * 3 + 1] = (-x[(j) * 3]+x[(j-1) * 3])*1000-__mu*x[(j) * 3]*(x[(j) * 3]-__alpha)*(x[(j) * 3]-1.0);
-		der[(j) * 3 + 2] = (-__mu*x[(j) * 3]*x[(j) * 3 + 1]*(-1.0+x[(j) * 3])+__mu*(__alpha-x[(j) * 3])*x[(j) * 3 + 1]*(-1.0+x[(j) * 3])+1000*(x[(j-1) * 3 + 1]-x[(j) * 3 + 1])+__mu*(__alpha-x[(j) * 3])*x[(j) * 3]*x[(j) * 3 + 1])/2;
+		der[(j) * 3 + 1] = (-x[(j) * 3]+x[(j-1) * 3])*1000-__PAR_mu*x[(j) * 3]*(x[(j) * 3]-__PAR_alpha)*(x[(j) * 3]-1.0);
 	}
 	j = i;
 	if(j >=1 && j <= 999)
 	{
-		der[(j) * 3 + 1] = (-x[(j) * 3]+x[(j-1) * 3])*1000-__mu*x[(j) * 3]*(x[(j) * 3]-__alpha)*(x[(j) * 3]-1.0);
-		der[(j) * 3 + 2] = (-__mu*x[(j) * 3]*x[(j) * 3 + 1]*(-1.0+x[(j) * 3])+__mu*(__alpha-x[(j) * 3])*x[(j) * 3 + 1]*(-1.0+x[(j) * 3])+1000*(x[(j-1) * 3 + 1]-x[(j) * 3 + 1])+__mu*(__alpha-x[(j) * 3])*x[(j) * 3]*x[(j) * 3 + 1])/2;
+		der[(j) * 3 + 1] = (-x[(j) * 3]+x[(j-1) * 3])*1000-__PAR_mu*x[(j) * 3]*(x[(j) * 3]-__PAR_alpha)*(x[(j) * 3]-1.0);
 	}
 }
 
@@ -90,8 +86,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__alpha = 5.000000000000000000000000e-01;
-	__mu = 1000.0;
+	__PAR_alpha = 5.000000000000000000000000e-01;
+	__PAR_mu = 1000.0;
 	// Initialize model code.
 	for(i0 = 0; i0 <= 332; i0++)
 	{

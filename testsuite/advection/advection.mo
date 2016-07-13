@@ -12,6 +12,7 @@ model advection
 		for j in 2:N loop
 		  der(u[j])=(-u[j]+u[j-1])*N-mu*u[j]*(u[j]-alpha)*(u[j]-1);
 	end for;
+
 	annotation(
 	experiment(
 		MMO_Description="Advection Reaction Equation.",

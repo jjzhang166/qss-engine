@@ -8,30 +8,31 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __Cboost = 0;
-double __Lboost = 0;
-double __R = 0;
-double __ROn = 0;
-double __ROff = 0;
-double __Tboost[2];
-double __Cpvin = 0;
-double __q = 0;
-double __Ac = 0;
-double __K = 0;
-double __K1 = 0;
-double __Ior = 0;
-double __Tref = 0;
-double __Eg = 0;
-double __Isc = 0;
-double __Rspv = 0;
-double __Cbatery = 0;
-double __Rshunt = 0;
-double __iLoad = 0;
-double __TContMaxPot = 0;
-double __VlineaRef = 0;
+double __PAR_Cboost = 0;
+double __PAR_Lboost = 0;
+double __PAR_R = 0;
+double __PAR_ROn = 0;
+double __PAR_ROff = 0;
+double __PAR_Tboost[2];
+double __PAR_Cpvin = 0;
+double __PAR_q = 0;
+double __PAR_Ac = 0;
+double __PAR_K = 0;
+double __PAR_K1 = 0;
+double __PAR_Ior = 0;
+double __PAR_Tref = 0;
+double __PAR_Eg = 0;
+double __PAR_Isc = 0;
+double __PAR_Rspv = 0;
+double __PAR_Cbatery = 0;
+double __PAR_Rshunt = 0;
+double __PAR_iLoad = 0;
+double __PAR_TContMaxPot = 0;
+double __PAR_VlineaRef = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -54,9 +55,9 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 		case 16:
 			for(j2 = 0; j2 <= 1; j2++)
 			{
-					alg[(j2+8) * 3] = (x[(j2+2) * 3]-x[48])/(__Rshunt+d[(j2+18)]);
+					alg[(j2+8) * 3] = (x[(j2+2) * 3]-x[48])/(__PAR_Rshunt+d[(j2+18)]);
 			}
-			alg[36] = -(__VlineaRef-x[48])*1.000000000000000055511151e-01-x[51];
+			alg[36] = -(__PAR_VlineaRef-x[48])*1.000000000000000055511151e-01-x[51];
 	for(j3 = 0;j3 < 3; j3++)
 	{
 		tmp1[j3] = 0;
@@ -67,30 +68,30 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 		tmp1[1] += alg[(j3+8) * 3 + 1];
 		tmp1[2] += alg[(j3+8) * 3 + 2];
 	}
-			dx[1] = (tmp1[0]-__iLoad-alg[36])/__Cbatery;
+			dx[1] = (tmp1[0]-__PAR_iLoad-alg[36])/__PAR_Cbatery;
 			return;
 		case 17:
-			dx[1] = __VlineaRef-x[48];
+			dx[1] = __PAR_VlineaRef-x[48];
 			return;
 		default:
 			j = i;
 			if(j >=0 && j <= 1)
 			{
 				alg[(j) * 3] = __ipvsolver(x[(j) * 3],36,36,d[(10)],d[(j+14)],1.000000000000000081803054e-05,6.0,d[(j+20)]);
-				dx[1] = (alg[(j) * 3]-x[(j+4) * 3])/__Cpvin;
+				dx[1] = (alg[(j) * 3]-x[(j+4) * 3])/__PAR_Cpvin;
 			}
 			j = i-2;
 			if(j >=0 && j <= 1)
 			{
 				alg[(j+4) * 3] = ((d[(j+4)])*x[(j+4) * 3]-x[(j+2) * 3])/((d[(j+2)])+(d[(j+4)]));
-				dx[1] = (alg[(j+4) * 3]-x[(j+2) * 3]/__R-(x[(j+2) * 3]-x[48])/(__Rshunt+d[(j+18)]))/__Cboost;
+				dx[1] = (alg[(j+4) * 3]-x[(j+2) * 3]/__PAR_R-(x[(j+2) * 3]-x[48])/(__PAR_Rshunt+d[(j+18)]))/__PAR_Cboost;
 			}
 			j = i-4;
 			if(j >=0 && j <= 1)
 			{
 				alg[(j+2) * 3] = x[(j) * 3];
 				alg[(j+4) * 3] = ((d[(j+4)])*x[(j+4) * 3]-x[(j+2) * 3])/((d[(j+2)])+(d[(j+4)]));
-				dx[1] = (alg[(j+2) * 3]-d[(j+4)]*(x[(j+4) * 3]-alg[(j+4) * 3]))/__Lboost;
+				dx[1] = (alg[(j+2) * 3]-d[(j+4)]*(x[(j+4) * 3]-alg[(j+4) * 3]))/__PAR_Lboost;
 			}
 			j = i-6;
 			if(j >=0 && j <= 1)
@@ -102,12 +103,12 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 			{
 				alg[(j) * 3] = __ipvsolver(x[(j) * 3],36,36,d[(10)],d[(j+14)],1.000000000000000081803054e-05,6.0,d[(j+20)]);
 				alg[(j+10) * 3] = x[(j) * 3]*alg[(j) * 3];
-				dx[1] = alg[(j+10) * 3]/__TContMaxPot;
+				dx[1] = alg[(j+10) * 3]/__PAR_TContMaxPot;
 			}
 			j = i-10;
 			if(j >=0 && j <= 1)
 			{
-				dx[1] = x[(j) * 3]/__Tboost[(j)];
+				dx[1] = x[(j) * 3]/__PAR_Tboost[(j)];
 			}
 			j = i-12;
 			if(j >=0 && j <= 1)
@@ -117,7 +118,7 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 			j = i-14;
 			if(j >=0 && j <= 1)
 			{
-				alg[(j+8) * 3] = (x[(j+2) * 3]-x[48])/(__Rshunt+d[(j+18)]);
+				alg[(j+8) * 3] = (x[(j+2) * 3]-x[48])/(__PAR_Rshunt+d[(j+18)]);
 				dx[1] = (alg[(j+8) * 3]-x[(j+14) * 3]);
 			}
 	}
@@ -147,12 +148,12 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 			}
 			for(j6 = 0; j6 <= 1; j6++)
 	{
-			alg[(j6+8) * 3] = (x[(j6+2) * 3]-x[48])/(__Rshunt+d[(j6+18)]);
+			alg[(j6+8) * 3] = (x[(j6+2) * 3]-x[48])/(__PAR_Rshunt+d[(j6+18)]);
 	}
-			alg[36] = -(__VlineaRef-x[48])*1.000000000000000055511151e-01-x[51];
+			alg[36] = -(__PAR_VlineaRef-x[48])*1.000000000000000055511151e-01-x[51];
 			for(j = 0; j <= 1; j++)
 			{
-				der[(j+2) * 3 + 1] = (alg[(j+4) * 3]-x[(j+2) * 3]/__R-(x[(j+2) * 3]-x[48])/(__Rshunt+d[(j+18)]))/__Cboost;
+				der[(j+2) * 3 + 1] = (alg[(j+4) * 3]-x[(j+2) * 3]/__PAR_R-(x[(j+2) * 3]-x[48])/(__PAR_Rshunt+d[(j+18)]))/__PAR_Cboost;
 			}
 			for(j = 0; j <= 1; j++)
 			{
@@ -168,15 +169,15 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp1[1] += alg[(j3+8) * 3 + 1];
 		tmp1[2] += alg[(j3+8) * 3 + 2];
 	}
-			der[48 + 1] = (tmp1[0]-__iLoad-alg[36])/__Cbatery;
-			der[51 + 1] = __VlineaRef-x[48];
+			der[48 + 1] = (tmp1[0]-__PAR_iLoad-alg[36])/__PAR_Cbatery;
+			der[51 + 1] = __PAR_VlineaRef-x[48];
 			break;
 		case 17:
 			for(j7 = 0; j7 <= 1; j7++)
 	{
-			alg[(j7+8) * 3] = (x[(j7+2) * 3]-x[48])/(__Rshunt+d[(j7+18)]);
+			alg[(j7+8) * 3] = (x[(j7+2) * 3]-x[48])/(__PAR_Rshunt+d[(j7+18)]);
 	}
-			alg[36] = -(__VlineaRef-x[48])*1.000000000000000055511151e-01-x[51];
+			alg[36] = -(__PAR_VlineaRef-x[48])*1.000000000000000055511151e-01-x[51];
 	for(j3 = 0;j3 < 3; j3++)
 	{
 		tmp1[j3] = 0;
@@ -187,7 +188,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp1[1] += alg[(j3+8) * 3 + 1];
 		tmp1[2] += alg[(j3+8) * 3 + 2];
 	}
-			der[48 + 1] = (tmp1[0]-__iLoad-alg[36])/__Cbatery;
+			der[48 + 1] = (tmp1[0]-__PAR_iLoad-alg[36])/__PAR_Cbatery;
 			return;
 	}
 	j = i;
@@ -197,11 +198,11 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		alg[(j+2) * 3] = x[(j) * 3];
 		alg[(j+4) * 3] = ((d[(j+4)])*x[(j+4) * 3]-x[(j+2) * 3])/((d[(j+2)])+(d[(j+4)]));
 		alg[(j+10) * 3] = x[(j) * 3]*alg[(j) * 3];
-		der[(j) * 3 + 1] = (alg[(j) * 3]-x[(j+4) * 3])/__Cpvin;
-		der[(j+4) * 3 + 1] = (alg[(j+2) * 3]-d[(j+4)]*(x[(j+4) * 3]-alg[(j+4) * 3]))/__Lboost;
+		der[(j) * 3 + 1] = (alg[(j) * 3]-x[(j+4) * 3])/__PAR_Cpvin;
+		der[(j+4) * 3 + 1] = (alg[(j+2) * 3]-d[(j+4)]*(x[(j+4) * 3]-alg[(j+4) * 3]))/__PAR_Lboost;
 		der[(j+6) * 3 + 1] = d[(j+30)]-x[(j) * 3];
-		der[(j+8) * 3 + 1] = alg[(j+10) * 3]/__TContMaxPot;
-		der[(j+10) * 3 + 1] = x[(j) * 3]/__Tboost[(j)];
+		der[(j+8) * 3 + 1] = alg[(j+10) * 3]/__PAR_TContMaxPot;
+		der[(j+10) * 3 + 1] = x[(j) * 3]/__PAR_Tboost[(j)];
 		der[(j+12) * 3 + 1] = (x[(j) * 3]-x[(j+12) * 3])*100.0;
 	}
 	j = i-2;
@@ -211,11 +212,11 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		alg[(j+4) * 3] = ((d[(j+4)])*x[(j+4) * 3]-x[(j+2) * 3])/((d[(j+2)])+(d[(j+4)]));
 		for(j4 = 0; j4 <= 1; j4++)
 	{
-		alg[(j4+8) * 3] = (x[(j4+2) * 3]-x[48])/(__Rshunt+d[(j4+18)]);
+		alg[(j4+8) * 3] = (x[(j4+2) * 3]-x[48])/(__PAR_Rshunt+d[(j4+18)]);
 	}
-		alg[36] = -(__VlineaRef-x[48])*1.000000000000000055511151e-01-x[51];
-		der[(j+2) * 3 + 1] = (alg[(j+4) * 3]-x[(j+2) * 3]/__R-(x[(j+2) * 3]-x[48])/(__Rshunt+d[(j+18)]))/__Cboost;
-		der[(j+4) * 3 + 1] = (alg[(j+2) * 3]-d[(j+4)]*(x[(j+4) * 3]-alg[(j+4) * 3]))/__Lboost;
+		alg[36] = -(__PAR_VlineaRef-x[48])*1.000000000000000055511151e-01-x[51];
+		der[(j+2) * 3 + 1] = (alg[(j+4) * 3]-x[(j+2) * 3]/__PAR_R-(x[(j+2) * 3]-x[48])/(__PAR_Rshunt+d[(j+18)]))/__PAR_Cboost;
+		der[(j+4) * 3 + 1] = (alg[(j+2) * 3]-d[(j+4)]*(x[(j+4) * 3]-alg[(j+4) * 3]))/__PAR_Lboost;
 		der[(j+14) * 3 + 1] = (alg[(j+8) * 3]-x[(j+14) * 3]);
 	for(j3 = 0;j3 < 3; j3++)
 	{
@@ -227,7 +228,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp1[1] += alg[(j3+8) * 3 + 1];
 		tmp1[2] += alg[(j3+8) * 3 + 2];
 	}
-		der[48 + 1] = (tmp1[0]-__iLoad-alg[36])/__Cbatery;
+		der[48 + 1] = (tmp1[0]-__PAR_iLoad-alg[36])/__PAR_Cbatery;
 	}
 	j = i-4;
 	if(j >=0 && j <= 1)
@@ -235,9 +236,9 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		alg[(j) * 3] = __ipvsolver(x[(j) * 3],36,36,d[(10)],d[(j+14)],1.000000000000000081803054e-05,6.0,d[(j+20)]);
 		alg[(j+2) * 3] = x[(j) * 3];
 		alg[(j+4) * 3] = ((d[(j+4)])*x[(j+4) * 3]-x[(j+2) * 3])/((d[(j+2)])+(d[(j+4)]));
-		der[(j) * 3 + 1] = (alg[(j) * 3]-x[(j+4) * 3])/__Cpvin;
-		der[(j+2) * 3 + 1] = (alg[(j+4) * 3]-x[(j+2) * 3]/__R-(x[(j+2) * 3]-x[48])/(__Rshunt+d[(j+18)]))/__Cboost;
-		der[(j+4) * 3 + 1] = (alg[(j+2) * 3]-d[(j+4)]*(x[(j+4) * 3]-alg[(j+4) * 3]))/__Lboost;
+		der[(j) * 3 + 1] = (alg[(j) * 3]-x[(j+4) * 3])/__PAR_Cpvin;
+		der[(j+2) * 3 + 1] = (alg[(j+4) * 3]-x[(j+2) * 3]/__PAR_R-(x[(j+2) * 3]-x[48])/(__PAR_Rshunt+d[(j+18)]))/__PAR_Cboost;
+		der[(j+4) * 3 + 1] = (alg[(j+2) * 3]-d[(j+4)]*(x[(j+4) * 3]-alg[(j+4) * 3]))/__PAR_Lboost;
 	}
 	j = i-12;
 	if(j >=0 && j <= 1)
@@ -247,7 +248,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	j = i-14;
 	if(j >=0 && j <= 1)
 	{
-		alg[(j+8) * 3] = (x[(j+2) * 3]-x[48])/(__Rshunt+d[(j+18)]);
+		alg[(j+8) * 3] = (x[(j+2) * 3]-x[48])/(__PAR_Rshunt+d[(j+18)]);
 		der[(j+14) * 3 + 1] = (alg[(j+8) * 3]-x[(j+14) * 3]);
 	}
 }
@@ -265,7 +266,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 	}
 	if(i >= 4 && i <= 5)
 	{
-		zc[0] = t-d[(i+4)]-d[(i-4)]*__Tboost[(i-4)]-(0.0);
+		zc[0] = t-d[(i+4)]-d[(i-4)]*__PAR_Tboost[(i-4)]-(0.0);
 	}
 	if(i >= 6 && i <= 7)
 	{
@@ -303,7 +304,7 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 {
 	if(i >= 0 && i <= 1)
 	{
-		d[(i+32)] = d[(i+32)]+__TContMaxPot;
+		d[(i+32)] = d[(i+32)]+__PAR_TContMaxPot;
 		d[(i+22)] = d[(i+24)];
 		d[(i+24)] = x[(i+8) * 3];
 		d[(i+26)] = d[(i+24)]-d[(i+22)];
@@ -323,8 +324,8 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 	if(i >= 2 && i <= 3)
 	{
 		d[(i+6)] = d[(i+4)];
-		d[(i+4)] = d[(i+4)]+__Tboost[(i-2)];
-		d[(i+2)] = __ROn;
+		d[(i+4)] = d[(i+4)]+__PAR_Tboost[(i-2)];
+		d[(i+2)] = __PAR_ROn;
 		alg[(i-2) * 3] = __ipvsolver(x[(i-2) * 3],36,36,d[(10)],d[(i+12)],1.000000000000000081803054e-05,6.0,d[(i+18)]);
 		d[(i+18)] = alg[(i-2) * 3];
 		d[(i+26)] = x[(i+8) * 3];
@@ -341,7 +342,7 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 	}
 	if(i >= 4 && i <= 5)
 	{
-		d[(i)] = __ROff;
+		d[(i)] = __PAR_ROff;
 	}
 	if(i >= 8 && i <= 9)
 	{
@@ -349,11 +350,11 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 	}
 	if(i >= 12 && i <= 13)
 	{
-		d[(i-10)] = __ROn;
+		d[(i-10)] = __PAR_ROn;
 	}
 	if(i >= 14 && i <= 15)
 	{
-		d[(i+4)] = __ROn;
+		d[(i+4)] = __PAR_ROn;
 	}
 }
 
@@ -366,11 +367,11 @@ MOD_handlerNeg(int i, double *x, double *d, double *alg, double t)
 	}
 	if(i >= 10 && i <= 11)
 	{
-		d[(i-8)] = __ROff;
+		d[(i-8)] = __PAR_ROff;
 	}
 	if(i >= 16 && i <= 17)
 	{
-		d[(i+2)] = __ROff;
+		d[(i+2)] = __PAR_ROff;
 	}
 }
 
@@ -418,24 +419,24 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__Cboost = 1.000000000000000047921736e-04;
-	__Lboost = 1.000000000000000047921736e-04;
-	__R = 1.000000000000000000000000e+02;
-	__ROn = 1.000000000000000081803054e-05;
-	__ROff = 1.000000000000000000000000e+05;
-	__Cpvin = 1.000000000000000020816682e-03;
-	__q = 1.599999999999999912245234e-19;
-	__Ac = 1.600000000000000088817842e+00;
-	__K = 1.380499999999999856556809e-23;
-	__K1 = 1.699999999999999905284098e-03;
-	__Ior = 2.079300000000000149747359e-06;
-	__Tref = 303.0;
-	__Eg = 1.100000000000000088817842e+00;
-	__Isc = 3.270000000000000017763568e+00;
-	__Cbatery = 4.700000000000000184574578e-03;
-	__Rshunt = 1.000000000000000047921736e-04;
-	__iLoad = 1.000000000000000055511151e-01;
-	__VlineaRef = 90.0;
+	__PAR_Cboost = 1.000000000000000047921736e-04;
+	__PAR_Lboost = 1.000000000000000047921736e-04;
+	__PAR_R = 1.000000000000000000000000e+02;
+	__PAR_ROn = 1.000000000000000081803054e-05;
+	__PAR_ROff = 1.000000000000000000000000e+05;
+	__PAR_Cpvin = 1.000000000000000020816682e-03;
+	__PAR_q = 1.599999999999999912245234e-19;
+	__PAR_Ac = 1.600000000000000088817842e+00;
+	__PAR_K = 1.380499999999999856556809e-23;
+	__PAR_K1 = 1.699999999999999905284098e-03;
+	__PAR_Ior = 2.079300000000000149747359e-06;
+	__PAR_Tref = 303.0;
+	__PAR_Eg = 1.100000000000000088817842e+00;
+	__PAR_Isc = 3.270000000000000017763568e+00;
+	__PAR_Cbatery = 4.700000000000000184574578e-03;
+	__PAR_Rshunt = 1.000000000000000047921736e-04;
+	__PAR_iLoad = 1.000000000000000055511151e-01;
+	__PAR_VlineaRef = 90.0;
 	for(i = 0; i <= 1;i++)
 	{
 		modelData->d[(i+24)] = 0.0;
@@ -477,12 +478,12 @@ QSS_data modelData = simulator->data;
 		modelData->d[(10)] = 273.0+5.000000000000000000000000e+01;
 	for(i8 = 0; i8 <= 1; i8++)
 	{
-		__TContMaxPot = 1.000000000000000055511151e-01;
+		__PAR_TContMaxPot = 1.000000000000000055511151e-01;
 		modelData->d[(i8+32)] = 0.0;
 		modelData->d[(i8+6)] = 0.000000000000000000000000e+00;
 		modelData->d[(i8+4)] = 1.000000000000000000000000e+05;
 		modelData->d[(i8+2)] = 1.000000000000000000000000e+05;
-		__Tboost[(i8)] = 1.000000000000000047921736e-04;
+		__PAR_Tboost[(i8)] = 1.000000000000000047921736e-04;
 		modelData->d[(i8)] = 9.000000000000000222044605e-01;
 		modelData->d[(i8+14)] = 8.0;
 		modelData->d[(i8+18)] = 1.000000000000000000000000e+05;
@@ -491,11 +492,11 @@ QSS_data modelData = simulator->data;
 		modelData->d[(1)] = 2.999999999999999888977698e-01;
 		modelData->d[(30)] = 1.0;
 		modelData->d[(31)] = 2.0;
-		__Rspv = 1.000000000000000000000000e+00;
-		modelData->d[(13)] = __Ior*pow((modelData->d[(10)]/__Tref),3.0)*exp(__q*__Eg*(1.0/__Tref-1.0/modelData->d[(10)])/__K/__Ac);
+		__PAR_Rspv = 1.000000000000000000000000e+00;
+		modelData->d[(13)] = __PAR_Ior*pow((modelData->d[(10)]/__PAR_Tref),3.0)*exp(__PAR_q*__PAR_Eg*(1.0/__PAR_Tref-1.0/modelData->d[(10)])/__PAR_K/__PAR_Ac);
 	for(i10 = 0; i10 <= 1; i10++)
 	{
-		modelData->d[(i10+11)] = (__Isc+__K1*(modelData->d[(10)]-__Tref))*modelData->d[(i10+14)]/100.0;
+		modelData->d[(i10+11)] = (__PAR_Isc+__PAR_K1*(modelData->d[(10)]-__PAR_Tref))*modelData->d[(i10+14)]/100.0;
 	}
 	for(i = 0; i <= 1; i++)
 	{

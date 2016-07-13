@@ -127,7 +127,7 @@ minPosRoot (double *coeff, int order) __attribute__((hot));
  * As a side effect, changes the values of the coefficient matrix.
  */
 void
-advanceTime (int, double, double*, int) __attribute__((hot));
+integrateState (int, double, double*, int) __attribute__((hot));
 
 /*! \brief Evaluates \f$ p(t) = a_0 + a_1 t + ... + a_{n-1} t^{n-1} \f$ 
  *
@@ -572,7 +572,7 @@ BIT_next (BIT_vector v);
 /**
  *
  */
-#define MESSAGE_SIZE 128
+#define MESSAGE_SIZE 1400
 
 /**
  *
@@ -623,7 +623,6 @@ struct IBX_inbox_
   int head; //!<
   int tail; //!<
   int size; //!<
-  double *states; //!<
 };
 
 /**
@@ -637,7 +636,6 @@ typedef struct MLB_mailbox_ *MLB_mailbox;
 struct MLB_mailbox_
 {
   IBX_inbox **inbox; //!< Inbox data structure used to send and receive simulation events.
-  IBX_inbox **synch; //!< Inbox data structure used to send and receive simulation \f $ \delta t $ \f information.
   int size; //!<
 };
 

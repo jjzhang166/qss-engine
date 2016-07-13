@@ -200,6 +200,17 @@ LP_processPartition (QSS_simulator simulator, PRT_partition partition)
 		  handlerNumber;
 	      partition->outputs[i][partition->nOutputs[i]++] =
 		  zcPartitionNumber;
+	      int t;
+	      int iLHSSt = simulatorData->event[k].nLHSSt;
+	      for (t =0;t < iLHSSt; t++)
+		{
+		   int ik = simulatorData->event[k].LHSSt[t];
+		   if (partition->asgDscInf[zcPartitionNumber][ik] == NOT_ASSIGNED)
+		     {
+		       partition->dscInf[zcPartitionNumber][partition->nDsc[zcPartitionNumber]++] = ik;
+		       partition->asgDscInf[zcPartitionNumber][ik] = ik;
+		     }
+		}
 	    }
 	}
       int nLHSSt = simulatorData->event[handlerNumber].nLHSSt;
@@ -405,10 +416,19 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
       simulator->lps->lp[partitionNumber]->qOutMap[outputMap[partitionNumber]++] =
 	  i;
     }
+  autonomous = TRUE;
   for (i = 0; i < lps; i++)
     {
       simulator->lps->lp[i]->outStates = nLPSMap[i];
+      if (nLPSMap[i] > 0)
+	{
+	  autonomous = FALSE;
+	}
     }
+  if (autonomous == TRUE && simulatorData->params->dtSynch == SD_DT_Adaptive)
+      {
+        simulatorData->params->dtSynch = SD_DT_AdaptiveDiscrete;
+      }
   cleanVector (outputMap, 0, lps);
   int handlerNumber = 0;
   for (i = beginHandlers; i < endHandlers; i++)
@@ -440,6 +460,22 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
       simulator->lps->lp[partitionNumber]->eOutMap[outputMap[partitionNumber]++] =
 	  handlerNumber;
       handlerNumber++;
+    }
+  if (simulatorData->params->dtSynch == SD_DT_AdaptiveDiscrete)
+    {
+      for (i = 0; i < lps; i++)
+	{
+	  simulator->lps->lp[i]->dscMap = (QSS_idxMap) checkedMalloc(simulatorData->states*sizeof(int));
+	  cleanVector (simulator->lps->lp[i]->dscMap, NOT_ASSIGNED, simulatorData->states);
+	  int nDscInf = partition->nDsc[i];
+	  simulator->lps->lp[i]->dscInf = nDscInf;
+	  int t;
+	  for (t = 0; t < nDscInf; t++)
+	    {
+	 //     printf("LP %d Asigna %d\n",i,partition->dscInf[i][t]);
+	      simulator->lps->lp[i]->dscMap[partition->dscInf[i][t]] = t;
+	    }
+	}
     }
   autonomous = TRUE;
   for (i = 0; i < lps; i++)
@@ -473,6 +509,14 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
         if (autonomous == TRUE)
           {
             lp->initDt = INF;
+          }
+        else if (simulatorData->params->dtSynch == SD_DT_Fixed)
+          {
+            lp->initDt = simulatorData->params->dt;
+          }
+        else
+          {
+            lp->initDt = 0;
           }
       }
   free (outputMap);

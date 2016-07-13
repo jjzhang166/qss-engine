@@ -32,6 +32,7 @@ model buck_circuit
 	when iL<0 then
 		  Rd := ROff;
 	end when;
+
 	annotation(
 	experiment(
 		MMO_Description="Buck converter working in discontinuous mode.",

@@ -7,14 +7,15 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __spring1_b;
-double __spring1_k;
-double __fixed1_s0;
-double __ball1_m;
-double __ball1_g;
+double __PAR_spring1_b = 0;
+double __PAR_spring1_k = 0;
+double __PAR_fixed1_s0 = 0;
+double __PAR_ball1_m = 0;
+double __PAR_ball1_g = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -34,7 +35,7 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 			dx[1] = x[4];
 			return;
 		case 1:
-			alg[0] = __fixed1_s0;
+			alg[0] = __PAR_fixed1_s0;
 			alg[4] = 0.0;
 			alg[8] = x[4];
 			alg[12] = x[0];
@@ -44,9 +45,9 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 			alg[28] = alg[8];
 			alg[32] = alg[28]-alg[20];
 			alg[36] = alg[24]-alg[16];
-			alg[40] = d[(0)]*(__spring1_b*alg[32]+__spring1_k*alg[36])+(1.0-d[(0)])*(0.0);
+			alg[40] = d[(0)]*(__PAR_spring1_b*alg[32]+__PAR_spring1_k*alg[36])+(1.0-d[(0)])*(0.0);
 			alg[48] = (-alg[40]);
-			dx[1] = (alg[48]-__ball1_m*__ball1_g)*(1.0/(__ball1_m));
+			dx[1] = (alg[48]-__PAR_ball1_m*__PAR_ball1_g)*(1.0/(__PAR_ball1_m));
 			return;
 	}
 }
@@ -57,7 +58,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	switch(i)
 	{
 		case 0:
-			alg[0] = __fixed1_s0;
+			alg[0] = __PAR_fixed1_s0;
 			alg[4] = 0.0;
 			alg[8] = x[4];
 			alg[12] = x[0];
@@ -67,12 +68,12 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 			alg[28] = alg[8];
 			alg[32] = alg[28]-alg[20];
 			alg[36] = alg[24]-alg[16];
-			alg[40] = d[(0)]*(__spring1_b*alg[32]+__spring1_k*alg[36])+(1.0-d[(0)])*(0.0);
+			alg[40] = d[(0)]*(__PAR_spring1_b*alg[32]+__PAR_spring1_k*alg[36])+(1.0-d[(0)])*(0.0);
 			alg[48] = (-alg[40]);
-			der[4 + 1] = (alg[48]-__ball1_m*__ball1_g)*(1.0/(__ball1_m));
+			der[4 + 1] = (alg[48]-__PAR_ball1_m*__PAR_ball1_g)*(1.0/(__PAR_ball1_m));
 			return;
 		case 1:
-			alg[0] = __fixed1_s0;
+			alg[0] = __PAR_fixed1_s0;
 			alg[4] = 0.0;
 			alg[8] = x[4];
 			alg[12] = x[0];
@@ -82,10 +83,10 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 			alg[28] = alg[8];
 			alg[32] = alg[28]-alg[20];
 			alg[36] = alg[24]-alg[16];
-			alg[40] = d[(0)]*(__spring1_b*alg[32]+__spring1_k*alg[36])+(1.0-d[(0)])*(0.0);
+			alg[40] = d[(0)]*(__PAR_spring1_b*alg[32]+__PAR_spring1_k*alg[36])+(1.0-d[(0)])*(0.0);
 			alg[48] = (-alg[40]);
 			der[0 + 1] = x[4];
-			der[4 + 1] = (alg[48]-__ball1_m*__ball1_g)*(1.0/(__ball1_m));
+			der[4 + 1] = (alg[48]-__PAR_ball1_m*__PAR_ball1_g)*(1.0/(__PAR_ball1_m));
 			return;
 	}
 }
@@ -96,7 +97,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 	switch(i)
 	{
 		case 0:
-			alg[0] = __fixed1_s0;
+			alg[0] = __PAR_fixed1_s0;
 			alg[12] = x[0];
 			alg[16] = alg[0];
 			alg[24] = alg[12];
@@ -163,11 +164,11 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__spring1_b = 10.0;
-	__spring1_k = 10000.0;
-	__fixed1_s0 = 0.0;
-	__ball1_m = 1.0;
-	__ball1_g = 9.800000000000000710542736e+00;
+	__PAR_spring1_b = 10.0;
+	__PAR_spring1_k = 10000.0;
+	__PAR_fixed1_s0 = 0.0;
+	__PAR_ball1_m = 1.0;
+	__PAR_ball1_g = 9.800000000000000710542736e+00;
 	modelData->x[0] = 10.0;
 	// Initialize model code.
 	modelData->nDS[0] = 1;

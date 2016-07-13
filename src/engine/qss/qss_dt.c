@@ -91,7 +91,7 @@ QSS_updateLocalDt (QSS_dt dt)
  * @param dt \f $ \delta t$ \f data structure.
  */
 void
-QSS_updateDt (QSS_dt dt)
+QSS_dtUpdate (QSS_dt dt)
 {
   int id = dt->state->id;
   double *gblDtMin = dt->state->gblDtMin;
@@ -138,7 +138,13 @@ QSS_updateDt (QSS_dt dt)
  * @param synch
  */
 static inline bool
-DT_FIXED_logStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable, double ct)
+DT_FIXED_logOutput (QSS_dt dt, double Dq, double Dx, double Dt, int variable)
+{
+  return (FALSE);
+}
+
+static inline bool
+DT_FIXED_logStep (QSS_dt dt, double Dq, double Dx, double Dt)
 {
   return (FALSE);
 }
@@ -147,12 +153,13 @@ DT_FIXED_logStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable, doub
  * @brief
  *
  * @param dt
- * @param t
+ * @param t0.0507148
+ *
  * @param maxAdvanceTime
  * @param synch
  */
 static bool
-DT_ASYNCH_logStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable, double ct)
+DT_ADAPTIVE_logOutput (QSS_dt dt, double Dq, double Dx, double Dt, int variable)
 {
   if (variable >= dt->state->outputs)
     {
@@ -177,34 +184,99 @@ DT_ASYNCH_logStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable, dou
       && dt->state->dtMin > dt->state->dtUpperBound)
       || dt->state->dtMin < dt->state->dtLowerBound)
     {
-      dt->state->elapsed[0] = (ct - dt->state->t[0])/dt->state->simTime;
-      dt->state->t[0] = ct;
+      dt->state->elapsed[0] = (dt->state->time->time - dt->state->t[0])
+	  / dt->state->simTime;
+      dt->state->t[0] = dt->state->time->time;
       dt->state->synch[0] = 1;
-      QSS_updateDt (dt);
+      QSS_dtUpdate (dt);
+      return (TRUE);
+    }
+  return (FALSE);
+}
+
+static bool
+DT_ADAPTIVE_logStep (QSS_dt dt, double Dq, double Dx, double Dt)
+{
+  if (dt->state->synch[0] == 1)
+    {
+      QSS_dtUpdate (dt);
+      return (TRUE);
+    }
+  return (FALSE);
+}
+
+static bool
+DT_ADAPTIVE_DISCRETE_LogStep (QSS_dt dt, double Dq, double Dx, double Dt)
+{
+  if (dt->state->time->type == ST_State && dt->state->time->noReinit)
+    {
+      int index = dt->state->time->minIndex;
+      if (dt->state->qMap[index] != NOT_ASSIGNED && dt->state->dscMap[index] >= 0)
+	{
+	  DT_ADAPTIVE_logOutput (dt, Dq, Dx, Dt,dt->state->dscMap[index]);
+	}
+    }
+  else if (dt->state->synch[0] == 1)
+    {
+      QSS_dtUpdate (dt);
       return (TRUE);
     }
   return (FALSE);
 }
 
 QSS_dt
-QSS_Dt (SD_DtSynch synch, double alpha, int outputs, double *gblDtMin, int id,
-	QSS_dtSynch dtSynch, double initDt, char *file, SD_Debug debug, double it, double ft)
+QSS_Dt (double *gblDtMin, int id, QSS_dtSynch dtSynch, char *file,
+	SD_Debug debug, QSS_data data, QSS_time time)
 {
   QSS_dt p = checkedMalloc (sizeof(*p));
-  int i, lclOutputs = outputs;
+  int i, lclOutputs = data->lp->outStates;
   char logFile[128];
+  SD_DtSynch synch = data->params->dtSynch;
+  double alpha = data->params->dt;
+  double initDt = data->lp->initDt;
+  double it = data->it;
+  double ft = data->ft;
   sprintf (logFile, "%s-dt", file);
   p->ops = QSS_DtOps ();
   p->state = QSS_DtState ();
+  p->state->dt = initDt;
+  p->state->dtUpperBound = 0;
+  p->state->dtLowerBound = INF;
+  p->state->alpha = alpha;
+  p->state->dtMin = INF;
+  p->state->dtMinIndex = -1;
+  p->state->gblDtMin = gblDtMin;
+  p->state->synch = &(dtSynch->synch);
+  p->state->id = id;
+  p->state->lps = dtSynch->activeLPS;
+  p->state->outputs = lclOutputs;
+  p->state->dtChanges = 0;
+  p->state->dtGlobalLP = id;
+  p->state->avgDt = 0;
+  p->state->time = time;
+  p->state->t = &(dtSynch->t);
+  p->state->elapsed = &(dtSynch->elapsed);
+  p->state->simTime = ft - it;
+  p->state->lastChange = p->state->t[0];
+  p->state->simSteps = 0;
   if (synch == SD_DT_Fixed)
     {
       p->ops->logStep = DT_FIXED_logStep;
-      p->state->dt = alpha;
+      p->ops->logOutput = DT_FIXED_logOutput;
     }
-  else if (synch == SD_DT_Asynchronous)
+  else if (synch == SD_DT_Adaptive)
     {
-      p->ops->logStep = DT_ASYNCH_logStep;
-      p->state->dt = initDt;
+      p->ops->logStep = DT_ADAPTIVE_logStep;
+      p->ops->logOutput = DT_ADAPTIVE_logOutput;
+    }
+  else if (synch == SD_DT_AdaptiveDiscrete)
+    {
+      p->ops->logStep = DT_ADAPTIVE_DISCRETE_LogStep;
+      p->ops->logOutput = DT_FIXED_logOutput;
+      p->state->dscMap = data->lp->dscMap;
+      p->state->qMap = data->lp->qMap;
+      p->state->outputs = data->lp->dscInf;
+      lclOutputs = data->lp->dscInf;
     }
   if (lclOutputs == 0)
     {
@@ -215,22 +287,6 @@ QSS_Dt (SD_DtSynch synch, double alpha, int outputs, double *gblDtMin, int id,
     {
       p->state->dtOpt[i] = INF;
     }
-  p->state->dtUpperBound = 0;
-  p->state->dtLowerBound = INF;
-  p->state->alpha = alpha;
-  p->state->dtMin = INF;
-  p->state->dtMinIndex = -1;
-  p->state->gblDtMin = gblDtMin;
-  p->state->synch = &(dtSynch->synch);
-  p->state->id = id;
-  p->state->lps = dtSynch->activeLPS;
-  p->state->outputs = outputs;
-  p->state->dtChanges = 0;
-  p->state->dtGlobalLP = id;
-  p->state->avgDt = 0;
-  p->state->t = &(dtSynch->t);
-  p->state->elapsed = &(dtSynch->elapsed);
-  p->state->simTime = ft-it;
   if (id == 0)
     {
       p->state->log = SD_SimulationLog (logFile);
@@ -286,7 +342,11 @@ QSS_DtState ()
   p->elapsed = 0;
   p->simTime = 0;
   p->dtChanges = 0;
+  p->lastChange = 0;
+  p->simSteps = 0;
   p->log = NULL;
+  p->dscMap = NULL;
+  p->qMap = NULL;
   return (p);
 }
 
@@ -302,7 +362,7 @@ QSS_freeDtState (QSS_dtState state)
 }
 
 void
-QSS_dtUpdate (QSS_dt dt)
+QSS_dtFinish (QSS_dt dt)
 {
   int ub = dt->state->outputs, i;
   for (i = 0; i < ub; i++)
@@ -314,14 +374,14 @@ QSS_dtUpdate (QSS_dt dt)
   if (dt->state->dtGlobalLP == dt->state->id)
     {
       dt->state->synch[0] = 1;
-      QSS_updateDt (dt);
+      QSS_dtUpdate (dt);
     }
 }
 
 bool
-QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable, double ct)
+QSS_dtLogOutput (QSS_dt dt, double Dq, double Dx, double Dt, int variable)
 {
-  return (dt->ops->logStep (dt, Dq, Dx, Dt, variable, ct));
+  return (dt->ops->logOutput (dt, Dq, Dx, Dt, variable));
 }
 
 double
@@ -330,15 +390,20 @@ QSS_dtValue (QSS_dt dt)
   return (dt->state->dt);
 }
 
+bool
+QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt)
+{
+  return (dt->ops->logStep (dt, Dq, Dx, Dt));
+}
+
 void
 QSS_dtCheck (QSS_dt dt)
 {
   if (dt->state->synch[0] == 1)
     {
-      QSS_updateDt (dt);
+      QSS_dtUpdate (dt);
     }
 }
-
 
 #else
 
@@ -360,7 +425,7 @@ QSS_freeDtSynch(QSS_dtSynch dtSynch)
 
 QSS_dt
 QSS_Dt (SD_DtSynch synch, double alpha, int outputs,
-	double *gblDtMin, int id, QSS_dtSynch dtSynch, double initDt, char *file, SD_Debug debug, double it, double ft)
+    double *gblDtMin, int id, QSS_dtSynch dtSynch, double initDt, char *file, SD_Debug debug, double it, double ft)
   {
     return (NULL);
   }
@@ -408,15 +473,27 @@ QSS_dtValue (QSS_dt dt)
   }
 
 bool
-QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable, double ct)
+QSS_dtLogOutput (QSS_dt dt, double Dq, double Dx, double Dt, int variable, double ct)
+  {
+    return TRUE;
+  }
+
+bool
+QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable)
   {
     return TRUE;
   }
 
 void
-QSS_dtSetTime (QSS_dt dt, double t)
-  {
-    return;
-  }
+QSS_dtFinish (QSS_dt dt)
+{
+  return;
+}
+
+void
+QSS_dtUpdate (QSS_dt dt)
+{
+  return;
+}
 
 #endif

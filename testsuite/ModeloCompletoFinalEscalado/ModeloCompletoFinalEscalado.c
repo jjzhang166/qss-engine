@@ -8,171 +8,172 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __lambda2_k = 0;
-double __capacitor2_C = 0;
-double __boost_panel1_panel_q = 0;
-double __boost_panel1_panel_Ac = 0;
-double __boost_panel1_panel_K = 0;
-double __boost_panel1_panel_K1 = 0;
-double __boost_panel1_panel_Ior = 0;
-double __boost_panel1_panel_Tref = 0;
-double __boost_panel1_panel_Eg = 0;
-double __boost_panel1_panel_Isc = 0;
-double __boost_panel1_panel_Rspv = 0;
-double __boost_panel1_panel_Tpv = 0;
-double __boost_panel1_panel_Irs = 0;
-int __reverse__boost_panel1_panel_Np = 0;
-int __boost_panel1_panel_Np = 0;
-int __reverse__boost_panel1_panel_Ns = 0;
-int __boost_panel1_panel_Ns = 0;
-double __boost_panel1_mmt1_Ts = 0;
-double __boost_panel1_mmt1_deltaVpvRefPanel = 0;
-double __boost_panel1_capacitor1_C = 0;
-double __boost_panel1_cont_pwm1_T = 0;
-double __boost_panel1_cont_pwm1_iTime = 0;
-double __boost_panel1_boost1_inductor_L = 0;
-double __boost_panel1_boost1_idealDiode_Ron = 0;
-double __boost_panel1_boost1_idealDiode_Goff = 0;
-double __boost_panel1_boost1_idealDiode_Vknee = 0;
-double __boost_panel1_boost1_idealDiode_useHeatPort = 0;
-double __boost_panel1_boost1_idealDiode_T = 0;
-double __boost_panel1_boost1_controlledIdealClosingSwitch_level = 0;
-double __boost_panel1_boost1_controlledIdealClosingSwitch_Ron = 0;
-double __boost_panel1_boost1_controlledIdealClosingSwitch_Goff = 0;
-double __boost_panel1_boost1_controlledIdealClosingSwitch_useHeatPort = 0;
-double __boost_panel1_boost1_controlledIdealClosingSwitch_T = 0;
-double __batteryAndBockBoost_bookBoostDB_inductor_L = 0;
-double __batteryAndBockBoost_bookBoostDB_idealDiode_Ron = 0;
-double __batteryAndBockBoost_bookBoostDB_idealDiode_Goff = 0;
-double __batteryAndBockBoost_bookBoostDB_idealDiode_Vknee = 0;
-double __batteryAndBockBoost_bookBoostDB_idealDiode_useHeatPort = 0;
-double __batteryAndBockBoost_bookBoostDB_idealDiode_T = 0;
-double __batteryAndBockBoost_bookBoostDB_idealDiode1_Ron = 0;
-double __batteryAndBockBoost_bookBoostDB_idealDiode1_Goff = 0;
-double __batteryAndBockBoost_bookBoostDB_idealDiode1_Vknee = 0;
-double __batteryAndBockBoost_bookBoostDB_idealDiode1_useHeatPort = 0;
-double __batteryAndBockBoost_bookBoostDB_idealDiode1_T = 0;
-double __batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_Ron = 0;
-double __batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_Goff = 0;
-double __batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_useHeatPort = 0;
-double __batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_T = 0;
-double __batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_Ron = 0;
-double __batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_Goff = 0;
-double __batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_useHeatPort = 0;
-double __batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_T = 0;
-double __batteryAndBockBoost_const_k = 0;
-double __batteryAndBockBoost_bookBoostPWMcontrol1_Kp = 0;
-double __batteryAndBockBoost_bookBoostPWMcontrol1_Ki = 0;
-double __batteryAndBockBoost_bookBoostPWMcontrol1_T = 0;
-double __batteryAndBockBoost_bookBoostPWMcontrol1_iTime = 0;
-double __batteryAndBockBoost_voltageControl_Kp = 0;
-double __batteryAndBockBoost_voltageControl_Ki = 0;
-double __batteryAndBockBoost_voltageControl_Imax = 0;
-double __batteryAndBockBoost_battery_E0 = 0;
-double __batteryAndBockBoost_battery_Q = 0;
-double __batteryAndBockBoost_battery_A = 0;
-double __batteryAndBockBoost_battery_B = 0;
-double __batteryAndBockBoost_battery_K = 0;
-double __batteryAndBockBoost_battery_R = 0;
-double __batteryAndBockBoost_battery_SoC0 = 0;
-double __batteryAndBockBoost_battery1_E0 = 0;
-double __batteryAndBockBoost_battery1_Q = 0;
-double __batteryAndBockBoost_battery1_A = 0;
-double __batteryAndBockBoost_battery1_B = 0;
-double __batteryAndBockBoost_battery1_K = 0;
-double __batteryAndBockBoost_battery1_R = 0;
-double __batteryAndBockBoost_battery1_SoC0 = 0;
-double __batteryAndBockBoost_battery2_E0 = 0;
-double __batteryAndBockBoost_battery2_Q = 0;
-double __batteryAndBockBoost_battery2_A = 0;
-double __batteryAndBockBoost_battery2_B = 0;
-double __batteryAndBockBoost_battery2_K = 0;
-double __batteryAndBockBoost_battery2_R = 0;
-double __batteryAndBockBoost_battery2_SoC0 = 0;
-double __boost_panel2_panel_q = 0;
-double __boost_panel2_panel_Ac = 0;
-double __boost_panel2_panel_K = 0;
-double __boost_panel2_panel_K1 = 0;
-double __boost_panel2_panel_Ior = 0;
-double __boost_panel2_panel_Tref = 0;
-double __boost_panel2_panel_Eg = 0;
-double __boost_panel2_panel_Isc = 0;
-double __boost_panel2_panel_Rspv = 0;
-double __boost_panel2_panel_Tpv = 0;
-double __boost_panel2_panel_Irs = 0;
-int __reverse__boost_panel2_panel_Np = 0;
-int __boost_panel2_panel_Np = 0;
-int __reverse__boost_panel2_panel_Ns = 0;
-int __boost_panel2_panel_Ns = 0;
-double __boost_panel2_mmt1_Ts = 0;
-double __boost_panel2_mmt1_deltaVpvRefPanel = 0;
-double __boost_panel2_capacitor1_C = 0;
-double __boost_panel2_cont_pwm1_T = 0;
-double __boost_panel2_cont_pwm1_iTime = 0;
-double __boost_panel2_boost1_inductor_L = 0;
-double __boost_panel2_boost1_idealDiode_Ron = 0;
-double __boost_panel2_boost1_idealDiode_Goff = 0;
-double __boost_panel2_boost1_idealDiode_Vknee = 0;
-double __boost_panel2_boost1_idealDiode_useHeatPort = 0;
-double __boost_panel2_boost1_idealDiode_T = 0;
-double __boost_panel2_boost1_controlledIdealClosingSwitch_level = 0;
-double __boost_panel2_boost1_controlledIdealClosingSwitch_Ron = 0;
-double __boost_panel2_boost1_controlledIdealClosingSwitch_Goff = 0;
-double __boost_panel2_boost1_controlledIdealClosingSwitch_useHeatPort = 0;
-double __boost_panel2_boost1_controlledIdealClosingSwitch_T = 0;
-double __algSuperv_SOCmax = 0;
-double __algSuperv_SOCmin = 0;
-double __algSuperv_PminElect = 0;
-double __algSuperv_PminFC = 0;
-double __algSuperv_histelect = 0;
-double __algSuperv_histFC = 0;
-double __lambda1_k = 0;
-double __fCellAndElectro_fuellCell_React0 = 0;
-double __fCellAndElectro_fuellCell_p_H2 = 0;
-double __fCellAndElectro_fuellCell_p_O2 = 0;
-double __fCellAndElectro_fuellCell_Nc = 0;
-double __fCellAndElectro_fuellCell_R = 0;
-double __fCellAndElectro_fuellCell_F = 0;
-double __fCellAndElectro_fuellCell_ke = 0;
-double __fCellAndElectro_fuellCell_deltaG = 0;
-double __fCellAndElectro_fuellCell_ne = 0;
-double __fCellAndElectro_fuellCell_nu_0 = 0;
-double __fCellAndElectro_fuellCell_a = 0;
-double __fCellAndElectro_fuellCell_I_limit = 0;
-double __fCellAndElectro_fuellCell_T = 0;
-double __fCellAndElectro_fuellCell_MH2 = 0;
-double __fCellAndElectro_tanque_R = 0;
-double __fCellAndElectro_tanque_T = 0;
-double __fCellAndElectro_tanque_V = 0;
-double __fCellAndElectro_electComp_electrolizadorAnda1_F = 0;
-double __fCellAndElectro_electComp_electrolizadorAnda1_Urev = 0;
-double __fCellAndElectro_electComp_electrolizadorAnda1_r1 = 0;
-double __fCellAndElectro_electComp_electrolizadorAnda1_r2 = 0;
-double __fCellAndElectro_electComp_electrolizadorAnda1_r3 = 0;
-double __fCellAndElectro_electComp_electrolizadorAnda1_s1 = 0;
-double __fCellAndElectro_electComp_electrolizadorAnda1_s2 = 0;
-double __fCellAndElectro_electComp_electrolizadorAnda1_s3 = 0;
-double __fCellAndElectro_electComp_electrolizadorAnda1_t1 = 0;
-double __fCellAndElectro_electComp_electrolizadorAnda1_t2 = 0;
-double __fCellAndElectro_electComp_electrolizadorAnda1_t3 = 0;
-double __fCellAndElectro_electComp_electrolizadorAnda1_A = 0;
-double __fCellAndElectro_electComp_electrolizadorAnda1_nc = 0;
-double __fCellAndElectro_electComp_electrolizadorAnda1_T = 0;
-double __fCellAndElectro_electComp_compresor_R = 0;
-double __fCellAndElectro_electComp_compresor_k = 0;
-double __fCellAndElectro_electComp_compresor_nu_iso = 0;
-double __fCellAndElectro_electComp_compresor_nu_m = 0;
-double __fCellAndElectro_electComp_compresor_T = 0;
-double __fCellAndElectro_electComp_compresor_p_elect = 0;
-double __resistor_R = 0;
-double __resistor_T_ref = 0;
-double __resistor_alpha = 0;
-double __resistor_useHeatPort = 0;
-double __resistor_T = 0;
-double __inductor_L = 0;
+double __PAR_lambda2_k = 0;
+double __PAR_capacitor2_C = 0;
+double __PAR_boost_panel1_panel_q = 0;
+double __PAR_boost_panel1_panel_Ac = 0;
+double __PAR_boost_panel1_panel_K = 0;
+double __PAR_boost_panel1_panel_K1 = 0;
+double __PAR_boost_panel1_panel_Ior = 0;
+double __PAR_boost_panel1_panel_Tref = 0;
+double __PAR_boost_panel1_panel_Eg = 0;
+double __PAR_boost_panel1_panel_Isc = 0;
+double __PAR_boost_panel1_panel_Rspv = 0;
+double __PAR_boost_panel1_panel_Tpv = 0;
+double __PAR_boost_panel1_panel_Irs = 0;
+int __reverse__PAR_boost_panel1_panel_Np = 0;
+int __PAR_boost_panel1_panel_Np = 0;
+int __reverse__PAR_boost_panel1_panel_Ns = 0;
+int __PAR_boost_panel1_panel_Ns = 0;
+double __PAR_boost_panel1_mmt1_Ts = 0;
+double __PAR_boost_panel1_mmt1_deltaVpvRefPanel = 0;
+double __PAR_boost_panel1_capacitor1_C = 0;
+double __PAR_boost_panel1_cont_pwm1_T = 0;
+double __PAR_boost_panel1_cont_pwm1_iTime = 0;
+double __PAR_boost_panel1_boost1_inductor_L = 0;
+double __PAR_boost_panel1_boost1_idealDiode_Ron = 0;
+double __PAR_boost_panel1_boost1_idealDiode_Goff = 0;
+double __PAR_boost_panel1_boost1_idealDiode_Vknee = 0;
+double __PAR_boost_panel1_boost1_idealDiode_useHeatPort = 0;
+double __PAR_boost_panel1_boost1_idealDiode_T = 0;
+double __PAR_boost_panel1_boost1_controlledIdealClosingSwitch_level = 0;
+double __PAR_boost_panel1_boost1_controlledIdealClosingSwitch_Ron = 0;
+double __PAR_boost_panel1_boost1_controlledIdealClosingSwitch_Goff = 0;
+double __PAR_boost_panel1_boost1_controlledIdealClosingSwitch_useHeatPort = 0;
+double __PAR_boost_panel1_boost1_controlledIdealClosingSwitch_T = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_inductor_L = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealDiode_Ron = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealDiode_Goff = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealDiode_Vknee = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealDiode_useHeatPort = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealDiode_T = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealDiode1_Ron = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealDiode1_Goff = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealDiode1_Vknee = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealDiode1_useHeatPort = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealDiode1_T = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_Ron = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_Goff = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_useHeatPort = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_T = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_Ron = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_Goff = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_useHeatPort = 0;
+double __PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_T = 0;
+double __PAR_batteryAndBockBoost_const_k = 0;
+double __PAR_batteryAndBockBoost_bookBoostPWMcontrol1_Kp = 0;
+double __PAR_batteryAndBockBoost_bookBoostPWMcontrol1_Ki = 0;
+double __PAR_batteryAndBockBoost_bookBoostPWMcontrol1_T = 0;
+double __PAR_batteryAndBockBoost_bookBoostPWMcontrol1_iTime = 0;
+double __PAR_batteryAndBockBoost_voltageControl_Kp = 0;
+double __PAR_batteryAndBockBoost_voltageControl_Ki = 0;
+double __PAR_batteryAndBockBoost_voltageControl_Imax = 0;
+double __PAR_batteryAndBockBoost_battery_E0 = 0;
+double __PAR_batteryAndBockBoost_battery_Q = 0;
+double __PAR_batteryAndBockBoost_battery_A = 0;
+double __PAR_batteryAndBockBoost_battery_B = 0;
+double __PAR_batteryAndBockBoost_battery_K = 0;
+double __PAR_batteryAndBockBoost_battery_R = 0;
+double __PAR_batteryAndBockBoost_battery_SoC0 = 0;
+double __PAR_batteryAndBockBoost_battery1_E0 = 0;
+double __PAR_batteryAndBockBoost_battery1_Q = 0;
+double __PAR_batteryAndBockBoost_battery1_A = 0;
+double __PAR_batteryAndBockBoost_battery1_B = 0;
+double __PAR_batteryAndBockBoost_battery1_K = 0;
+double __PAR_batteryAndBockBoost_battery1_R = 0;
+double __PAR_batteryAndBockBoost_battery1_SoC0 = 0;
+double __PAR_batteryAndBockBoost_battery2_E0 = 0;
+double __PAR_batteryAndBockBoost_battery2_Q = 0;
+double __PAR_batteryAndBockBoost_battery2_A = 0;
+double __PAR_batteryAndBockBoost_battery2_B = 0;
+double __PAR_batteryAndBockBoost_battery2_K = 0;
+double __PAR_batteryAndBockBoost_battery2_R = 0;
+double __PAR_batteryAndBockBoost_battery2_SoC0 = 0;
+double __PAR_boost_panel2_panel_q = 0;
+double __PAR_boost_panel2_panel_Ac = 0;
+double __PAR_boost_panel2_panel_K = 0;
+double __PAR_boost_panel2_panel_K1 = 0;
+double __PAR_boost_panel2_panel_Ior = 0;
+double __PAR_boost_panel2_panel_Tref = 0;
+double __PAR_boost_panel2_panel_Eg = 0;
+double __PAR_boost_panel2_panel_Isc = 0;
+double __PAR_boost_panel2_panel_Rspv = 0;
+double __PAR_boost_panel2_panel_Tpv = 0;
+double __PAR_boost_panel2_panel_Irs = 0;
+int __reverse__PAR_boost_panel2_panel_Np = 0;
+int __PAR_boost_panel2_panel_Np = 0;
+int __reverse__PAR_boost_panel2_panel_Ns = 0;
+int __PAR_boost_panel2_panel_Ns = 0;
+double __PAR_boost_panel2_mmt1_Ts = 0;
+double __PAR_boost_panel2_mmt1_deltaVpvRefPanel = 0;
+double __PAR_boost_panel2_capacitor1_C = 0;
+double __PAR_boost_panel2_cont_pwm1_T = 0;
+double __PAR_boost_panel2_cont_pwm1_iTime = 0;
+double __PAR_boost_panel2_boost1_inductor_L = 0;
+double __PAR_boost_panel2_boost1_idealDiode_Ron = 0;
+double __PAR_boost_panel2_boost1_idealDiode_Goff = 0;
+double __PAR_boost_panel2_boost1_idealDiode_Vknee = 0;
+double __PAR_boost_panel2_boost1_idealDiode_useHeatPort = 0;
+double __PAR_boost_panel2_boost1_idealDiode_T = 0;
+double __PAR_boost_panel2_boost1_controlledIdealClosingSwitch_level = 0;
+double __PAR_boost_panel2_boost1_controlledIdealClosingSwitch_Ron = 0;
+double __PAR_boost_panel2_boost1_controlledIdealClosingSwitch_Goff = 0;
+double __PAR_boost_panel2_boost1_controlledIdealClosingSwitch_useHeatPort = 0;
+double __PAR_boost_panel2_boost1_controlledIdealClosingSwitch_T = 0;
+double __PAR_algSuperv_SOCmax = 0;
+double __PAR_algSuperv_SOCmin = 0;
+double __PAR_algSuperv_PminElect = 0;
+double __PAR_algSuperv_PminFC = 0;
+double __PAR_algSuperv_histelect = 0;
+double __PAR_algSuperv_histFC = 0;
+double __PAR_lambda1_k = 0;
+double __PAR_fCellAndElectro_fuellCell_React0 = 0;
+double __PAR_fCellAndElectro_fuellCell_p_H2 = 0;
+double __PAR_fCellAndElectro_fuellCell_p_O2 = 0;
+double __PAR_fCellAndElectro_fuellCell_Nc = 0;
+double __PAR_fCellAndElectro_fuellCell_R = 0;
+double __PAR_fCellAndElectro_fuellCell_F = 0;
+double __PAR_fCellAndElectro_fuellCell_ke = 0;
+double __PAR_fCellAndElectro_fuellCell_deltaG = 0;
+double __PAR_fCellAndElectro_fuellCell_ne = 0;
+double __PAR_fCellAndElectro_fuellCell_nu_0 = 0;
+double __PAR_fCellAndElectro_fuellCell_a = 0;
+double __PAR_fCellAndElectro_fuellCell_I_limit = 0;
+double __PAR_fCellAndElectro_fuellCell_T = 0;
+double __PAR_fCellAndElectro_fuellCell_MH2 = 0;
+double __PAR_fCellAndElectro_tanque_R = 0;
+double __PAR_fCellAndElectro_tanque_T = 0;
+double __PAR_fCellAndElectro_tanque_V = 0;
+double __PAR_fCellAndElectro_electComp_electrolizadorAnda1_F = 0;
+double __PAR_fCellAndElectro_electComp_electrolizadorAnda1_Urev = 0;
+double __PAR_fCellAndElectro_electComp_electrolizadorAnda1_r1 = 0;
+double __PAR_fCellAndElectro_electComp_electrolizadorAnda1_r2 = 0;
+double __PAR_fCellAndElectro_electComp_electrolizadorAnda1_r3 = 0;
+double __PAR_fCellAndElectro_electComp_electrolizadorAnda1_s1 = 0;
+double __PAR_fCellAndElectro_electComp_electrolizadorAnda1_s2 = 0;
+double __PAR_fCellAndElectro_electComp_electrolizadorAnda1_s3 = 0;
+double __PAR_fCellAndElectro_electComp_electrolizadorAnda1_t1 = 0;
+double __PAR_fCellAndElectro_electComp_electrolizadorAnda1_t2 = 0;
+double __PAR_fCellAndElectro_electComp_electrolizadorAnda1_t3 = 0;
+double __PAR_fCellAndElectro_electComp_electrolizadorAnda1_A = 0;
+double __PAR_fCellAndElectro_electComp_electrolizadorAnda1_nc = 0;
+double __PAR_fCellAndElectro_electComp_electrolizadorAnda1_T = 0;
+double __PAR_fCellAndElectro_electComp_compresor_R = 0;
+double __PAR_fCellAndElectro_electComp_compresor_k = 0;
+double __PAR_fCellAndElectro_electComp_compresor_nu_iso = 0;
+double __PAR_fCellAndElectro_electComp_compresor_nu_m = 0;
+double __PAR_fCellAndElectro_electComp_compresor_T = 0;
+double __PAR_fCellAndElectro_electComp_compresor_p_elect = 0;
+double __PAR_resistor_R = 0;
+double __PAR_resistor_T_ref = 0;
+double __PAR_resistor_alpha = 0;
+double __PAR_resistor_useHeatPort = 0;
+double __PAR_resistor_T = 0;
+double __PAR_inductor_L = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -638,22 +639,22 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 		case 5:
 			alg[30] = 56.0-x[15];
 			alg[33] = 9.499999999999999555910790e-01*alg[30]+90.0*x[3];
-			zc[0] = alg[33]-(__batteryAndBockBoost_voltageControl_Imax);
+			zc[0] = alg[33]-(__PAR_batteryAndBockBoost_voltageControl_Imax);
 			return;
 		case 6:
 			alg[30] = 56.0-x[15];
 			alg[33] = 9.499999999999999555910790e-01*alg[30]+90.0*x[3];
-			zc[0] = alg[33]-(__batteryAndBockBoost_voltageControl_Imax);
+			zc[0] = alg[33]-(__PAR_batteryAndBockBoost_voltageControl_Imax);
 			return;
 		case 7:
 			alg[30] = 56.0-x[15];
 			alg[33] = 9.499999999999999555910790e-01*alg[30]+90.0*x[3];
-			zc[0] = alg[33]-(((-__batteryAndBockBoost_voltageControl_Imax)));
+			zc[0] = alg[33]-(((-__PAR_batteryAndBockBoost_voltageControl_Imax)));
 			return;
 		case 8:
 			alg[30] = 56.0-x[15];
 			alg[33] = 9.499999999999999555910790e-01*alg[30]+90.0*x[3];
-			zc[0] = alg[33]-(((-__batteryAndBockBoost_voltageControl_Imax)));
+			zc[0] = alg[33]-(((-__PAR_batteryAndBockBoost_voltageControl_Imax)));
 			return;
 		case 9:
 			zc[0] = t-(d[(53)]);
@@ -666,11 +667,11 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			return;
 		case 12:
 			alg[54] = (1.0-x[39]/6.000000000000000124900090e-03)*100.0;
-			zc[0] = alg[54]-(__algSuperv_SOCmax);
+			zc[0] = alg[54]-(__PAR_algSuperv_SOCmax);
 			return;
 		case 13:
 			alg[54] = (1.0-x[39]/6.000000000000000124900090e-03)*100.0;
-			zc[0] = alg[54]-(__algSuperv_SOCmax-(__algSuperv_SOCmax-__algSuperv_SOCmin)*__algSuperv_histelect);
+			zc[0] = alg[54]-(__PAR_algSuperv_SOCmax-(__PAR_algSuperv_SOCmax-__PAR_algSuperv_SOCmin)*__PAR_algSuperv_histelect);
 			return;
 		case 14:
 			alg[75] = (-x[15]*(1.0/(d[(29)])));
@@ -678,7 +679,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			alg[81] = (-alg[75])-alg[78];
 			alg[105] = x[15]*alg[81];
 			alg[108] = x[45]-alg[105];
-			zc[0] = alg[108]-(__algSuperv_PminElect);
+			zc[0] = alg[108]-(__PAR_algSuperv_PminElect);
 			return;
 		case 15:
 			alg[75] = (-x[15]*(1.0/(d[(29)])));
@@ -686,15 +687,15 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			alg[81] = (-alg[75])-alg[78];
 			alg[105] = x[15]*alg[81];
 			alg[108] = x[45]-alg[105];
-			zc[0] = alg[108]-(__algSuperv_PminElect);
+			zc[0] = alg[108]-(__PAR_algSuperv_PminElect);
 			return;
 		case 16:
 			alg[54] = (1.0-x[39]/6.000000000000000124900090e-03)*100.0;
-			zc[0] = alg[54]-(__algSuperv_SOCmin);
+			zc[0] = alg[54]-(__PAR_algSuperv_SOCmin);
 			return;
 		case 17:
 			alg[54] = (1.0-x[39]/6.000000000000000124900090e-03)*100.0;
-			zc[0] = alg[54]-(__algSuperv_SOCmin+(__algSuperv_SOCmax-__algSuperv_SOCmin)*__algSuperv_histFC);
+			zc[0] = alg[54]-(__PAR_algSuperv_SOCmin+(__PAR_algSuperv_SOCmax-__PAR_algSuperv_SOCmin)*__PAR_algSuperv_histFC);
 			return;
 		case 18:
 			alg[75] = (-x[15]*(1.0/(d[(29)])));
@@ -702,7 +703,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			alg[81] = (-alg[75])-alg[78];
 			alg[105] = x[15]*alg[81];
 			alg[108] = x[45]-alg[105];
-			zc[0] = ((-alg[108]))-(__algSuperv_PminFC);
+			zc[0] = ((-alg[108]))-(__PAR_algSuperv_PminFC);
 			return;
 		case 19:
 			alg[75] = (-x[15]*(1.0/(d[(29)])));
@@ -710,7 +711,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			alg[81] = (-alg[75])-alg[78];
 			alg[105] = x[15]*alg[81];
 			alg[108] = x[45]-alg[105];
-			zc[0] = ((-alg[108]))-(__algSuperv_PminFC);
+			zc[0] = ((-alg[108]))-(__PAR_algSuperv_PminFC);
 			return;
 		case 20:
 			zc[0] = t-(1.199999999999999955591079e+00);
@@ -735,11 +736,11 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			return;
 		case 26:
 			alg[9] = d[(7)];
-			zc[0] = alg[9]-(__boost_panel1_boost1_controlledIdealClosingSwitch_level);
+			zc[0] = alg[9]-(__PAR_boost_panel1_boost1_controlledIdealClosingSwitch_level);
 			return;
 		case 27:
 			alg[9] = d[(7)];
-			zc[0] = alg[9]-(__boost_panel1_boost1_controlledIdealClosingSwitch_level);
+			zc[0] = alg[9]-(__PAR_boost_panel1_boost1_controlledIdealClosingSwitch_level);
 			return;
 		case 28:
 			alg[15] = (-x[33]);
@@ -799,11 +800,11 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			return;
 		case 41:
 			alg[66] = d[(22)];
-			zc[0] = alg[66]-(__boost_panel2_boost1_controlledIdealClosingSwitch_level);
+			zc[0] = alg[66]-(__PAR_boost_panel2_boost1_controlledIdealClosingSwitch_level);
 			return;
 		case 42:
 			alg[66] = d[(22)];
-			zc[0] = alg[66]-(__boost_panel2_boost1_controlledIdealClosingSwitch_level);
+			zc[0] = alg[66]-(__PAR_boost_panel2_boost1_controlledIdealClosingSwitch_level);
 			return;
 	}
 }
@@ -814,30 +815,30 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 	switch(i)
 	{
 		case 0:
-			d[(50)] = t+__boost_panel1_mmt1_Ts;
+			d[(50)] = t+__PAR_boost_panel1_mmt1_Ts;
 			d[(1)] = d[(0)];
 			d[(0)] = x[0];
 			d[(2)] = d[(3)];
 			d[(3)] = x[24];
 			d[(4)] = d[(3)]-d[(2)];
 			d[(5)] = d[(0)]-d[(1)];
-	if(fabs(d[(4)])>1.000000000000000055511151e-01*__boost_panel1_mmt1_deltaVpvRefPanel)
+	if(fabs(d[(4)])>1.000000000000000055511151e-01*__PAR_boost_panel1_mmt1_deltaVpvRefPanel)
 	{
 	if(fabs(d[(5)])>2.000000000000000111022302e-01)
 	{
 	if(d[(5)]/d[(4)]>0.0)
 	{
-			d[(6)] = d[(6)]+__boost_panel1_mmt1_deltaVpvRefPanel;
+			d[(6)] = d[(6)]+__PAR_boost_panel1_mmt1_deltaVpvRefPanel;
 	}
 	if(d[(5)]/d[(4)]<0.0)
 	{
-			d[(6)] = d[(6)]-__boost_panel1_mmt1_deltaVpvRefPanel;
+			d[(6)] = d[(6)]-__PAR_boost_panel1_mmt1_deltaVpvRefPanel;
 	}
 	}
 	}
 			return;
 		case 1:
-			d[(51)] = t+__boost_panel1_cont_pwm1_T;
+			d[(51)] = t+__PAR_boost_panel1_cont_pwm1_T;
 			alg[6] = d[(6)];
 			d[(8)] = 8.499999999999999777955395e-01-(alg[6]-x[24])*1.000000000000000055511151e-01;
 	if(d[(8)]>9.799999999999999822364316e-01)
@@ -848,21 +849,21 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 	{
 			d[(8)] = 2.999999999999999888977698e-01;
 	}
-			d[(9)] = t+__boost_panel1_cont_pwm1_T*d[(8)];
+			d[(9)] = t+__PAR_boost_panel1_cont_pwm1_T*d[(8)];
 			d[(7)] = 1.0;
 			return;
 		case 2:
 			d[(7)] = 0.0;
 			return;
 		case 3:
-			d[(52)] = t+__batteryAndBockBoost_bookBoostPWMcontrol1_T;
+			d[(52)] = t+__PAR_batteryAndBockBoost_bookBoostPWMcontrol1_T;
 			alg[15] = (-x[33]);
 			alg[30] = 56.0-x[15];
 			alg[33] = 9.499999999999999555910790e-01*alg[30]+90.0*x[3];
 			alg[36] = d[(13)]*alg[33]+d[(14)];
 			alg[87] = alg[15];
 			alg[93] = alg[36]-(-alg[87]);
-			d[(11)] = 5.000000000000000000000000e-01+__batteryAndBockBoost_bookBoostPWMcontrol1_Kp*alg[93]+__batteryAndBockBoost_bookBoostPWMcontrol1_Ki*x[30];
+			d[(11)] = 5.000000000000000000000000e-01+__PAR_batteryAndBockBoost_bookBoostPWMcontrol1_Kp*alg[93]+__PAR_batteryAndBockBoost_bookBoostPWMcontrol1_Ki*x[30];
 	if(d[(11)]>9.799999999999999822364316e-01)
 	{
 			d[(11)] = 9.799999999999999822364316e-01;
@@ -871,7 +872,7 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 	{
 			d[(11)] = 1.000000000000000055511151e-01;
 	}
-			d[(10)] = t+__batteryAndBockBoost_bookBoostPWMcontrol1_T*d[(11)];
+			d[(10)] = t+__PAR_batteryAndBockBoost_bookBoostPWMcontrol1_T*d[(11)];
 			d[(12)] = 1.0;
 			return;
 		case 4:
@@ -879,37 +880,37 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 			return;
 		case 5:
 			d[(13)] = 0.0;
-			d[(14)] = __batteryAndBockBoost_voltageControl_Imax;
+			d[(14)] = __PAR_batteryAndBockBoost_voltageControl_Imax;
 			return;
 		case 8:
 			d[(13)] = 1.0;
 			d[(14)] = 0.0;
 			return;
 		case 9:
-			d[(53)] = t+__boost_panel2_mmt1_Ts;
+			d[(53)] = t+__PAR_boost_panel2_mmt1_Ts;
 			d[(16)] = d[(15)];
 			d[(15)] = x[6];
 			d[(17)] = d[(18)];
 			d[(18)] = x[18];
 			d[(19)] = d[(18)]-d[(17)];
 			d[(20)] = d[(15)]-d[(16)];
-	if(fabs(d[(19)])>1.000000000000000055511151e-01*__boost_panel2_mmt1_deltaVpvRefPanel)
+	if(fabs(d[(19)])>1.000000000000000055511151e-01*__PAR_boost_panel2_mmt1_deltaVpvRefPanel)
 	{
 	if(fabs(d[(20)])>2.000000000000000111022302e-01)
 	{
 	if(d[(20)]/d[(19)]>0.0)
 	{
-			d[(21)] = d[(21)]+__boost_panel2_mmt1_deltaVpvRefPanel;
+			d[(21)] = d[(21)]+__PAR_boost_panel2_mmt1_deltaVpvRefPanel;
 	}
 	if(d[(20)]/d[(19)]<0.0)
 	{
-			d[(21)] = d[(21)]-__boost_panel2_mmt1_deltaVpvRefPanel;
+			d[(21)] = d[(21)]-__PAR_boost_panel2_mmt1_deltaVpvRefPanel;
 	}
 	}
 	}
 			return;
 		case 10:
-			d[(54)] = t+__boost_panel2_cont_pwm1_T;
+			d[(54)] = t+__PAR_boost_panel2_cont_pwm1_T;
 			alg[63] = d[(21)];
 			d[(23)] = 8.499999999999999777955395e-01-(alg[63]-x[18])*1.000000000000000055511151e-01;
 	if(d[(23)]>9.799999999999999822364316e-01)
@@ -920,7 +921,7 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 	{
 			d[(23)] = 2.999999999999999888977698e-01;
 	}
-			d[(24)] = t+__boost_panel2_cont_pwm1_T*d[(23)];
+			d[(24)] = t+__PAR_boost_panel2_cont_pwm1_T*d[(23)];
 			d[(22)] = 1.0;
 			return;
 		case 11:
@@ -1021,7 +1022,7 @@ MOD_handlerNeg(int i, double *x, double *d, double *alg, double t)
 			return;
 		case 7:
 			d[(13)] = 0.0;
-			d[(14)] = ((-__batteryAndBockBoost_voltageControl_Imax));
+			d[(14)] = ((-__PAR_batteryAndBockBoost_voltageControl_Imax));
 			return;
 		case 13:
 			d[(26)] = 0.0;
@@ -1129,164 +1130,164 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__lambda2_k = 100.0;
-	__capacitor2_C = 5.000000000000000104083409e-03;
-	__boost_panel1_panel_q = 1.599999999999999912245234e-19;
-	__boost_panel1_panel_Ac = 1.600000000000000088817842e+00;
-	__boost_panel1_panel_K = 1.380499999999999856556809e-23;
-	__boost_panel1_panel_K1 = 5.531999999999999591271393e-03;
-	__boost_panel1_panel_Ior = 1.064699999999999945149930e-06;
-	__boost_panel1_panel_Tref = 303.0;
-	__boost_panel1_panel_Eg = 1.100000000000000088817842e+00;
-	__boost_panel1_panel_Isc = 8.509999999999999786837179e+00;
-	__boost_panel1_panel_Rspv = 1.000000000000000020816682e-02;
-	__boost_panel1_panel_Tpv = 273.0+25.0;
-	__boost_panel1_panel_Irs = __boost_panel1_panel_Ior*((pow((__boost_panel1_panel_Tpv/__boost_panel1_panel_Tref),3.0)))*exp(__boost_panel1_panel_q*__boost_panel1_panel_Eg*(1.0/__boost_panel1_panel_Tref-1.0/__boost_panel1_panel_Tpv)/__boost_panel1_panel_K/__boost_panel1_panel_Ac);
-	__boost_panel1_panel_Np = 1.0;
-	__boost_panel1_panel_Ns = 60.0;
-	__boost_panel1_mmt1_Ts = 1.000000000000000055511151e-01;
-	__boost_panel1_mmt1_deltaVpvRefPanel = 5.000000000000000000000000e-01;
-	__boost_panel1_capacitor1_C = 4.699999999999999859313926e-04;
-	__boost_panel1_cont_pwm1_T = 1.000000000000000047921736e-04;
-	__boost_panel1_cont_pwm1_iTime = 1.100000000000000056102041e-06;
-	__boost_panel1_boost1_inductor_L = 1.499999999999999944488849e-02;
-	__boost_panel1_boost1_idealDiode_Ron = 1.000000000000000081803054e-05;
-	__boost_panel1_boost1_idealDiode_Goff = 1.000000000000000081803054e-05;
-	__boost_panel1_boost1_idealDiode_Vknee = 0.0;
-	__boost_panel1_boost1_idealDiode_useHeatPort = 0.0;
-	__boost_panel1_boost1_idealDiode_T = 2.931499999999999772626325e+02;
-	__boost_panel1_boost1_controlledIdealClosingSwitch_level = 5.000000000000000000000000e-01;
-	__boost_panel1_boost1_controlledIdealClosingSwitch_Ron = 1.000000000000000081803054e-05;
-	__boost_panel1_boost1_controlledIdealClosingSwitch_Goff = 1.000000000000000081803054e-05;
-	__boost_panel1_boost1_controlledIdealClosingSwitch_useHeatPort = 0.0;
-	__boost_panel1_boost1_controlledIdealClosingSwitch_T = 2.931499999999999772626325e+02;
-	__batteryAndBockBoost_bookBoostDB_inductor_L = 1.499999999999999944488849e-02;
-	__batteryAndBockBoost_bookBoostDB_idealDiode_Ron = 1.000000000000000081803054e-05;
-	__batteryAndBockBoost_bookBoostDB_idealDiode_Goff = 1.000000000000000081803054e-05;
-	__batteryAndBockBoost_bookBoostDB_idealDiode_Vknee = 0.0;
-	__batteryAndBockBoost_bookBoostDB_idealDiode_useHeatPort = 0.0;
-	__batteryAndBockBoost_bookBoostDB_idealDiode_T = 2.931499999999999772626325e+02;
-	__batteryAndBockBoost_bookBoostDB_idealDiode1_Ron = 1.000000000000000081803054e-05;
-	__batteryAndBockBoost_bookBoostDB_idealDiode1_Goff = 1.000000000000000081803054e-05;
-	__batteryAndBockBoost_bookBoostDB_idealDiode1_Vknee = 0.0;
-	__batteryAndBockBoost_bookBoostDB_idealDiode1_useHeatPort = 0.0;
-	__batteryAndBockBoost_bookBoostDB_idealDiode1_T = 2.931499999999999772626325e+02;
-	__batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_Ron = 1.000000000000000081803054e-05;
-	__batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_Goff = 1.000000000000000081803054e-05;
-	__batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_useHeatPort = 0.0;
-	__batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_T = 2.931499999999999772626325e+02;
-	__batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_Ron = 1.000000000000000081803054e-05;
-	__batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_Goff = 1.000000000000000081803054e-05;
-	__batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_useHeatPort = 0.0;
-	__batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_T = 2.931499999999999772626325e+02;
-	__batteryAndBockBoost_const_k = 56.0;
-	__batteryAndBockBoost_bookBoostPWMcontrol1_Kp = 3.0;
-	__batteryAndBockBoost_bookBoostPWMcontrol1_Ki = 0.0;
-	__batteryAndBockBoost_bookBoostPWMcontrol1_T = 5.000000000000000239608680e-05;
-	__batteryAndBockBoost_bookBoostPWMcontrol1_iTime = 0.0;
-	__batteryAndBockBoost_voltageControl_Kp = 9.499999999999999555910790e-01;
-	__batteryAndBockBoost_voltageControl_Ki = 90.0;
-	__batteryAndBockBoost_voltageControl_Imax = 17.0;
-	__batteryAndBockBoost_battery_E0 = 1.264630000000000009663381e+01;
-	__batteryAndBockBoost_battery_Q = 6.000000000000000124900090e-03;
-	__batteryAndBockBoost_battery_A = 6.600000000000000310862447e-01;
-	__batteryAndBockBoost_battery_B = 2.884610000000000127329258e+03;
-	__batteryAndBockBoost_battery_K = 3.300000000000000155431223e-01;
-	__batteryAndBockBoost_battery_R = 2.500000000000000000000000e-01;
-	__batteryAndBockBoost_battery_SoC0 = 4.150000000000000000000000e+01;
-	__batteryAndBockBoost_battery1_E0 = 1.264630000000000009663381e+01;
-	__batteryAndBockBoost_battery1_Q = 6.000000000000000124900090e-03;
-	__batteryAndBockBoost_battery1_A = 6.600000000000000310862447e-01;
-	__batteryAndBockBoost_battery1_B = 2.884610000000000127329258e+03;
-	__batteryAndBockBoost_battery1_K = 3.300000000000000155431223e-01;
-	__batteryAndBockBoost_battery1_R = 2.500000000000000000000000e-01;
-	__batteryAndBockBoost_battery1_SoC0 = 4.150000000000000000000000e+01;
-	__batteryAndBockBoost_battery2_E0 = 1.264630000000000009663381e+01;
-	__batteryAndBockBoost_battery2_Q = 6.000000000000000124900090e-03;
-	__batteryAndBockBoost_battery2_A = 6.600000000000000310862447e-01;
-	__batteryAndBockBoost_battery2_B = 2.884610000000000127329258e+03;
-	__batteryAndBockBoost_battery2_K = 3.300000000000000155431223e-01;
-	__batteryAndBockBoost_battery2_R = 2.500000000000000000000000e-01;
-	__batteryAndBockBoost_battery2_SoC0 = 4.150000000000000000000000e+01;
-	__boost_panel2_panel_q = 1.599999999999999912245234e-19;
-	__boost_panel2_panel_Ac = 1.600000000000000088817842e+00;
-	__boost_panel2_panel_K = 1.380499999999999856556809e-23;
-	__boost_panel2_panel_K1 = 5.531999999999999591271393e-03;
-	__boost_panel2_panel_Ior = 1.064699999999999945149930e-06;
-	__boost_panel2_panel_Tref = 303.0;
-	__boost_panel2_panel_Eg = 1.100000000000000088817842e+00;
-	__boost_panel2_panel_Isc = 8.509999999999999786837179e+00;
-	__boost_panel2_panel_Rspv = 1.000000000000000020816682e-02;
-	__boost_panel2_panel_Tpv = 273.0+25.0;
-	__boost_panel2_panel_Irs = __boost_panel2_panel_Ior*((pow((__boost_panel2_panel_Tpv/__boost_panel2_panel_Tref),3.0)))*exp(__boost_panel2_panel_q*__boost_panel2_panel_Eg*(1.0/__boost_panel2_panel_Tref-1.0/__boost_panel2_panel_Tpv)/__boost_panel2_panel_K/__boost_panel2_panel_Ac);
-	__boost_panel2_panel_Np = 1.0;
-	__boost_panel2_panel_Ns = 60.0;
-	__boost_panel2_mmt1_Ts = 1.000000000000000055511151e-01;
-	__boost_panel2_mmt1_deltaVpvRefPanel = 5.000000000000000000000000e-01;
-	__boost_panel2_capacitor1_C = 4.699999999999999859313926e-04;
-	__boost_panel2_cont_pwm1_T = 1.000000000000000047921736e-04;
-	__boost_panel2_cont_pwm1_iTime = 1.100000000000000056102041e-06;
-	__boost_panel2_boost1_inductor_L = 1.499999999999999944488849e-02;
-	__boost_panel2_boost1_idealDiode_Ron = 1.000000000000000081803054e-05;
-	__boost_panel2_boost1_idealDiode_Goff = 1.000000000000000081803054e-05;
-	__boost_panel2_boost1_idealDiode_Vknee = 0.0;
-	__boost_panel2_boost1_idealDiode_useHeatPort = 0.0;
-	__boost_panel2_boost1_idealDiode_T = 2.931499999999999772626325e+02;
-	__boost_panel2_boost1_controlledIdealClosingSwitch_level = 5.000000000000000000000000e-01;
-	__boost_panel2_boost1_controlledIdealClosingSwitch_Ron = 1.000000000000000081803054e-05;
-	__boost_panel2_boost1_controlledIdealClosingSwitch_Goff = 1.000000000000000081803054e-05;
-	__boost_panel2_boost1_controlledIdealClosingSwitch_useHeatPort = 0.0;
-	__boost_panel2_boost1_controlledIdealClosingSwitch_T = 2.931499999999999772626325e+02;
-	__algSuperv_SOCmax = 80.0;
-	__algSuperv_SOCmin = 40.0;
-	__algSuperv_PminElect = 200.0;
-	__algSuperv_PminFC = 200.0;
-	__algSuperv_histelect = 1.000000000000000055511151e-01;
-	__algSuperv_histFC = 1.000000000000000055511151e-01;
-	__lambda1_k = 70.0;
-	__fCellAndElectro_fuellCell_React0 = ((-1.052599999999999980104803e+00));
-	__fCellAndElectro_fuellCell_p_H2 = 2.999999999999999888977698e-01;
-	__fCellAndElectro_fuellCell_p_O2 = 1.0;
-	__fCellAndElectro_fuellCell_Nc = 47.0;
-	__fCellAndElectro_fuellCell_R = 8.314299999999999357669367e+00;
-	__fCellAndElectro_fuellCell_F = 96487.0;
-	__fCellAndElectro_fuellCell_ke = 8.499999999999999526420491e-04;
-	__fCellAndElectro_fuellCell_deltaG = ((-237154.0));
-	__fCellAndElectro_fuellCell_ne = 2.0;
-	__fCellAndElectro_fuellCell_nu_0 = 2.652299999999999968736120e+01;
-	__fCellAndElectro_fuellCell_a = 8.922399999999999775646131e-02;
-	__fCellAndElectro_fuellCell_I_limit = 75.0;
-	__fCellAndElectro_fuellCell_T = 298.0;
-	__fCellAndElectro_fuellCell_MH2 = 2.015999999999999996863620e-03;
-	__fCellAndElectro_tanque_R = 8.314000000000000056843419e+00;
-	__fCellAndElectro_tanque_T = 273.0+40.0;
-	__fCellAndElectro_tanque_V = 1.000000000000000055511151e-01;
-	__fCellAndElectro_electComp_electrolizadorAnda1_F = 96485.0;
-	__fCellAndElectro_electComp_electrolizadorAnda1_Urev = 1.229000000000000092370556e+00;
-	__fCellAndElectro_electComp_electrolizadorAnda1_r1 = 7.331000000000000114009496e-05;
-	__fCellAndElectro_electComp_electrolizadorAnda1_r2 = ((-1.107000000000000052608905e-07));
-	__fCellAndElectro_electComp_electrolizadorAnda1_r3 = 0.0;
-	__fCellAndElectro_electComp_electrolizadorAnda1_s1 = 1.585999999999999909849890e-01;
-	__fCellAndElectro_electComp_electrolizadorAnda1_s2 = 1.378000000000000101543773e-03;
-	__fCellAndElectro_electComp_electrolizadorAnda1_s3 = ((-1.605999999999999870150744e-05));
-	__fCellAndElectro_electComp_electrolizadorAnda1_t1 = 1.599000000000000074051876e-02;
-	__fCellAndElectro_electComp_electrolizadorAnda1_t2 = ((-1.302000000000000046185278e+00));
-	__fCellAndElectro_electComp_electrolizadorAnda1_t3 = 4.213000000000000113686838e+02;
-	__fCellAndElectro_electComp_electrolizadorAnda1_A = 2.500000000000000000000000e-01;
-	__fCellAndElectro_electComp_electrolizadorAnda1_nc = 1.0;
-	__fCellAndElectro_electComp_electrolizadorAnda1_T = 40.0;
-	__fCellAndElectro_electComp_compresor_R = 8.314000000000000056843419e+00;
-	__fCellAndElectro_electComp_compresor_k = 1.399999999999999911182158e+00;
-	__fCellAndElectro_electComp_compresor_nu_iso = 9.000000000000000222044605e-01;
-	__fCellAndElectro_electComp_compresor_nu_m = 8.000000000000000444089210e-01;
-	__fCellAndElectro_electComp_compresor_T = 273.0+40.0;
-	__fCellAndElectro_electComp_compresor_p_elect = 1.0;
-	__resistor_R = 100.0;
-	__resistor_T_ref = 3.001499999999999772626325e+02;
-	__resistor_alpha = 0.0;
-	__resistor_useHeatPort = 0.0;
-	__resistor_T = __resistor_T_ref;
-	__inductor_L = 1.000000000000000081803054e-05;
+	__PAR_lambda2_k = 100.0;
+	__PAR_capacitor2_C = 5.000000000000000104083409e-03;
+	__PAR_boost_panel1_panel_q = 1.599999999999999912245234e-19;
+	__PAR_boost_panel1_panel_Ac = 1.600000000000000088817842e+00;
+	__PAR_boost_panel1_panel_K = 1.380499999999999856556809e-23;
+	__PAR_boost_panel1_panel_K1 = 5.531999999999999591271393e-03;
+	__PAR_boost_panel1_panel_Ior = 1.064699999999999945149930e-06;
+	__PAR_boost_panel1_panel_Tref = 303.0;
+	__PAR_boost_panel1_panel_Eg = 1.100000000000000088817842e+00;
+	__PAR_boost_panel1_panel_Isc = 8.509999999999999786837179e+00;
+	__PAR_boost_panel1_panel_Rspv = 1.000000000000000020816682e-02;
+	__PAR_boost_panel1_panel_Tpv = 273.0+25.0;
+	__PAR_boost_panel1_panel_Irs = __PAR_boost_panel1_panel_Ior*((pow((__PAR_boost_panel1_panel_Tpv/__PAR_boost_panel1_panel_Tref),3.0)))*exp(__PAR_boost_panel1_panel_q*__PAR_boost_panel1_panel_Eg*(1.0/__PAR_boost_panel1_panel_Tref-1.0/__PAR_boost_panel1_panel_Tpv)/__PAR_boost_panel1_panel_K/__PAR_boost_panel1_panel_Ac);
+	__PAR_boost_panel1_panel_Np = 1.0;
+	__PAR_boost_panel1_panel_Ns = 60.0;
+	__PAR_boost_panel1_mmt1_Ts = 1.000000000000000055511151e-01;
+	__PAR_boost_panel1_mmt1_deltaVpvRefPanel = 5.000000000000000000000000e-01;
+	__PAR_boost_panel1_capacitor1_C = 4.699999999999999859313926e-04;
+	__PAR_boost_panel1_cont_pwm1_T = 1.000000000000000047921736e-04;
+	__PAR_boost_panel1_cont_pwm1_iTime = 1.100000000000000056102041e-06;
+	__PAR_boost_panel1_boost1_inductor_L = 1.499999999999999944488849e-02;
+	__PAR_boost_panel1_boost1_idealDiode_Ron = 1.000000000000000081803054e-05;
+	__PAR_boost_panel1_boost1_idealDiode_Goff = 1.000000000000000081803054e-05;
+	__PAR_boost_panel1_boost1_idealDiode_Vknee = 0.0;
+	__PAR_boost_panel1_boost1_idealDiode_useHeatPort = 0.0;
+	__PAR_boost_panel1_boost1_idealDiode_T = 2.931499999999999772626325e+02;
+	__PAR_boost_panel1_boost1_controlledIdealClosingSwitch_level = 5.000000000000000000000000e-01;
+	__PAR_boost_panel1_boost1_controlledIdealClosingSwitch_Ron = 1.000000000000000081803054e-05;
+	__PAR_boost_panel1_boost1_controlledIdealClosingSwitch_Goff = 1.000000000000000081803054e-05;
+	__PAR_boost_panel1_boost1_controlledIdealClosingSwitch_useHeatPort = 0.0;
+	__PAR_boost_panel1_boost1_controlledIdealClosingSwitch_T = 2.931499999999999772626325e+02;
+	__PAR_batteryAndBockBoost_bookBoostDB_inductor_L = 1.499999999999999944488849e-02;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealDiode_Ron = 1.000000000000000081803054e-05;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealDiode_Goff = 1.000000000000000081803054e-05;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealDiode_Vknee = 0.0;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealDiode_useHeatPort = 0.0;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealDiode_T = 2.931499999999999772626325e+02;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealDiode1_Ron = 1.000000000000000081803054e-05;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealDiode1_Goff = 1.000000000000000081803054e-05;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealDiode1_Vknee = 0.0;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealDiode1_useHeatPort = 0.0;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealDiode1_T = 2.931499999999999772626325e+02;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_Ron = 1.000000000000000081803054e-05;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_Goff = 1.000000000000000081803054e-05;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_useHeatPort = 0.0;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch1_T = 2.931499999999999772626325e+02;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_Ron = 1.000000000000000081803054e-05;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_Goff = 1.000000000000000081803054e-05;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_useHeatPort = 0.0;
+	__PAR_batteryAndBockBoost_bookBoostDB_idealClosingSwitch2_T = 2.931499999999999772626325e+02;
+	__PAR_batteryAndBockBoost_const_k = 56.0;
+	__PAR_batteryAndBockBoost_bookBoostPWMcontrol1_Kp = 3.0;
+	__PAR_batteryAndBockBoost_bookBoostPWMcontrol1_Ki = 0.0;
+	__PAR_batteryAndBockBoost_bookBoostPWMcontrol1_T = 5.000000000000000239608680e-05;
+	__PAR_batteryAndBockBoost_bookBoostPWMcontrol1_iTime = 0.0;
+	__PAR_batteryAndBockBoost_voltageControl_Kp = 9.499999999999999555910790e-01;
+	__PAR_batteryAndBockBoost_voltageControl_Ki = 90.0;
+	__PAR_batteryAndBockBoost_voltageControl_Imax = 17.0;
+	__PAR_batteryAndBockBoost_battery_E0 = 1.264630000000000009663381e+01;
+	__PAR_batteryAndBockBoost_battery_Q = 6.000000000000000124900090e-03;
+	__PAR_batteryAndBockBoost_battery_A = 6.600000000000000310862447e-01;
+	__PAR_batteryAndBockBoost_battery_B = 2.884610000000000127329258e+03;
+	__PAR_batteryAndBockBoost_battery_K = 3.300000000000000155431223e-01;
+	__PAR_batteryAndBockBoost_battery_R = 2.500000000000000000000000e-01;
+	__PAR_batteryAndBockBoost_battery_SoC0 = 4.150000000000000000000000e+01;
+	__PAR_batteryAndBockBoost_battery1_E0 = 1.264630000000000009663381e+01;
+	__PAR_batteryAndBockBoost_battery1_Q = 6.000000000000000124900090e-03;
+	__PAR_batteryAndBockBoost_battery1_A = 6.600000000000000310862447e-01;
+	__PAR_batteryAndBockBoost_battery1_B = 2.884610000000000127329258e+03;
+	__PAR_batteryAndBockBoost_battery1_K = 3.300000000000000155431223e-01;
+	__PAR_batteryAndBockBoost_battery1_R = 2.500000000000000000000000e-01;
+	__PAR_batteryAndBockBoost_battery1_SoC0 = 4.150000000000000000000000e+01;
+	__PAR_batteryAndBockBoost_battery2_E0 = 1.264630000000000009663381e+01;
+	__PAR_batteryAndBockBoost_battery2_Q = 6.000000000000000124900090e-03;
+	__PAR_batteryAndBockBoost_battery2_A = 6.600000000000000310862447e-01;
+	__PAR_batteryAndBockBoost_battery2_B = 2.884610000000000127329258e+03;
+	__PAR_batteryAndBockBoost_battery2_K = 3.300000000000000155431223e-01;
+	__PAR_batteryAndBockBoost_battery2_R = 2.500000000000000000000000e-01;
+	__PAR_batteryAndBockBoost_battery2_SoC0 = 4.150000000000000000000000e+01;
+	__PAR_boost_panel2_panel_q = 1.599999999999999912245234e-19;
+	__PAR_boost_panel2_panel_Ac = 1.600000000000000088817842e+00;
+	__PAR_boost_panel2_panel_K = 1.380499999999999856556809e-23;
+	__PAR_boost_panel2_panel_K1 = 5.531999999999999591271393e-03;
+	__PAR_boost_panel2_panel_Ior = 1.064699999999999945149930e-06;
+	__PAR_boost_panel2_panel_Tref = 303.0;
+	__PAR_boost_panel2_panel_Eg = 1.100000000000000088817842e+00;
+	__PAR_boost_panel2_panel_Isc = 8.509999999999999786837179e+00;
+	__PAR_boost_panel2_panel_Rspv = 1.000000000000000020816682e-02;
+	__PAR_boost_panel2_panel_Tpv = 273.0+25.0;
+	__PAR_boost_panel2_panel_Irs = __PAR_boost_panel2_panel_Ior*((pow((__PAR_boost_panel2_panel_Tpv/__PAR_boost_panel2_panel_Tref),3.0)))*exp(__PAR_boost_panel2_panel_q*__PAR_boost_panel2_panel_Eg*(1.0/__PAR_boost_panel2_panel_Tref-1.0/__PAR_boost_panel2_panel_Tpv)/__PAR_boost_panel2_panel_K/__PAR_boost_panel2_panel_Ac);
+	__PAR_boost_panel2_panel_Np = 1.0;
+	__PAR_boost_panel2_panel_Ns = 60.0;
+	__PAR_boost_panel2_mmt1_Ts = 1.000000000000000055511151e-01;
+	__PAR_boost_panel2_mmt1_deltaVpvRefPanel = 5.000000000000000000000000e-01;
+	__PAR_boost_panel2_capacitor1_C = 4.699999999999999859313926e-04;
+	__PAR_boost_panel2_cont_pwm1_T = 1.000000000000000047921736e-04;
+	__PAR_boost_panel2_cont_pwm1_iTime = 1.100000000000000056102041e-06;
+	__PAR_boost_panel2_boost1_inductor_L = 1.499999999999999944488849e-02;
+	__PAR_boost_panel2_boost1_idealDiode_Ron = 1.000000000000000081803054e-05;
+	__PAR_boost_panel2_boost1_idealDiode_Goff = 1.000000000000000081803054e-05;
+	__PAR_boost_panel2_boost1_idealDiode_Vknee = 0.0;
+	__PAR_boost_panel2_boost1_idealDiode_useHeatPort = 0.0;
+	__PAR_boost_panel2_boost1_idealDiode_T = 2.931499999999999772626325e+02;
+	__PAR_boost_panel2_boost1_controlledIdealClosingSwitch_level = 5.000000000000000000000000e-01;
+	__PAR_boost_panel2_boost1_controlledIdealClosingSwitch_Ron = 1.000000000000000081803054e-05;
+	__PAR_boost_panel2_boost1_controlledIdealClosingSwitch_Goff = 1.000000000000000081803054e-05;
+	__PAR_boost_panel2_boost1_controlledIdealClosingSwitch_useHeatPort = 0.0;
+	__PAR_boost_panel2_boost1_controlledIdealClosingSwitch_T = 2.931499999999999772626325e+02;
+	__PAR_algSuperv_SOCmax = 80.0;
+	__PAR_algSuperv_SOCmin = 40.0;
+	__PAR_algSuperv_PminElect = 200.0;
+	__PAR_algSuperv_PminFC = 200.0;
+	__PAR_algSuperv_histelect = 1.000000000000000055511151e-01;
+	__PAR_algSuperv_histFC = 1.000000000000000055511151e-01;
+	__PAR_lambda1_k = 70.0;
+	__PAR_fCellAndElectro_fuellCell_React0 = ((-1.052599999999999980104803e+00));
+	__PAR_fCellAndElectro_fuellCell_p_H2 = 2.999999999999999888977698e-01;
+	__PAR_fCellAndElectro_fuellCell_p_O2 = 1.0;
+	__PAR_fCellAndElectro_fuellCell_Nc = 47.0;
+	__PAR_fCellAndElectro_fuellCell_R = 8.314299999999999357669367e+00;
+	__PAR_fCellAndElectro_fuellCell_F = 96487.0;
+	__PAR_fCellAndElectro_fuellCell_ke = 8.499999999999999526420491e-04;
+	__PAR_fCellAndElectro_fuellCell_deltaG = ((-237154.0));
+	__PAR_fCellAndElectro_fuellCell_ne = 2.0;
+	__PAR_fCellAndElectro_fuellCell_nu_0 = 2.652299999999999968736120e+01;
+	__PAR_fCellAndElectro_fuellCell_a = 8.922399999999999775646131e-02;
+	__PAR_fCellAndElectro_fuellCell_I_limit = 75.0;
+	__PAR_fCellAndElectro_fuellCell_T = 298.0;
+	__PAR_fCellAndElectro_fuellCell_MH2 = 2.015999999999999996863620e-03;
+	__PAR_fCellAndElectro_tanque_R = 8.314000000000000056843419e+00;
+	__PAR_fCellAndElectro_tanque_T = 273.0+40.0;
+	__PAR_fCellAndElectro_tanque_V = 1.000000000000000055511151e-01;
+	__PAR_fCellAndElectro_electComp_electrolizadorAnda1_F = 96485.0;
+	__PAR_fCellAndElectro_electComp_electrolizadorAnda1_Urev = 1.229000000000000092370556e+00;
+	__PAR_fCellAndElectro_electComp_electrolizadorAnda1_r1 = 7.331000000000000114009496e-05;
+	__PAR_fCellAndElectro_electComp_electrolizadorAnda1_r2 = ((-1.107000000000000052608905e-07));
+	__PAR_fCellAndElectro_electComp_electrolizadorAnda1_r3 = 0.0;
+	__PAR_fCellAndElectro_electComp_electrolizadorAnda1_s1 = 1.585999999999999909849890e-01;
+	__PAR_fCellAndElectro_electComp_electrolizadorAnda1_s2 = 1.378000000000000101543773e-03;
+	__PAR_fCellAndElectro_electComp_electrolizadorAnda1_s3 = ((-1.605999999999999870150744e-05));
+	__PAR_fCellAndElectro_electComp_electrolizadorAnda1_t1 = 1.599000000000000074051876e-02;
+	__PAR_fCellAndElectro_electComp_electrolizadorAnda1_t2 = ((-1.302000000000000046185278e+00));
+	__PAR_fCellAndElectro_electComp_electrolizadorAnda1_t3 = 4.213000000000000113686838e+02;
+	__PAR_fCellAndElectro_electComp_electrolizadorAnda1_A = 2.500000000000000000000000e-01;
+	__PAR_fCellAndElectro_electComp_electrolizadorAnda1_nc = 1.0;
+	__PAR_fCellAndElectro_electComp_electrolizadorAnda1_T = 40.0;
+	__PAR_fCellAndElectro_electComp_compresor_R = 8.314000000000000056843419e+00;
+	__PAR_fCellAndElectro_electComp_compresor_k = 1.399999999999999911182158e+00;
+	__PAR_fCellAndElectro_electComp_compresor_nu_iso = 9.000000000000000222044605e-01;
+	__PAR_fCellAndElectro_electComp_compresor_nu_m = 8.000000000000000444089210e-01;
+	__PAR_fCellAndElectro_electComp_compresor_T = 273.0+40.0;
+	__PAR_fCellAndElectro_electComp_compresor_p_elect = 1.0;
+	__PAR_resistor_R = 100.0;
+	__PAR_resistor_T_ref = 3.001499999999999772626325e+02;
+	__PAR_resistor_alpha = 0.0;
+	__PAR_resistor_useHeatPort = 0.0;
+	__PAR_resistor_T = __PAR_resistor_T_ref;
+	__PAR_inductor_L = 1.000000000000000081803054e-05;
 	modelData->d[(26)] = 0.0;
 	modelData->d[(28)] = 0.0;
 	modelData->x[33] = 0.0;
@@ -1303,17 +1304,17 @@ QSS_data modelData = simulator->data;
 	modelData->d[(21)] = 36.0;
 	modelData->x[15] = 60.0;
 	modelData->d[(50)] = 0.0;
-	modelData->d[(51)] = __boost_panel1_cont_pwm1_iTime;
-	modelData->d[(52)] = __batteryAndBockBoost_bookBoostPWMcontrol1_iTime;
+	modelData->d[(51)] = __PAR_boost_panel1_cont_pwm1_iTime;
+	modelData->d[(52)] = __PAR_batteryAndBockBoost_bookBoostPWMcontrol1_iTime;
 	modelData->d[(53)] = 0.0;
-	modelData->d[(54)] = __boost_panel2_cont_pwm1_iTime;
+	modelData->d[(54)] = __PAR_boost_panel2_cont_pwm1_iTime;
 	modelData->x[12] = 800000.0;
 	modelData->x[9] = 0.0;
 	modelData->d[(29)] = 1005.0;
 	// Initialize model code.
-		modelData->x[36] = (1.0-__batteryAndBockBoost_battery_SoC0/100.0)*__batteryAndBockBoost_battery_Q;
-		modelData->x[42] = (1.0-__batteryAndBockBoost_battery1_SoC0/100.0)*__batteryAndBockBoost_battery1_Q;
-		modelData->x[39] = (1.0-__batteryAndBockBoost_battery2_SoC0/100.0)*__batteryAndBockBoost_battery2_Q;
+		modelData->x[36] = (1.0-__PAR_batteryAndBockBoost_battery_SoC0/100.0)*__PAR_batteryAndBockBoost_battery_Q;
+		modelData->x[42] = (1.0-__PAR_batteryAndBockBoost_battery1_SoC0/100.0)*__PAR_batteryAndBockBoost_battery1_Q;
+		modelData->x[39] = (1.0-__PAR_batteryAndBockBoost_battery2_SoC0/100.0)*__PAR_batteryAndBockBoost_battery2_Q;
 	modelData->nDS[0] = 1;
 	modelData->nDS[2] = 1;
 	modelData->nDS[15] = 1;

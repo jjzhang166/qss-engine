@@ -8,15 +8,16 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __a;
-double __b;
-double __c[1000];
-double __d[1000];
-double __I[1000];
-double __r[1000];
+double __PAR_a = 0;
+double __PAR_b = 0;
+double __PAR_c[1000];
+double __PAR_d[1000];
+double __PAR_I[1000];
+double __PAR_r[1000];
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -34,12 +35,12 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	j = i;
 	if(j >=0 && j <= 999)
 	{
-		dx[1] = 4.000000000000000083266727e-02*x[(j) * 3]*x[(j) * 3]+5.0*x[(j) * 3]+140.0-x[(j+1000) * 3]+__I[(j)];
+		dx[1] = 4.000000000000000083266727e-02*x[(j) * 3]*x[(j) * 3]+5.0*x[(j) * 3]+140.0-x[(j+1000) * 3]+__PAR_I[(j)];
 	}
 	j = i-1000;
 	if(j >=0 && j <= 999)
 	{
-		dx[1] = __a*(__b*x[(j) * 3]-x[(j+1000) * 3]);
+		dx[1] = __PAR_a*(__PAR_b*x[(j) * 3]-x[(j+1000) * 3]);
 	}
 }
 
@@ -50,14 +51,14 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	j = i;
 	if(j >=0 && j <= 999)
 	{
-		der[(j) * 3 + 1] = 4.000000000000000083266727e-02*x[(j) * 3]*x[(j) * 3]+5.0*x[(j) * 3]+140.0-x[(j+1000) * 3]+__I[(j)];
-		der[(j+1000) * 3 + 1] = __a*(__b*x[(j) * 3]-x[(j+1000) * 3]);
+		der[(j) * 3 + 1] = 4.000000000000000083266727e-02*x[(j) * 3]*x[(j) * 3]+5.0*x[(j) * 3]+140.0-x[(j+1000) * 3]+__PAR_I[(j)];
+		der[(j+1000) * 3 + 1] = __PAR_a*(__PAR_b*x[(j) * 3]-x[(j+1000) * 3]);
 	}
 	j = i-1000;
 	if(j >=0 && j <= 999)
 	{
-		der[(j) * 3 + 1] = 4.000000000000000083266727e-02*x[(j) * 3]*x[(j) * 3]+5.0*x[(j) * 3]+140.0-x[(j+1000) * 3]+__I[(j)];
-		der[(j+1000) * 3 + 1] = __a*(__b*x[(j) * 3]-x[(j+1000) * 3]);
+		der[(j) * 3 + 1] = 4.000000000000000083266727e-02*x[(j) * 3]*x[(j) * 3]+5.0*x[(j) * 3]+140.0-x[(j+1000) * 3]+__PAR_I[(j)];
+		der[(j+1000) * 3 + 1] = __PAR_a*(__PAR_b*x[(j) * 3]-x[(j+1000) * 3]);
 	}
 }
 
@@ -75,8 +76,8 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 {
 	if(i >= 0 && i <= 999)
 	{
-		x[(i) * 3] = __c[(i)];
-		x[(i+1000) * 3] = x[(i+1000) * 3]+__d[(i)];
+		x[(i) * 3] = __PAR_c[(i)];
+		x[(i+1000) * 3] = x[(i+1000) * 3]+__PAR_d[(i)];
 	}
 }
 
@@ -107,17 +108,17 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__a = 2.000000000000000041633363e-02;
-	__b = 2.000000000000000111022302e-01;
+	__PAR_a = 2.000000000000000041633363e-02;
+	__PAR_b = 2.000000000000000111022302e-01;
 	// Initialize model code.
 	for(i0 = 0; i0 <= 999; i0++)
 	{
 		modelData->x[(i0) * 3] = -60.0;
 		modelData->x[(i0+1000) * 3] = 0.0;
-		__r[(i0)] = __math__rand(1.0);
-		__c[(i0)] = -65.0+15.0*pow(__r[(i0)],2.0);
-		__d[(i0)] = 8.0-6.0*pow(__r[(i0)],2.0);
-		__I[(i0)] = __math__rand(10.0);
+		__PAR_r[(i0)] = __math__rand(1.0);
+		__PAR_c[(i0)] = -65.0+15.0*pow(__PAR_r[(i0)],2.0);
+		__PAR_d[(i0)] = 8.0-6.0*pow(__PAR_r[(i0)],2.0);
+		__PAR_I[(i0)] = __math__rand(10.0);
 	}
 	for(i = 0; i <= 999; i++)
 	{

@@ -8,19 +8,20 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __k1;
-double __k2;
-double __k3;
-double __k4;
-double __k4prim;
-double __k5;
-double __k6;
-double __k7;
-double __k8;
-double __k9;
+double __PAR_k1 = 0;
+double __PAR_k2 = 0;
+double __PAR_k3 = 0;
+double __PAR_k4 = 0;
+double __PAR_k4prim = 0;
+double __PAR_k5 = 0;
+double __PAR_k6 = 0;
+double __PAR_k7 = 0;
+double __PAR_k8 = 0;
+double __PAR_k9 = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -37,26 +38,26 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	switch(i)
 	{
 		case 0:
-			dx[1] = __k6*x[9]-__k8*x[0]+__k9*x[3];
+			dx[1] = __PAR_k6*x[9]-__PAR_k8*x[0]+__PAR_k9*x[3];
 			return;
 		case 1:
-			dx[1] = -__k3*x[3]*x[12]+__k8*x[0]-__k9*x[3];
+			dx[1] = -__PAR_k3*x[3]*x[12]+__PAR_k8*x[0]-__PAR_k9*x[3];
 			return;
 		case 2:
 			alg[0] = x[0]+x[3]+x[6]+x[9];
-			alg[6] = __k4prim+__k4*__math__pow((x[9]*1.000000000000000000000000e+00/alg[0]),2.0);
-			dx[1] = __k3*x[3]*x[12]+-x[6]*alg[6]+__k5*x[9];
+			alg[6] = __PAR_k4prim+__PAR_k4*__math__pow((x[9]*1.000000000000000000000000e+00/alg[0]),2.0);
+			dx[1] = __PAR_k3*x[3]*x[12]+-x[6]*alg[6]+__PAR_k5*x[9];
 			return;
 		case 3:
 			alg[0] = x[0]+x[3]+x[6]+x[9];
-			alg[6] = __k4prim+__k4*__math__pow((x[9]*1.000000000000000000000000e+00/alg[0]),2.0);
-			dx[1] = x[6]*alg[6]-__k5*x[9]-__k6*x[9];
+			alg[6] = __PAR_k4prim+__PAR_k4*__math__pow((x[9]*1.000000000000000000000000e+00/alg[0]),2.0);
+			dx[1] = x[6]*alg[6]-__PAR_k5*x[9]-__PAR_k6*x[9];
 			return;
 		case 4:
-			dx[1] = __k1-__k2*x[12]-__k3*x[3]*x[12];
+			dx[1] = __PAR_k1-__PAR_k2*x[12]-__PAR_k3*x[3]*x[12];
 			return;
 		case 5:
-			dx[1] = __k6*x[9]-__k7*x[15];
+			dx[1] = __PAR_k6*x[9]-__PAR_k7*x[15];
 			return;
 	}
 }
@@ -68,44 +69,44 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	{
 		case 0:
 			alg[0] = x[0]+x[3]+x[6]+x[9];
-			alg[6] = __k4prim+__k4*__math__pow((x[9]*1.000000000000000000000000e+00/alg[0]),2.0);
-			der[0 + 1] = __k6*x[9]-__k8*x[0]+__k9*x[3];
-			der[3 + 1] = -__k3*x[3]*x[12]+__k8*x[0]-__k9*x[3];
-			der[6 + 1] = __k3*x[3]*x[12]+-x[6]*alg[6]+__k5*x[9];
-			der[9 + 1] = x[6]*alg[6]-__k5*x[9]-__k6*x[9];
+			alg[6] = __PAR_k4prim+__PAR_k4*__math__pow((x[9]*1.000000000000000000000000e+00/alg[0]),2.0);
+			der[0 + 1] = __PAR_k6*x[9]-__PAR_k8*x[0]+__PAR_k9*x[3];
+			der[3 + 1] = -__PAR_k3*x[3]*x[12]+__PAR_k8*x[0]-__PAR_k9*x[3];
+			der[6 + 1] = __PAR_k3*x[3]*x[12]+-x[6]*alg[6]+__PAR_k5*x[9];
+			der[9 + 1] = x[6]*alg[6]-__PAR_k5*x[9]-__PAR_k6*x[9];
 			return;
 		case 1:
 			alg[0] = x[0]+x[3]+x[6]+x[9];
-			alg[6] = __k4prim+__k4*__math__pow((x[9]*1.000000000000000000000000e+00/alg[0]),2.0);
-			der[0 + 1] = __k6*x[9]-__k8*x[0]+__k9*x[3];
-			der[3 + 1] = -__k3*x[3]*x[12]+__k8*x[0]-__k9*x[3];
-			der[6 + 1] = __k3*x[3]*x[12]+-x[6]*alg[6]+__k5*x[9];
-			der[9 + 1] = x[6]*alg[6]-__k5*x[9]-__k6*x[9];
-			der[12 + 1] = __k1-__k2*x[12]-__k3*x[3]*x[12];
+			alg[6] = __PAR_k4prim+__PAR_k4*__math__pow((x[9]*1.000000000000000000000000e+00/alg[0]),2.0);
+			der[0 + 1] = __PAR_k6*x[9]-__PAR_k8*x[0]+__PAR_k9*x[3];
+			der[3 + 1] = -__PAR_k3*x[3]*x[12]+__PAR_k8*x[0]-__PAR_k9*x[3];
+			der[6 + 1] = __PAR_k3*x[3]*x[12]+-x[6]*alg[6]+__PAR_k5*x[9];
+			der[9 + 1] = x[6]*alg[6]-__PAR_k5*x[9]-__PAR_k6*x[9];
+			der[12 + 1] = __PAR_k1-__PAR_k2*x[12]-__PAR_k3*x[3]*x[12];
 			return;
 		case 2:
 			alg[0] = x[0]+x[3]+x[6]+x[9];
-			alg[6] = __k4prim+__k4*__math__pow((x[9]*1.000000000000000000000000e+00/alg[0]),2.0);
-			der[6 + 1] = __k3*x[3]*x[12]+-x[6]*alg[6]+__k5*x[9];
-			der[9 + 1] = x[6]*alg[6]-__k5*x[9]-__k6*x[9];
+			alg[6] = __PAR_k4prim+__PAR_k4*__math__pow((x[9]*1.000000000000000000000000e+00/alg[0]),2.0);
+			der[6 + 1] = __PAR_k3*x[3]*x[12]+-x[6]*alg[6]+__PAR_k5*x[9];
+			der[9 + 1] = x[6]*alg[6]-__PAR_k5*x[9]-__PAR_k6*x[9];
 			return;
 		case 3:
 			alg[0] = x[0]+x[3]+x[6]+x[9];
-			alg[6] = __k4prim+__k4*__math__pow((x[9]*1.000000000000000000000000e+00/alg[0]),2.0);
-			der[0 + 1] = __k6*x[9]-__k8*x[0]+__k9*x[3];
-			der[6 + 1] = __k3*x[3]*x[12]+-x[6]*alg[6]+__k5*x[9];
-			der[9 + 1] = x[6]*alg[6]-__k5*x[9]-__k6*x[9];
-			der[15 + 1] = __k6*x[9]-__k7*x[15];
+			alg[6] = __PAR_k4prim+__PAR_k4*__math__pow((x[9]*1.000000000000000000000000e+00/alg[0]),2.0);
+			der[0 + 1] = __PAR_k6*x[9]-__PAR_k8*x[0]+__PAR_k9*x[3];
+			der[6 + 1] = __PAR_k3*x[3]*x[12]+-x[6]*alg[6]+__PAR_k5*x[9];
+			der[9 + 1] = x[6]*alg[6]-__PAR_k5*x[9]-__PAR_k6*x[9];
+			der[15 + 1] = __PAR_k6*x[9]-__PAR_k7*x[15];
 			return;
 		case 4:
 			alg[0] = x[0]+x[3]+x[6]+x[9];
-			alg[6] = __k4prim+__k4*__math__pow((x[9]*1.000000000000000000000000e+00/alg[0]),2.0);
-			der[3 + 1] = -__k3*x[3]*x[12]+__k8*x[0]-__k9*x[3];
-			der[6 + 1] = __k3*x[3]*x[12]+-x[6]*alg[6]+__k5*x[9];
-			der[12 + 1] = __k1-__k2*x[12]-__k3*x[3]*x[12];
+			alg[6] = __PAR_k4prim+__PAR_k4*__math__pow((x[9]*1.000000000000000000000000e+00/alg[0]),2.0);
+			der[3 + 1] = -__PAR_k3*x[3]*x[12]+__PAR_k8*x[0]-__PAR_k9*x[3];
+			der[6 + 1] = __PAR_k3*x[3]*x[12]+-x[6]*alg[6]+__PAR_k5*x[9];
+			der[12 + 1] = __PAR_k1-__PAR_k2*x[12]-__PAR_k3*x[3]*x[12];
 			return;
 		case 5:
-			der[15 + 1] = __k6*x[9]-__k7*x[15];
+			der[15 + 1] = __PAR_k6*x[9]-__PAR_k7*x[15];
 			return;
 	}
 }
@@ -146,16 +147,16 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__k1 = 1.499999999999999944488849e-02;
-	__k2 = 0.000000000000000000000000e+00;
-	__k3 = 200.0;
-	__k4 = 180.0;
-	__k4prim = 1.799999999999999863997679e-02;
-	__k5 = 0.000000000000000000000000e+00;
-	__k6 = 1.000000000000000000000000e+00;
-	__k7 = 5.999999999999999777955395e-01;
-	__k8 = 1.000000000000000000000000e+06;
-	__k9 = 1.000000000000000000000000e+03;
+	__PAR_k1 = 1.499999999999999944488849e-02;
+	__PAR_k2 = 0.000000000000000000000000e+00;
+	__PAR_k3 = 200.0;
+	__PAR_k4 = 180.0;
+	__PAR_k4prim = 1.799999999999999863997679e-02;
+	__PAR_k5 = 0.000000000000000000000000e+00;
+	__PAR_k6 = 1.000000000000000000000000e+00;
+	__PAR_k7 = 5.999999999999999777955395e-01;
+	__PAR_k8 = 1.000000000000000000000000e+06;
+	__PAR_k9 = 1.000000000000000000000000e+03;
 	modelData->x[0] = 0.000000000000000000000000e+00;
 	modelData->x[3] = 7.500000000000000000000000e-01;
 	modelData->x[9] = 0.000000000000000000000000e+00;

@@ -7,12 +7,13 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __UOP;
-double __G;
-double __UTH;
+double __PAR_UOP = 0;
+double __PAR_G = 0;
+double __PAR_UTH = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -36,7 +37,7 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 			j = i;
 			if(j >=1 && j <= 501)
 			{
-				dx[1] = __UOP-x[(j) * 3]-__G*(d[(j+1)]*pow((x[(j-1) * 3]-__UTH),2.0)-d[(j+502)]*pow((x[(j-1) * 3]-x[(j) * 3]-__UTH),2.0));
+				dx[1] = __PAR_UOP-x[(j) * 3]-__PAR_G*(d[(j+1)]*pow((x[(j-1) * 3]-__PAR_UTH),2.0)-d[(j+502)]*pow((x[(j-1) * 3]-x[(j) * 3]-__PAR_UTH),2.0));
 			}
 	}
 }
@@ -48,12 +49,12 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	j = i+1;
 	if(j >=1 && j <= 501)
 	{
-		der[(j) * 3 + 1] = __UOP-x[(j) * 3]-__G*(d[(j+1)]*pow((x[(j-1) * 3]-__UTH),2.0)-d[(j+502)]*pow((x[(j-1) * 3]-x[(j) * 3]-__UTH),2.0));
+		der[(j) * 3 + 1] = __PAR_UOP-x[(j) * 3]-__PAR_G*(d[(j+1)]*pow((x[(j-1) * 3]-__PAR_UTH),2.0)-d[(j+502)]*pow((x[(j-1) * 3]-x[(j) * 3]-__PAR_UTH),2.0));
 	}
 	j = i;
 	if(j >=1 && j <= 501)
 	{
-		der[(j) * 3 + 1] = __UOP-x[(j) * 3]-__G*(d[(j+1)]*pow((x[(j-1) * 3]-__UTH),2.0)-d[(j+502)]*pow((x[(j-1) * 3]-x[(j) * 3]-__UTH),2.0));
+		der[(j) * 3 + 1] = __PAR_UOP-x[(j) * 3]-__PAR_G*(d[(j+1)]*pow((x[(j-1) * 3]-__PAR_UTH),2.0)-d[(j+502)]*pow((x[(j-1) * 3]-x[(j) * 3]-__PAR_UTH),2.0));
 	}
 }
 
@@ -68,11 +69,11 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 		default:
 			if(i >= 0 && i <= 500)
 			{
-				zc[0] = x[(i) * 3]-(__UTH);
+				zc[0] = x[(i) * 3]-(__PAR_UTH);
 			}
 			if(i >= 501 && i <= 1001)
 			{
-				zc[0] = x[(i-501) * 3]-x[(i-500) * 3]-(__UTH);
+				zc[0] = x[(i-501) * 3]-x[(i-500) * 3]-(__PAR_UTH);
 			}
 	}
 }
@@ -151,21 +152,41 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int *outputs = (int*)malloc(2*sizeof(int));
 	int *states = (int*)malloc(502*sizeof(int));
 	int i0;
+	int i1;
 	int i;
 	int j = 0;
 	simulator->data = QSS_Data(502,1004,1003,0,0,"inverters");
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__UOP = 5.0;
-	__G = 100.0;
-	__UTH = 1.0;
+	__PAR_UOP = 5.0;
+	__PAR_G = 100.0;
+	__PAR_UTH = 1.0;
 	modelData->d[(0)] = 5.0;
 	// Initialize model code.
 	for(i0 = 0; i0 <= 249; i0++)
 	{
 		modelData->x[(2*i0+1) * 3] = 5.0;
 		modelData->x[(2*i0+2) * 3] = 6.246999999999999948763207e-03;
+	}
+	for(i1 = 0; i1 <= 500; i1++)
+	{
+	if(modelData->x[(i1) * 3]>__PAR_UTH)
+	{
+		modelData->d[(i1+2)] = 1.0;
+	}
+	else
+	{
+		modelData->d[(i1+2)] = 0.0;
+	}
+	if(modelData->x[(i1) * 3]-modelData->x[(i1+1) * 3]>__PAR_UTH)
+	{
+		modelData->d[(i1+503)] = 1.0;
+	}
+	else
+	{
+		modelData->d[(i1+503)] = 0.0;
+	}
 	}
 	for(i = 1; i <= 501; i++)
 	{

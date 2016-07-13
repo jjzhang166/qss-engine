@@ -35,7 +35,7 @@ bool
 debugIsEnabled (char flag)
 {
   if (enableFlags != NULL)
-    return (strchr (enableFlags, flag) != 0) || (strchr (enableFlags, '+') != 0);
+    return ((strchr (enableFlags, flag) != 0) || (strchr (enableFlags, '+') != 0));
   else
     return (false);
 }

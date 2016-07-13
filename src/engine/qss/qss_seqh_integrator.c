@@ -119,7 +119,7 @@ QSS_SEQH_integrate (SIM_simulator simulate)
 #endif
 	    cf0 = index * coeffs;
 	    elapsed = t - tx[index];
-	    advanceTime (cf0, elapsed, x, xOrder);
+	    integrateState (cf0, elapsed, x, xOrder);
 	    tx[index] = t;
 	    lqu[index] = dQRel[index] * fabs (x[cf0]);
 	    if (lqu[index] < dQMin[index])
@@ -199,7 +199,7 @@ QSS_SEQH_integrate (SIM_simulator simulate)
 		  if (elapsed > 0)
 		    {
 		      infCf0 = j * coeffs;
-		      advanceTime (infCf0, elapsed, q, qOrder);
+		      integrateState (infCf0, elapsed, q, qOrder);
 		      tq[j] = t;
 		    }
 		}

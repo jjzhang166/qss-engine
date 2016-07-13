@@ -7,47 +7,48 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __IndexShift_1_p[2];
-double __VecInt_2_p[5];
-double __VecInt_2_x0 = 0;
-double __VectorSum_3_p[10];
-double __VectorSum_3_w[4];
-double __vector_sat_4_p[3];
-double __vector_sat_4_xl = 0;
-double __Scalar2Vector_5_p[2];
-double __Vec2Scalar_6_p[2];
-int __reverse__Vec2Scalar_6_Index = 0;
-int __Vec2Scalar_6_Index = 0;
-double __vector_pow2_7_p[1];
-double __vector_pow2_8_p[1];
-double __vector_sat_9_p[3];
-double __vector_sat_9_xl = 0;
-double __VectorSum_10_p[10];
-double __VectorSum_10_w[3];
-double __VectorSum_11_p[10];
-double __VectorSum_11_w[2];
-double __Scalar2Vector_12_p[2];
-double __ramp_sci_13_p[5];
-double __ramp_sci_13_t0 = 0;
-double __ramp_sci_13_tr = 0;
-double __ramp_sci_13_v = 0;
-double __ramp_sci_14_p[5];
-double __ramp_sci_14_t0 = 0;
-double __ramp_sci_14_tr = 0;
-double __ramp_sci_14_v = 0;
-double __Constant_15_p[1];
-double __Constant_15_k = 0;
-double __Constant_16_p[1];
-double __Constant_16_k = 0;
-double __Scalar2Vector_17_p[2];
-double __Vec2Scalar_18_p[2];
-int __reverse__Vec2Scalar_18_Index = 0;
-int __Vec2Scalar_18_Index = 0;
-double __WSum_20_p[9];
-double __WSum_20_w[2];
+double __PAR_IndexShift_1_p[2];
+double __PAR_VecInt_2_p[5];
+double __PAR_VecInt_2_x0 = 0;
+double __PAR_VectorSum_3_p[10];
+double __PAR_VectorSum_3_w[4];
+double __PAR_vector_sat_4_p[3];
+double __PAR_vector_sat_4_xl = 0;
+double __PAR_Scalar2Vector_5_p[2];
+double __PAR_Vec2Scalar_6_p[2];
+int __reverse__PAR_Vec2Scalar_6_Index = 0;
+int __PAR_Vec2Scalar_6_Index = 0;
+double __PAR_vector_pow2_7_p[1];
+double __PAR_vector_pow2_8_p[1];
+double __PAR_vector_sat_9_p[3];
+double __PAR_vector_sat_9_xl = 0;
+double __PAR_VectorSum_10_p[10];
+double __PAR_VectorSum_10_w[3];
+double __PAR_VectorSum_11_p[10];
+double __PAR_VectorSum_11_w[2];
+double __PAR_Scalar2Vector_12_p[2];
+double __PAR_ramp_sci_13_p[5];
+double __PAR_ramp_sci_13_t0 = 0;
+double __PAR_ramp_sci_13_tr = 0;
+double __PAR_ramp_sci_13_v = 0;
+double __PAR_ramp_sci_14_p[5];
+double __PAR_ramp_sci_14_t0 = 0;
+double __PAR_ramp_sci_14_tr = 0;
+double __PAR_ramp_sci_14_v = 0;
+double __PAR_Constant_15_p[1];
+double __PAR_Constant_15_k = 0;
+double __PAR_Constant_16_p[1];
+double __PAR_Constant_16_k = 0;
+double __PAR_Scalar2Vector_17_p[2];
+double __PAR_Vec2Scalar_18_p[2];
+int __reverse__PAR_Vec2Scalar_18_Index = 0;
+int __PAR_Vec2Scalar_18_Index = 0;
+double __PAR_WSum_20_p[9];
+double __PAR_WSum_20_w[2];
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -94,9 +95,9 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	}
 	for(j22 = 0; j22 <= 1; j22++)
 	{
-		tmp0[0] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-		tmp0[1] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-		tmp0[2] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+		tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
+		tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
+		tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
 	}
 		alg[2724] = tmp0[0];
 		alg[2727] = alg[2724];
@@ -118,20 +119,20 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 		}
 		alg[(j+1110) * 3] = alg[(j+1010) * 3];
 		alg[(j+1210) * 3] = alg[(j+910) * 3];
-		alg[(j+1310) * 3] = alg[(j+1210) * 3]*__VectorSum_10_w[(0)]+alg[(j+708) * 3]*__VectorSum_10_w[(1)]+alg[(j+1110) * 3]*__VectorSum_10_w[(2)];
+		alg[(j+1310) * 3] = alg[(j+1210) * 3]*__PAR_VectorSum_10_w[(0)]+alg[(j+708) * 3]*__PAR_VectorSum_10_w[(1)]+alg[(j+1110) * 3]*__PAR_VectorSum_10_w[(2)];
 		alg[(j+1410) * 3] = alg[(j+1310) * 3];
 		alg[(j+1510) * 3] = alg[(j+1310) * 3];
-		alg[(j+1610) * 3] = alg[(j+1410) * 3]*__VectorSum_11_w[(0)]+alg[(j+304) * 3]*__VectorSum_11_w[(1)];
+		alg[(j+1610) * 3] = alg[(j+1410) * 3]*__PAR_VectorSum_11_w[(0)]+alg[(j+304) * 3]*__PAR_VectorSum_11_w[(1)];
 		alg[(j+1710) * 3] = alg[(j+1610) * 3];
-		alg[(j+1810) * 3] = d[(j)]*__vector_sat_4_xl+(1.0-d[(j)])*(d[(j+100)]*1000000+(1.0-d[(j+100)])*alg[(j+1510) * 3]);
-		alg[(j+1910) * 3] = d[(j+200)]*__vector_sat_9_xl+(1.0-d[(j+200)])*(d[(j+300)]*1000000+(1.0-d[(j+300)])*alg[(j+1710) * 3]);
+		alg[(j+1810) * 3] = d[(j)]*__PAR_vector_sat_4_xl+(1.0-d[(j)])*(d[(j+100)]*1000000+(1.0-d[(j+100)])*alg[(j+1510) * 3]);
+		alg[(j+1910) * 3] = d[(j+200)]*__PAR_vector_sat_9_xl+(1.0-d[(j+200)])*(d[(j+300)]*1000000+(1.0-d[(j+300)])*alg[(j+1710) * 3]);
 		alg[(j+2010) * 3] = alg[(j+1910) * 3];
 		alg[(j+2110) * 3] = alg[(j+1810) * 3];
 		alg[(j+2210) * 3] = alg[(j+2010) * 3]*alg[(j+2010) * 3];
 		alg[(j+2310) * 3] = alg[(j+2110) * 3]*alg[(j+2110) * 3];
 		alg[(j+2410) * 3] = alg[(j+2210) * 3];
 		alg[(j+2510) * 3] = alg[(j+2310) * 3];
-		alg[(j+2610) * 3] = alg[(j+808) * 3]*__VectorSum_3_w[(0)]+alg[(j+2510) * 3]*__VectorSum_3_w[(1)]+alg[(j+2410) * 3]*__VectorSum_3_w[(2)]+alg[(j+104) * 3]*__VectorSum_3_w[(3)];
+		alg[(j+2610) * 3] = alg[(j+808) * 3]*__PAR_VectorSum_3_w[(0)]+alg[(j+2510) * 3]*__PAR_VectorSum_3_w[(1)]+alg[(j+2410) * 3]*__PAR_VectorSum_3_w[(2)]+alg[(j+104) * 3]*__PAR_VectorSum_3_w[(3)];
 		alg[(j+2710) * 3] = alg[(j+2610) * 3];
 		dx[1] = alg[(j+2710) * 3];
 	}
@@ -177,9 +178,9 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	}
 	for(j22 = 0; j22 <= 1; j22++)
 	{
-		tmp0[0] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-		tmp0[1] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-		tmp0[2] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+		tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
+		tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
+		tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
 	}
 		alg[2724] = tmp0[0];
 		alg[2727] = alg[2724];
@@ -201,20 +202,20 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		}
 		alg[(j+1110) * 3] = alg[(j+1010) * 3];
 		alg[(j+1210) * 3] = alg[(j+910) * 3];
-		alg[(j+1310) * 3] = alg[(j+1210) * 3]*__VectorSum_10_w[(0)]+alg[(j+708) * 3]*__VectorSum_10_w[(1)]+alg[(j+1110) * 3]*__VectorSum_10_w[(2)];
+		alg[(j+1310) * 3] = alg[(j+1210) * 3]*__PAR_VectorSum_10_w[(0)]+alg[(j+708) * 3]*__PAR_VectorSum_10_w[(1)]+alg[(j+1110) * 3]*__PAR_VectorSum_10_w[(2)];
 		alg[(j+1410) * 3] = alg[(j+1310) * 3];
 		alg[(j+1510) * 3] = alg[(j+1310) * 3];
-		alg[(j+1610) * 3] = alg[(j+1410) * 3]*__VectorSum_11_w[(0)]+alg[(j+304) * 3]*__VectorSum_11_w[(1)];
+		alg[(j+1610) * 3] = alg[(j+1410) * 3]*__PAR_VectorSum_11_w[(0)]+alg[(j+304) * 3]*__PAR_VectorSum_11_w[(1)];
 		alg[(j+1710) * 3] = alg[(j+1610) * 3];
-		alg[(j+1810) * 3] = d[(j)]*__vector_sat_4_xl+(1.0-d[(j)])*(d[(j+100)]*1000000+(1.0-d[(j+100)])*alg[(j+1510) * 3]);
-		alg[(j+1910) * 3] = d[(j+200)]*__vector_sat_9_xl+(1.0-d[(j+200)])*(d[(j+300)]*1000000+(1.0-d[(j+300)])*alg[(j+1710) * 3]);
+		alg[(j+1810) * 3] = d[(j)]*__PAR_vector_sat_4_xl+(1.0-d[(j)])*(d[(j+100)]*1000000+(1.0-d[(j+100)])*alg[(j+1510) * 3]);
+		alg[(j+1910) * 3] = d[(j+200)]*__PAR_vector_sat_9_xl+(1.0-d[(j+200)])*(d[(j+300)]*1000000+(1.0-d[(j+300)])*alg[(j+1710) * 3]);
 		alg[(j+2010) * 3] = alg[(j+1910) * 3];
 		alg[(j+2110) * 3] = alg[(j+1810) * 3];
 		alg[(j+2210) * 3] = alg[(j+2010) * 3]*alg[(j+2010) * 3];
 		alg[(j+2310) * 3] = alg[(j+2110) * 3]*alg[(j+2110) * 3];
 		alg[(j+2410) * 3] = alg[(j+2210) * 3];
 		alg[(j+2510) * 3] = alg[(j+2310) * 3];
-		alg[(j+2610) * 3] = alg[(j+808) * 3]*__VectorSum_3_w[(0)]+alg[(j+2510) * 3]*__VectorSum_3_w[(1)]+alg[(j+2410) * 3]*__VectorSum_3_w[(2)]+alg[(j+104) * 3]*__VectorSum_3_w[(3)];
+		alg[(j+2610) * 3] = alg[(j+808) * 3]*__PAR_VectorSum_3_w[(0)]+alg[(j+2510) * 3]*__PAR_VectorSum_3_w[(1)]+alg[(j+2410) * 3]*__PAR_VectorSum_3_w[(2)]+alg[(j+104) * 3]*__PAR_VectorSum_3_w[(3)];
 		alg[(j+2710) * 3] = alg[(j+2610) * 3];
 		der[(j) * 3 + 1] = alg[(j+2710) * 3];
 	}
@@ -246,9 +247,9 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	}
 	for(j22 = 0; j22 <= 1; j22++)
 	{
-		tmp0[0] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-		tmp0[1] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-		tmp0[2] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+		tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
+		tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
+		tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
 	}
 		alg[2724] = tmp0[0];
 		alg[2727] = alg[2724];
@@ -270,20 +271,20 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		}
 		alg[(j+1110) * 3] = alg[(j+1010) * 3];
 		alg[(j+1210) * 3] = alg[(j+910) * 3];
-		alg[(j+1310) * 3] = alg[(j+1210) * 3]*__VectorSum_10_w[(0)]+alg[(j+708) * 3]*__VectorSum_10_w[(1)]+alg[(j+1110) * 3]*__VectorSum_10_w[(2)];
+		alg[(j+1310) * 3] = alg[(j+1210) * 3]*__PAR_VectorSum_10_w[(0)]+alg[(j+708) * 3]*__PAR_VectorSum_10_w[(1)]+alg[(j+1110) * 3]*__PAR_VectorSum_10_w[(2)];
 		alg[(j+1410) * 3] = alg[(j+1310) * 3];
 		alg[(j+1510) * 3] = alg[(j+1310) * 3];
-		alg[(j+1610) * 3] = alg[(j+1410) * 3]*__VectorSum_11_w[(0)]+alg[(j+304) * 3]*__VectorSum_11_w[(1)];
+		alg[(j+1610) * 3] = alg[(j+1410) * 3]*__PAR_VectorSum_11_w[(0)]+alg[(j+304) * 3]*__PAR_VectorSum_11_w[(1)];
 		alg[(j+1710) * 3] = alg[(j+1610) * 3];
-		alg[(j+1810) * 3] = d[(j)]*__vector_sat_4_xl+(1.0-d[(j)])*(d[(j+100)]*1000000+(1.0-d[(j+100)])*alg[(j+1510) * 3]);
-		alg[(j+1910) * 3] = d[(j+200)]*__vector_sat_9_xl+(1.0-d[(j+200)])*(d[(j+300)]*1000000+(1.0-d[(j+300)])*alg[(j+1710) * 3]);
+		alg[(j+1810) * 3] = d[(j)]*__PAR_vector_sat_4_xl+(1.0-d[(j)])*(d[(j+100)]*1000000+(1.0-d[(j+100)])*alg[(j+1510) * 3]);
+		alg[(j+1910) * 3] = d[(j+200)]*__PAR_vector_sat_9_xl+(1.0-d[(j+200)])*(d[(j+300)]*1000000+(1.0-d[(j+300)])*alg[(j+1710) * 3]);
 		alg[(j+2010) * 3] = alg[(j+1910) * 3];
 		alg[(j+2110) * 3] = alg[(j+1810) * 3];
 		alg[(j+2210) * 3] = alg[(j+2010) * 3]*alg[(j+2010) * 3];
 		alg[(j+2310) * 3] = alg[(j+2110) * 3]*alg[(j+2110) * 3];
 		alg[(j+2410) * 3] = alg[(j+2210) * 3];
 		alg[(j+2510) * 3] = alg[(j+2310) * 3];
-		alg[(j+2610) * 3] = alg[(j+808) * 3]*__VectorSum_3_w[(0)]+alg[(j+2510) * 3]*__VectorSum_3_w[(1)]+alg[(j+2410) * 3]*__VectorSum_3_w[(2)]+alg[(j+104) * 3]*__VectorSum_3_w[(3)];
+		alg[(j+2610) * 3] = alg[(j+808) * 3]*__PAR_VectorSum_3_w[(0)]+alg[(j+2510) * 3]*__PAR_VectorSum_3_w[(1)]+alg[(j+2410) * 3]*__PAR_VectorSum_3_w[(2)]+alg[(j+104) * 3]*__PAR_VectorSum_3_w[(3)];
 		alg[(j+2710) * 3] = alg[(j+2610) * 3];
 		der[(j) * 3 + 1] = alg[(j+2710) * 3];
 	}
@@ -346,9 +347,9 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			}
 			for(j22 = 0; j22 <= 1; j22++)
 			{
-				tmp0[0] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
@@ -370,9 +371,9 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				}
 				alg[(i+1110) * 3] = alg[(i+1010) * 3];
 				alg[(i+1210) * 3] = alg[(i+910) * 3];
-				alg[(i+1310) * 3] = alg[(i+1210) * 3]*__VectorSum_10_w[(0)]+alg[(i+708) * 3]*__VectorSum_10_w[(1)]+alg[(i+1110) * 3]*__VectorSum_10_w[(2)];
+				alg[(i+1310) * 3] = alg[(i+1210) * 3]*__PAR_VectorSum_10_w[(0)]+alg[(i+708) * 3]*__PAR_VectorSum_10_w[(1)]+alg[(i+1110) * 3]*__PAR_VectorSum_10_w[(2)];
 				alg[(i+1510) * 3] = alg[(i+1310) * 3];
-				zc[0] = alg[(i+1510) * 3]-(__vector_sat_4_xl);
+				zc[0] = alg[(i+1510) * 3]-(__PAR_vector_sat_4_xl);
 			}
 			if(i >= 100 && i <= 199)
 			{
@@ -395,9 +396,9 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			}
 			for(j22 = 0; j22 <= 1; j22++)
 			{
-				tmp0[0] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
@@ -419,9 +420,9 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				}
 				alg[(i+1010) * 3] = alg[(i+910) * 3];
 				alg[(i+1110) * 3] = alg[(i+810) * 3];
-				alg[(i+1210) * 3] = alg[(i+1110) * 3]*__VectorSum_10_w[(0)]+alg[(i+608) * 3]*__VectorSum_10_w[(1)]+alg[(i+1010) * 3]*__VectorSum_10_w[(2)];
+				alg[(i+1210) * 3] = alg[(i+1110) * 3]*__PAR_VectorSum_10_w[(0)]+alg[(i+608) * 3]*__PAR_VectorSum_10_w[(1)]+alg[(i+1010) * 3]*__PAR_VectorSum_10_w[(2)];
 				alg[(i+1410) * 3] = alg[(i+1210) * 3];
-				zc[0] = alg[(i+1410) * 3]-(__vector_sat_4_xl);
+				zc[0] = alg[(i+1410) * 3]-(__PAR_vector_sat_4_xl);
 			}
 			if(i >= 200 && i <= 299)
 			{
@@ -444,9 +445,9 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			}
 			for(j22 = 0; j22 <= 1; j22++)
 			{
-				tmp0[0] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
@@ -468,7 +469,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				}
 				alg[(i+910) * 3] = alg[(i+810) * 3];
 				alg[(i+1010) * 3] = alg[(i+710) * 3];
-				alg[(i+1110) * 3] = alg[(i+1010) * 3]*__VectorSum_10_w[(0)]+alg[(i+508) * 3]*__VectorSum_10_w[(1)]+alg[(i+910) * 3]*__VectorSum_10_w[(2)];
+				alg[(i+1110) * 3] = alg[(i+1010) * 3]*__PAR_VectorSum_10_w[(0)]+alg[(i+508) * 3]*__PAR_VectorSum_10_w[(1)]+alg[(i+910) * 3]*__PAR_VectorSum_10_w[(2)];
 				alg[(i+1310) * 3] = alg[(i+1110) * 3];
 				zc[0] = alg[(i+1310) * 3]-(1000000);
 			}
@@ -493,9 +494,9 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			}
 			for(j22 = 0; j22 <= 1; j22++)
 			{
-				tmp0[0] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
@@ -517,7 +518,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				}
 				alg[(i+810) * 3] = alg[(i+710) * 3];
 				alg[(i+910) * 3] = alg[(i+610) * 3];
-				alg[(i+1010) * 3] = alg[(i+910) * 3]*__VectorSum_10_w[(0)]+alg[(i+408) * 3]*__VectorSum_10_w[(1)]+alg[(i+810) * 3]*__VectorSum_10_w[(2)];
+				alg[(i+1010) * 3] = alg[(i+910) * 3]*__PAR_VectorSum_10_w[(0)]+alg[(i+408) * 3]*__PAR_VectorSum_10_w[(1)]+alg[(i+810) * 3]*__PAR_VectorSum_10_w[(2)];
 				alg[(i+1210) * 3] = alg[(i+1010) * 3];
 				zc[0] = alg[(i+1210) * 3]-(1000000);
 			}
@@ -543,9 +544,9 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			}
 			for(j22 = 0; j22 <= 1; j22++)
 			{
-				tmp0[0] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
@@ -567,11 +568,11 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				}
 				alg[(i+710) * 3] = alg[(i+610) * 3];
 				alg[(i+810) * 3] = alg[(i+510) * 3];
-				alg[(i+910) * 3] = alg[(i+810) * 3]*__VectorSum_10_w[(0)]+alg[(i+308) * 3]*__VectorSum_10_w[(1)]+alg[(i+710) * 3]*__VectorSum_10_w[(2)];
+				alg[(i+910) * 3] = alg[(i+810) * 3]*__PAR_VectorSum_10_w[(0)]+alg[(i+308) * 3]*__PAR_VectorSum_10_w[(1)]+alg[(i+710) * 3]*__PAR_VectorSum_10_w[(2)];
 				alg[(i+1010) * 3] = alg[(i+910) * 3];
-				alg[(i+1210) * 3] = alg[(i+1010) * 3]*__VectorSum_11_w[(0)]+alg[(i-96) * 3]*__VectorSum_11_w[(1)];
+				alg[(i+1210) * 3] = alg[(i+1010) * 3]*__PAR_VectorSum_11_w[(0)]+alg[(i-96) * 3]*__PAR_VectorSum_11_w[(1)];
 				alg[(i+1310) * 3] = alg[(i+1210) * 3];
-				zc[0] = alg[(i+1310) * 3]-(__vector_sat_9_xl);
+				zc[0] = alg[(i+1310) * 3]-(__PAR_vector_sat_9_xl);
 			}
 			if(i >= 500 && i <= 599)
 			{
@@ -595,9 +596,9 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			}
 			for(j22 = 0; j22 <= 1; j22++)
 			{
-				tmp0[0] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
@@ -619,11 +620,11 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				}
 				alg[(i+610) * 3] = alg[(i+510) * 3];
 				alg[(i+710) * 3] = alg[(i+410) * 3];
-				alg[(i+810) * 3] = alg[(i+710) * 3]*__VectorSum_10_w[(0)]+alg[(i+208) * 3]*__VectorSum_10_w[(1)]+alg[(i+610) * 3]*__VectorSum_10_w[(2)];
+				alg[(i+810) * 3] = alg[(i+710) * 3]*__PAR_VectorSum_10_w[(0)]+alg[(i+208) * 3]*__PAR_VectorSum_10_w[(1)]+alg[(i+610) * 3]*__PAR_VectorSum_10_w[(2)];
 				alg[(i+910) * 3] = alg[(i+810) * 3];
-				alg[(i+1110) * 3] = alg[(i+910) * 3]*__VectorSum_11_w[(0)]+alg[(i-196) * 3]*__VectorSum_11_w[(1)];
+				alg[(i+1110) * 3] = alg[(i+910) * 3]*__PAR_VectorSum_11_w[(0)]+alg[(i-196) * 3]*__PAR_VectorSum_11_w[(1)];
 				alg[(i+1210) * 3] = alg[(i+1110) * 3];
-				zc[0] = alg[(i+1210) * 3]-(__vector_sat_9_xl);
+				zc[0] = alg[(i+1210) * 3]-(__PAR_vector_sat_9_xl);
 			}
 			if(i >= 600 && i <= 699)
 			{
@@ -647,9 +648,9 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			}
 			for(j22 = 0; j22 <= 1; j22++)
 			{
-				tmp0[0] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
@@ -671,9 +672,9 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				}
 				alg[(i+510) * 3] = alg[(i+410) * 3];
 				alg[(i+610) * 3] = alg[(i+310) * 3];
-				alg[(i+710) * 3] = alg[(i+610) * 3]*__VectorSum_10_w[(0)]+alg[(i+108) * 3]*__VectorSum_10_w[(1)]+alg[(i+510) * 3]*__VectorSum_10_w[(2)];
+				alg[(i+710) * 3] = alg[(i+610) * 3]*__PAR_VectorSum_10_w[(0)]+alg[(i+108) * 3]*__PAR_VectorSum_10_w[(1)]+alg[(i+510) * 3]*__PAR_VectorSum_10_w[(2)];
 				alg[(i+810) * 3] = alg[(i+710) * 3];
-				alg[(i+1010) * 3] = alg[(i+810) * 3]*__VectorSum_11_w[(0)]+alg[(i-296) * 3]*__VectorSum_11_w[(1)];
+				alg[(i+1010) * 3] = alg[(i+810) * 3]*__PAR_VectorSum_11_w[(0)]+alg[(i-296) * 3]*__PAR_VectorSum_11_w[(1)];
 				alg[(i+1110) * 3] = alg[(i+1010) * 3];
 				zc[0] = alg[(i+1110) * 3]-(1000000);
 			}
@@ -699,9 +700,9 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			}
 			for(j22 = 0; j22 <= 1; j22++)
 			{
-				tmp0[0] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
@@ -723,9 +724,9 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				}
 				alg[(i+410) * 3] = alg[(i+310) * 3];
 				alg[(i+510) * 3] = alg[(i+210) * 3];
-				alg[(i+610) * 3] = alg[(i+510) * 3]*__VectorSum_10_w[(0)]+alg[(i+8) * 3]*__VectorSum_10_w[(1)]+alg[(i+410) * 3]*__VectorSum_10_w[(2)];
+				alg[(i+610) * 3] = alg[(i+510) * 3]*__PAR_VectorSum_10_w[(0)]+alg[(i+8) * 3]*__PAR_VectorSum_10_w[(1)]+alg[(i+410) * 3]*__PAR_VectorSum_10_w[(2)];
 				alg[(i+710) * 3] = alg[(i+610) * 3];
-				alg[(i+910) * 3] = alg[(i+710) * 3]*__VectorSum_11_w[(0)]+alg[(i-396) * 3]*__VectorSum_11_w[(1)];
+				alg[(i+910) * 3] = alg[(i+710) * 3]*__PAR_VectorSum_11_w[(0)]+alg[(i-396) * 3]*__PAR_VectorSum_11_w[(1)];
 				alg[(i+1010) * 3] = alg[(i+910) * 3];
 				zc[0] = alg[(i+1010) * 3]-(1000000);
 			}
@@ -825,19 +826,19 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__VecInt_2_x0 = 5.0;
-	__vector_sat_4_xl = 0.0;
-	__Vec2Scalar_6_Index = 1.0;
-	__vector_sat_9_xl = 0.0;
-	__ramp_sci_13_t0 = 5.0;
-	__ramp_sci_13_tr = 5.0;
-	__ramp_sci_13_v = 5.0;
-	__ramp_sci_14_t0 = 15.0;
-	__ramp_sci_14_tr = 2.0;
-	__ramp_sci_14_v = 5.0;
-	__Constant_15_k = 1.0;
-	__Constant_16_k = 5.0;
-	__Vec2Scalar_18_Index = 100.0;
+	__PAR_VecInt_2_x0 = 5.0;
+	__PAR_vector_sat_4_xl = 0.0;
+	__PAR_Vec2Scalar_6_Index = 1.0;
+	__PAR_vector_sat_9_xl = 0.0;
+	__PAR_ramp_sci_13_t0 = 5.0;
+	__PAR_ramp_sci_13_tr = 5.0;
+	__PAR_ramp_sci_13_v = 5.0;
+	__PAR_ramp_sci_14_t0 = 15.0;
+	__PAR_ramp_sci_14_tr = 2.0;
+	__PAR_ramp_sci_14_v = 5.0;
+	__PAR_Constant_15_k = 1.0;
+	__PAR_Constant_16_k = 5.0;
+	__PAR_Vec2Scalar_18_Index = 100.0;
 	// Initialize model code.
 	for(i44 = 0; i44 <= 99; i44++)
 	{
@@ -857,97 +858,97 @@ QSS_data modelData = simulator->data;
 		modelData->d[(400)] = 0.0;
 		modelData->d[(403)] = 0.0;
 		modelData->d[(402)] = 0.0;
-		__IndexShift_1_p[(0)] = 1.0;
-		__IndexShift_1_p[(1)] = 100.0;
-		__VecInt_2_p[(0)] = 0.0;
-		__VecInt_2_p[(1)] = 1.000000000000000047921736e-04;
-		__VecInt_2_p[(2)] = 1.000000000000000020816682e-02;
-		__VecInt_2_p[(3)] = 5.0;
-		__VecInt_2_p[(4)] = 100.0;
-		__VectorSum_3_p[(0)] = 1.0;
-		__VectorSum_3_p[(1)] = (((-100.0)));
-		__VectorSum_3_p[(2)] = 100.0;
-		__VectorSum_3_p[(3)] = (((-1.0)));
-		__VectorSum_3_p[(4)] = 0.0;
-		__VectorSum_3_p[(5)] = 0.0;
-		__VectorSum_3_p[(6)] = 0.0;
-		__VectorSum_3_p[(7)] = 0.0;
-		__VectorSum_3_p[(8)] = 4.0;
-		__VectorSum_3_p[(9)] = 100.0;
+		__PAR_IndexShift_1_p[(0)] = 1.0;
+		__PAR_IndexShift_1_p[(1)] = 100.0;
+		__PAR_VecInt_2_p[(0)] = 0.0;
+		__PAR_VecInt_2_p[(1)] = 1.000000000000000047921736e-04;
+		__PAR_VecInt_2_p[(2)] = 1.000000000000000020816682e-02;
+		__PAR_VecInt_2_p[(3)] = 5.0;
+		__PAR_VecInt_2_p[(4)] = 100.0;
+		__PAR_VectorSum_3_p[(0)] = 1.0;
+		__PAR_VectorSum_3_p[(1)] = (((-100.0)));
+		__PAR_VectorSum_3_p[(2)] = 100.0;
+		__PAR_VectorSum_3_p[(3)] = (((-1.0)));
+		__PAR_VectorSum_3_p[(4)] = 0.0;
+		__PAR_VectorSum_3_p[(5)] = 0.0;
+		__PAR_VectorSum_3_p[(6)] = 0.0;
+		__PAR_VectorSum_3_p[(7)] = 0.0;
+		__PAR_VectorSum_3_p[(8)] = 4.0;
+		__PAR_VectorSum_3_p[(9)] = 100.0;
 	for(i47 = 0; i47 <= 3; i47++)
 	{
-		__VectorSum_3_w[(i47)] = __VectorSum_3_p[(i47)];
+		__PAR_VectorSum_3_w[(i47)] = __PAR_VectorSum_3_p[(i47)];
 	}
-		__vector_sat_4_p[(0)] = 0.0;
-		__vector_sat_4_p[(1)] = 1.000000000000000000000000e+06;
-		__vector_sat_4_p[(2)] = 100.0;
-		__Scalar2Vector_5_p[(0)] = 0.0;
-		__Scalar2Vector_5_p[(1)] = 100.0;
-		__Vec2Scalar_6_p[(0)] = 0.0;
-		__Vec2Scalar_6_p[(1)] = 100.0;
-		__vector_pow2_7_p[(0)] = 100.0;
-		__vector_pow2_8_p[(0)] = 100.0;
-		__vector_sat_9_p[(0)] = 0.0;
-		__vector_sat_9_p[(1)] = 1.000000000000000000000000e+06;
-		__vector_sat_9_p[(2)] = 100.0;
-		__VectorSum_10_p[(0)] = 1.0;
-		__VectorSum_10_p[(1)] = (((-1.0)));
-		__VectorSum_10_p[(2)] = 1.0;
-		__VectorSum_10_p[(3)] = 0.0;
-		__VectorSum_10_p[(4)] = 0.0;
-		__VectorSum_10_p[(5)] = 0.0;
-		__VectorSum_10_p[(6)] = 0.0;
-		__VectorSum_10_p[(7)] = 0.0;
-		__VectorSum_10_p[(8)] = 3.0;
-		__VectorSum_10_p[(9)] = 100.0;
+		__PAR_vector_sat_4_p[(0)] = 0.0;
+		__PAR_vector_sat_4_p[(1)] = 1.000000000000000000000000e+06;
+		__PAR_vector_sat_4_p[(2)] = 100.0;
+		__PAR_Scalar2Vector_5_p[(0)] = 0.0;
+		__PAR_Scalar2Vector_5_p[(1)] = 100.0;
+		__PAR_Vec2Scalar_6_p[(0)] = 0.0;
+		__PAR_Vec2Scalar_6_p[(1)] = 100.0;
+		__PAR_vector_pow2_7_p[(0)] = 100.0;
+		__PAR_vector_pow2_8_p[(0)] = 100.0;
+		__PAR_vector_sat_9_p[(0)] = 0.0;
+		__PAR_vector_sat_9_p[(1)] = 1.000000000000000000000000e+06;
+		__PAR_vector_sat_9_p[(2)] = 100.0;
+		__PAR_VectorSum_10_p[(0)] = 1.0;
+		__PAR_VectorSum_10_p[(1)] = (((-1.0)));
+		__PAR_VectorSum_10_p[(2)] = 1.0;
+		__PAR_VectorSum_10_p[(3)] = 0.0;
+		__PAR_VectorSum_10_p[(4)] = 0.0;
+		__PAR_VectorSum_10_p[(5)] = 0.0;
+		__PAR_VectorSum_10_p[(6)] = 0.0;
+		__PAR_VectorSum_10_p[(7)] = 0.0;
+		__PAR_VectorSum_10_p[(8)] = 3.0;
+		__PAR_VectorSum_10_p[(9)] = 100.0;
 	for(i48 = 0; i48 <= 2; i48++)
 	{
-		__VectorSum_10_w[(i48)] = __VectorSum_10_p[(i48)];
+		__PAR_VectorSum_10_w[(i48)] = __PAR_VectorSum_10_p[(i48)];
 	}
-		__VectorSum_11_p[(0)] = 1.0;
-		__VectorSum_11_p[(1)] = (((-1.0)));
-		__VectorSum_11_p[(2)] = 0.0;
-		__VectorSum_11_p[(3)] = 0.0;
-		__VectorSum_11_p[(4)] = 0.0;
-		__VectorSum_11_p[(5)] = 0.0;
-		__VectorSum_11_p[(6)] = 0.0;
-		__VectorSum_11_p[(7)] = 0.0;
-		__VectorSum_11_p[(8)] = 2.0;
-		__VectorSum_11_p[(9)] = 100.0;
+		__PAR_VectorSum_11_p[(0)] = 1.0;
+		__PAR_VectorSum_11_p[(1)] = (((-1.0)));
+		__PAR_VectorSum_11_p[(2)] = 0.0;
+		__PAR_VectorSum_11_p[(3)] = 0.0;
+		__PAR_VectorSum_11_p[(4)] = 0.0;
+		__PAR_VectorSum_11_p[(5)] = 0.0;
+		__PAR_VectorSum_11_p[(6)] = 0.0;
+		__PAR_VectorSum_11_p[(7)] = 0.0;
+		__PAR_VectorSum_11_p[(8)] = 2.0;
+		__PAR_VectorSum_11_p[(9)] = 100.0;
 	for(i49 = 0; i49 <= 1; i49++)
 	{
-		__VectorSum_11_w[(i49)] = __VectorSum_11_p[(i49)];
+		__PAR_VectorSum_11_w[(i49)] = __PAR_VectorSum_11_p[(i49)];
 	}
-		__Scalar2Vector_12_p[(0)] = (((-1.0)));
-		__Scalar2Vector_12_p[(1)] = 100.0;
-		__ramp_sci_13_p[(0)] = 5.0;
-		__ramp_sci_13_p[(1)] = 5.0;
-		__ramp_sci_13_p[(2)] = 5.0;
-		__ramp_sci_13_p[(3)] = 0.0;
-		__ramp_sci_13_p[(4)] = 1.000000000000000020816682e-02;
-		__ramp_sci_14_p[(0)] = 15.0;
-		__ramp_sci_14_p[(1)] = 2.0;
-		__ramp_sci_14_p[(2)] = 5.0;
-		__ramp_sci_14_p[(3)] = 0.0;
-		__ramp_sci_14_p[(4)] = 1.000000000000000020816682e-02;
-		__Constant_15_p[(0)] = 1.0;
-		__Constant_16_p[(0)] = 5.0;
-		__Scalar2Vector_17_p[(0)] = (((-1.0)));
-		__Scalar2Vector_17_p[(1)] = 100.0;
-		__Vec2Scalar_18_p[(0)] = 99.0;
-		__Vec2Scalar_18_p[(1)] = 100.0;
-		__WSum_20_p[(0)] = 1.0;
-		__WSum_20_p[(1)] = (((-1.0)));
-		__WSum_20_p[(2)] = 0.0;
-		__WSum_20_p[(3)] = 0.0;
-		__WSum_20_p[(4)] = 0.0;
-		__WSum_20_p[(5)] = 0.0;
-		__WSum_20_p[(6)] = 0.0;
-		__WSum_20_p[(7)] = 0.0;
-		__WSum_20_p[(8)] = 2.0;
+		__PAR_Scalar2Vector_12_p[(0)] = (((-1.0)));
+		__PAR_Scalar2Vector_12_p[(1)] = 100.0;
+		__PAR_ramp_sci_13_p[(0)] = 5.0;
+		__PAR_ramp_sci_13_p[(1)] = 5.0;
+		__PAR_ramp_sci_13_p[(2)] = 5.0;
+		__PAR_ramp_sci_13_p[(3)] = 0.0;
+		__PAR_ramp_sci_13_p[(4)] = 1.000000000000000020816682e-02;
+		__PAR_ramp_sci_14_p[(0)] = 15.0;
+		__PAR_ramp_sci_14_p[(1)] = 2.0;
+		__PAR_ramp_sci_14_p[(2)] = 5.0;
+		__PAR_ramp_sci_14_p[(3)] = 0.0;
+		__PAR_ramp_sci_14_p[(4)] = 1.000000000000000020816682e-02;
+		__PAR_Constant_15_p[(0)] = 1.0;
+		__PAR_Constant_16_p[(0)] = 5.0;
+		__PAR_Scalar2Vector_17_p[(0)] = (((-1.0)));
+		__PAR_Scalar2Vector_17_p[(1)] = 100.0;
+		__PAR_Vec2Scalar_18_p[(0)] = 99.0;
+		__PAR_Vec2Scalar_18_p[(1)] = 100.0;
+		__PAR_WSum_20_p[(0)] = 1.0;
+		__PAR_WSum_20_p[(1)] = (((-1.0)));
+		__PAR_WSum_20_p[(2)] = 0.0;
+		__PAR_WSum_20_p[(3)] = 0.0;
+		__PAR_WSum_20_p[(4)] = 0.0;
+		__PAR_WSum_20_p[(5)] = 0.0;
+		__PAR_WSum_20_p[(6)] = 0.0;
+		__PAR_WSum_20_p[(7)] = 0.0;
+		__PAR_WSum_20_p[(8)] = 2.0;
 	for(i50 = 0; i50 <= 1; i50++)
 	{
-		__WSum_20_w[(i50)] = __WSum_20_p[(i50)];
+		__PAR_WSum_20_w[(i50)] = __PAR_WSum_20_p[(i50)];
 	}
 	for ( i = 1; i <= 99; i++) 
 	{

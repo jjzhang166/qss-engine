@@ -7,23 +7,24 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __g = 0;
-double __m = 0;
-double __L = 0;
-double __kc = 0;
-double __bc = 0;
-double __R = 0;
-double __J = 0;
-double __bslip = 0;
-double __bnoslip = 0;
-double __baxle = 0;
-double __vslipmax = 0;
-double __fric_coef_dyn = 0;
-double __r = 0;
-double __phi = 0;
+double __PAR_g = 0;
+double __PAR_m = 0;
+double __PAR_L = 0;
+double __PAR_kc = 0;
+double __PAR_bc = 0;
+double __PAR_R = 0;
+double __PAR_J = 0;
+double __PAR_bslip = 0;
+double __PAR_bnoslip = 0;
+double __PAR_baxle = 0;
+double __PAR_vslipmax = 0;
+double __PAR_fric_coef_dyn = 0;
+double __PAR_r = 0;
+double __PAR_phi = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -31,7 +32,7 @@ MOD_settings(SD_simulationSettings settings)
 	 settings->debug = 0;
 	 settings->parallel = FALSE;
 	 settings->hybrid = TRUE;
-	 settings->method = 6;
+	 settings->method = 4;
 }
 
 void
@@ -41,71 +42,71 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	switch(i)
 	{
 		case 0:
-			alg[360] = __R*x[0]-x[80];
-			alg[400] = d[0]*__bnoslip*alg[360]*__m*__g+(1.0-d[0])*(__fric_coef_dyn*alg[360]*__m*__g+__bslip*alg[360]*__m*__g);
-			dx[1] = (d[(10)]-__R*alg[400]-__baxle*__m*__g*x[0])/__J;
+			alg[270] = __PAR_R*x[0]-x[60];
+			alg[300] = d[0]*__PAR_bnoslip*alg[270]*__PAR_m*__PAR_g+(1.0-d[0])*(__PAR_fric_coef_dyn*alg[270]*__PAR_m*__PAR_g+__PAR_bslip*alg[270]*__PAR_m*__PAR_g);
+			dx[1] = (d[(10)]-__PAR_R*alg[300]-__PAR_baxle*__PAR_m*__PAR_g*x[0])/__PAR_J;
 			return;
 		case 10:
-			dx[1] = x[80];
+			dx[1] = x[60];
 			return;
 		case 20:
+			alg[90] = 0.0;
 			alg[120] = 0.0;
-			alg[160] = 0.0;
-			alg[200] = -__m*__g;
-			alg[240] = cos(x[40]/__r)*cos(__phi);
-			alg[280] = -sin(x[40]/__r);
-			alg[320] = cos(x[40]/__r)*sin(__phi);
-			alg[360] = __R*x[0]-x[80];
-			alg[400] = d[0]*__bnoslip*alg[360]*__m*__g+(1.0-d[0])*(__fric_coef_dyn*alg[360]*__m*__g+__bslip*alg[360]*__m*__g);
-			alg[440] = alg[240]*alg[120]+alg[280]*alg[160]+alg[320]*alg[200]+alg[400]+__kc*(x[44]-x[40]-__L)+__bc*(x[84]-x[80]);
-			dx[1] = alg[440]/__m;
+			alg[150] = -__PAR_m*__PAR_g;
+			alg[180] = cos(x[30]/__PAR_r)*cos(__PAR_phi);
+			alg[210] = -sin(x[30]/__PAR_r);
+			alg[240] = cos(x[30]/__PAR_r)*sin(__PAR_phi);
+			alg[270] = __PAR_R*x[0]-x[60];
+			alg[300] = d[0]*__PAR_bnoslip*alg[270]*__PAR_m*__PAR_g+(1.0-d[0])*(__PAR_fric_coef_dyn*alg[270]*__PAR_m*__PAR_g+__PAR_bslip*alg[270]*__PAR_m*__PAR_g);
+			alg[330] = alg[180]*alg[90]+alg[210]*alg[120]+alg[240]*alg[150]+alg[300]+__PAR_kc*(x[33]-x[30]-__PAR_L)+__PAR_bc*(x[63]-x[60]);
+			dx[1] = alg[330]/__PAR_m;
 			return;
 		case 9:
-			alg[396] = __R*x[36]-x[116];
-			alg[436] = d[9]*__bnoslip*alg[396]*__m*__g+(1.0-d[9])*(__fric_coef_dyn*alg[396]*__m*__g+__bslip*alg[396]*__m*__g);
-			dx[1] = (-__R*alg[436]-__baxle*__m*__g*x[36])/__J;
+			alg[297] = __PAR_R*x[27]-x[87];
+			alg[327] = d[9]*__PAR_bnoslip*alg[297]*__PAR_m*__PAR_g+(1.0-d[9])*(__PAR_fric_coef_dyn*alg[297]*__PAR_m*__PAR_g+__PAR_bslip*alg[297]*__PAR_m*__PAR_g);
+			dx[1] = (-__PAR_R*alg[327]-__PAR_baxle*__PAR_m*__PAR_g*x[27])/__PAR_J;
 			return;
 		case 19:
-			dx[1] = x[116];
+			dx[1] = x[87];
 			return;
 		case 29:
-			alg[156] = 0.0;
-			alg[196] = 0.0;
-			alg[236] = -__m*__g;
-			alg[276] = cos(x[76]/__r)*cos(__phi);
-			alg[316] = -sin(x[76]/__r);
-			alg[356] = cos(x[76]/__r)*sin(__phi);
-			alg[396] = __R*x[36]-x[116];
-			alg[436] = d[9]*__bnoslip*alg[396]*__m*__g+(1.0-d[9])*(__fric_coef_dyn*alg[396]*__m*__g+__bslip*alg[396]*__m*__g);
-			alg[476] = alg[276]*alg[156]+alg[316]*alg[196]+alg[356]*alg[236]+alg[436]+__kc*(x[72]-x[76]+__L)+__bc*(x[112]-x[116]);
-			dx[1] = alg[476]/__m;
+			alg[117] = 0.0;
+			alg[147] = 0.0;
+			alg[177] = -__PAR_m*__PAR_g;
+			alg[207] = cos(x[57]/__PAR_r)*cos(__PAR_phi);
+			alg[237] = -sin(x[57]/__PAR_r);
+			alg[267] = cos(x[57]/__PAR_r)*sin(__PAR_phi);
+			alg[297] = __PAR_R*x[27]-x[87];
+			alg[327] = d[9]*__PAR_bnoslip*alg[297]*__PAR_m*__PAR_g+(1.0-d[9])*(__PAR_fric_coef_dyn*alg[297]*__PAR_m*__PAR_g+__PAR_bslip*alg[297]*__PAR_m*__PAR_g);
+			alg[357] = alg[207]*alg[117]+alg[237]*alg[147]+alg[267]*alg[177]+alg[327]+__PAR_kc*(x[54]-x[57]+__PAR_L)+__PAR_bc*(x[84]-x[87]);
+			dx[1] = alg[357]/__PAR_m;
 			return;
 		default:
 			j = i;
 			if(j >=1 && j <= 8)
 			{
-				alg[(j+90) * 4] = __R*x[(j) * 4]-x[(j+20) * 4];
-				alg[(j+100) * 4] = d[(j)]*__bnoslip*alg[(j+90) * 4]*__m*__g+(1.0-d[(j)])*(__fric_coef_dyn*alg[(j+90) * 4]*__m*__g+__bslip*alg[(j+90) * 4]*__m*__g);
-				dx[1] = (-__R*alg[(j+100) * 4]-__baxle*__m*__g*x[(j) * 4])/__J;
+				alg[(j+90) * 3] = __PAR_R*x[(j) * 3]-x[(j+20) * 3];
+				alg[(j+100) * 3] = d[(j)]*__PAR_bnoslip*alg[(j+90) * 3]*__PAR_m*__PAR_g+(1.0-d[(j)])*(__PAR_fric_coef_dyn*alg[(j+90) * 3]*__PAR_m*__PAR_g+__PAR_bslip*alg[(j+90) * 3]*__PAR_m*__PAR_g);
+				dx[1] = (-__PAR_R*alg[(j+100) * 3]-__PAR_baxle*__PAR_m*__PAR_g*x[(j) * 3])/__PAR_J;
 			}
 			j = i-10;
 			if(j >=1 && j <= 8)
 			{
-				dx[1] = x[(j+20) * 4];
+				dx[1] = x[(j+20) * 3];
 			}
 			j = i-20;
 			if(j >=1 && j <= 8)
 			{
-				alg[(j+30) * 4] = 0.0;
-				alg[(j+40) * 4] = 0.0;
-				alg[(j+50) * 4] = -__m*__g;
-				alg[(j+60) * 4] = cos(x[(j+10) * 4]/__r)*cos(__phi);
-				alg[(j+70) * 4] = -sin(x[(j+10) * 4]/__r);
-				alg[(j+80) * 4] = cos(x[(j+10) * 4]/__r)*sin(__phi);
-				alg[(j+90) * 4] = __R*x[(j) * 4]-x[(j+20) * 4];
-				alg[(j+100) * 4] = d[(j)]*__bnoslip*alg[(j+90) * 4]*__m*__g+(1.0-d[(j)])*(__fric_coef_dyn*alg[(j+90) * 4]*__m*__g+__bslip*alg[(j+90) * 4]*__m*__g);
-				alg[(j+110) * 4] = alg[(j+60) * 4]*alg[(j+30) * 4]+alg[(j+70) * 4]*alg[(j+40) * 4]+alg[(j+80) * 4]*alg[(j+50) * 4]+alg[(j+100) * 4]+__kc*(x[(j+11) * 4]+x[(j+9) * 4]-2.0*x[(j+10) * 4])+__bc*(x[(j+21) * 4]+x[(j+19) * 4]-2.0*x[(j+20) * 4]);
-				dx[1] = alg[(j+110) * 4]/__m;
+				alg[(j+30) * 3] = 0.0;
+				alg[(j+40) * 3] = 0.0;
+				alg[(j+50) * 3] = -__PAR_m*__PAR_g;
+				alg[(j+60) * 3] = cos(x[(j+10) * 3]/__PAR_r)*cos(__PAR_phi);
+				alg[(j+70) * 3] = -sin(x[(j+10) * 3]/__PAR_r);
+				alg[(j+80) * 3] = cos(x[(j+10) * 3]/__PAR_r)*sin(__PAR_phi);
+				alg[(j+90) * 3] = __PAR_R*x[(j) * 3]-x[(j+20) * 3];
+				alg[(j+100) * 3] = d[(j)]*__PAR_bnoslip*alg[(j+90) * 3]*__PAR_m*__PAR_g+(1.0-d[(j)])*(__PAR_fric_coef_dyn*alg[(j+90) * 3]*__PAR_m*__PAR_g+__PAR_bslip*alg[(j+90) * 3]*__PAR_m*__PAR_g);
+				alg[(j+110) * 3] = alg[(j+60) * 3]*alg[(j+30) * 3]+alg[(j+70) * 3]*alg[(j+40) * 3]+alg[(j+80) * 3]*alg[(j+50) * 3]+alg[(j+100) * 3]+__PAR_kc*(x[(j+11) * 3]+x[(j+9) * 3]-2.0*x[(j+10) * 3])+__PAR_bc*(x[(j+21) * 3]+x[(j+19) * 3]-2.0*x[(j+20) * 3]);
+				dx[1] = alg[(j+110) * 3]/__PAR_m;
 			}
 	}
 }
@@ -117,232 +118,232 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	switch(i)
 	{
 		case 0:
+			alg[90] = 0.0;
 			alg[120] = 0.0;
-			alg[160] = 0.0;
-			alg[200] = -__m*__g;
-			alg[240] = cos(x[40]/__r)*cos(__phi);
-			alg[280] = -sin(x[40]/__r);
-			alg[320] = cos(x[40]/__r)*sin(__phi);
-			alg[360] = __R*x[0]-x[80];
-			alg[400] = d[0]*__bnoslip*alg[360]*__m*__g+(1.0-d[0])*(__fric_coef_dyn*alg[360]*__m*__g+__bslip*alg[360]*__m*__g);
-			alg[440] = alg[240]*alg[120]+alg[280]*alg[160]+alg[320]*alg[200]+alg[400]+__kc*(x[44]-x[40]-__L)+__bc*(x[84]-x[80]);
-			der[0 + 1] = (d[(10)]-__R*alg[400]-__baxle*__m*__g*x[0])/__J;
-			der[80 + 1] = alg[440]/__m;
+			alg[150] = -__PAR_m*__PAR_g;
+			alg[180] = cos(x[30]/__PAR_r)*cos(__PAR_phi);
+			alg[210] = -sin(x[30]/__PAR_r);
+			alg[240] = cos(x[30]/__PAR_r)*sin(__PAR_phi);
+			alg[270] = __PAR_R*x[0]-x[60];
+			alg[300] = d[0]*__PAR_bnoslip*alg[270]*__PAR_m*__PAR_g+(1.0-d[0])*(__PAR_fric_coef_dyn*alg[270]*__PAR_m*__PAR_g+__PAR_bslip*alg[270]*__PAR_m*__PAR_g);
+			alg[330] = alg[180]*alg[90]+alg[210]*alg[120]+alg[240]*alg[150]+alg[300]+__PAR_kc*(x[33]-x[30]-__PAR_L)+__PAR_bc*(x[63]-x[60]);
+			der[0 + 1] = (d[(10)]-__PAR_R*alg[300]-__PAR_baxle*__PAR_m*__PAR_g*x[0])/__PAR_J;
+			der[60 + 1] = alg[330]/__PAR_m;
 			break;
 		case 9:
-			alg[156] = 0.0;
-			alg[196] = 0.0;
-			alg[236] = -__m*__g;
-			alg[276] = cos(x[76]/__r)*cos(__phi);
-			alg[316] = -sin(x[76]/__r);
-			alg[356] = cos(x[76]/__r)*sin(__phi);
-			alg[396] = __R*x[36]-x[116];
-			alg[436] = d[9]*__bnoslip*alg[396]*__m*__g+(1.0-d[9])*(__fric_coef_dyn*alg[396]*__m*__g+__bslip*alg[396]*__m*__g);
-			alg[476] = alg[276]*alg[156]+alg[316]*alg[196]+alg[356]*alg[236]+alg[436]+__kc*(x[72]-x[76]+__L)+__bc*(x[112]-x[116]);
-			der[36 + 1] = (-__R*alg[436]-__baxle*__m*__g*x[36])/__J;
-			der[116 + 1] = alg[476]/__m;
+			alg[117] = 0.0;
+			alg[147] = 0.0;
+			alg[177] = -__PAR_m*__PAR_g;
+			alg[207] = cos(x[57]/__PAR_r)*cos(__PAR_phi);
+			alg[237] = -sin(x[57]/__PAR_r);
+			alg[267] = cos(x[57]/__PAR_r)*sin(__PAR_phi);
+			alg[297] = __PAR_R*x[27]-x[87];
+			alg[327] = d[9]*__PAR_bnoslip*alg[297]*__PAR_m*__PAR_g+(1.0-d[9])*(__PAR_fric_coef_dyn*alg[297]*__PAR_m*__PAR_g+__PAR_bslip*alg[297]*__PAR_m*__PAR_g);
+			alg[357] = alg[207]*alg[117]+alg[237]*alg[147]+alg[267]*alg[177]+alg[327]+__PAR_kc*(x[54]-x[57]+__PAR_L)+__PAR_bc*(x[84]-x[87]);
+			der[27 + 1] = (-__PAR_R*alg[327]-__PAR_baxle*__PAR_m*__PAR_g*x[27])/__PAR_J;
+			der[87 + 1] = alg[357]/__PAR_m;
 			break;
 		case 10:
+			alg[90] = 0.0;
 			alg[120] = 0.0;
-			alg[160] = 0.0;
-			alg[200] = -__m*__g;
-			alg[240] = cos(x[40]/__r)*cos(__phi);
-			alg[280] = -sin(x[40]/__r);
-			alg[320] = cos(x[40]/__r)*sin(__phi);
-			alg[360] = __R*x[0]-x[80];
-			alg[400] = d[0]*__bnoslip*alg[360]*__m*__g+(1.0-d[0])*(__fric_coef_dyn*alg[360]*__m*__g+__bslip*alg[360]*__m*__g);
-			alg[440] = alg[240]*alg[120]+alg[280]*alg[160]+alg[320]*alg[200]+alg[400]+__kc*(x[44]-x[40]-__L)+__bc*(x[84]-x[80]);
-			der[80 + 1] = alg[440]/__m;
+			alg[150] = -__PAR_m*__PAR_g;
+			alg[180] = cos(x[30]/__PAR_r)*cos(__PAR_phi);
+			alg[210] = -sin(x[30]/__PAR_r);
+			alg[240] = cos(x[30]/__PAR_r)*sin(__PAR_phi);
+			alg[270] = __PAR_R*x[0]-x[60];
+			alg[300] = d[0]*__PAR_bnoslip*alg[270]*__PAR_m*__PAR_g+(1.0-d[0])*(__PAR_fric_coef_dyn*alg[270]*__PAR_m*__PAR_g+__PAR_bslip*alg[270]*__PAR_m*__PAR_g);
+			alg[330] = alg[180]*alg[90]+alg[210]*alg[120]+alg[240]*alg[150]+alg[300]+__PAR_kc*(x[33]-x[30]-__PAR_L)+__PAR_bc*(x[63]-x[60]);
+			der[60 + 1] = alg[330]/__PAR_m;
 			break;
 		case 11:
+			alg[90] = 0.0;
 			alg[120] = 0.0;
-			alg[160] = 0.0;
-			alg[200] = -__m*__g;
-			alg[240] = cos(x[40]/__r)*cos(__phi);
-			alg[280] = -sin(x[40]/__r);
-			alg[320] = cos(x[40]/__r)*sin(__phi);
-			alg[360] = __R*x[0]-x[80];
-			alg[400] = d[0]*__bnoslip*alg[360]*__m*__g+(1.0-d[0])*(__fric_coef_dyn*alg[360]*__m*__g+__bslip*alg[360]*__m*__g);
-			alg[440] = alg[240]*alg[120]+alg[280]*alg[160]+alg[320]*alg[200]+alg[400]+__kc*(x[44]-x[40]-__L)+__bc*(x[84]-x[80]);
-			der[80 + 1] = alg[440]/__m;
+			alg[150] = -__PAR_m*__PAR_g;
+			alg[180] = cos(x[30]/__PAR_r)*cos(__PAR_phi);
+			alg[210] = -sin(x[30]/__PAR_r);
+			alg[240] = cos(x[30]/__PAR_r)*sin(__PAR_phi);
+			alg[270] = __PAR_R*x[0]-x[60];
+			alg[300] = d[0]*__PAR_bnoslip*alg[270]*__PAR_m*__PAR_g+(1.0-d[0])*(__PAR_fric_coef_dyn*alg[270]*__PAR_m*__PAR_g+__PAR_bslip*alg[270]*__PAR_m*__PAR_g);
+			alg[330] = alg[180]*alg[90]+alg[210]*alg[120]+alg[240]*alg[150]+alg[300]+__PAR_kc*(x[33]-x[30]-__PAR_L)+__PAR_bc*(x[63]-x[60]);
+			der[60 + 1] = alg[330]/__PAR_m;
 			break;
 		case 18:
-			alg[156] = 0.0;
-			alg[196] = 0.0;
-			alg[236] = -__m*__g;
-			alg[276] = cos(x[76]/__r)*cos(__phi);
-			alg[316] = -sin(x[76]/__r);
-			alg[356] = cos(x[76]/__r)*sin(__phi);
-			alg[396] = __R*x[36]-x[116];
-			alg[436] = d[9]*__bnoslip*alg[396]*__m*__g+(1.0-d[9])*(__fric_coef_dyn*alg[396]*__m*__g+__bslip*alg[396]*__m*__g);
-			alg[476] = alg[276]*alg[156]+alg[316]*alg[196]+alg[356]*alg[236]+alg[436]+__kc*(x[72]-x[76]+__L)+__bc*(x[112]-x[116]);
-			der[116 + 1] = alg[476]/__m;
+			alg[117] = 0.0;
+			alg[147] = 0.0;
+			alg[177] = -__PAR_m*__PAR_g;
+			alg[207] = cos(x[57]/__PAR_r)*cos(__PAR_phi);
+			alg[237] = -sin(x[57]/__PAR_r);
+			alg[267] = cos(x[57]/__PAR_r)*sin(__PAR_phi);
+			alg[297] = __PAR_R*x[27]-x[87];
+			alg[327] = d[9]*__PAR_bnoslip*alg[297]*__PAR_m*__PAR_g+(1.0-d[9])*(__PAR_fric_coef_dyn*alg[297]*__PAR_m*__PAR_g+__PAR_bslip*alg[297]*__PAR_m*__PAR_g);
+			alg[357] = alg[207]*alg[117]+alg[237]*alg[147]+alg[267]*alg[177]+alg[327]+__PAR_kc*(x[54]-x[57]+__PAR_L)+__PAR_bc*(x[84]-x[87]);
+			der[87 + 1] = alg[357]/__PAR_m;
 			break;
 		case 19:
-			alg[156] = 0.0;
-			alg[196] = 0.0;
-			alg[236] = -__m*__g;
-			alg[276] = cos(x[76]/__r)*cos(__phi);
-			alg[316] = -sin(x[76]/__r);
-			alg[356] = cos(x[76]/__r)*sin(__phi);
-			alg[396] = __R*x[36]-x[116];
-			alg[436] = d[9]*__bnoslip*alg[396]*__m*__g+(1.0-d[9])*(__fric_coef_dyn*alg[396]*__m*__g+__bslip*alg[396]*__m*__g);
-			alg[476] = alg[276]*alg[156]+alg[316]*alg[196]+alg[356]*alg[236]+alg[436]+__kc*(x[72]-x[76]+__L)+__bc*(x[112]-x[116]);
-			der[116 + 1] = alg[476]/__m;
+			alg[117] = 0.0;
+			alg[147] = 0.0;
+			alg[177] = -__PAR_m*__PAR_g;
+			alg[207] = cos(x[57]/__PAR_r)*cos(__PAR_phi);
+			alg[237] = -sin(x[57]/__PAR_r);
+			alg[267] = cos(x[57]/__PAR_r)*sin(__PAR_phi);
+			alg[297] = __PAR_R*x[27]-x[87];
+			alg[327] = d[9]*__PAR_bnoslip*alg[297]*__PAR_m*__PAR_g+(1.0-d[9])*(__PAR_fric_coef_dyn*alg[297]*__PAR_m*__PAR_g+__PAR_bslip*alg[297]*__PAR_m*__PAR_g);
+			alg[357] = alg[207]*alg[117]+alg[237]*alg[147]+alg[267]*alg[177]+alg[327]+__PAR_kc*(x[54]-x[57]+__PAR_L)+__PAR_bc*(x[84]-x[87]);
+			der[87 + 1] = alg[357]/__PAR_m;
 			break;
 		case 20:
+			alg[90] = 0.0;
 			alg[120] = 0.0;
-			alg[160] = 0.0;
-			alg[200] = -__m*__g;
-			alg[240] = cos(x[40]/__r)*cos(__phi);
-			alg[280] = -sin(x[40]/__r);
-			alg[320] = cos(x[40]/__r)*sin(__phi);
-			alg[360] = __R*x[0]-x[80];
-			alg[400] = d[0]*__bnoslip*alg[360]*__m*__g+(1.0-d[0])*(__fric_coef_dyn*alg[360]*__m*__g+__bslip*alg[360]*__m*__g);
-			alg[440] = alg[240]*alg[120]+alg[280]*alg[160]+alg[320]*alg[200]+alg[400]+__kc*(x[44]-x[40]-__L)+__bc*(x[84]-x[80]);
-			der[0 + 1] = (d[(10)]-__R*alg[400]-__baxle*__m*__g*x[0])/__J;
-			der[40 + 1] = x[80];
-			der[80 + 1] = alg[440]/__m;
+			alg[150] = -__PAR_m*__PAR_g;
+			alg[180] = cos(x[30]/__PAR_r)*cos(__PAR_phi);
+			alg[210] = -sin(x[30]/__PAR_r);
+			alg[240] = cos(x[30]/__PAR_r)*sin(__PAR_phi);
+			alg[270] = __PAR_R*x[0]-x[60];
+			alg[300] = d[0]*__PAR_bnoslip*alg[270]*__PAR_m*__PAR_g+(1.0-d[0])*(__PAR_fric_coef_dyn*alg[270]*__PAR_m*__PAR_g+__PAR_bslip*alg[270]*__PAR_m*__PAR_g);
+			alg[330] = alg[180]*alg[90]+alg[210]*alg[120]+alg[240]*alg[150]+alg[300]+__PAR_kc*(x[33]-x[30]-__PAR_L)+__PAR_bc*(x[63]-x[60]);
+			der[0 + 1] = (d[(10)]-__PAR_R*alg[300]-__PAR_baxle*__PAR_m*__PAR_g*x[0])/__PAR_J;
+			der[30 + 1] = x[60];
+			der[60 + 1] = alg[330]/__PAR_m;
 			break;
 		case 21:
+			alg[90] = 0.0;
 			alg[120] = 0.0;
-			alg[160] = 0.0;
-			alg[200] = -__m*__g;
-			alg[240] = cos(x[40]/__r)*cos(__phi);
-			alg[280] = -sin(x[40]/__r);
-			alg[320] = cos(x[40]/__r)*sin(__phi);
-			alg[360] = __R*x[0]-x[80];
-			alg[400] = d[0]*__bnoslip*alg[360]*__m*__g+(1.0-d[0])*(__fric_coef_dyn*alg[360]*__m*__g+__bslip*alg[360]*__m*__g);
-			alg[440] = alg[240]*alg[120]+alg[280]*alg[160]+alg[320]*alg[200]+alg[400]+__kc*(x[44]-x[40]-__L)+__bc*(x[84]-x[80]);
-			der[80 + 1] = alg[440]/__m;
+			alg[150] = -__PAR_m*__PAR_g;
+			alg[180] = cos(x[30]/__PAR_r)*cos(__PAR_phi);
+			alg[210] = -sin(x[30]/__PAR_r);
+			alg[240] = cos(x[30]/__PAR_r)*sin(__PAR_phi);
+			alg[270] = __PAR_R*x[0]-x[60];
+			alg[300] = d[0]*__PAR_bnoslip*alg[270]*__PAR_m*__PAR_g+(1.0-d[0])*(__PAR_fric_coef_dyn*alg[270]*__PAR_m*__PAR_g+__PAR_bslip*alg[270]*__PAR_m*__PAR_g);
+			alg[330] = alg[180]*alg[90]+alg[210]*alg[120]+alg[240]*alg[150]+alg[300]+__PAR_kc*(x[33]-x[30]-__PAR_L)+__PAR_bc*(x[63]-x[60]);
+			der[60 + 1] = alg[330]/__PAR_m;
 			break;
 		case 28:
-			alg[156] = 0.0;
-			alg[196] = 0.0;
-			alg[236] = -__m*__g;
-			alg[276] = cos(x[76]/__r)*cos(__phi);
-			alg[316] = -sin(x[76]/__r);
-			alg[356] = cos(x[76]/__r)*sin(__phi);
-			alg[396] = __R*x[36]-x[116];
-			alg[436] = d[9]*__bnoslip*alg[396]*__m*__g+(1.0-d[9])*(__fric_coef_dyn*alg[396]*__m*__g+__bslip*alg[396]*__m*__g);
-			alg[476] = alg[276]*alg[156]+alg[316]*alg[196]+alg[356]*alg[236]+alg[436]+__kc*(x[72]-x[76]+__L)+__bc*(x[112]-x[116]);
-			der[116 + 1] = alg[476]/__m;
+			alg[117] = 0.0;
+			alg[147] = 0.0;
+			alg[177] = -__PAR_m*__PAR_g;
+			alg[207] = cos(x[57]/__PAR_r)*cos(__PAR_phi);
+			alg[237] = -sin(x[57]/__PAR_r);
+			alg[267] = cos(x[57]/__PAR_r)*sin(__PAR_phi);
+			alg[297] = __PAR_R*x[27]-x[87];
+			alg[327] = d[9]*__PAR_bnoslip*alg[297]*__PAR_m*__PAR_g+(1.0-d[9])*(__PAR_fric_coef_dyn*alg[297]*__PAR_m*__PAR_g+__PAR_bslip*alg[297]*__PAR_m*__PAR_g);
+			alg[357] = alg[207]*alg[117]+alg[237]*alg[147]+alg[267]*alg[177]+alg[327]+__PAR_kc*(x[54]-x[57]+__PAR_L)+__PAR_bc*(x[84]-x[87]);
+			der[87 + 1] = alg[357]/__PAR_m;
 			break;
 		case 29:
-			alg[156] = 0.0;
-			alg[196] = 0.0;
-			alg[236] = -__m*__g;
-			alg[276] = cos(x[76]/__r)*cos(__phi);
-			alg[316] = -sin(x[76]/__r);
-			alg[356] = cos(x[76]/__r)*sin(__phi);
-			alg[396] = __R*x[36]-x[116];
-			alg[436] = d[9]*__bnoslip*alg[396]*__m*__g+(1.0-d[9])*(__fric_coef_dyn*alg[396]*__m*__g+__bslip*alg[396]*__m*__g);
-			alg[476] = alg[276]*alg[156]+alg[316]*alg[196]+alg[356]*alg[236]+alg[436]+__kc*(x[72]-x[76]+__L)+__bc*(x[112]-x[116]);
-			der[36 + 1] = (-__R*alg[436]-__baxle*__m*__g*x[36])/__J;
-			der[76 + 1] = x[116];
-			der[116 + 1] = alg[476]/__m;
+			alg[117] = 0.0;
+			alg[147] = 0.0;
+			alg[177] = -__PAR_m*__PAR_g;
+			alg[207] = cos(x[57]/__PAR_r)*cos(__PAR_phi);
+			alg[237] = -sin(x[57]/__PAR_r);
+			alg[267] = cos(x[57]/__PAR_r)*sin(__PAR_phi);
+			alg[297] = __PAR_R*x[27]-x[87];
+			alg[327] = d[9]*__PAR_bnoslip*alg[297]*__PAR_m*__PAR_g+(1.0-d[9])*(__PAR_fric_coef_dyn*alg[297]*__PAR_m*__PAR_g+__PAR_bslip*alg[297]*__PAR_m*__PAR_g);
+			alg[357] = alg[207]*alg[117]+alg[237]*alg[147]+alg[267]*alg[177]+alg[327]+__PAR_kc*(x[54]-x[57]+__PAR_L)+__PAR_bc*(x[84]-x[87]);
+			der[27 + 1] = (-__PAR_R*alg[327]-__PAR_baxle*__PAR_m*__PAR_g*x[27])/__PAR_J;
+			der[57 + 1] = x[87];
+			der[87 + 1] = alg[357]/__PAR_m;
 			break;
 	}
 	j = i;
 	if(j >=1 && j <= 8)
 	{
-		alg[(j+30) * 4] = 0.0;
-		alg[(j+40) * 4] = 0.0;
-		alg[(j+50) * 4] = -__m*__g;
-		alg[(j+60) * 4] = cos(x[(j+10) * 4]/__r)*cos(__phi);
-		alg[(j+70) * 4] = -sin(x[(j+10) * 4]/__r);
-		alg[(j+80) * 4] = cos(x[(j+10) * 4]/__r)*sin(__phi);
-		alg[(j+90) * 4] = __R*x[(j) * 4]-x[(j+20) * 4];
-		alg[(j+100) * 4] = d[(j)]*__bnoslip*alg[(j+90) * 4]*__m*__g+(1.0-d[(j)])*(__fric_coef_dyn*alg[(j+90) * 4]*__m*__g+__bslip*alg[(j+90) * 4]*__m*__g);
-		alg[(j+110) * 4] = alg[(j+60) * 4]*alg[(j+30) * 4]+alg[(j+70) * 4]*alg[(j+40) * 4]+alg[(j+80) * 4]*alg[(j+50) * 4]+alg[(j+100) * 4]+__kc*(x[(j+11) * 4]+x[(j+9) * 4]-2.0*x[(j+10) * 4])+__bc*(x[(j+21) * 4]+x[(j+19) * 4]-2.0*x[(j+20) * 4]);
-		der[(j) * 4 + 1] = (-__R*alg[(j+100) * 4]-__baxle*__m*__g*x[(j) * 4])/__J;
-		der[(j+20) * 4 + 1] = alg[(j+110) * 4]/__m;
+		alg[(j+30) * 3] = 0.0;
+		alg[(j+40) * 3] = 0.0;
+		alg[(j+50) * 3] = -__PAR_m*__PAR_g;
+		alg[(j+60) * 3] = cos(x[(j+10) * 3]/__PAR_r)*cos(__PAR_phi);
+		alg[(j+70) * 3] = -sin(x[(j+10) * 3]/__PAR_r);
+		alg[(j+80) * 3] = cos(x[(j+10) * 3]/__PAR_r)*sin(__PAR_phi);
+		alg[(j+90) * 3] = __PAR_R*x[(j) * 3]-x[(j+20) * 3];
+		alg[(j+100) * 3] = d[(j)]*__PAR_bnoslip*alg[(j+90) * 3]*__PAR_m*__PAR_g+(1.0-d[(j)])*(__PAR_fric_coef_dyn*alg[(j+90) * 3]*__PAR_m*__PAR_g+__PAR_bslip*alg[(j+90) * 3]*__PAR_m*__PAR_g);
+		alg[(j+110) * 3] = alg[(j+60) * 3]*alg[(j+30) * 3]+alg[(j+70) * 3]*alg[(j+40) * 3]+alg[(j+80) * 3]*alg[(j+50) * 3]+alg[(j+100) * 3]+__PAR_kc*(x[(j+11) * 3]+x[(j+9) * 3]-2.0*x[(j+10) * 3])+__PAR_bc*(x[(j+21) * 3]+x[(j+19) * 3]-2.0*x[(j+20) * 3]);
+		der[(j) * 3 + 1] = (-__PAR_R*alg[(j+100) * 3]-__PAR_baxle*__PAR_m*__PAR_g*x[(j) * 3])/__PAR_J;
+		der[(j+20) * 3 + 1] = alg[(j+110) * 3]/__PAR_m;
 	}
 	j = i-9;
 	if(j >=1 && j <= 8)
 	{
-		alg[(j+30) * 4] = 0.0;
-		alg[(j+40) * 4] = 0.0;
-		alg[(j+50) * 4] = -__m*__g;
-		alg[(j+60) * 4] = cos(x[(j+10) * 4]/__r)*cos(__phi);
-		alg[(j+70) * 4] = -sin(x[(j+10) * 4]/__r);
-		alg[(j+80) * 4] = cos(x[(j+10) * 4]/__r)*sin(__phi);
-		alg[(j+90) * 4] = __R*x[(j) * 4]-x[(j+20) * 4];
-		alg[(j+100) * 4] = d[(j)]*__bnoslip*alg[(j+90) * 4]*__m*__g+(1.0-d[(j)])*(__fric_coef_dyn*alg[(j+90) * 4]*__m*__g+__bslip*alg[(j+90) * 4]*__m*__g);
-		alg[(j+110) * 4] = alg[(j+60) * 4]*alg[(j+30) * 4]+alg[(j+70) * 4]*alg[(j+40) * 4]+alg[(j+80) * 4]*alg[(j+50) * 4]+alg[(j+100) * 4]+__kc*(x[(j+11) * 4]+x[(j+9) * 4]-2.0*x[(j+10) * 4])+__bc*(x[(j+21) * 4]+x[(j+19) * 4]-2.0*x[(j+20) * 4]);
-		der[(j+20) * 4 + 1] = alg[(j+110) * 4]/__m;
+		alg[(j+30) * 3] = 0.0;
+		alg[(j+40) * 3] = 0.0;
+		alg[(j+50) * 3] = -__PAR_m*__PAR_g;
+		alg[(j+60) * 3] = cos(x[(j+10) * 3]/__PAR_r)*cos(__PAR_phi);
+		alg[(j+70) * 3] = -sin(x[(j+10) * 3]/__PAR_r);
+		alg[(j+80) * 3] = cos(x[(j+10) * 3]/__PAR_r)*sin(__PAR_phi);
+		alg[(j+90) * 3] = __PAR_R*x[(j) * 3]-x[(j+20) * 3];
+		alg[(j+100) * 3] = d[(j)]*__PAR_bnoslip*alg[(j+90) * 3]*__PAR_m*__PAR_g+(1.0-d[(j)])*(__PAR_fric_coef_dyn*alg[(j+90) * 3]*__PAR_m*__PAR_g+__PAR_bslip*alg[(j+90) * 3]*__PAR_m*__PAR_g);
+		alg[(j+110) * 3] = alg[(j+60) * 3]*alg[(j+30) * 3]+alg[(j+70) * 3]*alg[(j+40) * 3]+alg[(j+80) * 3]*alg[(j+50) * 3]+alg[(j+100) * 3]+__PAR_kc*(x[(j+11) * 3]+x[(j+9) * 3]-2.0*x[(j+10) * 3])+__PAR_bc*(x[(j+21) * 3]+x[(j+19) * 3]-2.0*x[(j+20) * 3]);
+		der[(j+20) * 3 + 1] = alg[(j+110) * 3]/__PAR_m;
 	}
 	j = i-10;
 	if(j >=1 && j <= 8)
 	{
-		alg[(j+30) * 4] = 0.0;
-		alg[(j+40) * 4] = 0.0;
-		alg[(j+50) * 4] = -__m*__g;
-		alg[(j+60) * 4] = cos(x[(j+10) * 4]/__r)*cos(__phi);
-		alg[(j+70) * 4] = -sin(x[(j+10) * 4]/__r);
-		alg[(j+80) * 4] = cos(x[(j+10) * 4]/__r)*sin(__phi);
-		alg[(j+90) * 4] = __R*x[(j) * 4]-x[(j+20) * 4];
-		alg[(j+100) * 4] = d[(j)]*__bnoslip*alg[(j+90) * 4]*__m*__g+(1.0-d[(j)])*(__fric_coef_dyn*alg[(j+90) * 4]*__m*__g+__bslip*alg[(j+90) * 4]*__m*__g);
-		alg[(j+110) * 4] = alg[(j+60) * 4]*alg[(j+30) * 4]+alg[(j+70) * 4]*alg[(j+40) * 4]+alg[(j+80) * 4]*alg[(j+50) * 4]+alg[(j+100) * 4]+__kc*(x[(j+11) * 4]+x[(j+9) * 4]-2.0*x[(j+10) * 4])+__bc*(x[(j+21) * 4]+x[(j+19) * 4]-2.0*x[(j+20) * 4]);
-		der[(j+20) * 4 + 1] = alg[(j+110) * 4]/__m;
+		alg[(j+30) * 3] = 0.0;
+		alg[(j+40) * 3] = 0.0;
+		alg[(j+50) * 3] = -__PAR_m*__PAR_g;
+		alg[(j+60) * 3] = cos(x[(j+10) * 3]/__PAR_r)*cos(__PAR_phi);
+		alg[(j+70) * 3] = -sin(x[(j+10) * 3]/__PAR_r);
+		alg[(j+80) * 3] = cos(x[(j+10) * 3]/__PAR_r)*sin(__PAR_phi);
+		alg[(j+90) * 3] = __PAR_R*x[(j) * 3]-x[(j+20) * 3];
+		alg[(j+100) * 3] = d[(j)]*__PAR_bnoslip*alg[(j+90) * 3]*__PAR_m*__PAR_g+(1.0-d[(j)])*(__PAR_fric_coef_dyn*alg[(j+90) * 3]*__PAR_m*__PAR_g+__PAR_bslip*alg[(j+90) * 3]*__PAR_m*__PAR_g);
+		alg[(j+110) * 3] = alg[(j+60) * 3]*alg[(j+30) * 3]+alg[(j+70) * 3]*alg[(j+40) * 3]+alg[(j+80) * 3]*alg[(j+50) * 3]+alg[(j+100) * 3]+__PAR_kc*(x[(j+11) * 3]+x[(j+9) * 3]-2.0*x[(j+10) * 3])+__PAR_bc*(x[(j+21) * 3]+x[(j+19) * 3]-2.0*x[(j+20) * 3]);
+		der[(j+20) * 3 + 1] = alg[(j+110) * 3]/__PAR_m;
 	}
 	j = i-11;
 	if(j >=1 && j <= 8)
 	{
-		alg[(j+30) * 4] = 0.0;
-		alg[(j+40) * 4] = 0.0;
-		alg[(j+50) * 4] = -__m*__g;
-		alg[(j+60) * 4] = cos(x[(j+10) * 4]/__r)*cos(__phi);
-		alg[(j+70) * 4] = -sin(x[(j+10) * 4]/__r);
-		alg[(j+80) * 4] = cos(x[(j+10) * 4]/__r)*sin(__phi);
-		alg[(j+90) * 4] = __R*x[(j) * 4]-x[(j+20) * 4];
-		alg[(j+100) * 4] = d[(j)]*__bnoslip*alg[(j+90) * 4]*__m*__g+(1.0-d[(j)])*(__fric_coef_dyn*alg[(j+90) * 4]*__m*__g+__bslip*alg[(j+90) * 4]*__m*__g);
-		alg[(j+110) * 4] = alg[(j+60) * 4]*alg[(j+30) * 4]+alg[(j+70) * 4]*alg[(j+40) * 4]+alg[(j+80) * 4]*alg[(j+50) * 4]+alg[(j+100) * 4]+__kc*(x[(j+11) * 4]+x[(j+9) * 4]-2.0*x[(j+10) * 4])+__bc*(x[(j+21) * 4]+x[(j+19) * 4]-2.0*x[(j+20) * 4]);
-		der[(j+20) * 4 + 1] = alg[(j+110) * 4]/__m;
+		alg[(j+30) * 3] = 0.0;
+		alg[(j+40) * 3] = 0.0;
+		alg[(j+50) * 3] = -__PAR_m*__PAR_g;
+		alg[(j+60) * 3] = cos(x[(j+10) * 3]/__PAR_r)*cos(__PAR_phi);
+		alg[(j+70) * 3] = -sin(x[(j+10) * 3]/__PAR_r);
+		alg[(j+80) * 3] = cos(x[(j+10) * 3]/__PAR_r)*sin(__PAR_phi);
+		alg[(j+90) * 3] = __PAR_R*x[(j) * 3]-x[(j+20) * 3];
+		alg[(j+100) * 3] = d[(j)]*__PAR_bnoslip*alg[(j+90) * 3]*__PAR_m*__PAR_g+(1.0-d[(j)])*(__PAR_fric_coef_dyn*alg[(j+90) * 3]*__PAR_m*__PAR_g+__PAR_bslip*alg[(j+90) * 3]*__PAR_m*__PAR_g);
+		alg[(j+110) * 3] = alg[(j+60) * 3]*alg[(j+30) * 3]+alg[(j+70) * 3]*alg[(j+40) * 3]+alg[(j+80) * 3]*alg[(j+50) * 3]+alg[(j+100) * 3]+__PAR_kc*(x[(j+11) * 3]+x[(j+9) * 3]-2.0*x[(j+10) * 3])+__PAR_bc*(x[(j+21) * 3]+x[(j+19) * 3]-2.0*x[(j+20) * 3]);
+		der[(j+20) * 3 + 1] = alg[(j+110) * 3]/__PAR_m;
 	}
 	j = i-19;
 	if(j >=1 && j <= 8)
 	{
-		alg[(j+30) * 4] = 0.0;
-		alg[(j+40) * 4] = 0.0;
-		alg[(j+50) * 4] = -__m*__g;
-		alg[(j+60) * 4] = cos(x[(j+10) * 4]/__r)*cos(__phi);
-		alg[(j+70) * 4] = -sin(x[(j+10) * 4]/__r);
-		alg[(j+80) * 4] = cos(x[(j+10) * 4]/__r)*sin(__phi);
-		alg[(j+90) * 4] = __R*x[(j) * 4]-x[(j+20) * 4];
-		alg[(j+100) * 4] = d[(j)]*__bnoslip*alg[(j+90) * 4]*__m*__g+(1.0-d[(j)])*(__fric_coef_dyn*alg[(j+90) * 4]*__m*__g+__bslip*alg[(j+90) * 4]*__m*__g);
-		alg[(j+110) * 4] = alg[(j+60) * 4]*alg[(j+30) * 4]+alg[(j+70) * 4]*alg[(j+40) * 4]+alg[(j+80) * 4]*alg[(j+50) * 4]+alg[(j+100) * 4]+__kc*(x[(j+11) * 4]+x[(j+9) * 4]-2.0*x[(j+10) * 4])+__bc*(x[(j+21) * 4]+x[(j+19) * 4]-2.0*x[(j+20) * 4]);
-		der[(j+20) * 4 + 1] = alg[(j+110) * 4]/__m;
+		alg[(j+30) * 3] = 0.0;
+		alg[(j+40) * 3] = 0.0;
+		alg[(j+50) * 3] = -__PAR_m*__PAR_g;
+		alg[(j+60) * 3] = cos(x[(j+10) * 3]/__PAR_r)*cos(__PAR_phi);
+		alg[(j+70) * 3] = -sin(x[(j+10) * 3]/__PAR_r);
+		alg[(j+80) * 3] = cos(x[(j+10) * 3]/__PAR_r)*sin(__PAR_phi);
+		alg[(j+90) * 3] = __PAR_R*x[(j) * 3]-x[(j+20) * 3];
+		alg[(j+100) * 3] = d[(j)]*__PAR_bnoslip*alg[(j+90) * 3]*__PAR_m*__PAR_g+(1.0-d[(j)])*(__PAR_fric_coef_dyn*alg[(j+90) * 3]*__PAR_m*__PAR_g+__PAR_bslip*alg[(j+90) * 3]*__PAR_m*__PAR_g);
+		alg[(j+110) * 3] = alg[(j+60) * 3]*alg[(j+30) * 3]+alg[(j+70) * 3]*alg[(j+40) * 3]+alg[(j+80) * 3]*alg[(j+50) * 3]+alg[(j+100) * 3]+__PAR_kc*(x[(j+11) * 3]+x[(j+9) * 3]-2.0*x[(j+10) * 3])+__PAR_bc*(x[(j+21) * 3]+x[(j+19) * 3]-2.0*x[(j+20) * 3]);
+		der[(j+20) * 3 + 1] = alg[(j+110) * 3]/__PAR_m;
 	}
 	j = i-20;
 	if(j >=1 && j <= 8)
 	{
-		alg[(j+30) * 4] = 0.0;
-		alg[(j+40) * 4] = 0.0;
-		alg[(j+50) * 4] = -__m*__g;
-		alg[(j+60) * 4] = cos(x[(j+10) * 4]/__r)*cos(__phi);
-		alg[(j+70) * 4] = -sin(x[(j+10) * 4]/__r);
-		alg[(j+80) * 4] = cos(x[(j+10) * 4]/__r)*sin(__phi);
-		alg[(j+90) * 4] = __R*x[(j) * 4]-x[(j+20) * 4];
-		alg[(j+100) * 4] = d[(j)]*__bnoslip*alg[(j+90) * 4]*__m*__g+(1.0-d[(j)])*(__fric_coef_dyn*alg[(j+90) * 4]*__m*__g+__bslip*alg[(j+90) * 4]*__m*__g);
-		alg[(j+110) * 4] = alg[(j+60) * 4]*alg[(j+30) * 4]+alg[(j+70) * 4]*alg[(j+40) * 4]+alg[(j+80) * 4]*alg[(j+50) * 4]+alg[(j+100) * 4]+__kc*(x[(j+11) * 4]+x[(j+9) * 4]-2.0*x[(j+10) * 4])+__bc*(x[(j+21) * 4]+x[(j+19) * 4]-2.0*x[(j+20) * 4]);
-		der[(j) * 4 + 1] = (-__R*alg[(j+100) * 4]-__baxle*__m*__g*x[(j) * 4])/__J;
-		der[(j+10) * 4 + 1] = x[(j+20) * 4];
-		der[(j+20) * 4 + 1] = alg[(j+110) * 4]/__m;
+		alg[(j+30) * 3] = 0.0;
+		alg[(j+40) * 3] = 0.0;
+		alg[(j+50) * 3] = -__PAR_m*__PAR_g;
+		alg[(j+60) * 3] = cos(x[(j+10) * 3]/__PAR_r)*cos(__PAR_phi);
+		alg[(j+70) * 3] = -sin(x[(j+10) * 3]/__PAR_r);
+		alg[(j+80) * 3] = cos(x[(j+10) * 3]/__PAR_r)*sin(__PAR_phi);
+		alg[(j+90) * 3] = __PAR_R*x[(j) * 3]-x[(j+20) * 3];
+		alg[(j+100) * 3] = d[(j)]*__PAR_bnoslip*alg[(j+90) * 3]*__PAR_m*__PAR_g+(1.0-d[(j)])*(__PAR_fric_coef_dyn*alg[(j+90) * 3]*__PAR_m*__PAR_g+__PAR_bslip*alg[(j+90) * 3]*__PAR_m*__PAR_g);
+		alg[(j+110) * 3] = alg[(j+60) * 3]*alg[(j+30) * 3]+alg[(j+70) * 3]*alg[(j+40) * 3]+alg[(j+80) * 3]*alg[(j+50) * 3]+alg[(j+100) * 3]+__PAR_kc*(x[(j+11) * 3]+x[(j+9) * 3]-2.0*x[(j+10) * 3])+__PAR_bc*(x[(j+21) * 3]+x[(j+19) * 3]-2.0*x[(j+20) * 3]);
+		der[(j) * 3 + 1] = (-__PAR_R*alg[(j+100) * 3]-__PAR_baxle*__PAR_m*__PAR_g*x[(j) * 3])/__PAR_J;
+		der[(j+10) * 3 + 1] = x[(j+20) * 3];
+		der[(j+20) * 3 + 1] = alg[(j+110) * 3]/__PAR_m;
 	}
 	j = i-21;
 	if(j >=1 && j <= 8)
 	{
-		alg[(j+30) * 4] = 0.0;
-		alg[(j+40) * 4] = 0.0;
-		alg[(j+50) * 4] = -__m*__g;
-		alg[(j+60) * 4] = cos(x[(j+10) * 4]/__r)*cos(__phi);
-		alg[(j+70) * 4] = -sin(x[(j+10) * 4]/__r);
-		alg[(j+80) * 4] = cos(x[(j+10) * 4]/__r)*sin(__phi);
-		alg[(j+90) * 4] = __R*x[(j) * 4]-x[(j+20) * 4];
-		alg[(j+100) * 4] = d[(j)]*__bnoslip*alg[(j+90) * 4]*__m*__g+(1.0-d[(j)])*(__fric_coef_dyn*alg[(j+90) * 4]*__m*__g+__bslip*alg[(j+90) * 4]*__m*__g);
-		alg[(j+110) * 4] = alg[(j+60) * 4]*alg[(j+30) * 4]+alg[(j+70) * 4]*alg[(j+40) * 4]+alg[(j+80) * 4]*alg[(j+50) * 4]+alg[(j+100) * 4]+__kc*(x[(j+11) * 4]+x[(j+9) * 4]-2.0*x[(j+10) * 4])+__bc*(x[(j+21) * 4]+x[(j+19) * 4]-2.0*x[(j+20) * 4]);
-		der[(j+20) * 4 + 1] = alg[(j+110) * 4]/__m;
+		alg[(j+30) * 3] = 0.0;
+		alg[(j+40) * 3] = 0.0;
+		alg[(j+50) * 3] = -__PAR_m*__PAR_g;
+		alg[(j+60) * 3] = cos(x[(j+10) * 3]/__PAR_r)*cos(__PAR_phi);
+		alg[(j+70) * 3] = -sin(x[(j+10) * 3]/__PAR_r);
+		alg[(j+80) * 3] = cos(x[(j+10) * 3]/__PAR_r)*sin(__PAR_phi);
+		alg[(j+90) * 3] = __PAR_R*x[(j) * 3]-x[(j+20) * 3];
+		alg[(j+100) * 3] = d[(j)]*__PAR_bnoslip*alg[(j+90) * 3]*__PAR_m*__PAR_g+(1.0-d[(j)])*(__PAR_fric_coef_dyn*alg[(j+90) * 3]*__PAR_m*__PAR_g+__PAR_bslip*alg[(j+90) * 3]*__PAR_m*__PAR_g);
+		alg[(j+110) * 3] = alg[(j+60) * 3]*alg[(j+30) * 3]+alg[(j+70) * 3]*alg[(j+40) * 3]+alg[(j+80) * 3]*alg[(j+50) * 3]+alg[(j+100) * 3]+__PAR_kc*(x[(j+11) * 3]+x[(j+9) * 3]-2.0*x[(j+10) * 3])+__PAR_bc*(x[(j+21) * 3]+x[(j+19) * 3]-2.0*x[(j+20) * 3]);
+		der[(j+20) * 3 + 1] = alg[(j+110) * 3]/__PAR_m;
 	}
 }
 
@@ -359,25 +360,25 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 		default:
 			if(i >= 0 && i <= 9)
 			{
-				alg[360] = __R*x[0]-x[80];
+				alg[270] = __PAR_R*x[0]-x[60];
 				j210 = i;
 	if (j210 >= 1 && j210 <= 8)
 	{
-				alg[(i+90) * 4] = __R*x[(j210) * 4]-x[(j210+20) * 4];
+				alg[(i+90) * 3] = __PAR_R*x[(j210) * 3]-x[(j210+20) * 3];
 				}
-				alg[396] = __R*x[36]-x[116];
-				zc[0] = alg[(i+90) * 4]-(__vslipmax);
+				alg[297] = __PAR_R*x[27]-x[87];
+				zc[0] = alg[(i+90) * 3]-(__PAR_vslipmax);
 			}
 			if(i >= 10 && i <= 19)
 			{
-				alg[360] = __R*x[0]-x[80];
+				alg[270] = __PAR_R*x[0]-x[60];
 				j211 = i;
 	if (j211 >= 1 && j211 <= 8)
 	{
-				alg[(i+80) * 4] = __R*x[(j211-10) * 4]-x[(j211+10) * 4];
+				alg[(i+80) * 3] = __PAR_R*x[(j211-10) * 3]-x[(j211+10) * 3];
 				}
-				alg[396] = __R*x[36]-x[116];
-				zc[0] = alg[(i+80) * 4]-(__vslipmax);
+				alg[297] = __PAR_R*x[27]-x[87];
+				zc[0] = alg[(i+80) * 3]-(__PAR_vslipmax);
 			}
 	}
 }
@@ -421,7 +422,7 @@ MOD_output(int i, double *x, double *d, double *alg, double t, double *out)
 	switch(i)
 	{
 		case 0:
-			out[0] = x[80];
+			out[0] = x[60];
 			return;
 	}
 }
@@ -440,20 +441,20 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__g = 9.810000000000000497379915e+00;
-	__m = 126000.0;
-	__L = 20.0;
-	__kc = 1.000000000000000000000000e+07;
-	__bc = 1.000000000000000000000000e+07;
-	__R = 1.0;
-	__J = 100.0;
-	__bslip = 1.000000000000000020816682e-03;
-	__bnoslip = 1.0;
-	__baxle = 1.000000000000000047921736e-04;
-	__vslipmax = 1.000000000000000055511151e-01;
-	__fric_coef_dyn = 5.999999999999999777955395e-01;
-	__r = 1.000000000000000000000000e+04;
-	__phi = 1.000000000000000047921736e-04;
+	__PAR_g = 9.810000000000000497379915e+00;
+	__PAR_m = 126000.0;
+	__PAR_L = 20.0;
+	__PAR_kc = 1.000000000000000000000000e+07;
+	__PAR_bc = 1.000000000000000000000000e+07;
+	__PAR_R = 1.0;
+	__PAR_J = 100.0;
+	__PAR_bslip = 1.000000000000000020816682e-03;
+	__PAR_bnoslip = 1.0;
+	__PAR_baxle = 1.000000000000000047921736e-04;
+	__PAR_vslipmax = 1.000000000000000055511151e-01;
+	__PAR_fric_coef_dyn = 5.999999999999999777955395e-01;
+	__PAR_r = 1.000000000000000000000000e+04;
+	__PAR_phi = 1.000000000000000047921736e-04;
 	for(i = 0; i <= 9;i++)
 	{
 		modelData->d[i] = 1.0;
@@ -462,7 +463,7 @@ QSS_data modelData = simulator->data;
 	// Initialize model code.
 	for(i212 = 0; i212 <= 9; i212++)
 	{
-		modelData->x[(i212+10) * 4] = ((i212+1)-1.0)*__L;
+		modelData->x[(i212+10) * 3] = ((i212+1)-1.0)*__PAR_L;
 	}
 	modelData->nDS[0] = 1;
 	modelData->nDS[10] = 1;
@@ -862,8 +863,10 @@ QSS_data modelData = simulator->data;
 	modelData->event[20].relation = 2;
 	simulator->time = QSS_Time(30,21,0,0,ST_Binary,NULL);
 
-	simulator->output = SD_Output("train4",1,11,30,NULL,0,0,CI_Step,SD_Memory,MOD_output);
-SD_output modelOutput = simulator->output;
+		double period[1];
+	period[0] = 0.2;
+	simulator->output = SD_Output("train4",1,11,30,period,1,0,CI_Sampled,SD_Memory,MOD_output);
+	SD_output modelOutput = simulator->output;
 
 		modelOutput->nOS[0] = 1;
 		modelOutput->nSO[20]++;

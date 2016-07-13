@@ -31,6 +31,7 @@ model buckboost
 		  Rd := ROff;
 		diodeon:=0;
 	end when;
+
 	annotation(
 	experiment(
 		MMO_Description="Buck-Boost Circuit.",

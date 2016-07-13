@@ -50,6 +50,9 @@
 typedef void
     (*QSS_externaEventHandler) (QSS_simulator, IBX_message);
 
+typedef void
+    (*QSS_internalEventHandler) (QSS_simulator);
+
 /**
  *
  * @param
@@ -172,7 +175,7 @@ QSS_PAR_initialize (SIM_simulator simulate);
  * @param externalEvent
  */
 void
-QSS_PAR_synchronize (QSS_simulator simulator, int synchronize, QSS_externaEventHandler externalEvent);
+QSS_PAR_synchronize (QSS_simulator simulator, int synchronize, QSS_externaEventHandler externalEvent, QSS_internalEventHandler internalEvent);
 
 /**
  *

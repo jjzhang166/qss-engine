@@ -7,31 +7,32 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __VecInt_1_p[5];
-double __VecInt_1_x0 = 0;
-double __VecInt_2_p[5];
-double __VecInt_2_x0 = 0;
-double __VectorSum_3_p[10];
-double __VectorSum_3_w[2];
-double __IndexShift_4_p[2];
-double __VectorSum_5_p[10];
-double __VectorSum_5_w[3];
-double __IndexShift_6_p[2];
-double __Scalar2Vector_7_p[2];
-double __pulse_sci_8_p[4];
-double __pulse_sci_8_low = 0;
-double __pulse_sci_8_amplitude = 0;
-double __pulse_sci_8_ti = 0;
-double __pulse_sci_8_tf = 0;
-double __Vec2Scalar_10_p[2];
-int __reverse__Vec2Scalar_10_Index = 0;
-int __Vec2Scalar_10_Index = 0;
-double __Vec2Scalar_11_p[2];
-int __reverse__Vec2Scalar_11_Index = 0;
-int __Vec2Scalar_11_Index = 0;
+double __PAR_VecInt_1_p[5];
+double __PAR_VecInt_1_x0 = 0;
+double __PAR_VecInt_2_p[5];
+double __PAR_VecInt_2_x0 = 0;
+double __PAR_VectorSum_3_p[10];
+double __PAR_VectorSum_3_w[2];
+double __PAR_IndexShift_4_p[2];
+double __PAR_VectorSum_5_p[10];
+double __PAR_VectorSum_5_w[3];
+double __PAR_IndexShift_6_p[2];
+double __PAR_Scalar2Vector_7_p[2];
+double __PAR_pulse_sci_8_p[4];
+double __PAR_pulse_sci_8_low = 0;
+double __PAR_pulse_sci_8_amplitude = 0;
+double __PAR_pulse_sci_8_ti = 0;
+double __PAR_pulse_sci_8_tf = 0;
+double __PAR_Vec2Scalar_10_p[2];
+int __reverse__PAR_Vec2Scalar_10_Index = 0;
+int __PAR_Vec2Scalar_10_Index = 0;
+double __PAR_Vec2Scalar_11_p[2];
+int __reverse__PAR_Vec2Scalar_11_Index = 0;
+int __PAR_Vec2Scalar_11_Index = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -79,7 +80,7 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 		}
 		alg[(j+402) * 4] = alg[(j+352) * 4];
 		alg[(j+452) * 4] = alg[(j+302) * 4];
-		alg[(j+602) * 4] = alg[(j+452) * 4]*__VectorSum_5_w[(0)]+alg[(j+402) * 4]*__VectorSum_5_w[(1)]+alg[(j+101) * 4]*__VectorSum_5_w[(2)];
+		alg[(j+602) * 4] = alg[(j+452) * 4]*__PAR_VectorSum_5_w[(0)]+alg[(j+402) * 4]*__PAR_VectorSum_5_w[(1)]+alg[(j+101) * 4]*__PAR_VectorSum_5_w[(2)];
 		alg[(j+702) * 4] = alg[(j+602) * 4];
 		dx[1] = alg[(j+702) * 4];
 	}
@@ -103,7 +104,7 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 		alg[(j+502) * 4] = alg[(j3+51) * 4];
 		}
 		alg[(j+552) * 4] = alg[(j+502) * 4];
-		alg[(j+652) * 4] = alg[(j+1) * 4]*__VectorSum_3_w[(0)]+alg[(j+552) * 4]*__VectorSum_3_w[(1)];
+		alg[(j+652) * 4] = alg[(j+1) * 4]*__PAR_VectorSum_3_w[(0)]+alg[(j+552) * 4]*__PAR_VectorSum_3_w[(1)];
 		alg[(j+752) * 4] = alg[(j+652) * 4];
 		dx[1] = alg[(j+752) * 4];
 	}
@@ -145,7 +146,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		alg[(j+502) * 4] = alg[(j5+51) * 4];
 		}
 		alg[(j+552) * 4] = alg[(j+502) * 4];
-		alg[(j+652) * 4] = alg[(j+1) * 4]*__VectorSum_3_w[(0)]+alg[(j+552) * 4]*__VectorSum_3_w[(1)];
+		alg[(j+652) * 4] = alg[(j+1) * 4]*__PAR_VectorSum_3_w[(0)]+alg[(j+552) * 4]*__PAR_VectorSum_3_w[(1)];
 		alg[(j+752) * 4] = alg[(j+652) * 4];
 		der[(j+50) * 4 + 1] = alg[(j+752) * 4];
 	}
@@ -169,7 +170,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		alg[(j+502) * 4] = alg[(j7+51) * 4];
 		}
 		alg[(j+552) * 4] = alg[(j+502) * 4];
-		alg[(j+652) * 4] = alg[(j+1) * 4]*__VectorSum_3_w[(0)]+alg[(j+552) * 4]*__VectorSum_3_w[(1)];
+		alg[(j+652) * 4] = alg[(j+1) * 4]*__PAR_VectorSum_3_w[(0)]+alg[(j+552) * 4]*__PAR_VectorSum_3_w[(1)];
 		alg[(j+752) * 4] = alg[(j+652) * 4];
 		der[(j+50) * 4 + 1] = alg[(j+752) * 4];
 	}
@@ -202,7 +203,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		}
 		alg[(j+402) * 4] = alg[(j+352) * 4];
 		alg[(j+452) * 4] = alg[(j+302) * 4];
-		alg[(j+602) * 4] = alg[(j+452) * 4]*__VectorSum_5_w[(0)]+alg[(j+402) * 4]*__VectorSum_5_w[(1)]+alg[(j+101) * 4]*__VectorSum_5_w[(2)];
+		alg[(j+602) * 4] = alg[(j+452) * 4]*__PAR_VectorSum_5_w[(0)]+alg[(j+402) * 4]*__PAR_VectorSum_5_w[(1)]+alg[(j+101) * 4]*__PAR_VectorSum_5_w[(2)];
 		alg[(j+702) * 4] = alg[(j+602) * 4];
 		der[(j) * 4 + 1] = alg[(j+702) * 4];
 	}
@@ -235,7 +236,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		}
 		alg[(j+402) * 4] = alg[(j+352) * 4];
 		alg[(j+452) * 4] = alg[(j+302) * 4];
-		alg[(j+602) * 4] = alg[(j+452) * 4]*__VectorSum_5_w[(0)]+alg[(j+402) * 4]*__VectorSum_5_w[(1)]+alg[(j+101) * 4]*__VectorSum_5_w[(2)];
+		alg[(j+602) * 4] = alg[(j+452) * 4]*__PAR_VectorSum_5_w[(0)]+alg[(j+402) * 4]*__PAR_VectorSum_5_w[(1)]+alg[(j+101) * 4]*__PAR_VectorSum_5_w[(2)];
 		alg[(j+702) * 4] = alg[(j+602) * 4];
 		der[(j) * 4 + 1] = alg[(j+702) * 4];
 	}
@@ -297,14 +298,14 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__VecInt_1_x0 = 0.0;
-	__VecInt_2_x0 = 0.0;
-	__pulse_sci_8_low = 0.0;
-	__pulse_sci_8_amplitude = 1.0;
-	__pulse_sci_8_ti = 0.0;
-	__pulse_sci_8_tf = 1.0;
-	__Vec2Scalar_10_Index = 1.0;
-	__Vec2Scalar_11_Index = 50.0;
+	__PAR_VecInt_1_x0 = 0.0;
+	__PAR_VecInt_2_x0 = 0.0;
+	__PAR_pulse_sci_8_low = 0.0;
+	__PAR_pulse_sci_8_amplitude = 1.0;
+	__PAR_pulse_sci_8_ti = 0.0;
+	__PAR_pulse_sci_8_tf = 1.0;
+	__PAR_Vec2Scalar_10_Index = 1.0;
+	__PAR_Vec2Scalar_11_Index = 50.0;
 	modelData->d[(0)] = 0.0;
 	// Initialize model code.
 	for(i12 = 0; i12 <= 49; i12++)
@@ -315,58 +316,58 @@ QSS_data modelData = simulator->data;
 	{
 		modelData->x[(i13) * 4] = 0.0;
 	}
-		__VecInt_1_p[(0)] = 0.0;
-		__VecInt_1_p[(1)] = 9.999999999999999547481118e-07;
-		__VecInt_1_p[(2)] = 1.000000000000000020816682e-03;
-		__VecInt_1_p[(3)] = 0.0;
-		__VecInt_1_p[(4)] = 50.0;
-		__VecInt_2_p[(0)] = 0.0;
-		__VecInt_2_p[(1)] = 9.999999999999999547481118e-07;
-		__VecInt_2_p[(2)] = 1.000000000000000020816682e-03;
-		__VecInt_2_p[(3)] = 0.0;
-		__VecInt_2_p[(4)] = 50.0;
-		__VectorSum_3_p[(0)] = 1.0;
-		__VectorSum_3_p[(1)] = -1.0;
-		__VectorSum_3_p[(2)] = 0.0;
-		__VectorSum_3_p[(3)] = 0.0;
-		__VectorSum_3_p[(4)] = 0.0;
-		__VectorSum_3_p[(5)] = 0.0;
-		__VectorSum_3_p[(6)] = 0.0;
-		__VectorSum_3_p[(7)] = 0.0;
-		__VectorSum_3_p[(8)] = 2.0;
-		__VectorSum_3_p[(9)] = 50.0;
+		__PAR_VecInt_1_p[(0)] = 0.0;
+		__PAR_VecInt_1_p[(1)] = 9.999999999999999547481118e-07;
+		__PAR_VecInt_1_p[(2)] = 1.000000000000000020816682e-03;
+		__PAR_VecInt_1_p[(3)] = 0.0;
+		__PAR_VecInt_1_p[(4)] = 50.0;
+		__PAR_VecInt_2_p[(0)] = 0.0;
+		__PAR_VecInt_2_p[(1)] = 9.999999999999999547481118e-07;
+		__PAR_VecInt_2_p[(2)] = 1.000000000000000020816682e-03;
+		__PAR_VecInt_2_p[(3)] = 0.0;
+		__PAR_VecInt_2_p[(4)] = 50.0;
+		__PAR_VectorSum_3_p[(0)] = 1.0;
+		__PAR_VectorSum_3_p[(1)] = -1.0;
+		__PAR_VectorSum_3_p[(2)] = 0.0;
+		__PAR_VectorSum_3_p[(3)] = 0.0;
+		__PAR_VectorSum_3_p[(4)] = 0.0;
+		__PAR_VectorSum_3_p[(5)] = 0.0;
+		__PAR_VectorSum_3_p[(6)] = 0.0;
+		__PAR_VectorSum_3_p[(7)] = 0.0;
+		__PAR_VectorSum_3_p[(8)] = 2.0;
+		__PAR_VectorSum_3_p[(9)] = 50.0;
 	for(i14 = 0; i14 <= 1; i14++)
 	{
-		__VectorSum_3_w[(i14)] = __VectorSum_3_p[(i14)];
+		__PAR_VectorSum_3_w[(i14)] = __PAR_VectorSum_3_p[(i14)];
 	}
-		__IndexShift_4_p[(0)] = 1.0;
-		__IndexShift_4_p[(1)] = 50.0;
-		__VectorSum_5_p[(0)] = 1.0;
-		__VectorSum_5_p[(1)] = 1.0;
-		__VectorSum_5_p[(2)] = -1.0;
-		__VectorSum_5_p[(3)] = 0.0;
-		__VectorSum_5_p[(4)] = 0.0;
-		__VectorSum_5_p[(5)] = 0.0;
-		__VectorSum_5_p[(6)] = 0.0;
-		__VectorSum_5_p[(7)] = 0.0;
-		__VectorSum_5_p[(8)] = 3.0;
-		__VectorSum_5_p[(9)] = 50.0;
+		__PAR_IndexShift_4_p[(0)] = 1.0;
+		__PAR_IndexShift_4_p[(1)] = 50.0;
+		__PAR_VectorSum_5_p[(0)] = 1.0;
+		__PAR_VectorSum_5_p[(1)] = 1.0;
+		__PAR_VectorSum_5_p[(2)] = -1.0;
+		__PAR_VectorSum_5_p[(3)] = 0.0;
+		__PAR_VectorSum_5_p[(4)] = 0.0;
+		__PAR_VectorSum_5_p[(5)] = 0.0;
+		__PAR_VectorSum_5_p[(6)] = 0.0;
+		__PAR_VectorSum_5_p[(7)] = 0.0;
+		__PAR_VectorSum_5_p[(8)] = 3.0;
+		__PAR_VectorSum_5_p[(9)] = 50.0;
 	for(i15 = 0; i15 <= 2; i15++)
 	{
-		__VectorSum_5_w[(i15)] = __VectorSum_5_p[(i15)];
+		__PAR_VectorSum_5_w[(i15)] = __PAR_VectorSum_5_p[(i15)];
 	}
-		__IndexShift_6_p[(0)] = -1.0;
-		__IndexShift_6_p[(1)] = 50.0;
-		__Scalar2Vector_7_p[(0)] = 0.0;
-		__Scalar2Vector_7_p[(1)] = 50.0;
-		__pulse_sci_8_p[(0)] = 0.0;
-		__pulse_sci_8_p[(1)] = 1.0;
-		__pulse_sci_8_p[(2)] = 0.0;
-		__pulse_sci_8_p[(3)] = 1.0;
-		__Vec2Scalar_10_p[(0)] = 0.0;
-		__Vec2Scalar_10_p[(1)] = 50.0;
-		__Vec2Scalar_11_p[(0)] = 49.0;
-		__Vec2Scalar_11_p[(1)] = 50.0;
+		__PAR_IndexShift_6_p[(0)] = -1.0;
+		__PAR_IndexShift_6_p[(1)] = 50.0;
+		__PAR_Scalar2Vector_7_p[(0)] = 0.0;
+		__PAR_Scalar2Vector_7_p[(1)] = 50.0;
+		__PAR_pulse_sci_8_p[(0)] = 0.0;
+		__PAR_pulse_sci_8_p[(1)] = 1.0;
+		__PAR_pulse_sci_8_p[(2)] = 0.0;
+		__PAR_pulse_sci_8_p[(3)] = 1.0;
+		__PAR_Vec2Scalar_10_p[(0)] = 0.0;
+		__PAR_Vec2Scalar_10_p[(1)] = 50.0;
+		__PAR_Vec2Scalar_11_p[(0)] = 49.0;
+		__PAR_Vec2Scalar_11_p[(1)] = 50.0;
 		modelData->d[(0)] = 1.0;
 	for ( i = 0; i <= 49; i++) 
 	{

@@ -26,6 +26,7 @@
 
 #include <common/data.h>
 #include <common/utils.h>
+#include <qss/qss_data.h>
 
 /**
  * @brief \f $ \delta t $ \f synchronization object.
@@ -87,7 +88,10 @@ typedef struct QSS_dt_ *QSS_dt;
  * @param
  */
 typedef bool
-(*QSS_dtLogStepFn) (QSS_dt, double, double, double, int, double);
+(*QSS_dtLogOutputFn) (QSS_dt, double, double, double, int);
+
+typedef bool
+(*QSS_dtLogStepFn) (QSS_dt, double, double, double);
 
 /**
  *
@@ -95,6 +99,7 @@ typedef bool
 struct QSS_dtOps_
 {
   QSS_dtLogStepFn logStep; //!<
+  QSS_dtLogOutputFn logOutput; //!<
 };
 
 /**
@@ -115,13 +120,18 @@ struct QSS_dtState_
   int outputs; //!< Number of output variables in the LP.
   int dtMinIndex; //!< Index of the output variable that contains the local minimum for the LP.
   int dtGlobalLP;
-  double dtChanges;
+  int simSteps;
+  int dtChanges;
   double avgDt;
+  double lastChange;
   double *t; //!< Current simulation time.
   double *elapsed; //!< Elapsed time.
   double simTime; //!< Total simulation time.
+  QSS_idxMap dscMap;
+  QSS_idxMap qMap;
   SD_simulationLog log;
   SD_Debug debug;
+  QSS_time time;
 #ifdef __linux__
   pthread_barrier_t *b; //!< Barrier used for synchronization.
 #endif
@@ -147,8 +157,9 @@ struct QSS_dt_
  * @return
  */
 QSS_dt
-QSS_Dt (SD_DtSynch synch, double alpha, int outputs,
-	double *gblDtMin, int id, QSS_dtSynch dtSynch, double initDt, char *file, SD_Debug debug, double it, double ft);
+QSS_Dt (double *gblDtMin, int id,
+	QSS_dtSynch dtSynch, char *file, SD_Debug debug,
+	QSS_data data, QSS_time time);
 
 /**
  *
@@ -185,9 +196,8 @@ QSS_DtState ();
 void
 QSS_freeDtState (QSS_dtState state);
 
-
 bool
-QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt, int variable, double ct);
+QSS_dtLogOutput (QSS_dt dt, double Dq, double Dx, double Dt, int variable);
 
 /**
  * @brief \f $ \delta t $ \f value wrapper.
@@ -203,16 +213,19 @@ QSS_dtValue (QSS_dt dt);
  * @param dt
  */
 void
-QSS_dtUpdate (QSS_dt dt);
+QSS_dtFinish (QSS_dt dt);
 
 void
-QSS_updateDt (QSS_dt dt);
+QSS_dtUpdate (QSS_dt dt);
 
 /**
  *
  * @param dt
  * @return
  */
+bool
+QSS_dtLogStep (QSS_dt dt, double Dq, double Dx, double Dt);
+
 void
 QSS_dtCheck (QSS_dt dt);
 

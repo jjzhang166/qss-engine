@@ -231,6 +231,7 @@ struct QSS_LP_data_
   int totalStates; //!<
   int totalEvents; //!<
   int totalOutputs; //!<
+  int dscInf;
   double initDt; //!< dt initial value.
   bool externalEvent; //!<
   QSS_idxMap nLPS; //!<
@@ -243,6 +244,7 @@ struct QSS_LP_data_
   QSS_idxMap eOutMap; //!<
   QSS_idxMap iMap; //!<
   QSS_idxMap oMap; //!<
+  QSS_idxMap dscMap;
 };
 
 /**
@@ -271,6 +273,12 @@ QSS_LP_freeDataArray (QSS_LP_dataArray array);
  */
 QSS_LP_data
 QSS_LP_copyData (QSS_LP_data data);
+
+/**
+ *
+ */
+void
+QSS_LP_clean (QSS_LP_data data);
 
 /**
  *
@@ -383,7 +391,18 @@ QSS_copyData (QSS_data data);
  * @param data
  */
 void
+QSS_orderDataMatrix(QSS_data data);
+
+
+/**
+ *
+ * @param data
+ */
+void
 QSS_freeData (QSS_data data);
+
+void
+QSS_cleanData (QSS_data data);
 
 /**
  *
@@ -529,5 +548,16 @@ QSS_freeModel (QSS_model model);
 typedef void
 (*QSS_setData) (QSS_data, QSS_time, SD_output, QSS_model,
 		SD_simulationSettings);
+
+/**
+ *
+ * @param simulator
+ * @param variable
+ * @param inf
+ * @param type
+ * @return
+ */
+bool
+QSS_influenced (QSS_data data, int variable, int inf, QSS_StepType type);
 
 #endif /* QSS_DATA_H_ */

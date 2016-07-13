@@ -7,17 +7,18 @@
 
 
 #include <common/model.h>
+#include <common/commands.h>
 #include <qss/qss_model.h>
 #include <classic/classic_model.h>
 
-double __C;
-double __L;
-double __R;
-double __U;
-double __T;
-double __DC;
-double __ROn;
-double __ROff;
+double __PAR_C = 0;
+double __PAR_L = 0;
+double __PAR_R = 0;
+double __PAR_U = 0;
+double __PAR_T = 0;
+double __PAR_DC = 0;
+double __PAR_ROn = 0;
+double __PAR_ROff = 0;
 
 void
 MOD_settings(SD_simulationSettings settings)
@@ -47,13 +48,13 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 		tmp0[1] += x[(j1+1) * 3 + 1];
 		tmp0[2] += x[(j1+1) * 3 + 2];
 	}
-			dx[1] = (tmp0[0]-x[0]/__R)/__C;
+			dx[1] = (tmp0[0]-x[0]/__PAR_R)/__PAR_C;
 			return;
 		default:
 			j = i-1;
 			if(j >=0 && j <= 3)
 			{
-				dx[1] = (((__U/d[(j+4)])-x[(j+1) * 3])*(d[(j+4)]*d[(j)]/(d[(j+4)]+d[(j)]))-x[0])/__L;
+				dx[1] = (((__PAR_U/d[(j+4)])-x[(j+1) * 3])*(d[(j+4)]*d[(j)]/(d[(j+4)]+d[(j)]))-x[0])/__PAR_L;
 			}
 	}
 }
@@ -77,17 +78,17 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp0[1] += x[(j1+1) * 3 + 1];
 		tmp0[2] += x[(j1+1) * 3 + 2];
 	}
-			der[0 + 1] = (tmp0[0]-x[0]/__R)/__C;
+			der[0 + 1] = (tmp0[0]-x[0]/__PAR_R)/__PAR_C;
 			for(j = 0; j <= 3; j++)
 			{
-				der[(j+1) * 3 + 1] = (((__U/d[(j+4)])-x[(j+1) * 3])*(d[(j+4)]*d[(j)]/(d[(j+4)]+d[(j)]))-x[0])/__L;
+				der[(j+1) * 3 + 1] = (((__PAR_U/d[(j+4)])-x[(j+1) * 3])*(d[(j+4)]*d[(j)]/(d[(j+4)]+d[(j)]))-x[0])/__PAR_L;
 			}
 			break;
 	}
 	j = i-1;
 	if(j >=0 && j <= 3)
 	{
-		der[(j+1) * 3 + 1] = (((__U/d[(j+4)])-x[(j+1) * 3])*(d[(j+4)]*d[(j)]/(d[(j+4)]+d[(j)]))-x[0])/__L;
+		der[(j+1) * 3 + 1] = (((__PAR_U/d[(j+4)])-x[(j+1) * 3])*(d[(j+4)]*d[(j)]/(d[(j+4)]+d[(j)]))-x[0])/__PAR_L;
 	}
 	j = i-1;
 	if(j >=0 && j <= 3)
@@ -102,7 +103,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp0[1] += x[(j1+1) * 3 + 1];
 		tmp0[2] += x[(j1+1) * 3 + 2];
 	}
-		der[0 + 1] = (tmp0[0]-x[0]/__R)/__C;
+		der[0 + 1] = (tmp0[0]-x[0]/__PAR_R)/__PAR_C;
 	}
 }
 
@@ -117,11 +118,11 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 		default:
 			if(i >= 1 && i <= 4)
 			{
-				zc[0] = t-d[(9)]-__T*(i-1.0)/4-1.000000000000000020816682e-02*__T-(0.0);
+				zc[0] = t-d[(9)]-__PAR_T*(i-1.0)/4-1.000000000000000020816682e-02*__PAR_T-(0.0);
 			}
 			if(i >= 5 && i <= 8)
 			{
-				zc[0] = t-d[(9)]-__T*((i-4)-1.0)/4-__DC*__T/4-1.000000000000000020816682e-02*__T-(0.0);
+				zc[0] = t-d[(9)]-__PAR_T*((i-4)-1.0)/4-__PAR_DC*__PAR_T/4-1.000000000000000020816682e-02*__PAR_T-(0.0);
 			}
 			if(i >= 9 && i <= 12)
 			{
@@ -137,18 +138,18 @@ MOD_handlerPos(int i, double *x, double *d, double *alg, double t)
 	{
 		case 0:
 			d[(9)] = d[(8)];
-			d[(8)] = d[(8)]+__T;
+			d[(8)] = d[(8)]+__PAR_T;
 			return;
 		default:
 			if(i >= 1 && i <= 4)
 			{
-				d[(i+3)] = __ROn;
-				d[(i-1)] = __ROff;
+				d[(i+3)] = __PAR_ROn;
+				d[(i-1)] = __PAR_ROff;
 			}
 			if(i >= 5 && i <= 8)
 			{
-				d[(i-1)] = __ROff;
-				d[(i-5)] = __ROn;
+				d[(i-1)] = __PAR_ROff;
+				d[(i-5)] = __PAR_ROn;
 			}
 	}
 }
@@ -158,7 +159,7 @@ MOD_handlerNeg(int i, double *x, double *d, double *alg, double t)
 {
 	if(i >= 9 && i <= 12)
 	{
-		d[(i-9)] = __ROff;
+		d[(i-9)] = __PAR_ROff;
 	}
 }
 
@@ -193,14 +194,14 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 QSS_data modelData = simulator->data;
 
 	// Allocate main data structures.
-	__C = 1.000000000000000047921736e-04;
-	__L = 1.000000000000000047921736e-04;
-	__R = 10.0;
-	__U = 24.0;
-	__T = 1.000000000000000047921736e-04;
-	__DC = 5.000000000000000000000000e-01;
-	__ROn = 1.000000000000000081803054e-05;
-	__ROff = 1.000000000000000000000000e+05;
+	__PAR_C = 1.000000000000000047921736e-04;
+	__PAR_L = 1.000000000000000047921736e-04;
+	__PAR_R = 10.0;
+	__PAR_U = 24.0;
+	__PAR_T = 1.000000000000000047921736e-04;
+	__PAR_DC = 5.000000000000000000000000e-01;
+	__PAR_ROn = 1.000000000000000081803054e-05;
+	__PAR_ROff = 1.000000000000000000000000e+05;
 	for(i = 0; i <= 3;i++)
 	{
 		modelData->d[i] = 1.000000000000000000000000e+05;
@@ -209,6 +210,7 @@ QSS_data modelData = simulator->data;
 	{
 		modelData->d[(i+4)] = 1.000000000000000000000000e+05;
 	}
+	modelData->d[(8)] = __PAR_T;
 	// Initialize model code.
 	modelData->nDS[0] = 1;
 		modelData->nDS[0] += 4;

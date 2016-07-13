@@ -87,11 +87,6 @@ BT_freeTree (BT_tree tree)
       free (tree->nodes[j]);
     }
   free (tree->nodes);
-
-  if (tree->map != NULL)
-    {
-      free (tree->map);
-    }
   if (tree->father)
     {
       free (tree->father);

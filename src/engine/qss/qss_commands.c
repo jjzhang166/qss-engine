@@ -17,7 +17,9 @@
 
 ******************************************************************************/
 
-#include <qss/qss_commands.h>
+#include "qss/qss_commands.h"
+
+#include <stdlib.h>
 
 #include "../common/data.h"
 #include "../common/utils.h"
@@ -25,7 +27,7 @@
 #include "qss_scheduler.h"
 #include "qss_simulator.h"
 
-static QSS_simulator *_simulator;
+static QSS_simulator *_simulator = NULL;
 
 void
 QSS_terminate (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
@@ -64,3 +66,13 @@ QSS_CMD_init (QSS_simulator simulator)
 {
   _simulator[simulator->id] = simulator;
 }
+
+void
+QSS_CMD_free()
+{
+  if (_simulator != NULL)
+    {
+      free (_simulator);
+    }
+}
+

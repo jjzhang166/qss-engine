@@ -67,13 +67,12 @@ PRT_readPartition (PRT_partition partition, QSS_data data, char *name)
     }
 }
 
-
 void
 PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 {
   if (data->params->pm == SD_Manual)
     {
-      PRT_readPartition(partition, data, name);
+      PRT_readPartition (partition, data, name);
       return;
     }
   char fileName[256];
@@ -230,15 +229,17 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
     }
   if (vwgt != NULL && ewgt != NULL)
     {
-      sprintf(graphType,"weighted");
+      sprintf (graphType, "weighted");
     }
   switch (pm)
     {
     case SD_MetisCut:
-      sprintf (fileName, "%s-MetisCut-%s-%d.partition", name, graphType, nparts);
+      sprintf (fileName, "%s-MetisCut-%s-%d.partition", name, graphType,
+	       nparts);
       break;
     case SD_MetisVol:
-      sprintf (fileName, "%s-MetisVol-%s-%d.partition", name, graphType, nparts);
+      sprintf (fileName, "%s-MetisVol-%s-%d.partition", name, graphType,
+	       nparts);
       break;
     case SD_HMetis:
       sprintf (fileName, "%s-HMetis-%s-%d.partition", name, graphType, nparts);
@@ -285,6 +286,7 @@ PRT_Partition (QSS_data data, char *name)
   p->beginHandlers = data->states;
   p->endStates = data->states;
   p->endHandlers = data->states + data->events;
+  p->lps = lps;
   p->nOutputs = (int*) checkedMalloc (nvtxs * sizeof(int));
   cleanVector (p->nOutputs, 0, nvtxs);
   p->outputs = (int**) checkedMalloc (nvtxs * sizeof(int*));
@@ -292,6 +294,17 @@ PRT_Partition (QSS_data data, char *name)
     {
       p->outputs[i] = (int*) checkedMalloc (lps * sizeof(int));
       cleanVector (p->outputs[i], 0, lps);
+    }
+  p->nDsc = (int*) checkedMalloc (lps * sizeof(int));
+  p->dscInf = (int**) checkedMalloc (lps * sizeof(int*));
+  p->asgDscInf = (int**) checkedMalloc (lps * sizeof(int*));
+  cleanVector (p->nDsc, 0, lps);
+  for (i = 0; i < lps; i++)
+    {
+      p->dscInf[i] = (int*) checkedMalloc (data->states * sizeof(int));
+      cleanVector (p->dscInf[i], 0, data->states);
+      p->asgDscInf[i] = (int*) checkedMalloc (data->states * sizeof(int));
+      cleanVector (p->asgDscInf[i], NOT_ASSIGNED, data->states);
     }
   if (lps > 1)
     {
@@ -311,27 +324,37 @@ PRT_Partition (QSS_data data, char *name)
 void
 PRT_freePartition (PRT_partition partition)
 {
-  int i, nvtxs = partition->endHandlers;
+  int i, nvtxs = partition->endHandlers, lps = partition->lps;
   free (partition->nOutputs);
   for (i = 0; i < nvtxs; i++)
     {
       free (partition->outputs[i]);
     }
+  free (partition->nDsc);
+  for (i = 0; i < lps; i++)
+    {
+      free (partition->dscInf[i]);
+      free (partition->asgDscInf[i]);
+    }
+  free (partition->dscInf);
+  free (partition->asgDscInf);
   free (partition->outputs);
+  free (partition->values);
+  free (partition);
 }
 
 #else
 
 PRT_partition
 PRT_Partition (QSS_data data, char *name)
-{
-  return (NULL);
-}
+  {
+    return (NULL);
+  }
 
 void
 PRT_freePartition (PRT_partition partition)
-{
-  return;
-}
+  {
+    return;
+  }
 
 #endif

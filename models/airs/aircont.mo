@@ -20,16 +20,13 @@ model aircont
 		pmax:=pmax+POT[i];
 	end for;
 
-	/*for i in 1:N loop
-	 if th[i] - tref   > 0 then
+	for i in 1:N loop
+	 if th[i] - tref   - 0.5> 0 then
 				on[i] := 1;
 				ptotal := ptotal + POT[i];
-		elseif th[i] - tref < 0 then
-				on[i] := 0;
-				ptotal := ptotal - POT[i];
 		end if;
 	end for;
-*/
+
 	equation
 	for i in 1:N loop
 		der(th[i]) = (THA/RES[i]-POT[i]*on[i]-th[i]/RES[i]+noise/RES[i])/CAP[i];
@@ -59,8 +56,8 @@ model aircont
 		dtref := Kp*(ptotals/pmax-pref)-Ki*ierr;
 	end when;
 	annotation(
-
 	experiment(
+
 		MMO_Description="Control of the power consumption of a large populaion of  air conditioners.",
 		MMO_Solver=DOPRI,
 		MMO_Output={ptotal},
