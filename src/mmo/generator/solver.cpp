@@ -934,15 +934,16 @@ QSS_::initializeMatrices ()
   bool hasRHSStates = false;
   bool hasDiscretes = false;
   bufferGen.str ("");
+  int genericDefInit = 0;
   for (MMO_Event e = evt->begin (); !evt->end (); e = evt->next ())
     {
       Index index = evt->key ();
-      string eIdx = index.print ("i", -index.begin ());
       MMO_Expression exp = e->condition ()->exp ();
       Dependencies deps = exp->deps ();
       if (evt->endGenericDefinition ())
 	{
 	  genericEquation = false;
+	  genericDefInit = 0;
 	  bufferGen.str ("");
 	  _writer->write ("}", WR_INIT_EVENT);
 	  if (hasInit)
@@ -981,6 +982,7 @@ QSS_::initializeMatrices ()
       if (evt->beginGenericDefinition ())
 	{
 	  genericEquation = true;
+	  genericDefInit = index.begin();
 	  if (!hasInit && !hasLHSStates && !hasRHSStates && !hasDiscretes)
 	    {
 	      bufferGen << "for(i = " << index.begin () << "; i <= "
@@ -1004,6 +1006,7 @@ QSS_::initializeMatrices ()
 	  _writer->write (&buffer, WR_INIT_LD_ZS, false);
 	  _writer->write (&buffer, WR_INIT_LD_SZ);
 	}
+      string eIdx = index.print ("i", -genericDefInit);
       if (deps->states ())
 	{
 	  buffer << indent << "modelData->nZS[" << eIdx << "] = "
