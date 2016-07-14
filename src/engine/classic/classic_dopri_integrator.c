@@ -48,6 +48,11 @@ struct simData_DOPRI
   double *x;
   double *t;
   unsigned long *totalOutputSteps;
+  double last_step;
+  double step_size;
+  double *temp_x;
+  double final_time;
+  int size;
 };
 
 struct simData_DOPRI simDataDopri;
@@ -76,26 +81,36 @@ DOPRI_solout (long nr, double xold, double x, double* y, unsigned n, int* irtrn,
   /* Sync */
   waitUntil(x);
 #endif
-  if (irtrn[0] == 3)
+  if (irtrn[0] == 3) 
     CLC_handle_event (clcData, clcModel, y, jroot, x, NULL);
-  if (!is_sampled)
-    {
+  if (!is_sampled) {
       clcData->totalSteps++;
       CLC_save_step (simOutput, simDataDopri.solution,
 		     simDataDopri.solution_time, x,
 		     simDataDopri.totalOutputSteps[0], y, clcData->d,
 		     clcData->alg);
-      //simDataDopri.totalOutputSteps[0], simDataDopri.x,
-      //simDataDopri.outvar);
       simDataDopri.totalOutputSteps[0]++;
-      simDataDopri.t[0] = x;
-    }
-  if ((int) (x * 100 / _ft) > dopri_percentage)
-    {
-      dopri_percentage = 100 * x / _ft;
-      fprintf (stderr, "*%g", x);
-      fflush (stderr);
-    }
+  } else { // Do sample
+      while (simDataDopri.last_step+simDataDopri.step_size<x) {
+        // Skip last step
+        if (fabs(simDataDopri.last_step+simDataDopri.step_size-simDataDopri.final_time)/simDataDopri.step_size < 1)
+          break;
+        clcData->totalSteps++;
+        for (int i=0;i< simDataDopri.size; i++) 
+          simDataDopri.temp_x[i] = contd5(i,simDataDopri.last_step+simDataDopri.step_size);
+        CLC_save_step (simOutput, simDataDopri.solution,
+		       simDataDopri.solution_time, simDataDopri.last_step+simDataDopri.step_size,
+		       simDataDopri.totalOutputSteps[0], simDataDopri.temp_x, clcData->d,
+		       clcData->alg);
+        simDataDopri.totalOutputSteps[0]++;
+        simDataDopri.last_step+=simDataDopri.step_size;
+      }
+  }
+  if ((int) (x * 100 / _ft) > dopri_percentage) {
+    dopri_percentage = 100 * x / _ft;
+    fprintf (stderr, "*%g", x);
+    fflush (stderr);
+  }
 }
 
 void
@@ -108,7 +123,6 @@ DOPRI_integrate (SIM_simulator simulate)
   int i;
   unsigned long totalOutputSteps = 0;
   double t = clcData->it;
-  double tout = 0;
   const double _ft = clcData->ft;
   double dQRel = clcData->dQRel[0];
   double dQMin = clcData->dQMin[0];
@@ -126,70 +140,58 @@ DOPRI_integrate (SIM_simulator simulate)
   int *jroot = malloc (sizeof(int) * clcData->events);
   double troot = 0;
   int size = clcData->states, res;
-  double *x, rel_tol = dQRel, abs_tol = dQMin;
+  double *x, *temp_x, rel_tol = dQRel, abs_tol = dQMin;
   x = checkedMalloc (sizeof(double) * clcData->states);
+  temp_x = checkedMalloc (sizeof(double) * clcData->states);
   CLC_compute_outputs (simOutput, solution, num_steps);
   for (i = 0; i < clcData->states; i++)
     x[i] = _x[i];
   simDataDopri.solution = solution;
   simDataDopri.solution_time = solution_time;
   simDataDopri.x = x;
-  simDataDopri.t = &t;
+  simDataDopri.temp_x = temp_x;
   simDataDopri.outvar = outvar;
   simDataDopri.totalOutputSteps = &totalOutputSteps;
+  simDataDopri.step_size = step_size;
+  simDataDopri.final_time = _ft ;
+  simDataDopri.size= clcData->states;
   dopri_percentage = 0;
   getTime (simulator->stats->sTime);
-  if (is_sampled)
-    {
-      CLC_save_step (simOutput, solution, solution_time, tout, totalOutputSteps,
+  if (is_sampled) {
+    CLC_save_step (simOutput, solution, solution_time, t, totalOutputSteps,
 		     x, clcData->d, clcData->alg);
-      totalOutputSteps++;
-    }
+    totalOutputSteps++;
+  }
 #ifdef SYNC_RT
   setInitRealTime();
 #endif
-  while (t < _ft)
-    {
-      tout = (is_sampled ? t + step_size : _ft);
-      if (tout > _ft)
-	tout = _ft;
-      res = dopri5 (size, DOPRI_model, t, x, tout, &rel_tol, &abs_tol, 0,
+  res = dopri5 (size, DOPRI_model, t, x, _ft , &rel_tol, &abs_tol, 0,
 		    DOPRI_solout, 2,
 		    stdout,
 		    1e-30, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2000000000, 0, -1,
 		    size,
 		    NULL,
 		    0, DOPRI_events, clcData->events, jroot, &troot);
-      if (res < 0)
+  if (res < 0)
 	{
 	  SD_print (simulator->simulationLog,
 		    "DOPRI failed with res=%d at %g\n", res, t);
 	  printf ("DOPRI failed with res=%d at %g\n", res, t);
-	  break;
 	}
 #ifdef SYNC_RT
-      /* Sync */
-      waitUntil(t);
+  /* Sync */
+  waitUntil(t);
 #endif
 
-      if (is_sampled)
+  if (is_sampled)
 	{
 	  if (totalOutputSteps < num_steps)
 	    {
-	      CLC_save_step (simOutput, solution, solution_time, tout,
+	      CLC_save_step (simOutput, solution, solution_time, _ft,
 			     totalOutputSteps, x, clcData->d, clcData->alg);
 	      totalOutputSteps++;
 	    }
-	  t = tout;
 	}
-      if ((int) (t * 100 / _ft) > dopri_percentage)
-	{
-	  dopri_percentage = 100 * t / _ft;
-	  fprintf (stderr, "*%g", t);
-	  fflush (stderr);
-	}
-
-    }
   getTime (simulator->stats->sTime);
   subTime (simulator->stats->sTime, simulator->stats->iTime);
   if (simulator->settings->debug == 0 || simulator->settings->debug > 1)
@@ -220,6 +222,7 @@ DOPRI_integrate (SIM_simulator simulate)
   CLC_write_output (simOutput, solution, solution_time, totalOutputSteps);
   free (outvar);
   free (x);
+  free (temp_x);
   free (solution_time);
   free (jroot);
   for (i = 0; i < simOutput->outputs; i++)
