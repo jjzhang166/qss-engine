@@ -1078,7 +1078,8 @@ QSS_PARH_integrator (QSS_simulator simulator)
 	      gvt = QSS_PAR_GVT (simulator);
 	      maxAdvanceTime = gvt + QSS_dtValue (dt);
 	    }
-	  QSS_PAR_synchronize (simulator, synchronize, QSS_PARH_externalEvent, QSS_PARH_internalEvent);
+	  QSS_PAR_synchronize (simulator, synchronize, QSS_PARH_externalEvent,
+			       QSS_PARH_internalEvent);
 	}
       else
 	{

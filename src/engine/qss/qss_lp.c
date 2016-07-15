@@ -201,14 +201,14 @@ LP_processPartition (QSS_simulator simulator, PRT_partition partition)
 	      partition->outputs[i][partition->nOutputs[i]++] =
 		  zcPartitionNumber;
 	      int t;
-	      int iLHSSt = simulatorData->event[k].nLHSSt;
-	      for (t =0;t < iLHSSt; t++)
+	      int inZS = simulatorData->nZS[handlerNumber];
+	      for (t =0;t < inZS; t++)
 		{
-		   int ik = simulatorData->event[k].LHSSt[t];
-		   if (partition->asgDscInf[zcPartitionNumber][ik] == NOT_ASSIGNED)
+		   int ik = simulatorData->ZS[handlerNumber][t];
+		   if (partition->asgDscInf[partitionNumber][ik] == NOT_ASSIGNED)
 		     {
-		       partition->dscInf[zcPartitionNumber][partition->nDsc[zcPartitionNumber]++] = ik;
-		       partition->asgDscInf[zcPartitionNumber][ik] = ik;
+		       partition->dscInf[partitionNumber][partition->nDsc[partitionNumber]++] = ik;
+		       partition->asgDscInf[partitionNumber][ik] = ik;
 		     }
 		}
 	    }
@@ -472,7 +472,6 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
 	  int t;
 	  for (t = 0; t < nDscInf; t++)
 	    {
-	 //     printf("LP %d Asigna %d\n",i,partition->dscInf[i][t]);
 	      simulator->lps->lp[i]->dscMap[partition->dscInf[i][t]] = t;
 	    }
 	}

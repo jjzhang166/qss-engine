@@ -1,3 +1,7 @@
+2016-07-15  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/qss_lp.c
+	(LP_initializeDataStructs): Modified adaptive discrete selected variables.
 2016-07-14  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* mmo/generator/solver.cpp
