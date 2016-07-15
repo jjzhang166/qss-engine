@@ -1018,7 +1018,7 @@ QSS_::initializeMatrices ()
 	  deps->next (DEP_STATE))
 	{
 	  defStates[*idx] = *idx;
-	  string sIdx = idx->print ("i", -index.begin () + idx->begin ());
+	  string sIdx = idx->print ("i", -genericDefInit + idx->begin ());
 	  buffer << indent << "modelData->nSZ[" << sIdx << "]++;";
 	  _writer->write (&buffer, WR_ALLOC_LD_SZ);
 	  buffer << indent << "modelData->ZS[" << eIdx << "][events[" << eIdx
@@ -1126,7 +1126,7 @@ QSS_::initializeMatrices ()
 	  deps->next (DEP_STATE))
 	{
 	  _setInterval (idx, &index);
-	  string idxStr = idx->print ("i", -index.begin () + idx->begin ());
+	  string idxStr = idx->print ("i", -genericDefInit + idx->begin ());
 	  buffer << indent << "modelData->event[" << eIdx << "].LHSSt[events["
 	      << eIdx << "]++] = " << idxStr << ";";
 	  _writer->write (&buffer, WR_INIT_EVENT_LHSST);
@@ -1144,7 +1144,7 @@ QSS_::initializeMatrices ()
 	  idx = deps->next (DEP_DISCRETE))
 	{
 	  _setInterval (idx, &index);
-	  string idxStr = idx->print ("i", -index.begin () + idx->begin ());
+	  string idxStr = idx->print ("i", -genericDefInit + idx->begin ());
 	  buffer << indent << "modelData->event[" << eIdx << "].LHSDsc[events["
 	      << eIdx << "]++] = " << idxStr << ";";
 	  _writer->write (&buffer, WR_INIT_EVENT_DSC);
@@ -1181,7 +1181,7 @@ QSS_::initializeMatrices ()
 	{
 	  defStates[*idx] = *idx;
 	  _setInterval (idx, &index);
-	  string idxStr = idx->print ("i", -index.begin () + idx->begin ());
+	  string idxStr = idx->print ("i", -genericDefInit + idx->begin ());
 	  buffer << indent << "modelData->event[" << eIdx << "].RHSSt[events["
 	      << eIdx << "]++] = " << idxStr << ";";
 	  _writer->write (&buffer, WR_INIT_EVENT_RHSST);

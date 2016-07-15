@@ -495,9 +495,9 @@ public:
   {
     if (x->hasMap () && y->hasMap ())
       {
-	if (x->offset() != y->offset())
+	if (x->offset () != y->offset ())
 	  {
-	    return (x->offset() < y->offset());
+	    return (x->offset () < y->offset ());
 	  }
 	else if (x->parameter () == y->parameter ())
 	  {
@@ -534,6 +534,10 @@ public:
       {
 	if (x->lowValue () == y->lowValue ())
 	  {
+	    if (x->offset () != y->offset ())
+	      {
+		return (x->low () < y->low ());
+	      }
 	    return (x->range () < y->range ());
 	  }
       }
