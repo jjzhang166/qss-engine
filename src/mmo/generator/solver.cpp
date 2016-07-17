@@ -3103,13 +3103,13 @@ SolverCommon_::getOrder ()
 {
   MMO_Annotation annot = _model->annotation ();
   int order = 1;
-  if (annot->symDiff () && _model->hasExternalFunctions ())
+  /*if (annot->symDiff () && _model->hasExternalFunctions ())
     {
       annot->setSymDiff (false);
       Error::getInstance ()->add (
 	  0, EM_CG, ER_Warning,
 	  "External functions detected, set symbolic differentiation off.");
-    }
+    }*/
   if (annot->symDiff ())
     {
       order = annot->order ();

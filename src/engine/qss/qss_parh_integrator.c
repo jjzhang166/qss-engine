@@ -1099,7 +1099,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
 	  IBX_checkAckInbox (inbox, mailbox, id);
 	}
       nextMessageTime = IBX_nextMessageTime (inbox);
-      if (nextMessageTime < qssTime->time)
+      if (nextMessageTime <= qssTime->time)
 	{
 	  lp->externalEvent = TRUE;
 	  qssTime->time = nextMessageTime;
