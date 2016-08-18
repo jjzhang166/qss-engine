@@ -1,5 +1,6 @@
 2016-08-18  Joaquin  <joaquin.f.fernandez@gmail.com>
 
+	* mmo/Makefile: Added graph class source files,
 	* mmo/util/graph.cpp: New file.
 	* mmo/util/graph.h: New file.
 	* engine/qss/qss_data.c

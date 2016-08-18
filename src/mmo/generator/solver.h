@@ -28,6 +28,7 @@
 #include "../ir/mmo_types.h"
 #include "../util/dependencies.h"
 #include "../util/index.h"
+#include "../util/graph.h"
 #include "../util/symbol_table.h"
 #include "../util/util_types.h"
 #include "generator_types.h"
