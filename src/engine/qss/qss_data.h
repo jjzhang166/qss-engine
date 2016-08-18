@@ -345,6 +345,8 @@ struct QSS_data_
   int *nZS; //!<
   int *nHD; //!<
   int *nHZ; //!<
+  int *nSH;  //!<
+  int *nDD; //!<
   int *TD;  //!<
   int **SD; //!<
   int **DS; //!<
@@ -352,6 +354,8 @@ struct QSS_data_
   int **ZS; //!<
   int **HD; //!<
   int **HZ; //!<
+  int **SH; //!<
+  int **DD; //!<
   int states;  //!<
   int discretes;  //!<
   int algs; //!<
@@ -362,8 +366,6 @@ struct QSS_data_
   SD_eventData event;  //!<
   SD_parameters params; //!<
   QSS_LP_data lp; //!<
-  int *nSH;  //!<
-  int **SH; //!<
 };
 
 /**

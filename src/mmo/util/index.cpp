@@ -900,3 +900,14 @@ Intersection::modelicaValue ()
 {
   return (_value + 1);
 }
+
+bool
+Index_::operator == (const Index_& other) const
+{
+  return (this->_constant == other._constant && this->_factor == other._factor
+      && this->_hasRange == other._hasRange && this->_hi == other._hi
+      && this->_index == other._index && this->_isSet == other._isSet
+      && this->_low == other._low && this->_offset == other._offset
+      && this->_map == other._map && this->_parameter == other._parameter
+      && this->_rangeOp == other._rangeOp && this->_array == other._array);
+}

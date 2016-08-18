@@ -431,11 +431,15 @@ QSS_Data (int states, int discretes, int events, int inputs, int algs,
 	{
 	  p->nSH = (int*) malloc (states * sizeof(int));
 	  p->SH = (int**) malloc (states * sizeof(int*));
+	  p->nDD = (int*) malloc (events * sizeof(int));
+	  p->DD = (int**) malloc (events * sizeof(int*));
 	}
       else
 	{
 	  p->nSH = NULL;
 	  p->SH = NULL;
+	  p->nDD = NULL;
+	  p->DD = NULL;
 	}
     }
   else
@@ -450,6 +454,8 @@ QSS_Data (int states, int discretes, int events, int inputs, int algs,
       p->HZ = NULL;
       p->nSH = NULL;
       p->SH = NULL;
+      p->nDD = NULL;
+      p->DD = NULL;
     }
   if (inputs)
     {
@@ -502,6 +508,7 @@ QSS_Data (int states, int discretes, int events, int inputs, int algs,
       cleanVector (p->nZS, 0, events);
       cleanVector (p->nHD, 0, events);
       cleanVector (p->nHZ, 0, events);
+      cleanVector (p->nDD, 0, events);
       p->event = SD_EventData (events);
     }
   else
@@ -802,6 +809,8 @@ QSS_copyData (QSS_data data)
   p->lp = NULL;
   p->nSH = NULL;
   p->SH = NULL;
+  p->nDD = NULL;
+  p->DD = NULL;
   QSS_dataCopyStructure (data, p);
   return (p);
 }
@@ -851,20 +860,28 @@ QSS_allocDataMatrix (QSS_data data)
       data->event[i].RHSSt =
 	  (data->event[i].nRHSSt > 0) ?
 	      (int*) malloc (data->event[i].nRHSSt * sizeof(int)) : NULL;
+      if (data->nDD != NULL)
+	{
+	  data->DD[i] =
+	      (data->nDD[i] > 0) ?
+		  (int*) malloc (data->nDD[i] * sizeof(int)) : NULL;
+	}
     }
 }
 
 int
-QSS_intCmp(const void *x, const void *y)
+QSS_intCmp (const void *x, const void *y)
 {
-  int xx = *(int*)x, yy = *(int*)y;
-  if (xx < yy) return (-1);
-  if (xx > yy) return  (1);
+  int xx = *(int*) x, yy = *(int*) y;
+  if (xx < yy)
+    return (-1);
+  if (xx > yy)
+    return (1);
   return (0);
 }
 
 void
-QSS_orderDataMatrix(QSS_data data)
+QSS_orderDataMatrix (QSS_data data)
 {
   int i, states = data->states, events = data->events;
   for (i = 0; i < states; i++)
@@ -1023,26 +1040,26 @@ QSS_cleanData (QSS_data data)
 {
   if (QSS_hardCopyStruct)
     {
-      QSS_freeData(data);
+      QSS_freeData (data);
     }
   else
     {
       free (data->lqu);
-        if (data->discretes)
-          {
-            free (data->d);
-          }
-        if (data->algs)
-          {
-            free (data->alg);
-          }
-        free (data->x);
-        free (data->q);
-        free (data->tmp1);
-        free (data->tmp2);
-        SD_cleanEventData(data->event, data->events);
-        free (data->lp);
-        free (data);
+      if (data->discretes)
+	{
+	  free (data->d);
+	}
+      if (data->algs)
+	{
+	  free (data->alg);
+	}
+      free (data->x);
+      free (data->q);
+      free (data->tmp1);
+      free (data->tmp2);
+      SD_cleanEventData (data->event, data->events);
+      free (data->lp);
+      free (data);
     }
 }
 

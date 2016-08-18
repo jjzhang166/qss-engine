@@ -37,7 +37,8 @@
 
 QSS_::QSS_ (MMO_Model model, MMO_CompileFlags flags, MMO_Writer writer) :
     _flags (flags), _writer (writer), _modelVars (), _modelDepsVars (), _zcVars (), _handlerPosVars (), _handlerNegVars (), _outputVars (), _initializeVars (), _freeVars (), _model (
-	model), _name (model->name ()), _graph (), _hyperGraph(), _parallel (flags->graph ())
+	model), _name (model->name ()), _graph (), _hyperGraph (), _parallel (
+	flags->graph ())
 {
   _modelDeps = newMMO_DependenciesTable ();
   _modelVectorDeps = newMMO_DependenciesTable ();
@@ -53,7 +54,8 @@ QSS_::QSS_ (MMO_Model model, MMO_CompileFlags flags, MMO_Writer writer) :
     {
       _name = _flags->outputFileName ();
     }
-  _common = newSolverCommon (model, flags, writer, _modelVectorDeps, &_graph, &_hyperGraph);
+  _common = newSolverCommon (model, flags, writer, _modelVectorDeps, &_graph,
+			     &_hyperGraph);
   _model->varTable ()->setPolyCoeffs (_model->annotation ()->polyCoeffs ());
 }
 
@@ -75,7 +77,7 @@ QSS_::initData ()
       << _model->inputs () << "," << _model->algs () << ",\"" << _name << "\");"
       << endl;
   buffer << "  QSS_data modelData = simulator->data;" << endl;
-  buffer << "  const double t = " << annot->initialTime () << ";" <<endl;
+  buffer << "  const double t = " << annot->initialTime () << ";" << endl;
   return (buffer.str ());
 }
 
@@ -212,6 +214,10 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 	{
 	  nt = NOD_HZ;
 	}
+      if (alloc == WR_ALLOC_LD_DD)
+	{
+	  nt = NOD_DD;
+	}
     }
   switch (intersection.type ())
     {
@@ -336,10 +342,10 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
       break;
     case IDX_SUBSET:
       {
-	Index tmp(infIdx);
-	if (dIdx->hasMap())
+	Index tmp (infIdx);
+	if (dIdx->hasMap ())
 	  {
-	    tmp.setMap(*dIdx);
+	    tmp.setMap (*dIdx);
 	  }
 	int begin = idx.mappedBegin () + infDIdx->lowValue ()
 	    - dIdx->lowValue ();
@@ -353,7 +359,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 	buffer << indent << allocStr << "[i]++;";
 	_writer->write (&buffer, alloc);
 	buffer << indent << initStr << "[i][" << counter << "[i]++] = "
-	<< tmp.print ("i", -begin + infIdx.begin() - idx.begin()) << ";";
+	    << tmp.print ("i", -begin + infIdx.begin () - idx.begin ()) << ";";
 	_writer->write (&buffer, init);
 	buffer << "}";
 	_writer->write (&buffer, alloc, false);
@@ -387,8 +393,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 	buffer << indent << allocStr << "[i]++;";
 	_writer->write (&buffer, alloc);
 	buffer << indent << initStr << "[i][" << counter << "[i]++] = "
-	    << tmp.print ("i", - idx.mappedBegin () + idx.begin())
-	    << ";";
+	    << tmp.print ("i", -idx.mappedBegin () + idx.begin ()) << ";";
 	_writer->write (&buffer, init);
 	buffer << "}";
 	_writer->write (&buffer, alloc, false);
@@ -520,6 +525,28 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
 				  "modelData->nHZ", "modelData->HZ", "events",
 				  is);
 	    }
+	  if (_parallel && type == DEP_DISCRETE)
+	    {
+	      Dependencies hndDeps = ev->deps ();
+	      for (Index *hdIdx = hndDeps->begin (type); !hndDeps->end (type);
+		  hdIdx = hndDeps->next (type))
+		{
+		   if (e->index() == ev->index())
+		    {
+		      continue;
+		    }
+		  _setInterval (hdIdx, &ecIndex);
+		  Intersection is = hndIdx->intersection (*hdIdx);
+		  if (is.type () != IDX_DISJOINT)
+		    {
+		      events[ecIndex] = ecIndex;
+		    }
+		  _indexDependencies (index, hndIdx, ecIndex, hdIdx,
+				      &simpleZCNDeps, WR_ALLOC_LD_DD,
+				      WR_INIT_LD_DD, "modelData->nDD",
+				      "modelData->DD", "events", is);
+		}
+	    }
 	}
     }
   for (map<int, int>::iterator it = simpleZCNDeps.begin ();
@@ -567,8 +594,7 @@ QSS_::_eventAlgebraicDeps (MMO_Event e, Index index, MMO_EventTable evt,
 	      continue;
 	    }
 	  Dependencies zcDeps = ev->condition ()->exp ()->deps ();
-	  for (zcDeps->begin (type); !zcDeps->end (type);
-	      zcDeps->next (type))
+	  for (zcDeps->begin (type); !zcDeps->end (type); zcDeps->next (type))
 	    {
 	      Index algVar = zcDeps->key (type);
 	      _setInterval (&algVar, &ecIndex);
@@ -818,7 +844,7 @@ QSS_::initializeMatrices ()
 		    {
 		      continue;
 		    }
-		  Index equationIndex = e->lhs();
+		  Index equationIndex = e->lhs ();
 		  _indexDependencies (eIndex, eIdx, equationIndex, dIdx,
 				      &simpleHDDeps, WR_ALLOC_LD_HD,
 				      WR_INIT_LD_HD, "modelData->nHD",
@@ -849,14 +875,14 @@ QSS_::initializeMatrices ()
 		    {
 		      continue;
 		    }
-		  Index equationIndex = e->lhs();
-		  if (dIdx->hasRange () && !index.hasRange())
+		  Index equationIndex = e->lhs ();
+		  if (dIdx->hasRange () && !index.hasRange ())
 		    {
 		      equationIndex.setRange ();
 		      equationIndex.setLow (dIdx->low ());
 		      equationIndex.setHi (dIdx->hi ());
 		    }
-		  else if (index.hasRange() && !dIdx->hasRange())
+		  else if (index.hasRange () && !dIdx->hasRange ())
 		    {
 		      equationIndex.setConstant (dIdx->constant ());
 		      equationIndex.setFactor (0);
@@ -982,7 +1008,7 @@ QSS_::initializeMatrices ()
       if (evt->beginGenericDefinition ())
 	{
 	  genericEquation = true;
-	  genericDefInit = index.begin();
+	  genericDefInit = index.begin ();
 	  if (!hasInit && !hasLHSStates && !hasRHSStates && !hasDiscretes)
 	    {
 	      bufferGen << "for(i = " << index.begin () << "; i <= "
@@ -1741,6 +1767,7 @@ QSS_::_init ()
   if (_flags->parallel ())
     {
       _writer->print (WR_ALLOC_STATE_HANDLERS);
+      _writer->print (WR_ALLOC_LD_DD);
     }
   _writer->print (WR_ALLOC_EVENT_LHSST);
   _writer->print (WR_ALLOC_EVENT_RHSST);
@@ -1791,6 +1818,8 @@ QSS_::_init ()
     {
       _common->printSection ("states", _model->states (),
 			     WR_INIT_STATE_HANDLERS);
+      _common->printSection ("events", _model->evs (),
+      			     WR_INIT_LD_DD);
     }
   _common->printSection ("events", _model->evs (), WR_INIT_EVENT_LHSST);
   _common->printSection ("events", _model->evs (), WR_INIT_EVENT_RHSST);
@@ -1990,7 +2019,7 @@ Classic_::initData ()
       << _model->inputs () << "," << _model->algs () << ",\"" << _name << "\");"
       << endl;
   buffer << "  modelData = simulator->data;" << endl;
-  buffer << "  const double t = " << annot->initialTime () << ";" <<endl;
+  buffer << "  const double t = " << annot->initialTime () << ";" << endl;
   return (buffer.str ());
 }
 
@@ -2576,10 +2605,11 @@ deleteMMO_ParallelEngine (MMO_ParallelEngine m)
 SolverCommon_::SolverCommon_ (MMO_Model model, MMO_CompileFlags flags,
 			      MMO_Writer writer,
 			      MMO_DependenciesTable modelVectorDeps,
-			      map<int, set<int> > *graph, map<int, set<int> > *hyperGraph) :
+			      map<int, set<int> > *graph,
+			      map<int, set<int> > *hyperGraph) :
     _model (model), _flags (flags), _writer (writer), _modelVectorDeps (
-	modelVectorDeps), _name (model->name ()), _weights (), _graph (*graph), _hyperGraph(*hyperGraph), _generateGraph (
-	true), _parallel (flags->graph ())
+	modelVectorDeps), _name (model->name ()), _weights (), _graph (*graph), _hyperGraph (
+	*hyperGraph), _generateGraph (true), _parallel (flags->graph ())
 {
   if (_flags->hasOutputFile ())
     {
@@ -2616,6 +2646,10 @@ SolverCommon_::addModelDeps (Dependencies deps, Index state, Index infIndex,
 void
 SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
 {
+  if (_model->annotation()->partitionMethod() == ANT_Manual || _generateGraph == false)
+    {
+      return;
+    }
   if (row.hasMap () || col.hasMap ())
     {
       _generateGraph = false;
@@ -2626,7 +2660,7 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
     {
       rowOffset = offset;
     }
-  else if (type == NOD_HZ)
+  else if (type == NOD_HZ || type == NOD_DD)
     {
       colOffset = offset;
       rowOffset = offset;
@@ -2648,7 +2682,7 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
 	      _graph[col.mappedValue (i) + colOffset].insert (
 		  row.mappedValue (i) + rowOffset);
 	      _hyperGraph[row.mappedValue (i) + rowOffset].insert (
-	     		  col.mappedValue (i) + colOffset);
+		  col.mappedValue (i) + colOffset);
 	      _hyperGraph[row.mappedValue (i) + rowOffset].insert (
 		  row.mappedValue (i) + rowOffset);
 	    }
@@ -2664,7 +2698,7 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
 	  _graph[col.mappedValue () + colOffset].insert (
 	      row.mappedValue () + rowOffset);
 	  _hyperGraph[row.mappedValue () + rowOffset].insert (
-	  	      col.mappedValue () + colOffset);
+	      col.mappedValue () + colOffset);
 	  _hyperGraph[row.mappedValue () + rowOffset].insert (
 	      row.mappedValue () + rowOffset);
 	}
@@ -3104,12 +3138,12 @@ SolverCommon_::getOrder ()
   MMO_Annotation annot = _model->annotation ();
   int order = 1;
   /*if (annot->symDiff () && _model->hasExternalFunctions ())
-    {
-      annot->setSymDiff (false);
-      Error::getInstance ()->add (
-	  0, EM_CG, ER_Warning,
-	  "External functions detected, set symbolic differentiation off.");
-    }*/
+   {
+   annot->setSymDiff (false);
+   Error::getInstance ()->add (
+   0, EM_CG, ER_Warning,
+   "External functions detected, set symbolic differentiation off.");
+   }*/
   if (annot->symDiff ())
     {
       order = annot->order ();
@@ -3547,7 +3581,8 @@ newSolverCommon (MMO_Model model, MMO_CompileFlags flags, MMO_Writer writer,
 		 MMO_DependenciesTable modelVectorDeps,
 		 map<int, set<int> > *graph, map<int, set<int> > *hyperGraph)
 {
-  return (new SolverCommon_ (model, flags, writer, modelVectorDeps, graph, hyperGraph));
+  return (new SolverCommon_ (model, flags, writer, modelVectorDeps, graph,
+			     hyperGraph));
 }
 
 void

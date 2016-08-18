@@ -1,7 +1,34 @@
+2016-08-18  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* mmo/util/graph.cpp: New file.
+	* mmo/util/graph.h: New file.
+	* engine/qss/qss_data.c
+	(QSS_Data): Added DD matrix to QSS data.
+	(QSS_copyData): Handle DD matrix.
+	(QSS_allocDataMatrix): Alloc DD matrix.
+	* engine/qss/qss_data.h: Added DD matrix to QSS data-
+	* engine/qss/qss_lp.c
+	(LP_processPartition): Process DD matrix and add the corresponding communication
+	influences.
+	* mmo/generator/generator_utils.h: Added DD section.
+	* mmo/generator/solver.cpp:
+	(QSS_::_indexDependencies): Handle DD node type.
+	(QSS_::_eventDeps): Generate code for DD matrix.
+	(QSS_::_init): Added code to write DD matrix.
+	(SolverCommon_::graphInsert): Handle DD node type in graph generator and avoid
+	graph generation if the partition is set to manual or map are defined for the
+	indexes,
+	* mmo/generator/solver.h: Added DD node type.
+	* mmo/util/index.cpp
+	(Index_::operator ==): Implemented equal operator for indexes.
+	* mmo/util/index.h
+	(Index_): Added equal operator for indexes.
+
 2016-07-15  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* engine/qss/qss_lp.c
 	(LP_initializeDataStructs): Modified adaptive discrete selected variables.
+
 2016-07-14  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* mmo/generator/solver.cpp
@@ -24,8 +51,8 @@
 	(QSS_PARH_integrator): Added the internal step handler when calling the
 	synchronzation routine.
 	(QSS_PARC_integrator): Added the internal step handler when calling the
-	synchronzation routine.	 
-	
+	synchronzation routine.
+
 2016-07-05  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* engine/common/utils.h:
@@ -61,7 +88,8 @@
 	(QSS_PAR_waitFor): Call dtFinish instead of dtUpdate.
 	(QSS_PAR_printSimulationLog): Change dtChanges field print type.
 	(QSS_PAR_synchronize): Call dtCheck at the end of the while loop.
-	(QSS_PAR_passiveLP): Call dtFinish instead of dtUpdate.	
+	(QSS_PAR_passiveLP): Call dtFinish instead of dtUpdate.
+
 2016-07-04  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* engine/qss/qss_lp.c

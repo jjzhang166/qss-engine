@@ -459,8 +459,21 @@ public:
   applyVariableChange (Index index);
   bool
   variableChange (Index index);
+  /**
+   *
+   * @param variable
+   * @param offset
+   * @return
+   */
   string
   printReverseDefinition (string variable, int offset = 0);
+  /**
+   *
+   * @param other
+   * @return
+   */
+  bool
+  operator==(const Index_ &other) const;
 private:
   void
   _setIndex ();

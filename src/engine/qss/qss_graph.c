@@ -77,8 +77,21 @@ GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,
 	      int k = data->HD[i][j];
 	      insert (hMatrix[states + i], k);
 	    }
-	  int nHZ = data->nHZ[i];
+	  int nDD = data->nDD[i];
 	  bool inf = FALSE;
+	  for (j = 0; j < nDD; j++)
+	    {
+	      int k = data->DD[i][j];
+	      if (k != i)
+		{
+		  insert (hMatrix[states + i], states + k);
+		}
+	      if (k == i + 1)
+		{
+		  inf = TRUE;
+		}
+	    }
+	  int nHZ = data->nHZ[i];
 	  for (j = 0; j < nHZ; j++)
 	    {
 	      int k = data->HZ[i][j];
@@ -91,7 +104,7 @@ GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,
 		  inf = TRUE;
 		}
 	    }
-         if (!inf && i < events - 1)
+	  if (!inf && i < events - 1)
 	    {
 	      insert (hMatrix[states + i], states + i + 1);
 	    }
@@ -101,7 +114,7 @@ GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,
 	      int k = data->event[i].LHSSt[j];
 	      insert (hMatrix[states + i], k);
 	    }
-	  if (nHD > 0 || nHZ > 0 || nLHSSt > 0)
+	  if (nHD > 0 || nHZ > 0 || nLHSSt > 0 || nDD > 0)
 	    {
 	      insert (hMatrix[states + i], states + i);
 	      edges++;
@@ -261,16 +274,16 @@ GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,
 		  insert (adjMatrix[k], i);
 		  edges += 2;
 		}
-	      if (k == i+1)
+	      if (k == i + 1)
 		{
-		  inf =TRUE;
+		  inf = TRUE;
 		}
 	    }
 	  if (!inf)
 	    {
-	      insert (adjMatrix[i], i+1);
-	      insert (adjMatrix[i+1], i);
-              edges += 2;
+	      insert (adjMatrix[i], i + 1);
+	      insert (adjMatrix[i + 1], i);
+	      edges += 2;
 	    }
 	  if (data->nSZ != NULL)
 	    {
@@ -294,8 +307,20 @@ GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,
 	      insert (adjMatrix[k], states + i);
 	      edges += 2;
 	    }
-	  int nHZ = data->nHZ[i];
+	  int nDD = data->nDD[i];
 	  bool inf = FALSE;
+	  for (j = 0; j < nDD; j++)
+	    {
+	      int k = data->DD[i][j];
+	      insert (adjMatrix[states + i], states + k);
+	      insert (adjMatrix[states + k], states + i);
+	      edges += 2;
+	      if (k == i + 1)
+		{
+		  inf = TRUE;
+		}
+	    }
+	  int nHZ = data->nHZ[i];
 	  for (j = 0; j < nHZ; j++)
 	    {
 	      int k = data->HZ[i][j];
@@ -305,7 +330,7 @@ GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,
 		  insert (adjMatrix[states + k], states + i);
 		  edges += 2;
 		}
-	      if (k == i+1)
+	      if (k == i + 1)
 		{
 		  inf = TRUE;
 		}
@@ -314,7 +339,7 @@ GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,
 	    {
 	      insert (adjMatrix[states + i], states + i + 1);
 	      insert (adjMatrix[states + i + 1], states + i);
-              edges += 2;
+	      edges += 2;
 	    }
 	  int nLHSSt = data->event[i].nLHSSt;
 	  for (j = 0; j < nLHSSt; j++)

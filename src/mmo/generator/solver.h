@@ -72,7 +72,8 @@ typedef enum
   NOD_SD,
   NOD_SZ,
   NOD_HD,
-  NOD_HZ
+  NOD_HZ,
+  NOD_DD
 } NOD_Type;
 
 /**
