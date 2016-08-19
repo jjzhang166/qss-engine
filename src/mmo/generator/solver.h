@@ -331,6 +331,7 @@ private:
   string _name;
   Graph _graph;
   bool _parallel;
+  bool _hasDD;
 };
 /**
  *

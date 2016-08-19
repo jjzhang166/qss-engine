@@ -168,7 +168,6 @@ ST_write (OUT_output output, QSS_data simData, QSS_time simTime,
 #endif
 	    }
 	}
-#ifndef QSS_PARALLEL
       int nLHSDsc = simData->event[simTime->minIndex].nLHSDsc;
       for (k = 0; k < nLHSDsc; k++)
 	{
@@ -178,11 +177,20 @@ ST_write (OUT_output output, QSS_data simData, QSS_time simTime,
 	    {
 	      j = simOutput->DO[h][i];
 	      int variable = j;
+#ifdef QSS_PARALLEL
+	      if (lp->oMap[j] != NOT_ASSIGNED)
+		{
+		  variable = lp->oMap[j];
+		  ST_PAR_writeOutvar (output, simData, simTime, simOutput, j, variable);
+#else
 	      ST_writeOutvar (output, simData, simTime, simOutput, j, variable);
+#endif
 	      output->state->steps[variable]++;
+#ifdef QSS_PARALLEL
+	    }
+#endif
 	    }
 	}
-#endif
     }
 }
 

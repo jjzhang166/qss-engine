@@ -432,6 +432,8 @@ QSS_Data (int states, int discretes, int events, int inputs, int algs,
 	  p->SH = (int**) malloc (states * sizeof(int*));
 	  p->nDD = (int*) malloc (events * sizeof(int));
 	  p->DD = (int**) malloc (events * sizeof(int*));
+	  p->nDH = (int*) malloc (discretes * sizeof(int));
+	  p->DH = (int**) malloc (discretes * sizeof(int*));
 	}
       else
 	{
@@ -439,6 +441,8 @@ QSS_Data (int states, int discretes, int events, int inputs, int algs,
 	  p->SH = NULL;
 	  p->nDD = NULL;
 	  p->DD = NULL;
+	  p->nDH = NULL;
+	  p->DH = NULL;
 	}
     }
   else
@@ -455,6 +459,8 @@ QSS_Data (int states, int discretes, int events, int inputs, int algs,
       p->SH = NULL;
       p->nDD = NULL;
       p->DD = NULL;
+      p->nDH = NULL;
+      p->DH = NULL;
     }
   if (inputs)
     {
@@ -510,6 +516,7 @@ QSS_Data (int states, int discretes, int events, int inputs, int algs,
       if (settings->lps > 0)
 	{
 	  cleanVector (p->nDD, 0, events);
+	  cleanVector (p->nDH, 0, discretes);
 	}
       p->event = SD_EventData (events);
     }
@@ -684,8 +691,6 @@ QSS_dataCopyStructure (QSS_data data, QSS_data p)
 	  p->ZS = NULL;
 	  p->HD = NULL;
 	  p->HZ = NULL;
-	  p->nSH = NULL;
-	  p->SH = NULL;
 	}
       if (inputs)
 	{
@@ -813,6 +818,8 @@ QSS_copyData (QSS_data data)
   p->SH = NULL;
   p->nDD = NULL;
   p->DD = NULL;
+  p->nDH = NULL;
+  p->DH = NULL;
   QSS_dataCopyStructure (data, p);
   return (p);
 }
@@ -869,6 +876,17 @@ QSS_allocDataMatrix (QSS_data data)
 		  (int*) malloc (data->nDD[i] * sizeof(int)) : NULL;
 	}
     }
+  if (data->nDH != NULL)
+    {
+      int discretes = data->discretes;
+      for (i = 0; i < discretes; i++)
+	{
+	  data->DH[i] =
+	      (data->nDH[i] > 0) ?
+		  (int*) malloc (data->nDH[i] * sizeof(int)) : NULL;
+	}
+    }
+
 }
 
 int
@@ -1026,6 +1044,37 @@ QSS_freeData (QSS_data data)
       if (data->nSH != NULL)
 	{
 	  free (data->nSH);
+	}
+      if (data->DD != NULL)
+	{
+	  for (i = 0; i < events; i++)
+	    {
+	      if (data->DD[i] != NULL)
+		{
+		  free (data->DD[i]);
+		}
+	    }
+	  free (data->DD);
+	}
+      if (data->nDD != NULL)
+	{
+	  free (data->nDD);
+	}
+      if (data->DH != NULL)
+	{
+	  int discretes = data->discretes;
+	  for (i = 0; i < discretes; i++)
+	    {
+	      if (data->DH[i] != NULL)
+		{
+		  free (data->DH[i]);
+		}
+	    }
+	  free (data->DH);
+	}
+      if (data->nDH != NULL)
+	{
+	  free (data->nDH);
 	}
     }
   if (data->lp != NULL)

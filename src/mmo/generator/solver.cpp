@@ -37,8 +37,9 @@
 
 QSS_::QSS_ (MMO_Model model, MMO_CompileFlags flags, MMO_Writer writer) :
     _flags (flags), _writer (writer), _modelVars (), _modelDepsVars (), _zcVars (), _handlerPosVars (), _handlerNegVars (), _outputVars (), _initializeVars (), _freeVars (), _model (
-	model), _name (model->name ()), _graph (model->states(), model->evs()), _parallel (
-	flags->graph ())
+	model), _name (model->name ()), _graph (model->states (),
+						model->evs ()), _parallel (
+	flags->graph ()), _hasDD (false)
 {
   _modelDeps = newMMO_DependenciesTable ();
   _modelVectorDeps = newMMO_DependenciesTable ();
@@ -530,7 +531,7 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
 	      for (Index *hdIdx = hndDeps->begin (type); !hndDeps->end (type);
 		  hdIdx = hndDeps->next (type))
 		{
-		   if (e->index() == ev->index())
+		  if (e->index () == ev->index ())
 		    {
 		      continue;
 		    }
@@ -539,6 +540,7 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
 		  if (is.type () != IDX_DISJOINT)
 		    {
 		      events[ecIndex] = ecIndex;
+		      _hasDD = true;
 		    }
 		  _indexDependencies (index, hndIdx, ecIndex, hdIdx,
 				      &simpleZCNDeps, WR_ALLOC_LD_DD,
@@ -563,7 +565,7 @@ QSS_::graph ()
     {
       return (_graph);
     }
-  return (Graph (0,0));
+  return (Graph (0, 0));
 }
 
 void
@@ -1002,6 +1004,14 @@ QSS_::initializeMatrices ()
 	      indent = "";
 	      _writer->write ("}", WR_ALLOC_EVENT_DSC);
 	      _writer->write ("}", WR_INIT_EVENT_DSC);
+	      if (_hasDD == true)
+		{
+		  _hasDD = false;
+		  _writer->write ("}", WR_ALLOC_LD_DD);
+		  _writer->write ("}", WR_INIT_LD_DD);
+		}
+	      _writer->write ("}", WR_ALLOC_LD_DH);
+	      _writer->write ("}", WR_INIT_LD_DH);
 	    }
 	}
       if (evt->beginGenericDefinition ())
@@ -1095,9 +1105,23 @@ QSS_::initializeMatrices ()
 	  hasDiscretes = true;
 	  _writer->write (&bufferGen, WR_ALLOC_EVENT_DSC, false);
 	  _writer->write (&bufferGen, WR_INIT_EVENT_DSC, false);
+	  if (_hasDD == true)
+	    {
+	      _writer->write (&bufferGen, WR_ALLOC_LD_DD, false);
+	      _writer->write (&bufferGen, WR_INIT_LD_DD, false);
+	    }
+	  _writer->write (&bufferGen, WR_ALLOC_LD_DH, false);
+	  _writer->write (&bufferGen, WR_INIT_LD_DH, false);
 	  buffer << "{";
 	  _writer->write (&buffer, WR_ALLOC_EVENT_DSC, false);
-	  _writer->write (&buffer, WR_INIT_EVENT_DSC);
+	  _writer->write (&buffer, WR_INIT_EVENT_DSC, false);
+	  if (_hasDD == true)
+	    {
+	      _writer->write (&buffer, WR_ALLOC_LD_DD, false);
+	      _writer->write (&buffer, WR_INIT_LD_DD, false);
+	    }
+	  _writer->write (&buffer, WR_ALLOC_LD_DH, false);
+	  _writer->write (&buffer, WR_INIT_LD_DH);
 	}
       if (e->handlerType () == HND_POSITIVE)
 	{
@@ -1173,6 +1197,15 @@ QSS_::initializeMatrices ()
 	  buffer << indent << "modelData->event[" << eIdx << "].LHSDsc[events["
 	      << eIdx << "]++] = " << idxStr << ";";
 	  _writer->write (&buffer, WR_INIT_EVENT_DSC);
+	  if (_parallel)
+	    {
+	      buffer << indent << "modelData->DH[" << idxStr << "][discretes["
+		  << idxStr << "]++] = " << eIdx << ";";
+	      _writer->write (&buffer, WR_INIT_LD_DH);
+	      buffer << indent << "modelData->nDH[" << idxStr << "]++;";
+	      _writer->write (&buffer, WR_ALLOC_LD_DH);
+	      _common->graphInsert (*idx, index, _model->states (), NOD_SZ);
+	    }
 	}
       _eventVectorDependencies (index, deps, WR_ALLOC_EVENT_DSC,
 				WR_INIT_EVENT_DSC, "nLHSDsc", "LHSDsc",
@@ -1270,6 +1303,13 @@ QSS_::initializeMatrices ()
 	{
 	  _writer->write ("}", WR_ALLOC_EVENT_DSC);
 	  _writer->write ("}", WR_INIT_EVENT_DSC);
+	  if (_hasDD == true)
+	    {
+	      _writer->write ("}", WR_ALLOC_LD_DD);
+	      _writer->write ("}", WR_INIT_LD_DD);
+	    }
+	  _writer->write ("}", WR_ALLOC_LD_DH);
+	  _writer->write ("}", WR_INIT_LD_DH);
 	}
       _writer->write ("}", WR_INIT_EVENT);
     }
@@ -1767,6 +1807,7 @@ QSS_::_init ()
     {
       _writer->print (WR_ALLOC_STATE_HANDLERS);
       _writer->print (WR_ALLOC_LD_DD);
+   //   _writer->print (WR_ALLOC_LD_DH);
     }
   _writer->print (WR_ALLOC_EVENT_LHSST);
   _writer->print (WR_ALLOC_EVENT_RHSST);
@@ -1817,8 +1858,8 @@ QSS_::_init ()
     {
       _common->printSection ("states", _model->states (),
 			     WR_INIT_STATE_HANDLERS);
-      _common->printSection ("events", _model->evs (),
-      			     WR_INIT_LD_DD);
+      _common->printSection ("events", _model->evs (), WR_INIT_LD_DD);
+  //    _common->printSection ("discretes", _model->discretes(), WR_INIT_LD_DH);
     }
   _common->printSection ("events", _model->evs (), WR_INIT_EVENT_LHSST);
   _common->printSection ("events", _model->evs (), WR_INIT_EVENT_RHSST);
@@ -2284,7 +2325,7 @@ Classic_::_print (SOL_Function f, map<string, string> localVars,
 Graph
 Classic_::graph ()
 {
-  return (Graph (0,0));
+  return (Graph (0, 0));
 }
 
 void
@@ -2606,7 +2647,8 @@ SolverCommon_::SolverCommon_ (MMO_Model model, MMO_CompileFlags flags,
 			      MMO_DependenciesTable modelVectorDeps,
 			      Graph *graph) :
     _model (model), _flags (flags), _writer (writer), _modelVectorDeps (
-	modelVectorDeps), _name (model->name ()), _weights (), _graph (*graph), _generateGraph (true), _parallel (flags->graph ())
+	modelVectorDeps), _name (model->name ()), _weights (), _graph (*graph), _generateGraph (
+	true), _parallel (flags->graph ())
 {
   if (_flags->hasOutputFile ())
     {
@@ -2643,7 +2685,8 @@ SolverCommon_::addModelDeps (Dependencies deps, Index state, Index infIndex,
 void
 SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
 {
-  if (_model->annotation()->partitionMethod() == ANT_Manual || _generateGraph == false)
+  if (_model->annotation ()->partitionMethod () == ANT_Manual
+      || _generateGraph == false)
     {
       return;
     }
@@ -2674,10 +2717,14 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
 	  if (!((type == NOD_SD || type == NOD_HZ)
 	      && row.mappedValue (i) == col.mappedValue (i)))
 	    {
-	      _graph.addGraphEdge(row.mappedValue (i) + rowOffset,col.mappedValue (i) + colOffset);
-	      _graph.addGraphEdge(col.mappedValue (i) + colOffset,row.mappedValue (i) + rowOffset);
-	      _graph.addHyperGraphEdge(row.mappedValue (i) + rowOffset,col.mappedValue (i) + colOffset);
-	      _graph.addHyperGraphEdge(row.mappedValue (i) + rowOffset,row.mappedValue (i) + rowOffset);
+	      _graph.addGraphEdge (row.mappedValue (i) + rowOffset,
+				   col.mappedValue (i) + colOffset);
+	      _graph.addGraphEdge (col.mappedValue (i) + colOffset,
+				   row.mappedValue (i) + rowOffset);
+	      _graph.addHyperGraphEdge (row.mappedValue (i) + rowOffset,
+					col.mappedValue (i) + colOffset);
+	      _graph.addHyperGraphEdge (row.mappedValue (i) + rowOffset,
+					row.mappedValue (i) + rowOffset);
 	    }
 	}
     }
@@ -2686,10 +2733,14 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
       if (!((type == NOD_SD || type == NOD_HZ)
 	  && row.mappedValue () == col.mappedValue ()))
 	{
-	  _graph.addGraphEdge(row.mappedValue () + rowOffset, col.mappedValue () + colOffset);
-	  _graph.addGraphEdge(col.mappedValue () + colOffset, row.mappedValue () + rowOffset);
-	  _graph.addHyperGraphEdge(row.mappedValue () + rowOffset, col.mappedValue () + colOffset);
-	  _graph.addHyperGraphEdge(row.mappedValue () + rowOffset,row.mappedValue () + rowOffset );
+	  _graph.addGraphEdge (row.mappedValue () + rowOffset,
+			       col.mappedValue () + colOffset);
+	  _graph.addGraphEdge (col.mappedValue () + colOffset,
+			       row.mappedValue () + rowOffset);
+	  _graph.addHyperGraphEdge (row.mappedValue () + rowOffset,
+				    col.mappedValue () + colOffset);
+	  _graph.addHyperGraphEdge (row.mappedValue () + rowOffset,
+				    row.mappedValue () + rowOffset);
 	}
     }
 }
@@ -3567,8 +3618,7 @@ SolverCommon_::vectorDependencies (Index index, Dependencies deps,
 
 SolverCommon
 newSolverCommon (MMO_Model model, MMO_CompileFlags flags, MMO_Writer writer,
-		 MMO_DependenciesTable modelVectorDeps,
-		 Graph *graph)
+		 MMO_DependenciesTable modelVectorDeps, Graph *graph)
 {
   return (new SolverCommon_ (model, flags, writer, modelVectorDeps, graph));
 }

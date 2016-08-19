@@ -31,7 +31,7 @@ using namespace std;
 /**
  *
  */
-#define SECTIONS 	66
+#define SECTIONS 	68
 /**
  *
  */
@@ -49,6 +49,7 @@ typedef enum
   WR_ALLOC_LD_HD,        //!< WR_ALLOC_LD_HD
   WR_ALLOC_LD_HZ,        //!< WR_ALLOC_LD_HZ
   WR_ALLOC_LD_DD,        //!< WR_ALLOC_LD_DD
+  WR_ALLOC_LD_DH,        //!< WR_ALLOC_LD_DH
   WR_ALLOC_STATE_HANDLERS,  //!< WR_ALLOC_STATE_HANDLERS
   WR_ALLOC_EVENT_LHSST,  //!< WR_ALLOC_EVENT_LHSST
   WR_ALLOC_EVENT_RHSST,  //!< WR_ALLOC_EVENT_RHSST
@@ -72,6 +73,7 @@ typedef enum
   WR_INIT_LD_HD,         //!< WR_INIT_LD_HD
   WR_INIT_LD_HZ,         //!< WR_INIT_LD_HZ
   WR_INIT_LD_DD,         //!< WR_INIT_LD_DD
+  WR_INIT_LD_DH,         //!< WR_INIT_LD_DH
   WR_INIT_EVENT,         //!< WR_INIT_EVENT
   WR_INIT_STATE_HANDLERS,   //!< WR_INIT_STATE_HANDLERS
   WR_INIT_EVENT_LHSST,   //!< WR_INIT_EVENT_LHSST

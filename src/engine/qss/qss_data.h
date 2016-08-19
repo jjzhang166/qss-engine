@@ -347,6 +347,7 @@ struct QSS_data_
   int *nHZ; //!<
   int *nSH;  //!<
   int *nDD; //!<
+  int *nDH; //!<
   int *TD;  //!<
   int **SD; //!<
   int **DS; //!<
@@ -356,6 +357,7 @@ struct QSS_data_
   int **HZ; //!<
   int **SH; //!<
   int **DD; //!<
+  int **DH; //!<
   int states;  //!<
   int discretes;  //!<
   int algs; //!<
