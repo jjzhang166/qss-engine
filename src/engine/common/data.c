@@ -59,6 +59,7 @@ SD_SimulationLog (char *name)
   SD_simulationLog p = checkedMalloc (sizeof(*p));
   p->states = NULL;
   p->handlers = NULL;
+  p->hasVariables = FALSE;
   p->log = fopen (logFile, "w");
   if (!p->log)
     {
@@ -70,16 +71,23 @@ SD_SimulationLog (char *name)
 void
 SD_freeSimulationLog (SD_simulationLog log)
 {
-  if (log->states != NULL)
+  if (log->states != NULL && log->hasVariables == TRUE)
     {
       free (log->states);
     }
-  if (log->handlers)
+  if (log->handlers && log->hasVariables == TRUE)
     {
       free (log->handlers);
     }
   fclose (log->log);
   free (log);
+}
+
+void
+SD_copySimulationLogVariables (SD_simulationLog log, SD_simulationLog orig)
+{
+  log->states = orig->states;
+  log->handlers = orig->handlers;
 }
 
 void
@@ -93,6 +101,7 @@ SD_setSimulationLogVariables (SD_simulationLog log, int states, int events)
       log->handlers = (int*) malloc (events * sizeof(int));
       cleanVector (log->handlers, 0, events);
     }
+  log->hasVariables = TRUE;
 }
 
 void

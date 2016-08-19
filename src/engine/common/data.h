@@ -203,6 +203,7 @@ struct SD_simulationLog_
 {
   int *states; //!<
   int *handlers; //!<
+  bool hasVariables; //!<
   FILE *log; //!<
 };
 
@@ -223,6 +224,14 @@ SD_SimulationLog (char *name);
  */
 void
 SD_setSimulationLogVariables (SD_simulationLog log, int states, int events);
+
+/**
+ *
+ * @param log
+ * @param orig
+ */
+void
+SD_copySimulationLogVariables (SD_simulationLog log, SD_simulationLog orig);
 
 /**
  *

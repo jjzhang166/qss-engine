@@ -68,11 +68,4 @@ PAR_cleanLPTask (int lp);
 int
 PAR_initLPTasks (int lp);
 
-/**
- *
- * @param
- */
-void
-PAR_statistics (QSS_simulator simulator);
-
 #endif /* QSS_PARALLEL_H_ */

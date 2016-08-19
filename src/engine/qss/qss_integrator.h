@@ -115,6 +115,13 @@ QSS_PAR_printParallelLog (QSS_simulator simulator, int code);
  * @param simulator
  */
 void
+QSS_PAR_statistics (QSS_simulator simulator);
+
+/**
+ *
+ * @param simulator
+ */
+void
 QSS_PAR_allocRootSimulatorData (QSS_simulator simulator);
 
 /**

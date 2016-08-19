@@ -127,7 +127,6 @@ QSS_LP_copyStructure (QSS_LP_data data, QSS_LP_data p)
   int inEvents = data->inEvents;
   int nLPS = data->nLPSCount;
   int lps = data->lpsCount;
-  int dscInf = data->dscInf;
   if (QSS_hardCopyStruct)
     {
       p->nLPS = (int *) malloc ((nLPS + 1) * sizeof(int));
@@ -508,7 +507,10 @@ QSS_Data (int states, int discretes, int events, int inputs, int algs,
       cleanVector (p->nZS, 0, events);
       cleanVector (p->nHD, 0, events);
       cleanVector (p->nHZ, 0, events);
-      cleanVector (p->nDD, 0, events);
+      if (settings->lps > 0)
+	{
+	  cleanVector (p->nDD, 0, events);
+	}
       p->event = SD_EventData (events);
     }
   else

@@ -271,6 +271,10 @@ QSS_PARC_integrator (QSS_simulator simulator)
 		  {
 		    SD_print (simulationLog, "State Variable: %d", index);
 		  }
+		if (settings->debug & SD_DBG_VarChanges)
+		  {
+		    simulationLog->states[index]++;
+		  }
 #endif
 		synchronize = qMap[index];
 		// Internal trajectory change.
@@ -378,7 +382,8 @@ QSS_PARC_integrator (QSS_simulator simulator)
 	      gvt = QSS_PAR_GVT (simulator);
 	      maxAdvanceTime = gvt + QSS_dtValue (dt);
 	    }
-	  QSS_PAR_synchronize (simulator, synchronize, QSS_PARC_externalEvent, QSS_PARC_internalEvent);
+	  QSS_PAR_synchronize (simulator, synchronize, QSS_PARC_externalEvent,
+			       QSS_PARC_internalEvent);
 	}
       else
 	{
@@ -446,7 +451,7 @@ QSS_PARC_integrate (SIM_simulator simulate)
   QSS_simulator simulator = (QSS_simulator) simulate->state->sim;
   QSS_PAR_printParallelLog (
       simulator, PAR_createLPTasks (QSS_PARC_runSimulation, simulator));
-  PAR_statistics (simulator);
+  QSS_PAR_statistics (simulator);
 }
 
 #else

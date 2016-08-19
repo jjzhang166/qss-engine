@@ -1,7 +1,42 @@
 2016-08-19  Joaquin  <joaquin.f.fernandez@gmail.com>
 
+	* mmo/util/graph.cpp: Finished mmoc graph interface.
+	* mmo/util/graph.h: Finished mmoc graph interface.
+	* engine/common/data.c
+	(SD_SimulationLog): Added hard copy flag to delete variables arryas in parallel
+	simulations.
+	(SD_freeSimulationLog): Added hard copy check to delete varaibles arrays.
+	(SD_setSimulationLogVariables): Set the hard copy flag.
+	(SD_copySimulationLogVariables): Soft copy of the variables arrays.
+	* engine/common/data.h: Added hard copy flag to simulation log data structure.
+	* engine/qss/qss_data.c
+	(QSS_LP_copyStructure): Removed unused varaible.
+	* engine/qss/qss_integrator.c
+	(QSS_PAR_printSimulationLog): Removed commented code.
+	(QSS_PAR_statistics): Moved this function from the parallel interface, added a
+	call to generate weights function-
+	(QSS_PAR_allocRootSimulatorData): Alloc state and handler log arrays in the root
+	simulator.
+	(QSS_PAR_copySimulator): Soft copy the simulator log arrays from the root and
+	create the simulation log.
+	(QSS_PAR_initializeSimulation): Removed the creation of the simulation log from
+	here.
+	* engine/qss/qss_integrator.h: Added QSS_PAR_statistics.
+	* engine/qss/qss_parallel.c
+	(PAR_statistics): Removed from interface.
+	* engine/qss/qss_parallel.h: Removed PAR_statistics from interface.
+	* engine/qss/qss_parc_integrator.c
+	(QSS_PARC_integrator): Added variable changes debug flags.
+	* mmo/generator/files.cpp
+	(graph): Correct for loop range in weights generation.
+	* mmo/generator/solver.cpp
+	(QSS_):
+	* mmo/generator/solver.h
+	(MMO_Solver_):
+	* mmo/util/symbol_table.h:
 	* engine/qss/qss_parh_integrator.c
 	(QSS_PARH_internalEvent): Removed unused variables.
+	(QSS_PARH_integrator): Added variable changes debug flags.
 	* libs/Makefile: Added graph profile objects.
 	* mmo/Makefile: Added graph profile objects.
 

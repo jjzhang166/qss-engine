@@ -679,6 +679,10 @@ QSS_PARH_integrator (QSS_simulator simulator)
 		  {
 		    SD_print (simulationLog, "State Variable: %d", index);
 		  }
+		if (settings->debug & SD_DBG_VarChanges)
+		  {
+		    simulationLog->states[index]++;
+		  }
 #endif
 		synchronize = qMap[index];
 		// Internal trajectory change.
@@ -797,6 +801,12 @@ QSS_PARH_integrator (QSS_simulator simulator)
 		    if (event[index].direction == 0
 			|| event[index].direction == s)
 		      {
+#ifdef DEBUG
+		      if (settings->debug & SD_DBG_VarChanges)
+			{
+			  simulationLog->handlers[index]++;
+			}
+#endif
 			nRHSSt = event[index].nRHSSt;
 			for (i = 0; i < nRHSSt; i++)
 			  {
@@ -1123,7 +1133,7 @@ QSS_PARH_integrate (SIM_simulator simulate)
   QSS_simulator simulator = (QSS_simulator) simulate->state->sim;
   QSS_PAR_printParallelLog (
       simulator, PAR_createLPTasks (QSS_PARH_runSimulation, simulator));
-  PAR_statistics (simulator);
+  QSS_PAR_statistics (simulator);
 }
 #else
 void

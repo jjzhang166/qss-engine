@@ -400,7 +400,7 @@ MMO_Files_::graph ()
   int nvtxs = _model->evs () + _model->states ();
   int w;
   g.connectGraphs();
-  int i, size = 0, states = _model->states ();
+  int i, size = 0;
   for (i = 0; i < nvtxs; i++)
     {
       size += g.graphNodeEdges(i);
@@ -409,7 +409,7 @@ MMO_Files_::graph ()
   int hedges = g.hyperGraphEdges();
   map<int,set<int> > graph = g.graph();
   map<int,set<int> > hGraph = g.hyperGraph();
-  for (i = 0; i < states; i++)
+  for (i = 0; i < nvtxs; i++)
     {
       set<int>::iterator it;
       for (it = graph[i].begin (); it != graph[i].end (); it++)

@@ -129,75 +129,6 @@ PAR_cleanLPTask (int lp)
   return (PAR_NO_ERROR);
 }
 
-void
-PAR_statistics (QSS_simulator simulator)
-{
-  unsigned long totalSimSteps = 0, totalLPSteps = 0, maxSteps = simulator->stats->steps[0], minSteps = maxSteps,
-      totalExternalEvents = 0, totalMessages = 0;
-  double maxSimulationTime = 0, totalTime = 0, memoryIncrement = 0, pm = 0, sm = 0;
-  double avgTime = 0, avgSteps = 0, avgStepCost = 0;
-  int i, lps = simulator->data->params->lps;
-  for (i = 0; i < lps; i++)
-    {
-      int simSteps = simulator->stats->steps[i]
-	  + simulator->stats->simulationExternalEvents[i];
-      if (maxSimulationTime < simulator->stats->simulationTimes[i])
-	{
-	  maxSimulationTime = simulator->stats->simulationTimes[i];
-	}
-      if (maxSteps < simSteps)
-	{
-	  maxSteps = simSteps;
-	}
-      if (minSteps > simSteps)
-	{
-	  minSteps = simSteps;
-	}
-      totalLPSteps += simulator->stats->steps[i];
-      totalSimSteps += simSteps;
-      totalTime += simulator->stats->simulationTimes[i];
-      totalMessages += simulator->stats->simulationMessages[i];
-      totalExternalEvents += simulator->stats->simulationExternalEvents[i];
-    }
-  avgSteps = totalSimSteps / lps;
-  avgTime = totalTime / lps;
-  avgStepCost = avgTime / avgSteps;
-  pm = (simulator->stats->memory / 1024) / 1024;
-  sm = (simulator->stats->sequentialMemory / 1024) / 1024;
-  memoryIncrement = (pm - sm) / sm;
-  SD_print (simulator->simulationLog, "Parallel Simulation Statistics:");
-  SD_print (simulator->simulationLog, "");
-  SD_print (simulator->simulationLog, "Simulation time: %g ms",
-	    maxSimulationTime);
-  SD_print (simulator->simulationLog, "Total Simulation transitions: %lu",
-	    totalLPSteps);
-  SD_print (simulator->simulationLog, "Initialization time: %g ms",
-	    simulator->stats->initTime);
-  SD_print (simulator->simulationLog, "Partitioning time: %g ms",
-	    simulator->stats->partitioningTime);
-  SD_print (simulator->simulationLog, "Initialize LPS time: %g ms",
-	    simulator->stats->initializeLPS);
-  SD_print (simulator->simulationLog, "Messages sent: %lu", totalMessages);
-  SD_print (simulator->simulationLog, "External events: %lu",
-	    totalExternalEvents);
-  SD_print (
-      simulator->simulationLog,
-      "Processed messages: %.2f %%",
-      (totalMessages > 0) ?
-	  ((double) totalExternalEvents / (double) totalMessages) * 100 : 0);
-  SD_print (simulator->simulationLog, "Estimated load (time): %g",
-	    maxSimulationTime / avgTime);
-  SD_print (simulator->simulationLog, "Estimated max load (steps): %g",
-	    maxSteps / avgSteps);
-  SD_print (simulator->simulationLog, "Estimated min load (steps): %g",
-	    minSteps / avgSteps);
-  SD_print (simulator->simulationLog, "Average step cost: %g", avgStepCost);
-  SD_print (simulator->simulationLog, "Allocated memory: %.2lf MBytes", pm);
-  SD_print (simulator->simulationLog,
-	    "Additional memory allocated: %.2lf MBytes (%.2f %%)",
-	    memoryIncrement * sm, (memoryIncrement / (double) lps) * 100);
-  SD_print (simulator->simulationLog, "");
-}
 #else
 #include <qss/qss_parallel.h>
 int
@@ -216,10 +147,5 @@ int
 PAR_initLPTasks (int lp)
 {
   return (0);
-}
-void
-PAR_statistics (QSS_simulator simulator)
-{
-  return;
 }
 #endif
