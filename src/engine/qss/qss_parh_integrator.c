@@ -237,26 +237,21 @@ void
 QSS_PARH_internalEvent (QSS_simulator simulator)
 {
   int i, j;
-  double elapsed, Dt = 0, Dq = 0, Dx = 0;
+  double elapsed, Dt = 0;
   QSS_data qssData = simulator->data;
   QSS_time qssTime = simulator->time;
   FRW_framework frw = simulator->frw;
   OUT_output log = simulator->log;
-  SC_scheduler scheduler = simulator->scheduler;
   QSS_model qssModel = simulator->model;
   QA_quantizer quantizer = simulator->quantizer;
   SD_output output = simulator->output;
   QSS_LP_data lp = qssData->lp;
-  unsigned long totalSteps = 0;
   unsigned long reinits = 0;
-  unsigned long messages = 0;
   double t = qssTime->time;
   int index = qssTime->minIndex;
   int cf0, infCf0;
   QSS_StepType type = qssTime->type;
   int nSD, nOutputs = lp->outputs;
-  QSS_dt dt = simulator->dt;
-  const double ft = qssData->ft;
   const int xOrder = qssData->order;
   const int qOrder = xOrder - 1;
   const int coeffs = xOrder + 1;
@@ -269,19 +264,9 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
   double *x = qssData->x;
   double *q = qssData->q;
   int **SD = qssData->SD;
-  int *TD = qssData->TD;
   const QSS_idxMap qMap = lp->qMap;
-  int id = simulator->id;
-  IBX_inbox inbox = simulator->inbox;
-  MLB_mailbox mailbox = simulator->mailbox;
-  double nextMessageTime;
-  int synchronize = NOT_ASSIGNED;
-#ifdef DEBUG
-  SD_simulationSettings settings = simulator->settings;
-  SD_simulationLog simulationLog = simulator->simulationLog;
-#endif
   double *a = qssData->alg;
-  int nSZ, nLHSSt, nRHSSt, nHD, nHZ, nLHSDsc;
+  int nSZ, nLHSSt, nRHSSt, nHD, nHZ;
   SD_eventData event = qssData->event;
   double *d = qssData->d;
   double *tmp1 = qssData->tmp1;
@@ -297,19 +282,16 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
     {
     case ST_State:
       {
-	synchronize = qMap[index];
 	// Internal trajectory change.
 	Dt = t - tx[index];
 	elapsed = x[cf0];
 	integrateState (cf0, Dt, x, xOrder);
-	Dx = x[cf0] - elapsed;
 	tx[index] = t;
 	lqu[index] = dQRel[index] * fabs (x[cf0]);
 	if (lqu[index] < dQMin[index])
 	  {
 	    lqu[index] = dQMin[index];
 	  }
-	Dq = lqu[index];
 	QA_updateQuantizedState (quantizer, index, q, x, lqu);
 	tq[index] = t;
 	QA_nextTime (quantizer, index, t, nextStateTime, x, lqu);
@@ -360,7 +342,6 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
 	double zc[4];
 	int s;
 	int nZS = qssData->nZS[index];
-	synchronize = eMap[index];
 	for (i = 0; i < nZS; i++)
 	  {
 	    j = ZS[index][i];
@@ -424,7 +405,6 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
 		  {
 		    qssModel->events->handlerNeg (index, tmp1, d, a, t);
 		  }
-		nLHSDsc = event[index].nLHSDsc;
 		for (i = 0; i < nLHSSt; i++)
 		  {
 		    j = event[index].LHSSt[i];
@@ -534,12 +514,7 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
 	    else
 	      {
 		event[index].zcSign = sign (zc[0]);
-		synchronize = NOT_ASSIGNED;
 	      }
-	  }
-	else
-	  {
-	    synchronize = NOT_ASSIGNED;
 	  }
 	if (et == t)
 	  {

@@ -179,14 +179,8 @@ public:
    *
    * @return
    */
-  virtual  map<int,set<int> >
+  virtual  Graph
   graph () = 0;
-  /**
-   *
-   * @return
-   */
-  virtual  map<int,set<int> >
-  hyperGraph () = 0;
 };
 
 /**
@@ -290,10 +284,8 @@ public:
    */
   void
   print (SOL_Function f);
-  map<int,set<int> >
+  Graph
   graph();
-  map<int,set<int> >
-  hyperGraph ();
 private:
   bool
   _controlIntersections (list<Intersection> lis, Intersection is);
@@ -337,8 +329,7 @@ private:
   MMO_Model _model;
   SolverCommon _common;
   string _name;
-  map<int,set<int> > _graph;
-  map<int,set<int> > _hyperGraph;
+  Graph _graph;
   bool _parallel;
 };
 /**
@@ -458,10 +449,8 @@ public:
    */
   void
   print (SOL_Function f);
-  map<int,set<int> >
+  Graph
   graph ();
-  map<int,set<int> >
-  hyperGraph ();
 private:
   string
   _prototype (SOL_Function f);
@@ -512,7 +501,7 @@ public:
    * @param modelVectorDeps
    */
   SolverCommon_ (MMO_Model model, MMO_CompileFlags flags, MMO_Writer writer,
-		 MMO_DependenciesTable modelVectorDeps, map <int,set<int> > *graph = NULL, map <int,set<int> > *hyperGraph = NULL);
+		 MMO_DependenciesTable modelVectorDeps, Graph *graph = NULL);
   /**
    *
    */
@@ -715,8 +704,7 @@ private:
   MMO_DependenciesTable _modelVectorDeps;
   string _name;
   map<Index, double> _weights;
-  map <int,set<int> > &_graph;
-  map <int,set<int> > &_hyperGraph;
+  Graph &_graph;
   bool _generateGraph;
   bool _parallel;
 };
@@ -730,7 +718,7 @@ private:
  */
 SolverCommon
 newSolverCommon (MMO_Model model, MMO_CompileFlags flags, MMO_Writer writer,
-		 MMO_DependenciesTable modelVectorDeps = NULL, map<int,set<int> > *graph = NULL, map<int,set<int> > *hypergraph = NULL);
+		 MMO_DependenciesTable modelVectorDeps = NULL, Graph *graph = NULL);
 /**
  *
  * @param m

@@ -17,7 +17,10 @@ GENERATORDIR:= $(SRCDIR)/generator
 IRDIR 		:= $(SRCDIR)/ir
 PARSERDIR 	:= $(SRCDIR)/parser
 UTILDIR 	:= $(SRCDIR)/util
-BUILDDIR    := $(SRCDIR)/obj
+OBJDIR      := obj
+BUILDDIR    := $(SRCDIR)/$(OBJDIR)
+COMMONDIR   := ../
+GRAPHDIR    := $(COMMONDIR)/graph
 SRCEXT      := cpp
 DEPEXT      := d
 OBJEXT      := o
@@ -48,6 +51,8 @@ PARSERSRC = $(PARSERDIR)/mocc_parser.cpp $(PARSERDIR)/mocc_scanner.cpp $(PARSERD
 
 UTILSRC = $(UTILDIR)/util.cpp $(UTILDIR)/ast_util.cpp $(UTILDIR)/type.cpp $(UTILDIR)/symbol_table.cpp $(UTILDIR)/error.cpp $(UTILDIR)/debug.cpp $(UTILDIR)/compile_flags.cpp $(UTILDIR)/derivative.cpp $(UTILDIR)/ginac_interface.cpp $(UTILDIR)/index.cpp $(UTILDIR)/dependencies.cpp  $(UTILDIR)/graph.cpp 
 
+GRAPHSRC = $(GRAPHDIR)/graph_profile.c
+
 # Objects
 ASTOBJ=$(addprefix $(BUILDDIR)/ast_, $(notdir $(ASTSRC:.cpp=.o)))
 
@@ -59,6 +64,8 @@ PARSEROBJ=$(addprefix $(BUILDDIR)/par_, $(notdir $(PARSERSRC:.cpp=.o)))
 
 UTILOBJ=$(addprefix $(BUILDDIR)/util_, $(notdir $(UTILSRC:.cpp=.o)))
 
+GRAPHOBJ=$(addprefix $(GRAPHDIR)/$(OBJDIR)/grp_, $(notdir $(GRAPHSRC:.c=.o)))
+
 # Make dependencies
 DEPS = $(ASTOBJ:.o=.d) $(GENERATOROBJ:.o=.d) $(IROBJ:.o=.d) $(PARSEROBJ:.o=.d) $(UTILOBJ:.o=.d)
 
@@ -68,7 +75,6 @@ usr/lib/libginac.a:
 	echo "Building deterministic GiNaC" 
 	cd 3rdParty ; tar xvjf ginac-1.7.0.tar.bz2
 	cd 3rdParty/ginac-1.7.0; ./configure --prefix=`pwd`/../../usr --disable-shared; make -j 4 install
-  
   
 $(BUILDDIR)/ast_%.o : $(ASTDIR)/%.cpp $(ASTDIR)/%.h $(PARSERDIR)/mocc_parser.cpp $(PARSERDIR)/mocc_scanner.cpp
 	$(CXX) $(INC) $(CXXFLAGS) -MM -MT $@ -MF $(patsubst %.o,%.d,$@) $<
@@ -86,12 +92,12 @@ $(BUILDDIR)/par_%.o : $(PARSERDIR)/%.cpp
 	$(CXX) $(INC) $(CXXFLAGS) -MM -MT $@ -MF $(patsubst %.o,%.d,$@) $<
 	$(CXX) $(INC) -c $< -o $@ $(CXXFLAGS) 
 
-$(BUILDDIR)/util_%.o : $(UTILDIR)/%.cpp
+$(BUILDDIR)/util_%.o : $(UTILDIR)/%.cpp 
 	$(CXX) $(INC) $(CXXFLAGS) -MM -MT $@ -MF $(patsubst %.o,%.d,$@) $<
 	$(CXX) $(INC) -c $< -o $@ $(CXXFLAGS) 
 
-mmoc: $(ASTOBJ) $(GENERATOROBJ) $(IROBJ) $(PARSEROBJ) $(UTILOBJ)
-	$(CXX) $(INC) $(CXXFLAGS) main.cpp -o $(TARGET) $(ASTOBJ) $(GENERATOROBJ) $(IROBJ) $(PARSEROBJ) $(UTILOBJ) $(LIB) 
+mmoc: $(ASTOBJ) $(GENERATOROBJ) $(IROBJ) $(PARSEROBJ) $(UTILOBJ) $(GRAPHOBJ) 
+	$(CXX) $(INC) $(CXXFLAGS) main.cpp -o $(TARGET) $(ASTOBJ) $(GENERATOROBJ) $(IROBJ) $(PARSEROBJ) $(UTILOBJ) $(GRAPHOBJ) $(LIB) 
 
 ifneq ($(OS),win32)
 $(PARSERDIR)/mocc_parser.cpp: parser/mocc.y
@@ -110,6 +116,9 @@ $(IROBJ): | $(BUILDDIR)
 $(PARSEROBJ): | $(BUILDDIR)
 
 $(UTILOBJ): | $(BUILDDIR)
+
+$(GRAPHOBJ): 
+	@cd $(GRAPHDIR) && $(MAKE) 
 
 $(BUILDDIR):
 	@mkdir -p $(BUILDDIR)

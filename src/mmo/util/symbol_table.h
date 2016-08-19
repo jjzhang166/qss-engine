@@ -189,7 +189,7 @@ template<class Key, class Value, class Compare = std::less<Key> >
     ;
   protected:
     std::map<Key, Value, Compare> _st;
-    int _currentKey;
+    unsigned int _currentKey;
   };
 
 /**

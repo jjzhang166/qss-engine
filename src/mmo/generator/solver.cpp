@@ -37,7 +37,7 @@
 
 QSS_::QSS_ (MMO_Model model, MMO_CompileFlags flags, MMO_Writer writer) :
     _flags (flags), _writer (writer), _modelVars (), _modelDepsVars (), _zcVars (), _handlerPosVars (), _handlerNegVars (), _outputVars (), _initializeVars (), _freeVars (), _model (
-	model), _name (model->name ()), _graph (), _hyperGraph (), _parallel (
+	model), _name (model->name ()), _graph (model->states(), model->evs()), _parallel (
 	flags->graph ())
 {
   _modelDeps = newMMO_DependenciesTable ();
@@ -54,8 +54,7 @@ QSS_::QSS_ (MMO_Model model, MMO_CompileFlags flags, MMO_Writer writer) :
     {
       _name = _flags->outputFileName ();
     }
-  _common = newSolverCommon (model, flags, writer, _modelVectorDeps, &_graph,
-			     &_hyperGraph);
+  _common = newSolverCommon (model, flags, writer, _modelVectorDeps, &_graph);
   _model->varTable ()->setPolyCoeffs (_model->annotation ()->polyCoeffs ());
 }
 
@@ -557,14 +556,14 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
     }
 }
 
-map<int, set<int> >
+Graph
 QSS_::graph ()
 {
   if (_common->hasGraph ())
     {
       return (_graph);
     }
-  return (map<int, set<int> > ());
+  return (Graph (0,0));
 }
 
 void
@@ -2282,10 +2281,10 @@ Classic_::_print (SOL_Function f, map<string, string> localVars,
   _writer->print (&buffer);
 }
 
-map<int, set<int> >
+Graph
 Classic_::graph ()
 {
-  return (map<int, set<int> > ());
+  return (Graph (0,0));
 }
 
 void
@@ -2605,11 +2604,9 @@ deleteMMO_ParallelEngine (MMO_ParallelEngine m)
 SolverCommon_::SolverCommon_ (MMO_Model model, MMO_CompileFlags flags,
 			      MMO_Writer writer,
 			      MMO_DependenciesTable modelVectorDeps,
-			      map<int, set<int> > *graph,
-			      map<int, set<int> > *hyperGraph) :
+			      Graph *graph) :
     _model (model), _flags (flags), _writer (writer), _modelVectorDeps (
-	modelVectorDeps), _name (model->name ()), _weights (), _graph (*graph), _hyperGraph (
-	*hyperGraph), _generateGraph (true), _parallel (flags->graph ())
+	modelVectorDeps), _name (model->name ()), _weights (), _graph (*graph), _generateGraph (true), _parallel (flags->graph ())
 {
   if (_flags->hasOutputFile ())
     {
@@ -2677,14 +2674,10 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
 	  if (!((type == NOD_SD || type == NOD_HZ)
 	      && row.mappedValue (i) == col.mappedValue (i)))
 	    {
-	      _graph[row.mappedValue (i) + rowOffset].insert (
-		  col.mappedValue (i) + colOffset);
-	      _graph[col.mappedValue (i) + colOffset].insert (
-		  row.mappedValue (i) + rowOffset);
-	      _hyperGraph[row.mappedValue (i) + rowOffset].insert (
-		  col.mappedValue (i) + colOffset);
-	      _hyperGraph[row.mappedValue (i) + rowOffset].insert (
-		  row.mappedValue (i) + rowOffset);
+	      _graph.addGraphEdge(row.mappedValue (i) + rowOffset,col.mappedValue (i) + colOffset);
+	      _graph.addGraphEdge(col.mappedValue (i) + colOffset,row.mappedValue (i) + rowOffset);
+	      _graph.addHyperGraphEdge(row.mappedValue (i) + rowOffset,col.mappedValue (i) + colOffset);
+	      _graph.addHyperGraphEdge(row.mappedValue (i) + rowOffset,row.mappedValue (i) + rowOffset);
 	    }
 	}
     }
@@ -2693,14 +2686,10 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
       if (!((type == NOD_SD || type == NOD_HZ)
 	  && row.mappedValue () == col.mappedValue ()))
 	{
-	  _graph[row.mappedValue () + rowOffset].insert (
-	      col.mappedValue () + colOffset);
-	  _graph[col.mappedValue () + colOffset].insert (
-	      row.mappedValue () + rowOffset);
-	  _hyperGraph[row.mappedValue () + rowOffset].insert (
-	      col.mappedValue () + colOffset);
-	  _hyperGraph[row.mappedValue () + rowOffset].insert (
-	      row.mappedValue () + rowOffset);
+	  _graph.addGraphEdge(row.mappedValue () + rowOffset, col.mappedValue () + colOffset);
+	  _graph.addGraphEdge(col.mappedValue () + colOffset, row.mappedValue () + rowOffset);
+	  _graph.addHyperGraphEdge(row.mappedValue () + rowOffset, col.mappedValue () + colOffset);
+	  _graph.addHyperGraphEdge(row.mappedValue () + rowOffset,row.mappedValue () + rowOffset );
 	}
     }
 }
@@ -3579,10 +3568,9 @@ SolverCommon_::vectorDependencies (Index index, Dependencies deps,
 SolverCommon
 newSolverCommon (MMO_Model model, MMO_CompileFlags flags, MMO_Writer writer,
 		 MMO_DependenciesTable modelVectorDeps,
-		 map<int, set<int> > *graph, map<int, set<int> > *hyperGraph)
+		 Graph *graph)
 {
-  return (new SolverCommon_ (model, flags, writer, modelVectorDeps, graph,
-			     hyperGraph));
+  return (new SolverCommon_ (model, flags, writer, modelVectorDeps, graph));
 }
 
 void
@@ -3630,18 +3618,3 @@ SolverCommon_::settings ()
   _writer->print ("}\n");
 }
 
-map<int, set<int> >
-QSS_::hyperGraph ()
-{
-  if (_common->hasGraph ())
-    {
-      return (_hyperGraph);
-    }
-  return (map<int, set<int> > ());
-}
-
-map<int, set<int> >
-Classic_::hyperGraph ()
-{
-  return (map<int, set<int> > ());
-}

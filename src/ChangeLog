@@ -1,3 +1,10 @@
+2016-08-19  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/qss_parh_integrator.c
+	(QSS_PARH_internalEvent): Removed unused variables.
+	* libs/Makefile: Added graph profile objects.
+	* mmo/Makefile: Added graph profile objects.
+
 2016-08-18  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* mmo/Makefile: Added graph class source files,

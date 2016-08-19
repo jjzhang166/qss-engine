@@ -23,10 +23,12 @@ CLASSICDIR 	:= $(ENGINEDIR)/classic
 DASSLDIR 	:= $(ENGINEDIR)/classic/dassl
 DOPRIDIR 	:= $(ENGINEDIR)/classic/dopri5
 COMMONDIR 	:= $(ENGINEDIR)/common
-BUILDDIR    := $(ENGINEDIR)/obj/release
+OBJDIR      := obj
+BUILDDIR    := $(ENGINEDIR)/$(OBJDIR)/release
 ifeq ($(DEBUG),True)
-BUILDDIR    := $(ENGINEDIR)/obj/debug
+BUILDDIR    := $(ENGINEDIR)/$(OBJDIR)/debug
 endif
+GRAPHDIR    := $(SRCDIR)/graph
 TARGETDIR   := ./
 SRCEXT      := c
 DEPEXT      := d
@@ -59,6 +61,8 @@ DASSLSRC = $(DASSLDIR)/daux.f $(DASSLDIR)/ddaskr.f $(DASSLDIR)/dlinpk.f
 
 DOPRISRC = $(DOPRIDIR)/dopri5.c 
 
+GRAPHSRC = $(GRAPHDIR)/graph_profile.c
+
 # Objects
 COMMONOBJ=$(addprefix $(BUILDDIR)/, $(notdir $(COMMONSRC:.c=.o)))
 
@@ -71,6 +75,8 @@ CLASSICOBJ=$(addprefix $(BUILDDIR)/, $(notdir $(CLASSICSRC:.c=.o)))
 DASSLOBJ=$(addprefix $(BUILDDIR)/, $(notdir $(DASSLSRC:.f=.o)))
 
 DOPRIOBJ=$(addprefix $(BUILDDIR)/, $(notdir $(DOPRISRC:.c=.o)))
+
+GRAPHOBJ=$(addprefix $(GRAPHDIR)/$(OBJDIR)/grp_, $(notdir $(GRAPHSRC:.c=.o)))
 
 # Make dependencies
 DEPS = $(COMMONOBJ:.o=.d) $(SEQOBJ:.o=.d) $(PAROBJ:.o=.d) $(CLASSICOBJ:.o=.d)
@@ -103,8 +109,8 @@ $(BUILDDIR)/%.o : $(DASSLDIR)/%.f
 $(LIBTIMESTEP): $(DASSLOBJ) $(DOPRIOBJ)
 	@ar rvs $(@) $(DASSLOBJ) $(DOPRIOBJ)
 
-$(TARGET): $(COMMONOBJ) $(SEQOBJ) $(PAROBJ) $(CLASSICOBJ) 
-	@ar rsc $@ $(COMMONOBJ) $(SEQOBJ) $(PAROBJ) $(CLASSICOBJ) 
+$(TARGET): $(COMMONOBJ) $(SEQOBJ) $(PAROBJ) $(CLASSICOBJ) $(GRAPHOBJ)
+	@ar rsc $@ $(COMMONOBJ) $(SEQOBJ) $(PAROBJ) $(CLASSICOBJ) $(GRAPHOBJ)
 
 $(COMMONOBJ): | $(BUILDDIR)
 
@@ -113,6 +119,9 @@ $(SEQOBJ): | $(BUILDDIR)
 $(PAROBJ): | $(BUILDDIR)
 
 $(CLASSICOBJ): | $(BUILDDIR)
+
+$(GRAPHOBJ): 
+	@cd $(GRAPHDIR) && $(MAKE)
 
 $(BUILDDIR):
 	@mkdir -p $(BUILDDIR)
