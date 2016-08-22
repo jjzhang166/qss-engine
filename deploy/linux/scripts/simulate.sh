@@ -72,8 +72,15 @@ if [ "$PARALLEL" == "true" ]; then
 	fi
 fi
 
-set -e
 $MMOC_BUILD/$FILE/$FILE
+
+if [ "$PARALLEL" == "true" ]; then
+  for p in $(ls *-discrete-*.dat | cut -d '-' -f 1 | sort -u); do
+    FNAME=$(printf '%q' "$p")
+	sort -k1n ${FNAME}-discrete-*.dat > ${p}.dat
+  done
+  rm *-discrete-*.dat
+fi
 
 rm -rf hkmetis
 rm -rf *.part
