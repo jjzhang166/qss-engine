@@ -186,23 +186,22 @@ LP_processPartition (QSS_simulator simulator, PRT_partition partition)
 	    }
 	}
       int nDD = simulatorData->nDD[handlerNumber];
-           for (j = 0; j < nDD; j++)
-     	{
-     	  int k = simulatorData->DD[handlerNumber][j];
-     	  int hndPartitionNumber = partition->values[k];
-     	  LP_partitionInfo hndPartition = pi[hndPartitionNumber];
-     	  if (hndPartitionNumber != partitionNumber
-     	      && hndPartition->handlerInput[hndPartition->lastHandler]
-     		  != handlerNumber)
-     	    {
-     	      hndPartition->lastHandler =
-     		  hndPartition->handlerInputs;
-     	      hndPartition->handlerInput[hndPartition->handlerInputs++] =
-     		  handlerNumber;
-     	      partition->outputs[i][partition->nOutputs[i]++] =
-     		  hndPartitionNumber;
-     	    }
-     	}
+      for (j = 0; j < nDD; j++)
+	{
+	  int k = simulatorData->DD[handlerNumber][j];
+	  int hndPartitionNumber = partition->values[k];
+	  LP_partitionInfo hndPartition = pi[hndPartitionNumber];
+	  if (hndPartitionNumber != partitionNumber
+	      && hndPartition->handlerInput[hndPartition->lastHandler]
+		  != handlerNumber)
+	    {
+	      hndPartition->lastHandler = hndPartition->handlerInputs;
+	      hndPartition->handlerInput[hndPartition->handlerInputs++] =
+		  handlerNumber;
+	      partition->outputs[i][partition->nOutputs[i]++] =
+		  hndPartitionNumber;
+	    }
+	}
       int nHZ = simulatorData->nHZ[handlerNumber];
       for (j = 0; j < nHZ; j++)
 	{
@@ -220,14 +219,15 @@ LP_processPartition (QSS_simulator simulator, PRT_partition partition)
 		  zcPartitionNumber;
 	      int t;
 	      int inZS = simulatorData->nZS[handlerNumber];
-	      for (t =0;t < inZS; t++)
+	      for (t = 0; t < inZS; t++)
 		{
-		   int ik = simulatorData->ZS[handlerNumber][t];
-		   if (partition->asgDscInf[partitionNumber][ik] == NOT_ASSIGNED)
-		     {
-		       partition->dscInf[partitionNumber][partition->nDsc[partitionNumber]++] = ik;
-		       partition->asgDscInf[partitionNumber][ik] = ik;
-		     }
+		  int ik = simulatorData->ZS[handlerNumber][t];
+		  if (partition->asgDscInf[partitionNumber][ik] == NOT_ASSIGNED)
+		    {
+		      partition->dscInf[partitionNumber][partition->nDsc[partitionNumber]++] =
+			  ik;
+		      partition->asgDscInf[partitionNumber][ik] = ik;
+		    }
 		}
 	    }
 	}
@@ -353,6 +353,23 @@ LP_processPartition (QSS_simulator simulator, PRT_partition partition)
 	  LP_partitionInfo derivativePartition = pi[partition->values[k]];
 	  derivativePartition->output[derivativePartition->outputs++] = i;
 	}
+      int nOD = simulator->output->nOD[i];
+      for (j = 0; j < nOD; j++)
+	{
+	  int k = simulator->output->OD[i][j];
+	  int g, nDH = simulator->data->nDH[k];
+	  for (g = 0; g < nDH; g++)
+	    {
+	      int h = simulator->data->DH[k][g];
+	      LP_partitionInfo handlerPartition = pi[partition->values[h]];
+	      if (!LP_find (handlerPartition->output, handlerPartition->outputs,
+			    i))
+		{
+		  handlerPartition->output[handlerPartition->outputs++] = i;
+		}
+
+	    }
+	}
     }
 #ifdef DEBUG
   for (i = 0; i < lps; i++)
@@ -444,9 +461,9 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
 	}
     }
   if (autonomous == TRUE && simulatorData->params->dtSynch == SD_DT_Adaptive)
-      {
-        simulatorData->params->dtSynch = SD_DT_AdaptiveDiscrete;
-      }
+    {
+      simulatorData->params->dtSynch = SD_DT_AdaptiveDiscrete;
+    }
   cleanVector (outputMap, 0, lps);
   int handlerNumber = 0;
   for (i = beginHandlers; i < endHandlers; i++)
@@ -483,8 +500,10 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
     {
       for (i = 0; i < lps; i++)
 	{
-	  simulator->lps->lp[i]->dscMap = (QSS_idxMap) checkedMalloc(simulatorData->states*sizeof(int));
-	  cleanVector (simulator->lps->lp[i]->dscMap, NOT_ASSIGNED, simulatorData->states);
+	  simulator->lps->lp[i]->dscMap = (QSS_idxMap) checkedMalloc (
+	      simulatorData->states * sizeof(int));
+	  cleanVector (simulator->lps->lp[i]->dscMap, NOT_ASSIGNED,
+		       simulatorData->states);
 	  int nDscInf = partition->nDsc[i];
 	  simulator->lps->lp[i]->dscInf = nDscInf;
 	  int t;
@@ -517,25 +536,26 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
 	}
       for (j = 0; j < partitionOutput; j++)
 	{
+	  printf("LP %d salida %d %d \n",i,p->output[j],j);
 	  lp->oMap[p->output[j]] = j;
 	}
     }
   for (i = 0; i < lps; i++)
-      {
-        QSS_LP_data lp = simulator->lps->lp[i];
-        if (autonomous == TRUE)
-          {
-            lp->initDt = INF;
-          }
-        else if (simulatorData->params->dtSynch == SD_DT_Fixed)
-          {
-            lp->initDt = simulatorData->params->dt;
-          }
-        else
-          {
-            lp->initDt = 0;
-          }
-      }
+    {
+      QSS_LP_data lp = simulator->lps->lp[i];
+      if (autonomous == TRUE)
+	{
+	  lp->initDt = INF;
+	}
+      else if (simulatorData->params->dtSynch == SD_DT_Fixed)
+	{
+	  lp->initDt = simulatorData->params->dt;
+	}
+      else
+	{
+	  lp->initDt = 0;
+	}
+    }
   free (outputMap);
   free (nLPSMap);
   LP_freePartitionInfoArray (pi, lps);

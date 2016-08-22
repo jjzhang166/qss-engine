@@ -55,12 +55,17 @@ F_init (LG_log log, QSS_data simData, SD_output simOutput)
       j = 0;
       for (i = 0; i < outputs; i++)
 	{
+	  char ext[128] = "";
 #ifdef QSS_PARALLEL
 	  if (lp->oMap[i] != NOT_ASSIGNED)
 	    {
+	      if (simOutput->nOD[i] != 0)
+		{
+
+		  sprintf(ext,"%d-discrete",1);
+		}
 #endif
-	  strcpy (log->state->fileName, simOutput->variable[i].name);
-	  strcat (log->state->fileName, ".dat");
+	  sprintf(log->state->fileName,"%s%s.dat",simOutput->variable[i].name,ext);
 	  log->state->files[j] = fopen (log->state->fileName, "w+");
 	  if (simOutput->commInterval == CI_Dense
 	      || simOutput->commInterval == CI_Sampled)

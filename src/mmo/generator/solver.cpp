@@ -1807,7 +1807,7 @@ QSS_::_init ()
     {
       _writer->print (WR_ALLOC_STATE_HANDLERS);
       _writer->print (WR_ALLOC_LD_DD);
-   //   _writer->print (WR_ALLOC_LD_DH);
+      _writer->print (WR_ALLOC_LD_DH);
     }
   _writer->print (WR_ALLOC_EVENT_LHSST);
   _writer->print (WR_ALLOC_EVENT_RHSST);
@@ -1859,7 +1859,7 @@ QSS_::_init ()
       _common->printSection ("states", _model->states (),
 			     WR_INIT_STATE_HANDLERS);
       _common->printSection ("events", _model->evs (), WR_INIT_LD_DD);
-  //    _common->printSection ("discretes", _model->discretes(), WR_INIT_LD_DH);
+      _common->printSection ("discretes", _model->discretes(), WR_INIT_LD_DH);
     }
   _common->printSection ("events", _model->evs (), WR_INIT_EVENT_LHSST);
   _common->printSection ("events", _model->evs (), WR_INIT_EVENT_RHSST);

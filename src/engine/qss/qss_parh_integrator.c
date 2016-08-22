@@ -328,12 +328,9 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
 		FRW_nextEventTime (frw, qssModel, qssData, qssTime, j);
 	      }
 	  }
-	if (nOutputs)
+	if (nOutputs && output->nSO[index])
 	  {
-	    if (output->nSO[index])
-	      {
 		OUT_write (log, qssData, qssTime, output);
-	      }
 	  }
       }
       break;
@@ -505,10 +502,7 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
 		  }
 		if (nOutputs)
 		  {
-		    if (event[index].nLHSSt)
-		      {
-			OUT_write (log, qssData, qssTime, output);
-		      }
+		    OUT_write (log, qssData, qssTime, output);
 		  }
 	      }
 	    else
@@ -755,12 +749,9 @@ QSS_PARH_integrator (QSS_simulator simulator)
 			FRW_nextEventTime (frw, qssModel, qssData, qssTime, j);
 		      }
 		  }
-		if (nOutputs)
+		if (nOutputs && output->nSO[index])
 		  {
-		    if (output->nSO[index])
-		      {
 			OUT_write (log, qssData, qssTime, output);
-		      }
 		  }
 	      }
 	      break;
@@ -985,10 +976,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
 			  }
 			if (nOutputs)
 			  {
-			    if (event[index].nLHSSt)
-			      {
 				OUT_write (log, qssData, qssTime, output);
-			      }
 			  }
 			if (synchronize >= 0)
 			  {
