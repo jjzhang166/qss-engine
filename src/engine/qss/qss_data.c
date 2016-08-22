@@ -61,7 +61,7 @@ QSS_freeReinit (QSS_reinit reinit)
 QSS_LP_data
 QSS_LP_Data (int states, int events, int inputs, int outputs, int inStates,
 	     int inEvents, int totalStates, int totalEvents, int totalOutputs,
-	     int nLPS, int lps)
+	     int nLPS, int lps, int id)
 {
   QSS_LP_data p = checkedMalloc (sizeof(*p));
   p->nLPSCount = nLPS;
@@ -78,6 +78,7 @@ QSS_LP_Data (int states, int events, int inputs, int outputs, int inStates,
   p->inEvents = inEvents;
   p->initDt = 0;
   p->dscInf = 0;
+  p->id = id;
   p->nLPS = (int *) malloc ((nLPS + 1) * sizeof(int));
   p->lps = (int *) malloc (lps * sizeof(int));
   p->qMap = (QSS_idxMap) malloc (totalStates * sizeof(int));
@@ -253,6 +254,7 @@ QSS_LP_copyData (QSS_LP_data data)
   p->nLPSCount = data->nLPSCount;
   p->lpsCount = data->lpsCount;
   p->dscInf = data->dscInf;
+  p->id = data->id;
   QSS_LP_copyStructure (data, p);
   return (p);
 }

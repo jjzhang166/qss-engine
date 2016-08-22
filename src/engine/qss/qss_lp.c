@@ -420,7 +420,7 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
       simulator->lps->lp[i] = QSS_LP_Data (pi[i]->states, pi[i]->handlers, 0,
 					   pi[i]->outputs, pi[i]->stateInputs,
 					   pi[i]->handlerInputs, states, events,
-					   outputs, pi[i]->nLPS, pi[i]->lps);
+					   outputs, pi[i]->nLPS, pi[i]->lps, i);
     }
 
   for (i = beginStates; i < endStates; i++)
@@ -536,7 +536,6 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
 	}
       for (j = 0; j < partitionOutput; j++)
 	{
-	  printf("LP %d salida %d %d \n",i,p->output[j],j);
 	  lp->oMap[p->output[j]] = j;
 	}
     }

@@ -62,7 +62,7 @@ F_init (LG_log log, QSS_data simData, SD_output simOutput)
 	      if (simOutput->nOD[i] != 0)
 		{
 
-		  sprintf(ext,"%d-discrete",1);
+		  sprintf(ext,"-discrete-%d",simData->lp->id);
 		}
 #endif
 	  sprintf(log->state->fileName,"%s%s.dat",simOutput->variable[i].name,ext);

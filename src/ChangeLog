@@ -1,3 +1,19 @@
+2016-08-22  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/qss_sampled.c
+	(SAM_write): Enabled discrete outputs for parallel simulations.
+	* engine/qss/qss_data.c
+	(QSS_LP_Data): Added ID in LP structure.
+	(QSS_LP_copyData): Added ID in LP structure.
+	* engine/qss/qss_data.h: Added ID in LP structure.
+	* engine/qss/qss_file.c
+	(F_init): Modified init routine for parallel simulations, generate one log file
+	per LP.
+	* engine/qss/qss_lp.c
+	(LP_initializeDataStructs): Added id to LPs.
+	* mmo/generator/solver.cpp :
+	(QSS_::initializeMatrices): Fixed bug in graph generation.
+
 2016-08-19  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* mmo/util/graph.cpp: Finished mmoc graph interface.

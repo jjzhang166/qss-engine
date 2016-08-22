@@ -1204,7 +1204,6 @@ QSS_::initializeMatrices ()
 	      _writer->write (&buffer, WR_INIT_LD_DH);
 	      buffer << indent << "modelData->nDH[" << idxStr << "]++;";
 	      _writer->write (&buffer, WR_ALLOC_LD_DH);
-	      _common->graphInsert (*idx, index, _model->states (), NOD_SZ);
 	    }
 	}
       _eventVectorDependencies (index, deps, WR_ALLOC_EVENT_DSC,

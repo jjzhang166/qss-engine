@@ -232,6 +232,7 @@ struct QSS_LP_data_
   int totalEvents; //!<
   int totalOutputs; //!<
   int dscInf;
+  int id;
   double initDt; //!< dt initial value.
   bool externalEvent; //!<
   QSS_idxMap nLPS; //!<
@@ -253,7 +254,7 @@ struct QSS_LP_data_
 QSS_LP_data
 QSS_LP_Data (int states, int events, int inputs, int outputs, int inStates,
 	     int inEvents, int totalStates, int totalEvents, int totalOutputs,
-	     int nLPS, int lps);
+	     int nLPS, int lps, int id);
 
 /**
  *
