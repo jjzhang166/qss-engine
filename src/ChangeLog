@@ -1,3 +1,24 @@
+2016-08-23  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/common/integrator.c
+	(INT_Integrator): Merge continuous and hybrid integrators.
+	* engine/qss/qss_integrator.c:
+	(QSS_PAR_initializeSimulation): Create an instance of simultaneous steps
+	interface for each LP.
+	(QSS_PAR_sendSimultaneousMessages): Simultaneous steps send messages routine.
+	(QSS_PAR_synchronize): Process simulataneous steps and send the corresponding
+	messages if needed.
+	(QSS_PAR_runSimulation): Removed this procedure, now it's done by the
+	qss_par_integrator.
+	* engine/qss/qss_integrator.h: Removed this procedure, now it's done by the
+	qss_par_integrator.
+	* engine/qss/qss_simulator.c
+	(QSS_Simulator): Added simultaneous steps interface to the simulator.
+	(QSS_freeSimulator): Added simultaneous steps interface to the simulator.
+	* engine/qss/qss_simulator.h: Added simultaneous steps interface to the
+	simulator.
+	* libs/Makefile: Added new files.
+
 2016-08-22  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* engine/qss/qss_sampled.c

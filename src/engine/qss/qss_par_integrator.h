@@ -17,8 +17,8 @@
 
 ******************************************************************************/
 
-#ifndef QSS_PARC_INTEGRATOR_H_
-#define QSS_PARC_INTEGRATOR_H_
+#ifndef QSS_PAR_INTEGRATOR_H_
+#define QSS_PAR_INTEGRATOR_H_
 
 #include "../common/simulator.h"
 
@@ -27,6 +27,6 @@
  * @param simulate
  */
 void
-QSS_PARC_integrate (SIM_simulator simulate);
+QSS_PAR_integrate (SIM_simulator simulate);
 
-#endif /* QSS_PARC_INTEGRATOR_H_ */
+#endif /* QSS_PAR_INTEGRATOR_H_ */

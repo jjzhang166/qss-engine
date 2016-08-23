@@ -208,12 +208,4 @@ QSS_PAR_passiveLP (QSS_simulator simulator, QSS_externaEventHandler externalEven
 void
 QSS_PAR_waitFor(QSS_simulator simulator);
 
-/**
- *
- * @param sim
- * @param integrator
- */
-void
-QSS_PAR_runSimulation (void *sim, QSS_parallelIntegrator integrator);
-
 #endif /* QSS_INTEGRATOR_H_ */

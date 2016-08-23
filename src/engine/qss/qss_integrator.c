@@ -37,6 +37,7 @@
 #include "qss_partition.h"
 #include "qss_quantizer.h"
 #include "qss_scheduler.h"
+#include "qss_sim_steps.h"
 
 void
 QSS_SEQ_saveLog (QSS_simulator simulator)
@@ -115,7 +116,8 @@ QSS_generateWeights (QSS_simulator simulator)
 		  if (inf < states)
 		    {
 		      if (inf == eiter + 1
-			  && !QSS_influenced (simulator->data, eiter, inf, ST_State))
+			  && !QSS_influenced (simulator->data, eiter, inf,
+					      ST_State))
 			{
 			  val = 1;
 			}
@@ -318,8 +320,10 @@ QSS_SEQ_printSimulationLog (QSS_simulator simulator)
   SD_print (simulator->simulationLog, "Save data time: %g ms",
 	    simulator->stats->saveTime);
   SD_print (
-      simulator->simulationLog, "Total time: %g ms",
-      simulator->stats->initTime + simulator->stats->simulationTime + simulator->stats->saveTime);
+      simulator->simulationLog,
+      "Total time: %g ms",
+      simulator->stats->initTime + simulator->stats->simulationTime
+	  + simulator->stats->saveTime);
 #ifdef DEBUG
   QSS_generateWeights (simulator);
 #endif
@@ -466,14 +470,14 @@ void
 QSS_SEQ_initialize (SIM_simulator simulate)
 {
   QSS_simulator simulator = (QSS_simulator) simulate->state->sim;
-  QSS_CMD_init(simulator);
+  QSS_CMD_init (simulator);
   getTime (simulator->stats->iTime);
   int i, j, k, s, forUL;
   double e, zc[4];
   simulator->frw = FRW_Framework (simulator->data);
   double t = simulator->time->time;
   char logFile[128];
-  sprintf(logFile, "%s",simulator->output->name);
+  sprintf (logFile, "%s", simulator->output->name);
   simulator->simulationLog = SD_SimulationLog (logFile);
   // Local mappings.
   QSS_data qssData = simulator->data;
@@ -696,38 +700,42 @@ QSS_PAR_printSimulationLog (QSS_simulator simulator)
       "Simulation past events: %lu (%.2f %%)",
       simulator->stats->pastEvents,
       (simulator->stats->extTrans > 0) ?
-	  ((double) simulator->stats->pastEvents / (double) simulator->stats->extTrans)
-	      * 100 :
+	  ((double) simulator->stats->pastEvents
+	      / (double) simulator->stats->extTrans) * 100 :
 	  0);
   SD_print (simulator->simulationLog, "Dt sum: %g",
-  	    simulator->dt->state->avgDt);
+	    simulator->dt->state->avgDt);
   SD_print (simulator->simulationLog, "Dt changes: %d",
-  	    simulator->dt->state->dtChanges);
+	    simulator->dt->state->dtChanges);
   if (simulator->dt->state->dtChanges > 0)
-      {
-    SD_print (simulator->simulationLog, "Average dt: %g",
-    	    simulator->dt->state->avgDt/simulator->dt->state->dtChanges);
-      }
-    else
-      {
-    SD_print (simulator->simulationLog, "Average dt: 0");
-      }
+    {
+      SD_print (simulator->simulationLog, "Average dt: %g",
+		simulator->dt->state->avgDt / simulator->dt->state->dtChanges);
+    }
+  else
+    {
+      SD_print (simulator->simulationLog, "Average dt: 0");
+    }
   SD_print (simulator->simulationLog, "Initialization time: %g ms",
 	    simulator->stats->initTime);
   SD_print (simulator->simulationLog, "Save data time: %g ms",
 	    simulator->stats->saveTime);
   SD_print (
-      simulator->simulationLog, "Total time: %g ms",
-      simulator->stats->initTime + simulator->stats->simulationTime + simulator->stats->saveTime);
+      simulator->simulationLog,
+      "Total time: %g ms",
+      simulator->stats->initTime + simulator->stats->simulationTime
+	  + simulator->stats->saveTime);
   SD_print (simulator->simulationLog, "");
 }
 
 void
 QSS_PAR_statistics (QSS_simulator simulator)
 {
-  unsigned long totalSimSteps = 0, totalLPSteps = 0, maxSteps = simulator->stats->steps[0], minSteps = maxSteps,
-      totalExternalEvents = 0, totalMessages = 0;
-  double maxSimulationTime = 0, totalTime = 0, memoryIncrement = 0, pm = 0, sm = 0;
+  unsigned long totalSimSteps = 0, totalLPSteps = 0, maxSteps =
+      simulator->stats->steps[0], minSteps = maxSteps, totalExternalEvents = 0,
+      totalMessages = 0;
+  double maxSimulationTime = 0, totalTime = 0, memoryIncrement = 0, pm = 0, sm =
+      0;
   double avgTime = 0, avgSteps = 0, avgStepCost = 0;
   int i, lps = simulator->data->params->lps;
   for (i = 0; i < lps; i++)
@@ -795,7 +803,6 @@ QSS_PAR_statistics (QSS_simulator simulator)
   SD_print (simulator->simulationLog, "");
 }
 
-
 void
 QSS_PAR_printParallelLog (QSS_simulator simulator, int code)
 {
@@ -826,7 +833,7 @@ QSS_PAR_allocRootSimulatorData (QSS_simulator simulator)
   simulator->lpTime = (double*) checkedMalloc (lps * sizeof(double));
   simulator->lpDtMin = (double*) checkedMalloc (lps * sizeof(double));
   simulator->mailbox = MLB_Mailbox (lps);
-  SD_setStatisticsLPS(simulator->stats, lps);
+  SD_setStatisticsLPS (simulator->stats, lps);
   simulator->lps = QSS_LP_DataArray (lps);
   simulator->simulationLog = SD_SimulationLog (simulator->output->name);
 #ifdef DEBUG
@@ -835,7 +842,7 @@ QSS_PAR_allocRootSimulatorData (QSS_simulator simulator)
       SD_setSimulationLogVariables(simulator->simulationLog, data->states, data->events);
     }
 #endif
-  simulator->dtSynch = QSS_DtSynch(lps);
+  simulator->dtSynch = QSS_DtSynch (lps);
 }
 
 QSS_simulator
@@ -847,8 +854,8 @@ QSS_PAR_copySimulator (QSS_simulatorInstance *instance)
   QSS_data data = root->data;
   char logFile[128];
   char logId[128];
-  sprintf (logId, "%s-%d", root->output->name,id);
-  sprintf(logFile, "%s", root->output->name);
+  sprintf (logId, "%s-%d", root->output->name, id);
+  sprintf (logFile, "%s", root->output->name);
   p->data = QSS_copyData (data);
   p->data->lp = QSS_LP_copyData (root->lps->lp[id]);
   QSS_LP_clean (root->lps->lp[id]);
@@ -856,12 +863,13 @@ QSS_PAR_copySimulator (QSS_simulatorInstance *instance)
   p->model = root->model;
   p->output = root->output;
   p->settings = root->settings;
-  p->stats = SD_Statistics();
+  p->stats = SD_Statistics ();
   p->simulationLog = SD_SimulationLog (logId);
-  SD_copySimulationLogVariables(p->simulationLog, root->simulationLog);
+  SD_copySimulationLogVariables (p->simulationLog, root->simulationLog);
   p->time = QSS_Time (data->states, data->events, data->inputs, data->it,
 		      root->time->scheduler, root->time->weights);
-  p->dt = QSS_Dt (root->lpDtMin, id, root->dtSynch, logFile, root->settings->debug, p->data, p->time);
+  p->dt = QSS_Dt (root->lpDtMin, id, root->dtSynch, logFile,
+		  root->settings->debug, p->data, p->time);
   p->dtSynch = root->dtSynch;
   p->id = id;
   p->inbox = IBX_Inbox (data->states, 0);
@@ -916,7 +924,7 @@ QSS_PAR_controlPassiveLPS (QSS_simulator simulator)
   for (i = 0; i < lps; i++)
     {
       if (simulator->lpTime[i]
-	  != simulator->data->ft && simulator->lpTime[i] != INF)
+	  != simulator->data->ft&& simulator->lpTime[i] != INF)
 	{
 	  return;
 	}
@@ -936,7 +944,8 @@ QSS_PAR_initializeSimulation (QSS_simulator simulator)
   getTime (simulator->stats->iTime);
   int i, j, k, s, forUL;
   double e, zc[4];
-  QSS_CMD_init(simulator);
+  QSS_CMD_init (simulator);
+  simulator->simSteps = QSS_SimSteps ();
   simulator->frw = FRW_Framework (simulator->data);
   double t = simulator->time->time;
   // Local mappings.
@@ -1243,15 +1252,16 @@ QSS_PAR_logMemory (QSS_simulator simulator)
     default:
       break;
     }
-  simulator->stats->sequentialMemory = simulator->stats->memory + treeT + solverM;
+  simulator->stats->sequentialMemory = simulator->stats->memory + treeT
+      + solverM;
   int lps = simulator->data->params->lps;
   int sMessage = sizeof(IBX_message);
   for (i = 0; i < lps; i++)
     {
       QSS_LP_data lp = simulator->lps->lp[i];
-      simulator->stats->memory += (lp->totalStates + lp->totalEvents + lp->totalOutputs
-	  + lp->states + lp->events + lp->inputs + lp->outputs + lp->inStates
-	  + lp->inEvents) * sInt;
+      simulator->stats->memory += (lp->totalStates + lp->totalEvents
+	  + lp->totalOutputs + lp->states + lp->events + lp->inputs
+	  + lp->outputs + lp->inStates + lp->inEvents) * sInt;
       simulator->stats->memory += (4 * states * xOrder + states + algs * xOrder
 	  + discretes) * sDouble;
       int treeH = 0, treeS = 0, treeE = 0, treeI = 0, max = states, treeT = 0;
@@ -1295,8 +1305,8 @@ QSS_PAR_logMemory (QSS_simulator simulator)
 	}
       simulator->stats->memory += treeT + solverM;
     }
-  simulator->stats->memory += (states * sDouble + 64 * sMessage + 10000 * sMessage + 8)
-      * lps;
+  simulator->stats->memory += (states * sDouble + 64 * sMessage
+      + 10000 * sMessage + 8) * lps;
 }
 
 void
@@ -1320,8 +1330,31 @@ QSS_PAR_initialize (SIM_simulator simulate)
 }
 
 void
+QSS_PAR_sendSimultaneousMessages (QSS_simulator simulator,
+				  QSS_externaEventHandler externalEvent,
+				  QSS_internalEventHandler internalEvent)
+{
+  QSS_simSteps simSteps = simulator->simSteps;
+  QSS_stepInfo it = QSS_SIS_first (simSteps);
+  QSS_LP_data lp = simulator->data->lp;
+  MLB_mailbox mailbox = simulator->mailbox;
+  int lpsBegin = lp->nLPS[it.synch];
+  int lpsEnd = lp->nLPS[it.synch + 1];
+  int i;
+  for (i = lpsBegin; i < lpsEnd; i++)
+    {
+      MLB_send (mailbox, lp->lps[i], simulator->id, it.msg);
+    }
+  simulator->time->minIndex = it.msg.index;
+  simulator->time->type = it.msg.type;
+  simulator->time->time = it.msg.time;
+  QSS_PAR_synchronize (simulator, it.synch, externalEvent, internalEvent);
+}
+
+void
 QSS_PAR_synchronize (QSS_simulator simulator, int synchronize,
-		     QSS_externaEventHandler externalEvent, QSS_internalEventHandler internalEvent)
+		     QSS_externaEventHandler externalEvent,
+		     QSS_internalEventHandler internalEvent)
 {
   QSS_data qssData = simulator->data;
   QSS_time qssTime = simulator->time;
@@ -1352,11 +1385,11 @@ QSS_PAR_synchronize (QSS_simulator simulator, int synchronize,
 	{
 	  externalEvent (simulator, IBX_nextMessage (inbox));
 	  SC_update (scheduler, qssData, qssTime);
-/*	  while (qssTime->time == stepTime)
+	  while (qssTime->time == stepTime)
 	    {
 	      internalEvent (simulator);
 	      SC_update (scheduler, qssData, qssTime);
-	    }*/
+	    }
 	  qssTime->time = stepTime;
 	  qssTime->minValue = stepTime;
 	  qssTime->minIndex = index;
@@ -1365,6 +1398,15 @@ QSS_PAR_synchronize (QSS_simulator simulator, int synchronize,
       QSS_dtCheck (dt);
     }
   IBX_reset (ack);
+  if (!QSS_SIS_empty (simulator->simSteps))
+    {
+      QSS_PAR_sendSimultaneousMessages (simulator, externalEvent,
+					internalEvent);
+      if (QSS_SIS_empty (simulator->simSteps))
+	{
+	  QSS_SIS_reset (simulator->simSteps);
+	}
+    }
 }
 
 double
@@ -1386,12 +1428,12 @@ QSS_PAR_passiveInitialization (QSS_simulator simulator,
       PAR_cleanLPTask (id);
       return (t);
     }
-  return (QSS_PAR_passiveLP(simulator,externalEvent));
+  return (QSS_PAR_passiveLP (simulator, externalEvent));
 }
 
 double
 QSS_PAR_passiveLP (QSS_simulator simulator,
-			       QSS_externaEventHandler externalEvent)
+		   QSS_externaEventHandler externalEvent)
 {
   QSS_data qssData = simulator->data;
   QSS_time qssTime = simulator->time;
@@ -1405,7 +1447,7 @@ QSS_PAR_passiveLP (QSS_simulator simulator,
   double nextMessageTime;
   const double ft = qssData->ft;
   double gvt = QSS_PAR_GVT (simulator);
-  while (t == ft &&  gvt < ft)
+  while (t == ft && gvt < ft)
     {
       IBX_checkInbox (inbox);
       nextMessageTime = IBX_nextMessageTime (inbox);
@@ -1444,7 +1486,7 @@ QSS_PAR_passiveLP (QSS_simulator simulator,
 }
 
 void
-QSS_PAR_waitFor(QSS_simulator simulator)
+QSS_PAR_waitFor (QSS_simulator simulator)
 {
   QSS_dtFinish (simulator->dt);
   pthread_mutex_t *m = &(simulator->dtSynch->activeMutex);
@@ -1463,25 +1505,6 @@ QSS_PAR_waitFor(QSS_simulator simulator)
       QSS_dtCheck (simulator->dt);
     }
 }
-
-void
-QSS_PAR_runSimulation (void *sim, QSS_parallelIntegrator integrator)
-{
-  QSS_simulatorInstance *instance = (QSS_simulatorInstance*) sim;
-  QSS_simulator root = instance->root;
-  int id = instance->id;
-  QSS_simulator simulator = QSS_PAR_copySimulator (instance);
-  QSS_PAR_initializeSimulation (simulator);
-  integrator (simulator);
-  root->stats->simulationTimes[id] = simulator->stats->simulationTime
-      + simulator->stats->initTime;
-  root->stats->simulationMessages[id] = simulator->stats->messages;
-  root->stats->simulationExternalEvents[id] = simulator->stats->extTrans;
-  root->stats->steps[id] = simulator->stats->totalSteps;
-  QSS_freeSimulator (simulator);
-  return;
-}
-
 
 #else
 void
@@ -1558,13 +1581,8 @@ QSS_PAR_synchronize (QSS_simulator simulator, int synchronize, QSS_externaEventH
 
 void
 QSS_PAR_waitFor(QSS_simulator simulator)
-{
+  {
 
-}
+  }
 
-void
-QSS_PAR_runSimulation (void *sim, QSS_parallelIntegrator integrator)
-{
-  return;
-}
 #endif

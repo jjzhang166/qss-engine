@@ -25,10 +25,8 @@
 #include "../classic/classic_dopri_integrator.h"
 #include "../classic/classic_integrator.h"
 #include "../qss/qss_integrator.h"
-#include "../qss/qss_parc_integrator.h"
-#include "../qss/qss_parh_integrator.h"
+#include "../qss/qss_par_integrator.h"
 #include "../qss/qss_seq_integrator.h"
-//#include "../qss/qss_seqh_integrator.h"
 #include "data.h"
 #include "utils.h"
 
@@ -53,26 +51,12 @@ INT_Integrator (SIM_simulator simulator)
       break;
     default:
       {
-	if (simulator->state->settings->hybrid == TRUE
-	    && simulator->state->settings->parallel == TRUE)
+	if (simulator->state->settings->parallel == TRUE)
 	  {
 	    p->ops->initiliaze = QSS_PAR_initialize;
-	    p->ops->integrate = QSS_PARH_integrate;
+	    p->ops->integrate = QSS_PAR_integrate;
 	  }
-	else if (simulator->state->settings->hybrid == TRUE
-	    && simulator->state->settings->parallel == FALSE)
-	  {
-	    p->ops->initiliaze = QSS_SEQ_initialize;
-	    p->ops->integrate = QSS_SEQ_integrate;
-	  }
-	else if (simulator->state->settings->hybrid == FALSE
-	    && simulator->state->settings->parallel == TRUE)
-	  {
-	    p->ops->initiliaze = QSS_PAR_initialize;
-	    p->ops->integrate = QSS_PARC_integrate;
-	  }
-	else if (simulator->state->settings->hybrid == FALSE
-	    && simulator->state->settings->parallel == FALSE)
+	else
 	  {
 	    p->ops->initiliaze = QSS_SEQ_initialize;
 	    p->ops->integrate = QSS_SEQ_integrate;

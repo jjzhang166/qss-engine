@@ -29,6 +29,7 @@
 #include "qss_output.h"
 #include "qss_quantizer.h"
 #include "qss_scheduler.h"
+#include "qss_sim_steps.h"
 
 /**
  *
@@ -60,6 +61,7 @@ struct QSS_simulator_
   IBX_inbox ack; //!<
   QSS_LP_dataArray lps; //!<
   SD_statistics stats; //!<
+  QSS_simSteps simSteps; //!<
 };
 
 /**

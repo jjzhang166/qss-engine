@@ -192,7 +192,7 @@ SAM_write (OUT_output output, QSS_data simData, QSS_time simTime,
 	      if (lp->oMap[j] != NOT_ASSIGNED)
 		{
 		  variable = lp->oMap[j];
-		  ST_PAR_writeOutvar (output, simData, simTime, simOutput, j, variable);
+		  SAM_PAR_writeOutvar (output, simData, simTime, simOutput, j, variable);
 #else
 	      SAM_writeOutvar (output, simData, simTime, simOutput, j,
 			       variable);

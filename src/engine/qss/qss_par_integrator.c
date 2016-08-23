@@ -17,7 +17,7 @@
 
  ******************************************************************************/
 
-#include <qss/qss_parh_integrator.h>
+#include "qss_par_integrator.h"
 
 #include "../common/simulator.h"
 #include "../common/utils.h"
@@ -35,17 +35,18 @@
 #include <time.h>
 #include <stdint.h>
 
-#include <common/data.h>
-#include <qss/qss_data.h>
-#include <qss/qss_integrator.h>
-#include <qss/qss_simulator.h>
-#include <qss/qss_model.h>
-#include <qss/qss_partition.h>
-#include <qss/qss_parallel.h>
-#include <qss/qss_lp.h>
+#include "../common/data.h"
+#include "qss_data.h"
+#include "qss_integrator.h"
+#include "qss_simulator.h"
+#include "qss_model.h"
+#include "qss_partition.h"
+#include "qss_parallel.h"
+#include "qss_lp.h"
+#include "qss_sim_steps.h"
 
 void
-QSS_PARH_externalEvent (QSS_simulator simulator, IBX_message message)
+QSS_PAR_externalEvent (QSS_simulator simulator, IBX_message message)
 {
   int i, j;
   double elapsed;
@@ -130,13 +131,16 @@ QSS_PARH_externalEvent (QSS_simulator simulator, IBX_message message)
 	      QA_recomputeNextTime (quantizer, j, t, nextStateTime, x, lqu, q);
 	    }
 	}
-      nSZ = qssData->nSZ[index];
-      for (i = 0; i < nSZ; i++)
+      if (qssData->events > 0)
 	{
-	  j = SZ[index][i];
-	  if (eMap[j] != NOT_ASSIGNED)
+	  nSZ = qssData->nSZ[index];
+	  for (i = 0; i < nSZ; i++)
 	    {
-	      FRW_nextEventTime (frw, qssModel, qssData, qssTime, j);
+	      j = SZ[index][i];
+	      if (eMap[j] != NOT_ASSIGNED)
+		{
+		  FRW_nextEventTime (frw, qssModel, qssData, qssTime, j);
+		}
 	    }
 	}
       break;
@@ -234,7 +238,7 @@ QSS_PARH_externalEvent (QSS_simulator simulator, IBX_message message)
 }
 
 void
-QSS_PARH_internalEvent (QSS_simulator simulator)
+QSS_PAR_internalEvent (QSS_simulator simulator)
 {
   int i, j;
   double elapsed, Dt = 0;
@@ -275,6 +279,7 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
   int **HD = qssData->HD;
   int **HZ = qssData->HZ;
   const QSS_idxMap eMap = lp->eMap;
+  int synchronize;
   index = qssTime->minIndex;
   type = qssTime->type;
   cf0 = index * coeffs;
@@ -283,6 +288,7 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
     case ST_State:
       {
 	// Internal trajectory change.
+	synchronize = qMap[index];
 	Dt = t - tx[index];
 	elapsed = x[cf0];
 	integrateState (cf0, Dt, x, xOrder);
@@ -294,6 +300,20 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
 	  }
 	QA_updateQuantizedState (quantizer, index, q, x, lqu);
 	tq[index] = t;
+	if (synchronize >= 0)
+	  {
+	    IBX_message msg;
+	    msg.from = simulator->id;
+	    msg.type = type;
+	    msg.time = t;
+	    msg.index = index;
+	    msg.sendAck = TRUE;
+	    for (i = 0; i <= qOrder; i++)
+	      {
+		msg.value[i] = q[cf0 + i];
+	      }
+	    QSS_SIS_add (simulator->simSteps, msg, synchronize);
+	  }
 	QA_nextTime (quantizer, index, t, nextStateTime, x, lqu);
 	// Derivative change.
 	int inf = 0;
@@ -319,18 +339,21 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
 	    QA_recomputeNextTimes (quantizer, nSD, qssData->SD[index], t,
 				   nextStateTime, x, lqu, q);
 	  }
-	nSZ = qssData->nSZ[index];
-	for (i = 0; i < nSZ; i++)
+	if (qssData->events > 0)
 	  {
-	    j = qssData->SZ[index][i];
-	    if (eMap[j] != NOT_ASSIGNED)
+	    nSZ = qssData->nSZ[index];
+	    for (i = 0; i < nSZ; i++)
 	      {
-		FRW_nextEventTime (frw, qssModel, qssData, qssTime, j);
+		j = qssData->SZ[index][i];
+		if (eMap[j] != NOT_ASSIGNED)
+		  {
+		    FRW_nextEventTime (frw, qssModel, qssData, qssTime, j);
+		  }
 	      }
 	  }
 	if (nOutputs && output->nSO[index])
 	  {
-		OUT_write (log, qssData, qssTime, output);
+	    OUT_write (log, qssData, qssTime, output);
 	  }
       }
       break;
@@ -339,6 +362,8 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
 	double zc[4];
 	int s;
 	int nZS = qssData->nZS[index];
+	synchronize = eMap[index];
+	IBX_message msg;
 	for (i = 0; i < nZS; i++)
 	  {
 	    j = ZS[index][i];
@@ -402,6 +427,15 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
 		  {
 		    qssModel->events->handlerNeg (index, tmp1, d, a, t);
 		  }
+		int nLHSDsc = event[index].nLHSDsc;
+		if (synchronize >= 0)
+		  {
+		    for (i = 0; i < nLHSDsc; i++)
+		      {
+			j = event[index].LHSDsc[i];
+			msg.value[i] = d[j];
+		      }
+		  }
 		for (i = 0; i < nLHSSt; i++)
 		  {
 		    j = event[index].LHSSt[i];
@@ -417,7 +451,27 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
 			  }
 			QA_updateQuantizedState (quantizer, j, q, x, lqu);
 			tq[j] = t;
+			if (synchronize >= 0)
+			  {
+			    int updIdx;
+			    for (updIdx = 0; updIdx <= qOrder; updIdx++)
+			      {
+				msg.value[nLHSDsc + updIdx + i * coeffs] =
+				    q[infCf0 + updIdx];
+			      }
+			    msg.value[nLHSDsc + xOrder + i * coeffs] = simulator->id;
+			  }
 			reinits++;
+		      }
+		    else
+		      {
+			msg.value[nLHSDsc + i * coeffs] = tmp1[infCf0];
+			int updIdx;
+			for (updIdx = 1; updIdx <= xOrder; updIdx++)
+			  {
+			    msg.value[nLHSDsc + updIdx + i * coeffs] =
+			    NOT_ASSIGNED;
+			  }
 		      }
 		  }
 		qssModel->events->zeroCrossing (index, q, d, a, t, zc);
@@ -504,6 +558,15 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
 		  {
 		    OUT_write (log, qssData, qssTime, output);
 		  }
+		if (synchronize >= 0)
+		  {
+		    msg.from = simulator->id;
+		    msg.type = type;
+		    msg.time = t;
+		    msg.index = index;
+		    msg.sendAck = TRUE;
+		    QSS_SIS_add(simulator->simSteps,msg,synchronize);
+		  }
 	      }
 	    else
 	      {
@@ -527,7 +590,7 @@ QSS_PARH_internalEvent (QSS_simulator simulator)
 }
 
 void
-QSS_PARH_integrator (QSS_simulator simulator)
+QSS_PAR_integrator (QSS_simulator simulator)
 {
   int code = PAR_initLPTasks (simulator->id);
   if (code != PAR_NO_ERROR)
@@ -588,7 +651,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
   int **HD = qssData->HD;
   int **HZ = qssData->HZ;
   const QSS_idxMap eMap = lp->eMap;
-  t = QSS_PAR_passiveInitialization (simulator, QSS_PARH_externalEvent);
+  t = QSS_PAR_passiveInitialization (simulator, QSS_PAR_externalEvent);
   double gvt = QSS_PAR_GVT (simulator);
   double maxAdvanceTime = gvt + QSS_dtValue (dt);
 #ifdef DEBUG
@@ -602,7 +665,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
     {
       if (t == ft)
 	{
-	  t = QSS_PAR_passiveLP (simulator, QSS_PARH_externalEvent);
+	  t = QSS_PAR_passiveLP (simulator, QSS_PAR_externalEvent);
 	}
       else
 	{
@@ -619,7 +682,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
 		      SD_print (simulator->simulationLog, "LP %d waiting, maxAdvanceTime = % .16lf, gvt = %.16lf localTime = %.16lf",id, maxAdvanceTime, gvt, t);
 		    }
 #endif
-		  QSS_PARH_externalEvent (simulator, IBX_nextMessage (inbox));
+		  QSS_PAR_externalEvent (simulator, IBX_nextMessage (inbox));
 		  SC_update (scheduler, qssData, qssTime);
 		  nextMessageTime = IBX_nextMessageTime (inbox);
 		  if (nextMessageTime < qssTime->time)
@@ -650,7 +713,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
 	}
       if (lp->externalEvent)
 	{
-	  QSS_PARH_externalEvent (simulator, IBX_nextMessage (inbox));
+	  QSS_PAR_externalEvent (simulator, IBX_nextMessage (inbox));
 	  synchronize = NOT_ASSIGNED;
 	}
       else
@@ -740,18 +803,22 @@ QSS_PARH_integrator (QSS_simulator simulator)
 		    QA_recomputeNextTimes (quantizer, nSD, qssData->SD[index],
 					   t, nextStateTime, x, lqu, q);
 		  }
-		nSZ = qssData->nSZ[index];
-		for (i = 0; i < nSZ; i++)
+		if (qssData->events > 0)
 		  {
-		    j = qssData->SZ[index][i];
-		    if (eMap[j] != NOT_ASSIGNED)
+		    nSZ = qssData->nSZ[index];
+		    for (i = 0; i < nSZ; i++)
 		      {
-			FRW_nextEventTime (frw, qssModel, qssData, qssTime, j);
+			j = qssData->SZ[index][i];
+			if (eMap[j] != NOT_ASSIGNED)
+			  {
+			    FRW_nextEventTime (frw, qssModel, qssData, qssTime,
+					       j);
+			  }
 		      }
 		  }
 		if (nOutputs && output->nSO[index])
 		  {
-			OUT_write (log, qssData, qssTime, output);
+		    OUT_write (log, qssData, qssTime, output);
 		  }
 	      }
 	      break;
@@ -793,10 +860,10 @@ QSS_PARH_integrator (QSS_simulator simulator)
 			|| event[index].direction == s)
 		      {
 #ifdef DEBUG
-		      if (settings->debug & SD_DBG_VarChanges)
-			{
-			  simulationLog->handlers[index]++;
-			}
+			if (settings->debug & SD_DBG_VarChanges)
+			  {
+			    simulationLog->handlers[index]++;
+			  }
 #endif
 			nRHSSt = event[index].nRHSSt;
 			for (i = 0; i < nRHSSt; i++)
@@ -976,7 +1043,7 @@ QSS_PARH_integrator (QSS_simulator simulator)
 			  }
 			if (nOutputs)
 			  {
-				OUT_write (log, qssData, qssTime, output);
+			    OUT_write (log, qssData, qssTime, output);
 			  }
 			if (synchronize >= 0)
 			  {
@@ -1051,8 +1118,8 @@ QSS_PARH_integrator (QSS_simulator simulator)
 	      gvt = QSS_PAR_GVT (simulator);
 	      maxAdvanceTime = gvt + QSS_dtValue (dt);
 	    }
-	  QSS_PAR_synchronize (simulator, synchronize, QSS_PARH_externalEvent,
-			       QSS_PARH_internalEvent);
+	  QSS_PAR_synchronize (simulator, synchronize, QSS_PAR_externalEvent,
+			       QSS_PAR_internalEvent);
 	}
       else
 	{
@@ -1109,24 +1176,36 @@ QSS_PARH_integrator (QSS_simulator simulator)
 }
 
 void *
-QSS_PARH_runSimulation (void *sim)
+QSS_PAR_runSimulation (void *sim)
 {
-  QSS_PAR_runSimulation (sim, QSS_PARH_integrator);
+  QSS_simulatorInstance *instance = (QSS_simulatorInstance*) sim;
+  QSS_simulator root = instance->root;
+  int id = instance->id;
+  QSS_simulator simulator = QSS_PAR_copySimulator (instance);
+  QSS_PAR_initializeSimulation (simulator);
+  QSS_PAR_integrator (simulator);
+  root->stats->simulationTimes[id] = simulator->stats->simulationTime
+      + simulator->stats->initTime;
+  root->stats->simulationMessages[id] = simulator->stats->messages;
+  root->stats->simulationExternalEvents[id] = simulator->stats->extTrans;
+  root->stats->steps[id] = simulator->stats->totalSteps;
+  QSS_freeSimulator (simulator);
   return (NULL);
 }
 
 void
-QSS_PARH_integrate (SIM_simulator simulate)
+QSS_PAR_integrate (SIM_simulator simulate)
 {
   QSS_simulator simulator = (QSS_simulator) simulate->state->sim;
   QSS_PAR_printParallelLog (
-      simulator, PAR_createLPTasks (QSS_PARH_runSimulation, simulator));
+      simulator, PAR_createLPTasks (QSS_PAR_runSimulation, simulator));
   QSS_PAR_statistics (simulator);
 }
 #else
 void
-QSS_PARH_integrate (SIM_simulator simulate)
+QSS_PAR_integrate (SIM_simulator simulate)
   {
     return;
   }
 #endif
+

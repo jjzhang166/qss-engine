@@ -18,7 +18,9 @@
 #       VERSION: 3.1
 #===================================================================================
 
-for p in $(ls *-discrete-*.dat | cut -d '-' -f 1 | sort -u); do
-  FNAME=$(printf '%q' "$p")
-  sort -k1n ${FNAME}-discrete-*.dat > ${p}.dat
-done
+if test -n "$(find . -maxdepth 1 -name '*-discrete-*.dat' -print -quit)"; then
+	for p in $(ls *-discrete-*.dat | cut -d '-' -f 1 | sort -u); do
+  		FNAME=$(printf '%q' "$p")
+  		sort -k1n ${FNAME}-discrete-*.dat > ${p}.dat
+	done
+fi

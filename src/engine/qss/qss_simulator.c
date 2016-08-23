@@ -71,6 +71,7 @@ QSS_Simulator ()
   p->stats = NULL;
   p->lps = NULL;
   p->dtSynch = NULL;
+  p->simSteps = NULL;
   return (p);
 }
 
@@ -103,6 +104,7 @@ QSS_freeSimulator (QSS_simulator simulator)
 	  FRW_freeFramework (simulator->frw);
 	  QSS_freeDt (simulator->dt);
 	  QSS_cleanData (simulator->data);
+	  QSS_freeSimSteps (simulator->simSteps);
 	}
       SD_freeStatistics (simulator->stats);
     }
