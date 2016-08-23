@@ -27,8 +27,8 @@
 #include "../qss/qss_integrator.h"
 #include "../qss/qss_parc_integrator.h"
 #include "../qss/qss_parh_integrator.h"
-#include "../qss/qss_seqc_integrator.h"
-#include "../qss/qss_seqh_integrator.h"
+#include "../qss/qss_seq_integrator.h"
+//#include "../qss/qss_seqh_integrator.h"
 #include "data.h"
 #include "utils.h"
 
@@ -63,7 +63,7 @@ INT_Integrator (SIM_simulator simulator)
 	    && simulator->state->settings->parallel == FALSE)
 	  {
 	    p->ops->initiliaze = QSS_SEQ_initialize;
-	    p->ops->integrate = QSS_SEQH_integrate;
+	    p->ops->integrate = QSS_SEQ_integrate;
 	  }
 	else if (simulator->state->settings->hybrid == FALSE
 	    && simulator->state->settings->parallel == TRUE)
@@ -75,7 +75,7 @@ INT_Integrator (SIM_simulator simulator)
 	    && simulator->state->settings->parallel == FALSE)
 	  {
 	    p->ops->initiliaze = QSS_SEQ_initialize;
-	    p->ops->integrate = QSS_SEQC_integrate;
+	    p->ops->integrate = QSS_SEQ_integrate;
 	  }
       }
     }
