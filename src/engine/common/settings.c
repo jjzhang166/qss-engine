@@ -187,7 +187,21 @@ SET_Settings (char *fname)
     }
   if (config_lookup_float (cf, "dt", &dres))
     {
-      p->dt = dres;
+      if (dres == 0)
+	{
+	  if (config_lookup_int (cf, "dt", &ires))
+	    {
+	      p->dt = ires;
+	    }
+	  else
+	    {
+	      p->dt = dres;
+	    }
+	}
+      else
+	{
+	  p->dt = dres;
+	}
     }
   if (config_lookup_float (cf, "zchyst", &dres))
     {

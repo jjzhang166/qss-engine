@@ -1,5 +1,7 @@
 2016-08-23  Joaquin  <joaquin.f.fernandez@gmail.com>
 
+	* engine/common/settings.c
+	(SET_Settings): Read integer values for dt parameter in settings file.
 	* engine/qss/qss_lp.c
 	(LP_initializeDataStructs): Implmeneted default simulation strategy for adaptive
 	alforithm and purely discrete comunication-
