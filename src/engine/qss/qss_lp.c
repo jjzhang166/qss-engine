@@ -498,6 +498,7 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
     }
   if (simulatorData->params->dtSynch == SD_DT_AdaptiveDiscrete)
     {
+      bool noComm[MAX_LPS];
       for (i = 0; i < lps; i++)
 	{
 	  simulator->lps->lp[i]->dscMap = (QSS_idxMap) checkedMalloc (
@@ -505,6 +506,11 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
 	  cleanVector (simulator->lps->lp[i]->dscMap, NOT_ASSIGNED,
 		       simulatorData->states);
 	  int nDscInf = partition->nDsc[i];
+	  noComm[i] = FALSE;
+	  if (nDscInf > 0)
+	    {
+	      noComm[i] = TRUE;
+	    }
 	  simulator->lps->lp[i]->dscInf = nDscInf;
 	  int t;
 	  for (t = 0; t < nDscInf; t++)
@@ -512,6 +518,20 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
 	      simulator->lps->lp[i]->dscMap[partition->dscInf[i][t]] = t;
 	    }
 	}
+      for (i = 0; i < lps; i++)
+      	{
+	  if (noComm[i] == TRUE)
+	    {
+	      simulator->lps->lp[i]->dscInf = 1;
+	      int asg = 0;
+	      while (simulator->lps->lp[i]->qMap[asg] == NOT_ASSIGNED)
+		{
+		  asg++;
+		}
+	      simulator->lps->lp[i]->dscMap[0] = asg;
+	      SD_print (simulator->simulationLog, "LP%d: Controlling state variable: %d", i, asg);
+	    }
+      	}
     }
   autonomous = TRUE;
   for (i = 0; i < lps; i++)

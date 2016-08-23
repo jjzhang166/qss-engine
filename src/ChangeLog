@@ -1,5 +1,8 @@
 2016-08-23  Joaquin  <joaquin.f.fernandez@gmail.com>
 
+	* engine/qss/qss_lp.c
+	(LP_initializeDataStructs): Implmeneted default simulation strategy for adaptive
+	alforithm and purely discrete comunication-
 	* engine/common/integrator.c
 	(INT_Integrator): Merge continuous and hybrid integrators.
 	* engine/qss/qss_integrator.c:
