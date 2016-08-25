@@ -3474,13 +3474,17 @@ SolverCommon_::genericDefCondition (Index eqIdx, Index idx, WR_Section section,
       string tmp = Util::getInstance ()->newVarName ("tmp",
 						     _model->varTable ());
       addLocalVar (tmp, variables, "double");
-      buffer << tmp << " = " << idx.printReverse ("i") << ";";
+      addLocalVar ("j", variables);
+      buffer << tmp << " = (double)" << idx.printReverse ("i") << ";";
       _writer->write (&buffer, section);
       buffer << "if((int)" << tmp << " == " << tmp << " && " << tmp << " >= "
 	  << eqIdx.begin () << " && " << tmp << " <= " << eqIdx.end () << ")";
       _writer->write (&buffer, section);
       buffer << "{";
       _writer->write (&buffer, section);
+      buffer << "j = (int) " << tmp << ";";
+      _writer->write (&buffer, section);
+
     }
   else
     {

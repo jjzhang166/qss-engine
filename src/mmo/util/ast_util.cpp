@@ -224,11 +224,11 @@ EqualExp::equalTraverseElement (AST_Expression a, AST_Expression b)
 	return (_compareList (ael, bel));
       }
     case EXPUMINUS:
-          {
-    	AST_Expression_UMinus m = a->getAsUMinus ();
-    	AST_Expression_UMinus m1 = b->getAsUMinus ();
-    	return (equalTraverseElement (m->exp (),m1->exp()));
-          }
+      {
+	AST_Expression_UMinus m = a->getAsUMinus ();
+	AST_Expression_UMinus m1 = b->getAsUMinus ();
+	return (equalTraverseElement (m->exp (), m1->exp ()));
+      }
     default:
       ERROR ("EqualExp::equalTraverseElement:\n"
 	     "Incorrect AST_Expression_Type %s",
@@ -962,7 +962,7 @@ Index
 ExpressionIndex_::index (AST_Expression exp)
 {
   Index idx = foldTraverse (exp);
-  if (idx.factor () != 0 && fabs(idx.factor ()) != 1)
+  if (idx.factor () != 0 && fabs (idx.factor ()) != 1)
     {
       idx.setConstant (idx.operConstant () + idx.low ());
     }
@@ -1000,8 +1000,7 @@ ExpressionIndex_::foldTraverseElement (AST_Expression exp)
 	  {
 	    Error::getInstance ()->add (exp->lineNum (),
 	    EM_IR | EM_VARIABLE_NOT_FOUND,
-					ER_Error,
-					"expression variable %s",
+					ER_Error, "expression variable %s",
 					cr->name ().c_str ());
 	    return (ret);
 	  }
@@ -1071,7 +1070,7 @@ ExpressionIndex_::foldTraverseElementUMinus (AST_Expression exp)
 {
   Index ret (foldTraverse (exp->getAsUMinus ()->exp ()));
   ret.setFactor (-1 * ret.factor ());
-  ret.setConstant (-1 * ret.constant ());
+  ret.setConstant (-1 * ret.operConstant ());
   return (ret);
 }
 
@@ -1105,17 +1104,12 @@ ExpressionIndex_::foldTraverseElement (Index l, Index r, BinOpType bot)
       if (l.factor () != 0)
 	{
 	  ret.setFactor (l.factor () * r.operConstant ());
-	  ret.setConstant (l.operConstant ());
 	}
       else if (r.factor () != 0)
 	{
 	  ret.setFactor (r.factor () * l.operConstant ());
-	  ret.setConstant (r.operConstant ());
 	}
-      else
-	{
-	  ret.setConstant (r.operConstant () * l.operConstant ());
-	}
+      ret.setConstant (r.operConstant () * l.operConstant ());
       break;
     case BINOPDIV:
       if (l.factor () != 0 && r.factor () != 0)
@@ -1139,7 +1133,7 @@ ExpressionIndex_::foldTraverseElement (Index l, Index r, BinOpType bot)
 	  else
 	    {
 	      ret.setFactor (l.factor () / r.operConstant ());
-	      ret.setConstant (l.operConstant ());
+	      ret.setConstant (l.operConstant () / r.operConstant ());
 	    }
 	}
       else
@@ -1155,9 +1149,9 @@ ExpressionIndex_::foldTraverseElement (Index l, Index r, BinOpType bot)
       break;
     case BINOPSUB:
       ret.setFactor (l.factor () - r.factor ());
-      if (ret.factor() < 0)
+      if (ret.factor () < 0)
 	{
-          ret.setConstant (l.operConstant () - r.operConstant ()-1);
+	  ret.setConstant (l.operConstant () - r.operConstant () - 1);
 	}
       else
 	{
@@ -1377,7 +1371,8 @@ GenerateDeps_::foldTraverseElement (AST_Expression exp)
 	  {
 	    Error::getInstance ()->add (exp->lineNum (),
 	    EM_IR | EM_FUNCTION_NOT_FOUND,
-					ER_Error, "Dependencies generation %s", name.c_str ());
+					ER_Error, "Dependencies generation %s",
+					name.c_str ());
 	  }
       }
       break;
@@ -1401,7 +1396,8 @@ GenerateDeps_::foldTraverseElementUMinus (AST_Expression exp)
 }
 
 Dependencies
-GenerateDeps_::foldTraverseElement (Dependencies l, Dependencies r, BinOpType bot)
+GenerateDeps_::foldTraverseElement (Dependencies l, Dependencies r,
+				    BinOpType bot)
 {
   l->join (r);
   return (l);
@@ -1462,6 +1458,17 @@ ExpIndexes_::foldTraverseElement (AST_Expression exp)
 		    if (_modelica && iet.factor () != 0)
 		      {
 			iet.setOffset (0);
+			if (iet.factor () != 1)
+			  {
+			    if (iet.operConstant () != 0)
+			      {
+				iet.setConstant (iet.constant ());
+			      }
+			    else
+			      {
+				iet.setConstant (iet.constant () - 1);
+			      }
+			  }
 		      }
 		    idxs.push_back (iet);
 		  }

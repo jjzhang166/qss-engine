@@ -20,7 +20,6 @@
 
 #include <sstream>
 
-
 Index_::Index_ () :
     _constant (-1), _factor (0), _offset (0), _low (1), _hi (1), _isSet (false), _array (
 	false), _map (NULL), _parameter (), _rangeOp (false), _hasRange (false)
@@ -125,6 +124,37 @@ Index_::setRange ()
   _setIndex ();
 }
 
+bool
+Index_::equalExp (const Index_& other) const
+{
+  return (constant () == other.constant () && factor () == other.factor ());
+}
+
+bool
+Index_::getIntersection (const Index_& other) const
+{
+  if (factor () == 1 || other.factor () == 1)
+    {
+      return (true);
+    }
+  else
+    {
+      return ((odd () && other.odd ()) || (even () && other.even ()));
+    }
+}
+
+bool
+Index_::odd () const
+{
+  return (factor () % 2 == 0 && operConstant () % 2 != 0);
+}
+
+bool
+Index_::even () const
+{
+  return (factor () % 2 == 0 && operConstant () % 2 == 0);
+}
+
 void
 Index_::_setIndex ()
 {
@@ -165,7 +195,7 @@ Index_::constant () const
 int
 Index_::operConstant () const
 {
-  if (factor() < 0)
+  if (factor () < 0)
     {
       return (_constant);
     }
@@ -393,8 +423,8 @@ Index_::printReverseDefinition (string variable, int offset)
   string var;
   if (_map != NULL)
     {
-      var = "__reverse__PAR_" + _parameter + "[" + _map->print (variable, offset)
-	  + "]";
+      var = "__reverse__PAR_" + _parameter + "["
+	  + _map->print (variable, offset) + "]";
     }
   else
     {
@@ -452,8 +482,8 @@ Index_::printReverse (string variable, int offset)
   string var;
   if (_map != NULL)
     {
-      var = "__reverse__PAR_" + _parameter + "[" + _map->print (variable, offset)
-	  + "]";
+      var = "__reverse__PAR_" + _parameter + "["
+	  + _map->print (variable, offset) + "]";
     }
   else
     {
@@ -601,29 +631,58 @@ Index_::intersection (Index_ b) const
     {
       if (b.lowValue () >= lowValue () && b.hiValue () <= hiValue ())
 	{
-	  is.setType (IDX_SUBSET);
-	  is.setLow (b.low ());
-	  is.setHi (b.hi ());
+	  if (!equalExp (b) && !getIntersection (b))
+	    {
+	      is.setType (IDX_DISJOINT);
+	    }
+	  else
+	    {
+	      is.setType (IDX_SUBSET);
+	      is.setLow (b.low ());
+	      is.setHi (b.hi ());
+	    }
 	}
       else if (lowValue () >= b.lowValue () && hiValue () <= b.hiValue ())
 	{
-	  is.setType (IDX_SUBSET_OF);
-	  is.setLow (low ());
-	  is.setHi (hi ());
+	  if (!equalExp (b) && !getIntersection (b))
+	    {
+	      is.setType (IDX_DISJOINT);
+	    }
+	  else
+	    {
+	      is.setType (IDX_SUBSET_OF);
+	      is.setLow (low ());
+	      is.setHi (hi ());
+	    }
 	}
       else if (b.lowValue () < lowValue () && lowValue () <= b.hiValue ()
 	  && b.hiValue () < hiValue ())
 	{
-	  is.setType (IDX_ARB_AB);
-	  is.setLow (low ());
-	  is.setHi (b.hi ());
+	  if (!equalExp (b) && !getIntersection (b))
+	    {
+	      is.setType (IDX_DISJOINT);
+	    }
+	  else
+	    {
+
+	      is.setType (IDX_ARB_AB);
+	      is.setLow (low ());
+	      is.setHi (b.hi ());
+	    }
 	}
       else if (lowValue () < b.lowValue () && b.lowValue () <= hiValue ()
 	  && hiValue () < b.hiValue ())
 	{
-	  is.setType (IDX_ARB_BA);
-	  is.setLow (b.low ());
-	  is.setHi (hi ());
+	  if (!equalExp (b) && !getIntersection (b))
+	    {
+	      is.setType (IDX_DISJOINT);
+	    }
+	  else
+	    {
+	      is.setType (IDX_ARB_BA);
+	      is.setLow (b.low ());
+	      is.setHi (hi ());
+	    }
 	}
       is.setRange (true);
     }

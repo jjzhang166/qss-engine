@@ -474,6 +474,14 @@ public:
    */
   bool
   operator==(const Index_ &other) const;
+  bool
+  equalExp(const Index_ &other) const;
+  bool
+  getIntersection(const Index_ &other) const;
+  bool
+  odd() const;
+  bool
+  even() const;
 private:
   void
   _setIndex ();

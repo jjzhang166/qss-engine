@@ -57,7 +57,7 @@ MMO_Equation_::MMO_Equation_ (AST_Expression exp, MMO_ModelData data) :
 	  deleteMMO_Expression (argExp);
 	}
     }
-  if (_data->generateDerivatives ())
+  if (_data->annotation()->symDiff())
     {
       _initDerivatives ();
     }
@@ -73,7 +73,7 @@ MMO_Equation_::MMO_Equation_ (MMO_Expression exp, MMO_ModelData data) :
     {
       _arguments = _data->arguments ();
     }
-  if (_data->generateDerivatives ())
+  if (_data->annotation()->symDiff())
     {
       _initDerivatives ();
     }

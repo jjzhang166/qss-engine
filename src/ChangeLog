@@ -1,3 +1,9 @@
+2016-08-25  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* mmo/util/ast_util.cpp (GenerateDeps_::foldTraverseElement): Modified offset for higher order derivatives.
+	* mmo/util/index.h (Index_): Added  range intersection, odd and even functions for index experssions.
+	* mmo/util/index.cpp (Index_::getIntersection): Get the intersection of two index expressions defined in the same range. 
+
 2016-08-23  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* engine/common/settings.c
