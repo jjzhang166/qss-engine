@@ -572,7 +572,7 @@ BIT_next (BIT_vector v);
 /**
  *
  */
-#define MESSAGE_SIZE 1400
+#define MESSAGE_SIZE 1024
 
 /**
  *
@@ -605,6 +605,7 @@ struct IBX_message_
   double value[MESSAGE_SIZE]; //!<
   double time; //!<
 };
+
 
 /**
  *

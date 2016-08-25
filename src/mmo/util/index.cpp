@@ -127,7 +127,7 @@ Index_::setRange ()
 bool
 Index_::equalExp (const Index_& other) const
 {
-  return (constant () == other.constant () && factor () == other.factor ());
+  return (operConstant () == other.operConstant () && factor () == other.factor ());
 }
 
 bool

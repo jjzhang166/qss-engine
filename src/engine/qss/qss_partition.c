@@ -75,7 +75,6 @@ PRT_readPartition (PRT_partition partition, QSS_data data, char *name)
 	{
 	  free (line);
 	}
-      fclose (file);
       if (wrongFile == TRUE)
 	{
 	  abort ();

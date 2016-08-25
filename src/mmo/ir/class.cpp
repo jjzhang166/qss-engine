@@ -123,7 +123,7 @@ MMO_Model_::MMO_Model_ (string name) :
   _data->setCalledFunctions (_calledFunctions);
   _data->setFunctions (_functions);
   _annotations = newMMO_ModelAnnotation (_data);
-  _data->setAnnotation(_annotations);
+  _data->setAnnotation (_annotations);
 }
 
 MMO_Model_::~MMO_Model_ ()
@@ -314,8 +314,10 @@ MMO_Model_::_setAlgebraic (AST_Expression left, AST_Expression right, int begin,
   _data->setBegin (begin);
   _data->setEnd (end);
   _data->setArguments (arguments);
+  _data->setDisableSymDiff (true);
   MMO_Equation mse = newMMO_Equation (right, _data);
-  mse->controlAlgebraicDefinition();
+  _data->setDisableSymDiff (false);
+  mse->controlAlgebraicDefinition ();
   _data->setArguments (NULL);
   _algebraics->insert (idx, mse);
   _algebraicEquations += end - begin + 1;
@@ -400,8 +402,10 @@ MMO_Model_::_insertEquation (AST_Equation eq, int begin, int end)
 	  _data->setEnd (end);
 	  _data->setLHS (lhs);
 	  _data->setCalculateAlgegraics (true);
+	  _data->setDisableSymDiff (true);
 	  MMO_Equation mse = newMMO_Equation (eqe->right (), _data);
 	  _data->setCalculateAlgegraics (false);
+	  _data->setDisableSymDiff (false);
 	  if (!mse->exp ()->deps ()->autonomous ())
 	    {
 	      _inputs += end - begin + 1;
@@ -1243,9 +1247,9 @@ MMO_Model_::insert (AST_Equation eq)
       AST_EquationListIterator it;
       foreach(it,eqs)
 	{
-	  if (current_element(it)->equationType() == EQFOR)
+	  if (current_element(it)->equationType () == EQFOR)
 	    {
-               insert(current_element(it));
+	      insert (current_element(it));
 	    }
 	  else
 	    {
@@ -1291,7 +1295,9 @@ MMO_Model_::_insertEvent (AST_Statement stm, int begin, int end)
 	  _annotations->eventComment (sw->comment ());
 	}
       _data->setWeight (_annotations->weight ());
+      _data->setDisableSymDiff (true);
       MMO_Event ev = newMMO_Event (sw->condition (), _data);
+      _data->setDisableSymDiff (false);
       AST_StatementList stl = sw->statements ();
       AST_StatementListIterator it;
       foreach(it,stl)
@@ -1595,8 +1601,8 @@ deleteMMO_Model (MMO_Model m)
 /* MMO_Function class */
 
 MMO_Function_::MMO_Function_ (string name) :
-    _name (name), _externalFuncs (0), _outputs (0), _outputName (),
-    _externalFunctions (NULL), _prefix ("__"), _arguments ()
+    _name (name), _externalFuncs (0), _outputs (0), _outputName (), _externalFunctions (
+    NULL), _prefix ("__"), _arguments ()
 {
   _types = newTypeSymbolTable ();
   _annotations = newMMO_FunctionAnnotation ();
@@ -1609,8 +1615,8 @@ MMO_Function_::MMO_Function_ (string name) :
   _packages = newMMO_PackageTable ();
   _imports = newMMO_ImportTable ();
   _data = newMMO_ModelData ();
-  _functions = newMMO_FunctionTable();
-  _data->setAnnotation(_annotations);
+  _functions = newMMO_FunctionTable ();
+  _data->setAnnotation (_annotations);
   _data->setInitialCode (true);
   _data->setPackages (_packages);
   _data->setCalledFunctions (_calledFunctions);
@@ -2093,12 +2099,14 @@ MMO_Model_::setEvents ()
 }
 
 void
-MMO_Function_::setFunctions (MMO_FunctionTable functions, MMO_FunctionTable externalFunctions, MMO_SymbolRefTable calledFunctions)
+MMO_Function_::setFunctions (MMO_FunctionTable functions,
+			     MMO_FunctionTable externalFunctions,
+			     MMO_SymbolRefTable calledFunctions)
 {
   _externalFunctions = externalFunctions;
   if (_functions != NULL)
     {
-      deleteMMO_FunctionTable(_functions);
+      deleteMMO_FunctionTable (_functions);
     }
   if (_calledFunctions != NULL)
     {
@@ -2106,7 +2114,7 @@ MMO_Function_::setFunctions (MMO_FunctionTable functions, MMO_FunctionTable exte
     }
   _calledFunctions = calledFunctions;
   _functions = functions;
-  _data->setExternalFunctions(_externalFunctions);
-  _data->setFunctions(_functions);
-  _data->setCalledFunctions(_calledFunctions);
+  _data->setExternalFunctions (_externalFunctions);
+  _data->setFunctions (_functions);
+  _data->setCalledFunctions (_calledFunctions);
 }

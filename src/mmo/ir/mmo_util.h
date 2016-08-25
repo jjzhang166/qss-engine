@@ -240,6 +240,10 @@ public:
   annotation ();
   bool
   hasAnnotation();
+  void
+  setDisableSymDiff (bool d);
+  bool
+  disableSymDiff ();
 private:
   VarSymbolTable _symbols;
   MMO_EquationTable _algebraics;
@@ -257,6 +261,7 @@ private:
   bool _calculateAlgebraics;
   AST_Expression _arguments;
   MMO_Annotation _annotation;
+  bool _disableSymDiff;
 };
 /**
  *

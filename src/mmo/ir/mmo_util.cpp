@@ -12,9 +12,9 @@
 
 MMO_ModelData_::MMO_ModelData_ () :
     _symbols (NULL), _algebraics (NULL), _functions (NULL), _externalFunctions (
-	NULL), _packages (NULL), _initialCode (false), _generateDerivatives (
-	true), _begin (0), _end (0), _lhs (), _whenStatement (false), _weight (-1), _calledFunctions(), _calculateAlgebraics(false), _arguments(NULL),
-	_annotation(NULL)
+    NULL), _packages (NULL), _initialCode (false), _generateDerivatives (true), _begin (
+	0), _end (0), _lhs (), _whenStatement (false), _weight (-1), _calledFunctions (), _calculateAlgebraics (
+	false), _arguments (NULL), _annotation (NULL), _disableSymDiff (false)
 {
 }
 
@@ -35,17 +35,16 @@ MMO_ModelData_::setCalledFunctions (MMO_SymbolRefTable f)
 }
 
 void
-MMO_ModelData_::setCalculateAlgegraics(bool ca)
+MMO_ModelData_::setCalculateAlgegraics (bool ca)
 {
   _calculateAlgebraics = ca;
 }
 
 bool
-MMO_ModelData_::calculateAlgebraics()
+MMO_ModelData_::calculateAlgebraics ()
 {
   return (_calculateAlgebraics);
 }
-
 
 MMO_SymbolRefTable
 MMO_ModelData_::calledFunctions ()
@@ -529,4 +528,16 @@ bool
 MMO_ModelData_::hasAnnotation ()
 {
   return (_annotation != NULL);
+}
+
+void
+MMO_ModelData_::setDisableSymDiff (bool d)
+{
+  _disableSymDiff = d;
+}
+
+bool
+MMO_ModelData_::disableSymDiff ()
+{
+  return (_disableSymDiff);
 }
