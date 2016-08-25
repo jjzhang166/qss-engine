@@ -34,9 +34,9 @@
 #include <scotch/scotch.h>
 #include <metis.h>
 
-#include <common/patoh.h>
-#include <common/utils.h>
-#include <qss/qss_graph.h>
+#include "../common/patoh.h"
+#include "../common/utils.h"
+#include "qss_graph.h"
 
 void
 PRT_readPartition (PRT_partition partition, QSS_data data, char *name)
@@ -44,8 +44,10 @@ PRT_readPartition (PRT_partition partition, QSS_data data, char *name)
   char fileName[256];
   sprintf (fileName, "%s.part", name);
   FILE *file;
-  int i;
+  int i, nvtxs = partition->endHandlers;
+  int lps = partition->lps;
   file = fopen (fileName, "r");
+  bool wrongFile = FALSE;
   if (file != NULL)
     {
       char * line = NULL;
@@ -56,12 +58,27 @@ PRT_readPartition (PRT_partition partition, QSS_data data, char *name)
       while ((read = getline (&line, &len, file)) != -1)
 	{
 	  sscanf (line, "%d", &val);
+	  if (val < 0 || val > lps)
+	    {
+	      fprintf (stderr, "Wrong partition file.\n");
+	      wrongFile = TRUE;
+	      break;
+	    }
 	  partition->values[i++] = val;
+	}
+      if (i > nvtxs)
+	{
+	  wrongFile = TRUE;
 	}
       fclose (file);
       if (line != NULL)
 	{
 	  free (line);
+	}
+      fclose (file);
+      if (wrongFile == TRUE)
+	{
+	  abort ();
 	}
       return;
     }
