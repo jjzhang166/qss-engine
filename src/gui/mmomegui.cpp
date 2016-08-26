@@ -266,6 +266,30 @@ MmomeGui::on_actionMicroModelica_Language_Scpefication_triggered ()
 }
 
 void
+MmomeGui::on_actionQSS_Solver_Engine_Documentation_triggered ()
+{
+  QString link =
+      "http://www.cifasis-conicet.gov.ar/jfernandez/engine/";
+  QDesktopServices::openUrl (QUrl (link));
+}
+
+void
+MmomeGui::on_actionMicroModelica_Compiler_Documentation_triggered ()
+{
+  QString link =
+      "http://www.cifasis-conicet.gov.ar/jfernandez/mmoc/";
+  QDesktopServices::openUrl (QUrl (link));
+}
+
+void
+MmomeGui::on_actionSBML_Translator_Documentation_triggered ()
+{
+  QString link =
+      "http://www.cifasis-conicet.gov.ar/jfernandez/sbml/";
+  QDesktopServices::openUrl (QUrl (link));
+}
+
+void
 MmomeGui::_run_finished (int exitCode, QProcess::ExitStatus exitStatus)
 {
   if (exitStatus == QProcess::NormalExit && exitCode ==0)

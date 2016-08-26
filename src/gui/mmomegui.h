@@ -81,6 +81,12 @@ private slots:
   void
   on_actionMicroModelica_Language_Scpefication_triggered ();
   void
+  on_actionQSS_Solver_Engine_Documentation_triggered ();
+  void
+  on_actionMicroModelica_Compiler_Documentation_triggered ();
+  void
+  on_actionSBML_Translator_Documentation_triggered ();
+  void
   on_actionAbout_triggered ();
   void
   runDlgClose ();

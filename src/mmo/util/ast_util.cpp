@@ -27,6 +27,7 @@
 
 #include "../ast/ast_builder.h"
 #include "../ast/modification.h"
+#include "../ir/annotation.h"
 #include "../ir/class.h"
 #include "../ir/equation.h"
 #include "../ir/expression.h"

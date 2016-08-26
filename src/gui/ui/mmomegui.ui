@@ -33,7 +33,7 @@
      <x>0</x>
      <y>0</y>
      <width>693</width>
-     <height>27</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -76,6 +76,10 @@
      <string>Help</string>
     </property>
     <addaction name="actionMicroModelica_Language_Scpefication"/>
+    <addaction name="actionQSS_Solver_Engine_Documentation"/>
+    <addaction name="actionMicroModelica_Compiler_Documentation"/>
+    <addaction name="actionSBML_Translator_Documentation"/>
+    <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menu_File"/>
@@ -385,6 +389,21 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionQSS_Solver_Engine_Documentation">
+   <property name="text">
+    <string>QSS Solver Engine Documentation</string>
+   </property>
+  </action>
+  <action name="actionMicroModelica_Compiler_Documentation">
+   <property name="text">
+    <string>MicroModelica Compiler Documentation</string>
+   </property>
+  </action>
+  <action name="actionSBML_Translator_Documentation">
+   <property name="text">
+    <string>SBML Translator Documentation</string>
    </property>
   </action>
  </widget>

@@ -1,3 +1,14 @@
+2016-08-26  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* gui/mmomegui.cpp
+	(MmomeGui::on_actionSBML_Translator_Documentation_triggered): Added link to
+	documentation.
+	(MmomeGui::on_actionMicroModelica_Language_Scpefication_triggered): Added link
+	to documentation.
+	(MmomeGui::on_actionMicroModelica_Compiler_Documentation_triggered): Added link
+	to documentation.
+	* mmo/util/ast_util.cpp: Added include to annotation class.
+
 2016-08-25  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* engine/qss/qss_partition.c
