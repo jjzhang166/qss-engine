@@ -93,7 +93,7 @@ SAM_init (OUT_output output, QSS_data simData, QSS_time simTime,
       for (j = 0; j < outputs; j++)
 	{
 #ifdef QSS_PARALLEL
-	  if (lp->oMap[j] != NOT_ASSIGNED)
+	  if (lp->oMap[j] > NOT_ASSIGNED)
 	    {
 	      SAM_PAR_writeOutvar (output, simData, simTime, simOutput, j, i);
 #else
@@ -139,7 +139,7 @@ SAM_write (OUT_output output, QSS_data simData, QSS_time simTime,
 	  j = simOutput->SO[simTime->minIndex][i];
 	  int variable = j;
 #ifdef QSS_PARALLEL
-	  if (lp->oMap[j] != NOT_ASSIGNED)
+	  if (lp->oMap[j] > NOT_ASSIGNED)
 	    {
 	      variable = lp->oMap[j];
 	      SAM_PAR_writeOutvar (output, simData, simTime, simOutput, j, variable);
@@ -164,7 +164,7 @@ SAM_write (OUT_output output, QSS_data simData, QSS_time simTime,
 	      j = simOutput->SO[h][i];
 	      int variable = j;
 #ifdef QSS_PARALLEL
-	      if (lp->oMap[j] != NOT_ASSIGNED)
+	      if (lp->oMap[j] > NOT_ASSIGNED)
 		{
 		  variable = lp->oMap[j];
 		  SAM_PAR_writeOutvar (output, simData, simTime, simOutput, j,
@@ -189,7 +189,7 @@ SAM_write (OUT_output output, QSS_data simData, QSS_time simTime,
 	      j = simOutput->DO[h][i];
 	      int variable = j;
 #ifdef QSS_PARALLEL
-	      if (lp->oMap[j] != NOT_ASSIGNED)
+	      if (lp->oMap[j] > NOT_ASSIGNED)
 		{
 		  variable = lp->oMap[j];
 		  SAM_PAR_writeOutvar (output, simData, simTime, simOutput, j, variable);

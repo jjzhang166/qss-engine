@@ -732,7 +732,7 @@ BIT_numberOfSetBits (word_t i)
  */
 
 IBX_inbox
-IBX_Inbox (int states, int ack)
+IBX_Inbox (int states, int ack, int *qMap)
 {
   IBX_inbox p = checkedMalloc (sizeof(*p));
   if (ack == 0)
@@ -753,12 +753,27 @@ IBX_Inbox (int states, int ack)
 	  p->orderedMessages[i].type = -1;
 	  p->orderedMessages[i].sendAck = 1;
 	}
+      p->qMap = qMap;
+      p->waiting = (IBX_message*) checkedMalloc (states * sizeof(IBX_message));
+      for (i = 0; i < states; i++)
+	{
+	  p->waiting[i].time = INF;
+	  p->waiting[i].type = -1;
+	  p->waiting[i].sendAck = 1;
+	}
+      p->waitingMessage = BIT_Vector (states);
+      p->waitingAck = BIT_Vector (states);
     }
   else
     {
       p->messages = NULL;
       p->orderedMessages = NULL;
+      p->qMap = NULL;
+      p->waiting = NULL;
+      p->waitingMessage = NULL;
+      p->waitingAck = NULL;
     }
+  p->states = states;
   p->received = BIT_Vector (MAX_LPS);
   pthread_mutex_init (&(p->receivedMutex), NULL);
   p->head = 0;
@@ -778,17 +793,44 @@ IBX_freeInbox (IBX_inbox inbox)
     {
       free (inbox->orderedMessages);
     }
-  BIT_freeVector(inbox->received);
+  if (inbox->waiting != NULL)
+    {
+      free (inbox->waiting);
+    }
+  if (inbox->waitingMessage != NULL)
+    {
+      BIT_freeVector (inbox->waitingMessage);
+    }
+  BIT_freeVector (inbox->received);
   pthread_mutex_destroy (&(inbox->receivedMutex));
   free (inbox);
 }
 
 void
-IBX_add (IBX_inbox inbox, int from, IBX_message message)
+IBX_add (MLB_mailbox mailbox, IBX_inbox inbox, int from, int id,
+	 IBX_message message)
 {
-  inbox->messages[from] = message;
   pthread_mutex_lock (&(inbox->receivedMutex));
-  BIT_set (inbox->received, from);
+  if (message.type == 0)
+    {
+      int l = -(inbox->qMap[message.index] - ASSIGNED_INPUT);
+      if (BIT_isSet (inbox->waitingMessage, l))
+	{
+	  inbox->waiting[l] = message;
+	  BIT_set (inbox->waitingAck, l);
+	}
+      else
+	{
+	  BIT_set (inbox->waitingMessage, l);
+	  inbox->messages[from] = message;
+	  BIT_set (inbox->received, from);
+	}
+    }
+  else
+    {
+      inbox->messages[from] = message;
+      BIT_set (inbox->received, from);
+    }
   pthread_mutex_unlock (&(inbox->receivedMutex));
 }
 
@@ -838,11 +880,12 @@ IBX_receiveAndAckMessages (IBX_inbox inbox, MLB_mailbox mailbox, int id)
   int j;
   int tail = inbox->tail;
   int size = inbox->size;
+  int states = inbox->states;
   for (j = BIT_first (inbox->received); j < MAX_LPS;
       j = BIT_next (inbox->received))
     {
       inbox->orderedMessages[tail] = inbox->messages[j];
-      if (inbox->orderedMessages[tail].type == 0)
+      if (inbox->orderedMessages[tail].type == 0 && inbox->orderedMessages[tail].sendAck != 0)
 	{
 	  inbox->orderedMessages[tail].sendAck = 0;
 	  MLB_ack (mailbox, inbox->orderedMessages[tail].from, id);
@@ -851,6 +894,38 @@ IBX_receiveAndAckMessages (IBX_inbox inbox, MLB_mailbox mailbox, int id)
       tail++;
       BIT_clear (inbox->received, j);
     }
+  qsort (inbox->orderedMessages, tail, sizeof(IBX_message), IBX_compare);
+  inbox->size = size;
+  inbox->tail = size;
+  inbox->head = 0;
+  for (j = BIT_first (inbox->waitingAck); j < states;
+      j = BIT_next (inbox->waitingAck))
+    {
+      inbox->waiting[j].sendAck = 0;
+      MLB_ack (mailbox, inbox->waiting[j].from, id);
+      BIT_clear (inbox->waitingAck, j);
+    }
+  pthread_mutex_unlock (&(inbox->receivedMutex));
+}
+
+void
+IBX_checkWaitingMessages (IBX_inbox inbox, int index)
+{
+  pthread_mutex_lock (&(inbox->receivedMutex));
+  int l = -(inbox->qMap[index] - ASSIGNED_INPUT);
+  if (inbox->waiting[l].time == INF)
+    {
+      BIT_clear (inbox->waitingMessage, l);
+      pthread_mutex_unlock (&(inbox->receivedMutex));
+      return;
+    }
+  IBX_message m = inbox->waiting[l];
+  inbox->waiting[l].time = INF;
+  int tail = inbox->tail;
+  int size = inbox->size;
+  inbox->orderedMessages[tail] = m;
+  size++;
+  tail++;
   qsort (inbox->orderedMessages, tail, sizeof(IBX_message), IBX_compare);
   inbox->size = size;
   inbox->tail = size;
@@ -867,9 +942,12 @@ IBX_nextMessage (IBX_inbox inbox)
   inbox->orderedMessages[head].type = -1;
   inbox->head++;
   inbox->size--;
+  if (msg.type == 0)
+    {
+      IBX_checkWaitingMessages (inbox, msg.index);
+    }
   return (msg);
 }
-
 
 void
 IBX_close (IBX_inbox inbox, int dir)
@@ -983,7 +1061,7 @@ BIT_isSet (BIT_vector b, int bit)
 }
 
 void
-BIT_clearAll(BIT_vector b)
+BIT_clearAll (BIT_vector b)
 {
   b->words[0] &= b->resetMask[0];
   b->words[1] &= b->resetMask[1];
@@ -997,13 +1075,13 @@ BIT_setAll (BIT_vector b)
 }
 
 word_t
-BIT_isAnySet(BIT_vector b)
+BIT_isAnySet (BIT_vector b)
 {
   return ((b->words[0] & 0xFFFFFFFF) || (b->words[1] & 0xFFFFFFFF));
 }
 
 word_t
-BIT_setBits(BIT_vector b)
+BIT_setBits (BIT_vector b)
 {
   return (BIT_numberOfSetBits (b->words[0]) + BIT_numberOfSetBits (b->words[1]));
 }
@@ -1015,7 +1093,7 @@ BIT_setMask (BIT_vector b, int bit)
 }
 
 void
-IBX_ack(IBX_inbox inbox, int from)
+IBX_ack (IBX_inbox inbox, int from)
 {
   pthread_mutex_lock (&(inbox->receivedMutex));
   BIT_set (inbox->received, from);
@@ -1023,7 +1101,7 @@ IBX_ack(IBX_inbox inbox, int from)
 }
 
 word_t
-IBX_checkMail(IBX_inbox inbox)
+IBX_checkMail (IBX_inbox inbox)
 {
   word_t ret;
   pthread_mutex_lock (&(inbox->receivedMutex));
@@ -1033,7 +1111,7 @@ IBX_checkMail(IBX_inbox inbox)
 }
 
 void
-IBX_checkInbox(IBX_inbox inbox)
+IBX_checkInbox (IBX_inbox inbox)
 {
   word_t ret = IBX_checkMail (inbox);
   if (ret)
@@ -1043,7 +1121,7 @@ IBX_checkInbox(IBX_inbox inbox)
 }
 
 void
-IBX_checkAckInbox(IBX_inbox inbox, MLB_mailbox mailbox, int id)
+IBX_checkAckInbox (IBX_inbox inbox, MLB_mailbox mailbox, int id)
 {
   word_t ret = IBX_checkMail (inbox);
   if (ret)
@@ -1053,7 +1131,7 @@ IBX_checkAckInbox(IBX_inbox inbox, MLB_mailbox mailbox, int id)
 }
 
 word_t
-IBX_ackMessages(IBX_inbox inbox)
+IBX_ackMessages (IBX_inbox inbox)
 {
   word_t ret;
   pthread_mutex_lock (&(inbox->receivedMutex));
@@ -1063,13 +1141,13 @@ IBX_ackMessages(IBX_inbox inbox)
 }
 
 double
-IBX_nextMessageTime(IBX_inbox inbox)
+IBX_nextMessageTime (IBX_inbox inbox)
 {
   return (inbox->orderedMessages[inbox->head].time);
 }
 
 void
-IBX_reset(IBX_inbox inbox)
+IBX_reset (IBX_inbox inbox)
 {
   pthread_mutex_lock (&(inbox->receivedMutex));
   BIT_clearAll (inbox->received);
@@ -1077,13 +1155,13 @@ IBX_reset(IBX_inbox inbox)
 }
 
 void
-MLB_send(MLB_mailbox mailbox, int to, int from, IBX_message message)
+MLB_send (MLB_mailbox mailbox, int to, int from, IBX_message message)
 {
-  IBX_add (mailbox->inbox[MSG_EVENT][to], from, message);
+  IBX_add (mailbox, mailbox->inbox[MSG_EVENT][to], from, to, message);
 }
 
 void
-MLB_ack(MLB_mailbox mailbox, int to, int from)
+MLB_ack (MLB_mailbox mailbox, int to, int from)
 {
   IBX_ack (mailbox->inbox[MSG_ACK][to], from);
 }

@@ -237,13 +237,13 @@ BT_updateTree (SC_scheduler scheduler, BT_tree tree, int *inf, int cant,
       switch (scheduler->state->stepType)
 	{
 	  case ST_State:
-	  if (lp->qMap[inf[0]] != NOT_ASSIGNED)
+	  if (lp->qMap[inf[0]] > NOT_ASSIGNED)
 	    {
 	      fathers[0][0] = tree->nodes[0][tree->father[inf[0]]].father;
 	    }
 	  break;
 	  case ST_Event:
-	  if (lp->eMap[inf[0]] != NOT_ASSIGNED)
+	  if (lp->eMap[inf[0]] > NOT_ASSIGNED)
 	    {
 	      fathers[0][0] = tree->nodes[0][tree->father[inf[0]]].father;
 	    }
@@ -266,13 +266,13 @@ BT_updateTree (SC_scheduler scheduler, BT_tree tree, int *inf, int cant,
       switch (scheduler->state->stepType)
 	{
 	  case ST_State:
-	  if (lp->qMap[inf[i]] != NOT_ASSIGNED)
+	  if (lp->qMap[inf[i]] > NOT_ASSIGNED)
 	    {
 	      eval = TRUE;
 	    }
 	  break;
 	  case ST_Event:
-	  if (lp->eMap[inf[i]] != NOT_ASSIGNED)
+	  if (lp->eMap[inf[i]] > NOT_ASSIGNED)
 	    {
 	      eval = TRUE;
 	    }
@@ -303,7 +303,7 @@ BT_updateTree (SC_scheduler scheduler, BT_tree tree, int *inf, int cant,
 	}
       tree->nodes[0][updateVar].value = minIdx;
 #ifdef QSS_PARALLEL
-      if (fathers[0][0] == NOT_ASSIGNED)
+      if (fathers[0][0] <= NOT_ASSIGNED)
 	{
 	  fathers[0][0] = tree->nodes[0][updateVar].father;
 	}
@@ -321,7 +321,7 @@ BT_updateTree (SC_scheduler scheduler, BT_tree tree, int *inf, int cant,
 #endif
     }
 #ifdef QSS_PARALLEL
-  if (fathers[0][0] == NOT_ASSIGNED)
+  if (fathers[0][0] <= NOT_ASSIGNED)
     {
       return;
     }
@@ -374,7 +374,7 @@ BT_updateC (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
   if (simTime->type == ST_State)
     {
       int update = stateVar;
-      if (lp->qMap[stateVar] == NOT_ASSIGNED)
+      if (lp->qMap[stateVar] <= NOT_ASSIGNED)
 	{
 	  update = UPDATE_DEPS;
 	}
@@ -397,7 +397,7 @@ BT_updateC (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
 	  for (i = 0; i < nLHSSt; i++)
 	    {
 	      j = simData->event[stateVar].LHSSt[i];
-	      if (lp->qMap[j] != NOT_ASSIGNED)
+	      if (lp->qMap[j] > NOT_ASSIGNED)
 		{
 		  BT_UPDATE_TREE (scheduler, scheduler->state->states, simData->SD[j],
 		      simData->nSD[j], j);
@@ -442,7 +442,7 @@ BT_updateH (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
 #ifdef QSS_PARALLEL
       if (nStates > 0)
 	{
-	  if (lp->qMap[stateVar] == NOT_ASSIGNED)
+	  if (lp->qMap[stateVar] <= NOT_ASSIGNED)
 	    {
 	      update = UPDATE_DEPS;
 	    }
@@ -493,7 +493,7 @@ BT_updateH (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
 		  j = simData->event[stateVar].LHSSt[i];
 		  update = j;
 #ifdef QSS_PARALLEL
-		  if (lp->qMap[j] == NOT_ASSIGNED)
+		  if (lp->qMap[j] <= NOT_ASSIGNED)
 		    {
 		      update = UPDATE_DEPS;
 		    }
@@ -513,7 +513,7 @@ BT_updateH (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
 	}
       update = stateVar;
 #ifdef QSS_PARALLEL
-      if (lp->eMap[stateVar] == NOT_ASSIGNED)
+      if (lp->eMap[stateVar] <= NOT_ASSIGNED)
 	{
 	  update = UPDATE_DEPS;
 	}
@@ -567,7 +567,7 @@ BT_updateI (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
       stateVar = simTime->minIndex;
       update = stateVar;
 #ifdef QSS_PARALLEL
-      if (lp->qMap[stateVar] == NOT_ASSIGNED)
+      if (lp->qMap[stateVar] <= NOT_ASSIGNED)
 	{
 	  update = UPDATE_DEPS;
 	}
@@ -634,7 +634,7 @@ BT_updateHI (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
 #ifdef QSS_PARALLEL
       if (nStates > 0)
 	{
-	  if (lp->qMap[stateVar] == NOT_ASSIGNED)
+	  if (lp->qMap[stateVar] <= NOT_ASSIGNED)
 	    {
 	      update = UPDATE_DEPS;
 	    }
@@ -690,7 +690,7 @@ BT_updateHI (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
 	      j = simData->event[stateVar].LHSSt[i];
 	      update = j;
 #ifdef QSS_PARALLEL
-	      if (lp->qMap[j] == NOT_ASSIGNED)
+	      if (lp->qMap[j] <= NOT_ASSIGNED)
 		{
 		  update = UPDATE_DEPS;
 		}
@@ -709,7 +709,7 @@ BT_updateHI (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
 	}
       update = stateVar;
 #ifdef QSS_PARALLEL
-      if (lp->eMap[stateVar] == NOT_ASSIGNED)
+      if (lp->eMap[stateVar] <= NOT_ASSIGNED)
 	{
 	  update = UPDATE_DEPS;
 	}

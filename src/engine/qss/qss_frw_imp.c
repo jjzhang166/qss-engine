@@ -244,7 +244,7 @@ SO_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
     {
       w = simData->SD[index][i];
 #ifdef QSS_PARALLEL
-      if (simData->lp->qMap[w] != NOT_ASSIGNED)
+      if (simData->lp->qMap[w] > NOT_ASSIGNED)
 	{
 #endif
       e = simTime->time - simTime->tq[w];
@@ -283,7 +283,7 @@ SO_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
     {
       j = simData->SD[index][k];
 #ifdef QSS_PARALLEL
-      if (simData->lp->qMap[j] != NOT_ASSIGNED)
+      if (simData->lp->qMap[j] > NOT_ASSIGNED)
 	{
 #endif
       if (f->state->delta > 0)
@@ -452,7 +452,7 @@ TO_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
     {
       w = simData->SD[index][i];
 #ifdef QSS_PARALLEL
-      if (simData->lp->qMap[w] != NOT_ASSIGNED)
+      if (simData->lp->qMap[w] > NOT_ASSIGNED)
 	{
 #endif
       e = simTime->time - simTime->tq[w];
@@ -498,7 +498,7 @@ TO_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
     {
       j = simData->SD[index][k];
 #ifdef QSS_PARALLEL
-      if (simData->lp->qMap[j] != NOT_ASSIGNED)
+      if (simData->lp->qMap[j] > NOT_ASSIGNED)
 	{
 #endif
       if (f->state->delta > 0)
@@ -633,7 +633,7 @@ SYM_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
     {
       w = simData->SD[index][i];
 #ifdef QSS_PARALLEL
-      if (simData->lp->qMap[w] != NOT_ASSIGNED)
+      if (simData->lp->qMap[w] > NOT_ASSIGNED)
 	{
 #endif
       e = simTime->time - simTime->tq[w];

@@ -675,7 +675,7 @@ QSS_PAR_printSimulationLog (QSS_simulator simulator)
 	  int j;
 	  for (j = 0; j < nOutputs; j++)
 	    {
-	      if (simulator->data->lp->oMap[j] != NOT_ASSIGNED)
+	      if (simulator->data->lp->oMap[j] > NOT_ASSIGNED)
 		{
 		  SD_print (simulator->simulationLog, "Variable %s changes: %d",
 			    simulator->output->variable[j].name,
@@ -872,8 +872,8 @@ QSS_PAR_copySimulator (QSS_simulatorInstance *instance)
 		  root->settings->debug, p->data, p->time);
   p->dtSynch = root->dtSynch;
   p->id = id;
-  p->inbox = IBX_Inbox (data->states, 0);
-  p->ack = IBX_Inbox (0, 1);
+  p->inbox = IBX_Inbox (p->data->lp->inStates, 0, p->data->lp->qMap);
+  p->ack = IBX_Inbox (0, 1, NULL);
   root->mailbox->inbox[MSG_EVENT][id] = p->inbox;
   root->mailbox->inbox[MSG_ACK][id] = p->ack;
   p->mailbox = root->mailbox;
@@ -973,7 +973,7 @@ QSS_PAR_initializeSimulation (QSS_simulator simulator)
   forUL = qssData->states;
   for (i = 0; i < forUL; i++)
     {
-      if (lp->qMap[i] != NOT_ASSIGNED)
+      if (lp->qMap[i] > NOT_ASSIGNED)
 	{
 	  qssData->lqu[i] = qssData->dQRel[i] * fabs (x[i * coeffs]);
 	  if (qssData->lqu[i] < qssData->dQMin[i])
@@ -1006,7 +1006,7 @@ QSS_PAR_initializeSimulation (QSS_simulator simulator)
   forUL = qssData->states;
   for (i = 0; i < forUL; i++)
     {
-      if (lp->qMap[i] != NOT_ASSIGNED)
+      if (lp->qMap[i] > NOT_ASSIGNED)
 	{
 	  FRW_recomputeDerivative (frw, qssModel, qssData, qssTime, i);
 	  QA_nextTime (quantizer, i, t, qssTime->nextStateTime, x,
@@ -1031,7 +1031,7 @@ QSS_PAR_initializeSimulation (QSS_simulator simulator)
   for (i = 0; i < forUL; i++)
     {
       j = qssData->TD[i];
-      if (lp->qMap[j] != NOT_ASSIGNED)
+      if (lp->qMap[j] > NOT_ASSIGNED)
 	{
 	  FRW_nextInputTime (frw, qssModel, qssData, qssTime, 0, j, i);
 	}
@@ -1048,7 +1048,7 @@ QSS_PAR_initializeSimulation (QSS_simulator simulator)
       forUL = qssData->events;
       for (i = 0; i < forUL; i++)
 	{
-	  if (lp->eMap[i] != NOT_ASSIGNED)
+	  if (lp->eMap[i] > NOT_ASSIGNED)
 	    {
 	      if (qssData->nZS[i])
 		{
@@ -1086,7 +1086,7 @@ QSS_PAR_initializeSimulation (QSS_simulator simulator)
   forUL = qssData->states;
   for (i = 0; i < forUL; i++)
     {
-      if (lp->qMap[i] != NOT_ASSIGNED)
+      if (lp->qMap[i] > NOT_ASSIGNED)
 	{
 	  QA_recomputeNextTime (quantizer, i, qssTime->time,
 				qssTime->nextStateTime, x, qssData->lqu, q);

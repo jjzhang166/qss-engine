@@ -222,7 +222,7 @@ LP_processPartition (QSS_simulator simulator, PRT_partition partition)
 	      for (t = 0; t < inZS; t++)
 		{
 		  int ik = simulatorData->ZS[handlerNumber][t];
-		  if (partition->asgDscInf[partitionNumber][ik] == NOT_ASSIGNED)
+		  if (partition->asgDscInf[partitionNumber][ik] <= NOT_ASSIGNED)
 		    {
 		      partition->dscInf[partitionNumber][partition->nDsc[partitionNumber]++] =
 			  ik;
@@ -524,7 +524,7 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
 	    {
 	      simulator->lps->lp[i]->dscInf = 1;
 	      int asg = 0;
-	      while (simulator->lps->lp[i]->qMap[asg] == NOT_ASSIGNED)
+	      while (simulator->lps->lp[i]->qMap[asg] <= NOT_ASSIGNED)
 		{
 		  asg++;
 		}
@@ -549,6 +549,7 @@ LP_initializeDataStructs (QSS_simulator simulator, PRT_partition partition)
       for (j = 0; j < stateInputs; j++)
 	{
 	  lp->qInMap[j] = partition->values[p->stateInput[j]];
+	  lp->qMap[p->stateInput[j]] = ASSIGNED_INPUT - j;
 	}
       for (j = 0; j < handlerInputs; j++)
 	{

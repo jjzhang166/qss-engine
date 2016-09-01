@@ -424,7 +424,7 @@ BTR_updateTree (SC_scheduler scheduler, BTR_tree tree, int *inf, int cant, int i
   if (tree->numEquals)
     {
       int var = tree->weightedEquals[tree->num++];
-      while (tree->equals[var] == NOT_ASSIGNED)
+      while (tree->equals[var] <= NOT_ASSIGNED)
 	{
 	  var = tree->weightedEquals[tree->num++];
 	}

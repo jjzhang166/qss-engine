@@ -57,7 +57,7 @@ F_init (LG_log log, QSS_data simData, SD_output simOutput)
 	{
 	  char ext[128] = "";
 #ifdef QSS_PARALLEL
-	  if (lp->oMap[i] != NOT_ASSIGNED)
+	  if (lp->oMap[i] > NOT_ASSIGNED)
 	    {
 	      if (simOutput->nOD[i] != 0)
 		{

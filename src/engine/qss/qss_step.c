@@ -84,7 +84,7 @@ ST_init (OUT_output output, QSS_data simData, QSS_time simTime,
       for (i = 0; i < outputs; i++)
 	{
 #ifdef QSS_PARALLEL
-	  if (lp->oMap[i] != NOT_ASSIGNED)
+	  if (lp->oMap[i] > NOT_ASSIGNED)
 	    {
 	      ST_PAR_writeOutvar (output, simData, simTime, simOutput, i, j);
 #else
@@ -129,7 +129,7 @@ ST_write (OUT_output output, QSS_data simData, QSS_time simTime,
 	  j = simOutput->SO[simTime->minIndex][i];
 	  int variable = j;
 #ifdef QSS_PARALLEL
-	  if (lp->oMap[j] != NOT_ASSIGNED)
+	  if (lp->oMap[j] > NOT_ASSIGNED)
 	    {
 	      variable = lp->oMap[j];
 	      ST_PAR_writeOutvar (output, simData, simTime, simOutput, j, variable);
@@ -155,7 +155,7 @@ ST_write (OUT_output output, QSS_data simData, QSS_time simTime,
 	      j = simOutput->SO[h][i];
 	      int variable = j;
 #ifdef QSS_PARALLEL
-	      if (lp->oMap[j] != NOT_ASSIGNED)
+	      if (lp->oMap[j] > NOT_ASSIGNED)
 		{
 		  variable = lp->oMap[j];
 		  ST_PAR_writeOutvar (output, simData, simTime, simOutput, j, variable);
@@ -178,7 +178,7 @@ ST_write (OUT_output output, QSS_data simData, QSS_time simTime,
 	      j = simOutput->DO[h][i];
 	      int variable = j;
 #ifdef QSS_PARALLEL
-	      if (lp->oMap[j] != NOT_ASSIGNED)
+	      if (lp->oMap[j] > NOT_ASSIGNED)
 		{
 		  variable = lp->oMap[j];
 		  ST_PAR_writeOutvar (output, simData, simTime, simOutput, j, variable);

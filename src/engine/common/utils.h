@@ -57,17 +57,24 @@
 /**
  *
  */
-#define NOT_ASSIGNED -1
+#define ASSIGNED -1
 
 /**
  *
  */
-#define ASSIGNED -2
+#define NOT_ASSIGNED -2
+
+/**
+ *
+ */
+#define ASSIGNED_INPUT -3
+
 
 /**
  *
  */
 #define NOT_EQUAL -1
+
 
 /**
  *
@@ -619,8 +626,13 @@ struct IBX_inbox_
 {
   IBX_message *messages; //!<
   IBX_message *orderedMessages; //!<
+  IBX_message *waiting; //!<
+  BIT_vector waitingMessage; //!<
+  BIT_vector waitingAck; //!<
   BIT_vector received; //!<
   pthread_mutex_t receivedMutex; //!<
+  int *qMap;
+  int states;
   int head; //!<
   int tail; //!<
   int size; //!<
@@ -647,7 +659,7 @@ struct MLB_mailbox_
  * @return
  */
 IBX_inbox
-IBX_Inbox(int states, int ack);
+IBX_Inbox(int states, int ack, int *qMap);
 
 /**
  *
@@ -663,7 +675,7 @@ IBX_freeInbox(IBX_inbox inbox);
  * @param message
  */
 void
-IBX_add(IBX_inbox inbox, int from, IBX_message message);
+IBX_add (MLB_mailbox mailbox, IBX_inbox inbox, int from, int to, IBX_message message);
 
 /**
  *

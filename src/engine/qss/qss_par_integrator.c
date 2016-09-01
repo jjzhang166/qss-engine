@@ -118,7 +118,7 @@ QSS_PAR_externalEvent (QSS_simulator simulator, IBX_message message)
       for (i = 0; i < nSD; i++)
 	{
 	  j = SD[index][i];
-	  if (qMap[j] != NOT_ASSIGNED)
+	  if (qMap[j] > NOT_ASSIGNED)
 	    {
 	      elapsed = t - tx[j];
 	      infCf0 = j * coeffs;
@@ -137,7 +137,7 @@ QSS_PAR_externalEvent (QSS_simulator simulator, IBX_message message)
 	  for (i = 0; i < nSZ; i++)
 	    {
 	      j = SZ[index][i];
-	      if (eMap[j] != NOT_ASSIGNED)
+	      if (eMap[j] > NOT_ASSIGNED)
 		{
 		  FRW_nextEventTime (frw, qssModel, qssData, qssTime, j);
 		}
@@ -157,7 +157,7 @@ QSS_PAR_externalEvent (QSS_simulator simulator, IBX_message message)
 	{
 	  int k, h;
 	  j = event[index].LHSSt[i];
-	  if (qMap[j] != NOT_ASSIGNED)
+	  if (qMap[j] > NOT_ASSIGNED)
 	    {
 	      // Trajectory change for stVars[i].
 	      infCf0 = j * coeffs;
@@ -179,7 +179,7 @@ QSS_PAR_externalEvent (QSS_simulator simulator, IBX_message message)
 	      for (h = 0; h < nSD; h++)
 		{
 		  k = qssData->SD[j][h];
-		  if (qMap[k] != NOT_ASSIGNED)
+		  if (qMap[k] > NOT_ASSIGNED)
 		    {
 		      infCf0 = k * coeffs;
 		      elapsed = t - tx[k];
@@ -198,7 +198,7 @@ QSS_PAR_externalEvent (QSS_simulator simulator, IBX_message message)
 	      for (h = 0; h < nSZ; h++)
 		{
 		  k = qssData->SZ[j][h];
-		  if (eMap[k] != NOT_ASSIGNED)
+		  if (eMap[k] > NOT_ASSIGNED)
 		    {
 		      FRW_nextEventTime (frw, qssModel, qssData, qssTime, k);
 		    }
@@ -209,7 +209,7 @@ QSS_PAR_externalEvent (QSS_simulator simulator, IBX_message message)
       for (i = 0; i < nHZ; i++)
 	{
 	  j = HZ[index][i];
-	  if (eMap[j] != NOT_ASSIGNED)
+	  if (eMap[j] > NOT_ASSIGNED)
 	    {
 	      FRW_nextEventTime (frw, qssModel, qssData, qssTime, j);
 	    }
@@ -218,7 +218,7 @@ QSS_PAR_externalEvent (QSS_simulator simulator, IBX_message message)
       for (i = 0; i < nHD; i++)
 	{
 	  j = HD[index][i];
-	  if (qMap[j] != NOT_ASSIGNED)
+	  if (qMap[j] > NOT_ASSIGNED)
 	    {
 	      elapsed = t - tx[j];
 	      infCf0 = j * coeffs;
@@ -321,7 +321,7 @@ QSS_PAR_internalEvent (QSS_simulator simulator)
 	for (i = 0; i < nSD; i++)
 	  {
 	    j = SD[index][i];
-	    if (qMap[j] != NOT_ASSIGNED)
+	    if (qMap[j] > NOT_ASSIGNED)
 	      {
 		elapsed = t - tx[j];
 		infCf0 = j * coeffs;
@@ -345,7 +345,7 @@ QSS_PAR_internalEvent (QSS_simulator simulator)
 	    for (i = 0; i < nSZ; i++)
 	      {
 		j = qssData->SZ[index][i];
-		if (eMap[j] != NOT_ASSIGNED)
+		if (eMap[j] > NOT_ASSIGNED)
 		  {
 		    FRW_nextEventTime (frw, qssModel, qssData, qssTime, j);
 		  }
@@ -440,7 +440,7 @@ QSS_PAR_internalEvent (QSS_simulator simulator)
 		  {
 		    j = event[index].LHSSt[i];
 		    infCf0 = j * coeffs;
-		    if (qMap[j] != NOT_ASSIGNED)
+		    if (qMap[j] > NOT_ASSIGNED)
 		      {
 			x[infCf0] = tmp1[infCf0];
 			tx[j] = t;
@@ -479,7 +479,7 @@ QSS_PAR_internalEvent (QSS_simulator simulator)
 		for (i = 0; i < nLHSSt; i++)
 		  {
 		    j = event[index].LHSSt[i];
-		    if (qMap[j] != NOT_ASSIGNED)
+		    if (qMap[j] > NOT_ASSIGNED)
 		      {
 			QA_nextTime (quantizer, j, t, nextStateTime, x, lqu);
 			int k, h;
@@ -488,7 +488,7 @@ QSS_PAR_internalEvent (QSS_simulator simulator)
 			for (h = 0; h < nSD; h++)
 			  {
 			    k = SD[j][h];
-			    if (qMap[k] != NOT_ASSIGNED)
+			    if (qMap[k] > NOT_ASSIGNED)
 			      {
 				elapsed = t - tx[k];
 				infCf0 = k * coeffs;
@@ -524,7 +524,7 @@ QSS_PAR_internalEvent (QSS_simulator simulator)
 		for (i = 0; i < nHZ; i++)
 		  {
 		    j = HZ[index][i];
-		    if (j != index && eMap[j] != NOT_ASSIGNED)
+		    if (j != index && eMap[j] > NOT_ASSIGNED)
 		      {
 			FRW_nextEventTime (frw, qssModel, qssData, qssTime, j);
 		      }
@@ -534,7 +534,7 @@ QSS_PAR_internalEvent (QSS_simulator simulator)
 		for (i = 0; i < nHD; i++)
 		  {
 		    j = HD[index][i];
-		    if (qMap[j] != NOT_ASSIGNED)
+		    if (qMap[j] > NOT_ASSIGNED)
 		      {
 			elapsed = t - tx[j];
 			if (elapsed > 0)
@@ -783,7 +783,7 @@ QSS_PAR_integrator (QSS_simulator simulator)
 		for (i = 0; i < nSD; i++)
 		  {
 		    j = SD[index][i];
-		    if (qMap[j] != NOT_ASSIGNED)
+		    if (qMap[j] > NOT_ASSIGNED)
 		      {
 			elapsed = t - tx[j];
 			infCf0 = j * coeffs;
@@ -809,7 +809,7 @@ QSS_PAR_integrator (QSS_simulator simulator)
 		    for (i = 0; i < nSZ; i++)
 		      {
 			j = qssData->SZ[index][i];
-			if (eMap[j] != NOT_ASSIGNED)
+			if (eMap[j] > NOT_ASSIGNED)
 			  {
 			    FRW_nextEventTime (frw, qssModel, qssData, qssTime,
 					       j);
@@ -918,7 +918,7 @@ QSS_PAR_integrator (QSS_simulator simulator)
 			  {
 			    j = event[index].LHSSt[i];
 			    infCf0 = j * coeffs;
-			    if (qMap[j] != NOT_ASSIGNED)
+			    if (qMap[j] > NOT_ASSIGNED)
 			      {
 				x[infCf0] = tmp1[infCf0];
 				tx[j] = t;
@@ -959,7 +959,7 @@ QSS_PAR_integrator (QSS_simulator simulator)
 			for (i = 0; i < nLHSSt; i++)
 			  {
 			    j = event[index].LHSSt[i];
-			    if (qMap[j] != NOT_ASSIGNED)
+			    if (qMap[j] > NOT_ASSIGNED)
 			      {
 				QA_nextTime (quantizer, j, t, nextStateTime, x,
 					     lqu);
@@ -969,7 +969,7 @@ QSS_PAR_integrator (QSS_simulator simulator)
 				for (h = 0; h < nSD; h++)
 				  {
 				    k = SD[j][h];
-				    if (qMap[k] != NOT_ASSIGNED)
+				    if (qMap[k] > NOT_ASSIGNED)
 				      {
 					elapsed = t - tx[k];
 					infCf0 = k * coeffs;
@@ -1010,7 +1010,7 @@ QSS_PAR_integrator (QSS_simulator simulator)
 			for (i = 0; i < nHZ; i++)
 			  {
 			    j = HZ[index][i];
-			    if (j != index && eMap[j] != NOT_ASSIGNED)
+			    if (j != index && eMap[j] > NOT_ASSIGNED)
 			      {
 				FRW_nextEventTime (frw, qssModel, qssData,
 						   qssTime, j);
@@ -1021,7 +1021,7 @@ QSS_PAR_integrator (QSS_simulator simulator)
 			for (i = 0; i < nHD; i++)
 			  {
 			    j = HD[index][i];
-			    if (qMap[j] != NOT_ASSIGNED)
+			    if (qMap[j] > NOT_ASSIGNED)
 			      {
 				elapsed = t - tx[j];
 				if (elapsed > 0)

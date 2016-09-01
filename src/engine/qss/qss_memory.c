@@ -48,7 +48,7 @@ M_init (LG_log log, QSS_data simData, SD_output simOutput)
       for (i = 0; i < size; i++)
 	{
 #ifdef QSS_PARALLEL
-	  if (simData->lp->oMap[i] == NOT_ASSIGNED)
+	  if (simData->lp->oMap[i] <= NOT_ASSIGNED)
 	    {
 	      continue;
 	    }
@@ -162,7 +162,7 @@ M_toFile (LG_log log)
       for (i = 0; i < outputs; i++)
 	{
 #ifdef QSS_PARALLEL
-	  if (log->state->data->lp->oMap[i] == NOT_ASSIGNED)
+	  if (log->state->data->lp->oMap[i] <= NOT_ASSIGNED)
 	    {
 	      continue;
 	    }

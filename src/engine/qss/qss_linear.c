@@ -44,7 +44,7 @@ LN_init (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
   for (j = 0; j < states; j++)
     {
 #ifdef QSS_PARALLEL
-      if (lp->qInMap[j] != NOT_ASSIGNED)
+      if (lp->qInMap[j] > NOT_ASSIGNED)
 	{
 #endif
       if (simTime->nextStateTime[j] < minVar)
@@ -60,7 +60,7 @@ LN_init (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
   for (j = 0; j < events; j++)
     {
 #ifdef QSS_PARALLEL
-      if (lp->eInMap[j] != NOT_ASSIGNED)
+      if (lp->eInMap[j] > NOT_ASSIGNED)
 	{
 #endif
       if (simTime->nextEventTime[j] < minEvent)
@@ -86,7 +86,7 @@ LN_init (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
   for (j = 0; j < inputs; j++)
     {
 #ifdef QSS_PARALLEL
-      if (lp->iMap[j] != NOT_ASSIGNED)
+      if (lp->iMap[j] > NOT_ASSIGNED)
 	{
 #endif
       if (simTime->nextInputTime[j] < minEvent)
@@ -134,7 +134,7 @@ LN_update (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
   for (j = 0; j < states; j++)
     {
 #ifdef QSS_PARALLEL
-      if (lp->qInMap[j] != NOT_ASSIGNED)
+      if (lp->qInMap[j] > NOT_ASSIGNED)
 	{
 #endif
       if (simTime->nextStateTime[j] < minVar)
@@ -154,7 +154,7 @@ LN_update (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
 	  for (j = 0; j < events; j++)
 	    {
 #ifdef QSS_PARALLEL
-	      if (lp->eInMap[j] != NOT_ASSIGNED)
+	      if (lp->eInMap[j] > NOT_ASSIGNED)
 		{
 #endif
 	      if (simTime->nextEventTime[j] < minEvent)
@@ -175,7 +175,7 @@ LN_update (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
       for (j = 0; j < events; j++)
 	{
 #ifdef QSS_PARALLEL
-	  if (lp->eInMap[j] != NOT_ASSIGNED)
+	  if (lp->eInMap[j] > NOT_ASSIGNED)
 	    {
 #endif
 	  if (simTime->nextEventTime[j] < minEvent)
@@ -196,7 +196,7 @@ LN_update (SC_scheduler scheduler, QSS_data simData, QSS_time simTime)
       for (j = 0; j < inputs; j++)
 	{
 #ifdef QSS_PARALLEL
-	  if (lp->iMap[j] != NOT_ASSIGNED)
+	  if (lp->iMap[j] > NOT_ASSIGNED)
 	    {
 #endif
 	  if (simTime->nextInputTime[j] < minEvent)

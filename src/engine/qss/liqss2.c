@@ -180,7 +180,7 @@ LIQSS2_recomputeNextTimes (QA_quantizer quantizer, int vars, int *inf, double t,
   for (i = 0; i < vars; i++)
     {
 #ifdef QSS_PARALLEL
-      if (map[inf[i]] != NOT_ASSIGNED)
+      if (map[inf[i]] > NOT_ASSIGNED)
 	{
 #endif
       LIQSS2_recomputeNextTime (quantizer, inf[i], t, nTime, x, lqu, q);

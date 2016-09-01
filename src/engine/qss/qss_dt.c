@@ -211,7 +211,7 @@ DT_ADAPTIVE_DISCRETE_LogStep (QSS_dt dt, double Dq, double Dx, double Dt)
   if (dt->state->time->type == ST_State && dt->state->time->noReinit)
     {
       int index = dt->state->time->minIndex;
-      if (dt->state->qMap[index] != NOT_ASSIGNED && dt->state->dscMap[index] >= 0)
+      if (dt->state->qMap[index] > NOT_ASSIGNED && dt->state->dscMap[index] >= 0)
 	{
 	  DT_ADAPTIVE_logOutput (dt, Dq, Dx, Dt,dt->state->dscMap[index]);
 	}

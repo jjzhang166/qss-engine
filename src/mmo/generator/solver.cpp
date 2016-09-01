@@ -2566,7 +2566,7 @@ string
 MMO_ParallelEngine_::variableMap (string index)
 {
   stringstream buffer;
-  buffer << "if (map[" << index << "] != NOT_ASSIGNED)" << endl << "{";
+  buffer << "if (map[" << index << "] > NOT_ASSIGNED)" << endl << "{";
   return (buffer.str ());
 }
 
