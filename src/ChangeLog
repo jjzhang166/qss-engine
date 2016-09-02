@@ -1,5 +1,7 @@
 2016-09-02  Joaquin  <joaquin.f.fernandez@gmail.com>
 
+	* mmo/generator/solver.cpp
+	(QSS_::_init): Alloc discrete vector for DH matrix in parallel simulations.
 	* engine/common/utils.c
 	(IBX_nextMessage): New message processing policy.
 	(IBX_add): Add waiting list for incoming messages.

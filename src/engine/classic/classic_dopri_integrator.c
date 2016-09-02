@@ -96,7 +96,8 @@ DOPRI_solout (long nr, double xold, double x, double* y, unsigned n, int* irtrn,
         if (fabs(simDataDopri.last_step+simDataDopri.step_size-simDataDopri.final_time)/simDataDopri.step_size < 1)
           break;
         clcData->totalSteps++;
-        for (int i=0;i< simDataDopri.size; i++) 
+        int i;
+        for (i=0;i< simDataDopri.size; i++)
           simDataDopri.temp_x[i] = contd5(i,simDataDopri.last_step+simDataDopri.step_size);
         CLC_save_step (simOutput, simDataDopri.solution,
 		       simDataDopri.solution_time, simDataDopri.last_step+simDataDopri.step_size,

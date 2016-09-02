@@ -1783,6 +1783,12 @@ QSS_::_init ()
   string iTime;
   _writer->print (_engine->prototype (SOL_INIT));
   _writer->beginBlock ();
+  if (!_writer->isEmpty (WR_INIT_LD_DH))
+      {
+        buffer << "int discretes[" << _model->discretes () << "];";
+        _initializeVars[buffer.str ()] = buffer.str ();
+        buffer.str ("");
+      }
   for (map<string, string>::iterator it = _initializeVars.begin ();
       it != _initializeVars.end (); it++)
     {
