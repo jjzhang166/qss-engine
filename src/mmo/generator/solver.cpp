@@ -1313,6 +1313,14 @@ QSS_::initializeMatrices ()
       _writer->write ("}", WR_INIT_EVENT);
     }
   _model->initOutput ();
+  if (!_writer->isEmpty (WR_ALLOC_LD_DH))
+    {
+      buffer << "int *discretes = (int*)malloc(" << _model->discretes ()
+	  << "*sizeof(int));";
+      _initializeVars[buffer.str ()] = buffer.str ();
+      _freeVars["discretes"] = "discretes";
+      buffer.str ("");
+    }
   if (_model->outs ())
     {
       buffer << "int *outputs = (int*)malloc(" << _model->outs ()
@@ -1320,7 +1328,7 @@ QSS_::initializeMatrices ()
       _initializeVars[buffer.str ()] = buffer.str ();
       _freeVars["outputs"] = "outputs";
       buffer.str ("");
-      if (_model->discretes ())
+      if (_model->discretes () && _writer->isEmpty (WR_ALLOC_LD_DH))
 	{
 	  buffer << "int *discretes = (int*)malloc(" << _model->discretes ()
 	      << "*sizeof(int));";
@@ -1783,12 +1791,6 @@ QSS_::_init ()
   string iTime;
   _writer->print (_engine->prototype (SOL_INIT));
   _writer->beginBlock ();
-  if (!_writer->isEmpty (WR_INIT_LD_DH))
-      {
-        buffer << "int discretes[" << _model->discretes () << "];";
-        _initializeVars[buffer.str ()] = buffer.str ();
-        buffer.str ("");
-      }
   for (map<string, string>::iterator it = _initializeVars.begin ();
       it != _initializeVars.end (); it++)
     {
@@ -1864,7 +1866,7 @@ QSS_::_init ()
       _common->printSection ("states", _model->states (),
 			     WR_INIT_STATE_HANDLERS);
       _common->printSection ("events", _model->evs (), WR_INIT_LD_DD);
-      _common->printSection ("discretes", _model->discretes(), WR_INIT_LD_DH);
+      _common->printSection ("discretes", _model->discretes (), WR_INIT_LD_DH);
     }
   _common->printSection ("events", _model->evs (), WR_INIT_EVENT_LHSST);
   _common->printSection ("events", _model->evs (), WR_INIT_EVENT_RHSST);
