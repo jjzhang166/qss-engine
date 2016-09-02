@@ -727,22 +727,6 @@ IBX_ackMessages(IBX_inbox inbox);
 /**
  *
  * @param inbox
- */
-void
-IBX_receiveMessages(IBX_inbox inbox);
-
-/**
- *
- * @param inbox
- * @param mailbox
- * @param id
- */
-void
-IBX_receiveAndAckMessages(IBX_inbox inbox, MLB_mailbox mailbox, int id);
-
-/**
- *
- * @param inbox
  * @return
  */
 double

@@ -801,6 +801,10 @@ IBX_freeInbox (IBX_inbox inbox)
     {
       BIT_freeVector (inbox->waitingMessage);
     }
+  if (inbox->waitingAck != NULL)
+    {
+      BIT_freeVector (inbox->waitingAck);
+    }
   BIT_freeVector (inbox->received);
   pthread_mutex_destroy (&(inbox->receivedMutex));
   free (inbox);
@@ -885,7 +889,8 @@ IBX_receiveAndAckMessages (IBX_inbox inbox, MLB_mailbox mailbox, int id)
       j = BIT_next (inbox->received))
     {
       inbox->orderedMessages[tail] = inbox->messages[j];
-      if (inbox->orderedMessages[tail].type == 0 && inbox->orderedMessages[tail].sendAck != 0)
+      if (inbox->orderedMessages[tail].type == 0
+	  && inbox->orderedMessages[tail].sendAck != 0)
 	{
 	  inbox->orderedMessages[tail].sendAck = 0;
 	  MLB_ack (mailbox, inbox->orderedMessages[tail].from, id);
@@ -908,34 +913,10 @@ IBX_receiveAndAckMessages (IBX_inbox inbox, MLB_mailbox mailbox, int id)
   pthread_mutex_unlock (&(inbox->receivedMutex));
 }
 
-void
-IBX_checkWaitingMessages (IBX_inbox inbox, int index)
-{
-  pthread_mutex_lock (&(inbox->receivedMutex));
-  int l = -(inbox->qMap[index] - ASSIGNED_INPUT);
-  if (inbox->waiting[l].time == INF)
-    {
-      BIT_clear (inbox->waitingMessage, l);
-      pthread_mutex_unlock (&(inbox->receivedMutex));
-      return;
-    }
-  IBX_message m = inbox->waiting[l];
-  inbox->waiting[l].time = INF;
-  int tail = inbox->tail;
-  int size = inbox->size;
-  inbox->orderedMessages[tail] = m;
-  size++;
-  tail++;
-  qsort (inbox->orderedMessages, tail, sizeof(IBX_message), IBX_compare);
-  inbox->size = size;
-  inbox->tail = size;
-  inbox->head = 0;
-  pthread_mutex_unlock (&(inbox->receivedMutex));
-}
-
 IBX_message
 IBX_nextMessage (IBX_inbox inbox)
 {
+  pthread_mutex_lock (&(inbox->receivedMutex));
   int head = inbox->head;
   IBX_message msg = inbox->orderedMessages[head];
   inbox->orderedMessages[head].time = INF;
@@ -944,8 +925,37 @@ IBX_nextMessage (IBX_inbox inbox)
   inbox->size--;
   if (msg.type == 0)
     {
-      IBX_checkWaitingMessages (inbox, msg.index);
+      int l = -(inbox->qMap[msg.index] - ASSIGNED_INPUT);
+      if (inbox->waiting[l].time == INF)
+	{
+	  BIT_clear (inbox->waitingMessage, l);
+	}
+      else
+	{
+	  IBX_message m = inbox->waiting[l];
+	  inbox->waiting[l].time = INF;
+	  int tail = inbox->tail;
+	  int size = inbox->size;
+	  if (BIT_isSet (inbox->waitingAck, l))
+	    {
+	      BIT_clear (inbox->waitingAck, l);
+	      m.sendAck = 1;
+	    }
+	  else
+	    {
+	      m.sendAck = 0;
+	    }
+	  inbox->orderedMessages[tail] = m;
+	  size++;
+	  tail++;
+	  qsort (inbox->orderedMessages, tail, sizeof(IBX_message),
+		 IBX_compare);
+	  inbox->size = size;
+	  inbox->tail = size;
+	  inbox->head = 0;
+	}
     }
+  pthread_mutex_unlock (&(inbox->receivedMutex));
   return (msg);
 }
 

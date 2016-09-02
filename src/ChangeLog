@@ -1,3 +1,12 @@
+2016-09-02  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/common/utils.c
+	(IBX_nextMessage): New message processing policy.
+	(IBX_add): Add waiting list for incoming messages.
+	(IBX_Inbox):New message processing policy. 
+
+	(IBX_receiveAndAckMessages): New message processing policy.
+
 2016-08-26  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* gui/mmomegui.cpp
