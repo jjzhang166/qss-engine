@@ -19,6 +19,8 @@
 
 #include "graph.h"
 
+#include <iostream>
+
 Graph::Graph (int states, int events) :
     _states (states), _events (events), _graphEdges (0), _graph (), _graphInputs (), _graphDiscretes (), _hyperGraph (), _wmap (), _hwmap ()
 {
@@ -72,13 +74,14 @@ Graph::edgeWeight (int node)
 int
 Graph::graphEdgeWeight (int node)
 {
-  int w = edgeWeight (node);
-  if (w == 0)
+  int w = 1;
+  if (_wmap[node].find (node + 1) != _wmap[node].end ())
     {
-      if (_wmap[node].find (node + 1) != _wmap[node].end ())
-	{
-	  w = GRP_Weight (_profile, GRP_VIRT) * nodeWeight (node);
-	}
+      w = GRP_Weight (_profile, GRP_VIRT) * nodeWeight (node);
+    }
+  else
+    {
+      w = edgeWeight (node);
     }
   return (w);
 }
@@ -86,13 +89,14 @@ Graph::graphEdgeWeight (int node)
 int
 Graph::hyperGraphEdgeWeight (int node)
 {
-  int w = edgeWeight (node);
-  if (w == 0)
+  int w = 1;
+  if (_hwmap[node].find (node + 1) != _hwmap[node].end ())
     {
-      if (_hwmap[node].find (node + 1) != _hwmap[node].end ())
-	{
-	  w = GRP_Weight (_profile, GRP_VIRT) * nodeWeight (node);
-	}
+      w = GRP_Weight (_profile, GRP_VIRT) * nodeWeight (node);
+    }
+  else
+    {
+      w = edgeWeight (node);
     }
   return (w);
 }
@@ -100,15 +104,15 @@ Graph::hyperGraphEdgeWeight (int node)
 void
 Graph::connectGraphs ()
 {
-  int i, nvtxs = _states + _events;
+  int i, nvtxs = _states + _events - 1;
   for (i = 0; i < nvtxs; i++)
     {
-      if (_graph[i].find (i + 1) == _graph[i].end () && i < nvtxs - 1)
+      if (_graph[i].find (i + 1) == _graph[i].end ())
 	{
 	  _graph[i].insert (i + 1);
 	  _wmap[i].insert (i + 1);
 	}
-      if (_hyperGraph[i].find (i + 1) == _hyperGraph[i].end () && i < nvtxs - 1)
+      if (_hyperGraph[i].find (i + 1) == _hyperGraph[i].end ())
 	{
 	  _hyperGraph[i].insert (i + 1);
 	  _hwmap[i].insert (i + 1);
