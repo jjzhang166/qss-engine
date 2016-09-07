@@ -2689,6 +2689,17 @@ SolverCommon_::addModelDeps (Dependencies deps, Index state, Index infIndex,
   modelDeps->insert (state, d);
 }
 
+int
+SolverCommon_::getNodeWeight (Index e, NOD_Type type)
+{
+  if (type == NOD_SD || type == NOD_SZ)
+    {
+      return (0);
+    }
+  MMO_Event ev = _model->events ()->lookup (e);
+  return (ev->deps ()->discretes ());
+}
+
 void
 SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
 {
@@ -2703,6 +2714,7 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
       return;
     }
   int rowOffset = 0, colOffset = 0;
+  int nodeWeight = getNodeWeight (row, type);
   if (type == NOD_HD)
     {
       rowOffset = offset;
@@ -2732,6 +2744,8 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
 					col.mappedValue (i) + colOffset);
 	      _graph.addHyperGraphEdge (row.mappedValue (i) + rowOffset,
 					row.mappedValue (i) + rowOffset);
+	      _graph.addNodeWeight (row.mappedValue (i) + rowOffset,
+				    nodeWeight);
 	    }
 	}
     }
@@ -2748,6 +2762,7 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
 				    col.mappedValue () + colOffset);
 	  _graph.addHyperGraphEdge (row.mappedValue () + rowOffset,
 				    row.mappedValue () + rowOffset);
+	  _graph.addNodeWeight (row.mappedValue () + rowOffset, nodeWeight);
 	}
     }
 }

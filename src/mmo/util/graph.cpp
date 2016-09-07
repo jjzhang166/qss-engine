@@ -20,10 +20,9 @@
 #include "graph.h"
 
 Graph::Graph (int states, int events) :
-     _states (states), _events (events),_graphEdges (
-	0), _graph (), _hyperGraph (),_wmap (), _hwmap ()
+    _states (states), _events (events), _graphEdges (0), _graph (), _graphInputs (), _graphDiscretes (), _hyperGraph (), _wmap (), _hwmap ()
 {
-  _profile = GRP_GraphProfile();
+  _profile = GRP_GraphProfile ();
 }
 
 Graph::~Graph ()
@@ -46,6 +45,7 @@ void
 Graph::addGraphEdge (int orig, int dest)
 {
   _graph[orig].insert (dest);
+  _graphInputs[dest].insert (orig);
 }
 
 void
@@ -55,38 +55,44 @@ Graph::addHyperGraphEdge (int orig, int dest)
 }
 
 int
-Graph::graphEdgeWeight (int node, int edge)
+Graph::edgeWeight (int node)
 {
-  int w = 10;
+  int w = 0;
   if (node < _states)
     {
-      if (edge >= _states)
-        {
-          w = 100;
-        }
+      w = GRP_Weight (_profile, GRP_CONT) * nodeWeight (node);
     }
   else
     {
-      w = 100;
-    }
-  if (_wmap[node].find (node + 1) != _wmap[node].end ())
-    {
-      w = 1;
+      w = GRP_Weight (_profile, GRP_DSC) * nodeWeight (node);
     }
   return (w);
 }
 
 int
-Graph::hyperGraphEdgeWeight (int node, int edge)
+Graph::graphEdgeWeight (int node)
 {
-  int w = 10;
-  if (node >= _states)
-	{
-	  w = 100;
-	}
-  if (_hwmap[node].find(node+1) != _hwmap[node].end())
+  int w = edgeWeight (node);
+  if (w == 0)
     {
-      w = 1;
+      if (_wmap[node].find (node + 1) != _wmap[node].end ())
+	{
+	  w = GRP_Weight (_profile, GRP_VIRT) * nodeWeight (node);
+	}
+    }
+  return (w);
+}
+
+int
+Graph::hyperGraphEdgeWeight (int node)
+{
+  int w = edgeWeight (node);
+  if (w == 0)
+    {
+      if (_hwmap[node].find (node + 1) != _hwmap[node].end ())
+	{
+	  w = GRP_Weight (_profile, GRP_VIRT) * nodeWeight (node);
+	}
     }
   return (w);
 }
@@ -126,11 +132,26 @@ Graph::graphNodeEdges (int node)
 int
 Graph::hyperGraphEdges ()
 {
-  return (_hyperGraph.size());
+  return (_hyperGraph.size ());
 }
 
 bool
 Graph::empty ()
 {
   return (_graph.empty ());
+}
+
+int
+Graph::nodeWeight (int node)
+{
+  return (_graphInputs[node].size () * 100 + _graphDiscretes[node] * 100);
+}
+
+void
+Graph::addNodeWeight (int node, int weight)
+{
+  if (node >= _states)
+    {
+      _graphDiscretes[node] = weight;
+    }
 }

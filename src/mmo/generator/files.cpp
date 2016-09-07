@@ -373,8 +373,8 @@ MMO_Files_::settings (MMO_Annotation annotation)
 void
 MMO_Files_::graph ()
 {
-  Graph g = _solver->graph();
-  if (g.empty())
+  Graph g = _solver->graph ();
+  if (g.empty ())
     {
       return;
     }
@@ -385,12 +385,15 @@ MMO_Files_::graph ()
   string tmp3FileName = _fname + ".tmp3";
   string wFileName = _fname + ".eweights";
   string hwFileName = _fname + ".heweights";
+  string nwFileName = _fname + ".vweights";
   ofstream matrix (fileName.c_str (), ios::out | ios::binary);
   matrix.seekp (0);
   ofstream wMatrix (wFileName.c_str (), ios::out | ios::binary);
   wMatrix.seekp (0);
   ofstream hwMatrix (hwFileName.c_str (), ios::out | ios::binary);
   hwMatrix.seekp (0);
+  ofstream nwMatrix (nwFileName.c_str (), ios::out | ios::binary);
+  nwMatrix.seekp (0);
   ofstream tmp1 (tmp1FileName.c_str (), ios::out | ios::binary);
   tmp1.seekp (0);
   ofstream tmp2 (tmp2FileName.c_str (), ios::out | ios::binary);
@@ -399,16 +402,16 @@ MMO_Files_::graph ()
   tmp3.seekp (0);
   int nvtxs = _model->evs () + _model->states ();
   int w;
-  g.connectGraphs();
+  g.connectGraphs ();
   int i, size = 0;
   for (i = 0; i < nvtxs; i++)
     {
-      size += g.graphNodeEdges(i);
+      size += g.graphNodeEdges (i);
       matrix.write ((char*) &size, sizeof(int));
     }
-  int hedges = g.hyperGraphEdges();
-  map<int,set<int> > graph = g.graph();
-  map<int,set<int> > hGraph = g.hyperGraph();
+  int hedges = g.hyperGraphEdges ();
+  map<int, set<int> > graph = g.graph ();
+  map<int, set<int> > hGraph = g.hyperGraph ();
   for (i = 0; i < nvtxs; i++)
     {
       set<int>::iterator it;
@@ -416,9 +419,11 @@ MMO_Files_::graph ()
 	{
 	  int inf = *it;
 	  matrix.write ((char*) &inf, sizeof(int));
-	  w = g.graphEdgeWeight(i, inf);
+	  w = g.graphEdgeWeight (i);
 	  wMatrix.write ((char*) &w, sizeof(int));
 	}
+      w = g.nodeWeight (i);
+      nwMatrix.write ((char*) &w, sizeof(int));
     }
   size = 0;
   tmp1.write ((char*) &hedges, sizeof(int));
@@ -429,7 +434,7 @@ MMO_Files_::graph ()
 	{
 	  int inf = *it;
 	  tmp2.write ((char*) &inf, sizeof(int));
-          w = g.hyperGraphEdgeWeight(i,inf);
+	  w = g.hyperGraphEdgeWeight (i);
 	  hwMatrix.write ((char*) &w, sizeof(int));
 	}
       if (!hGraph[i].empty ())
@@ -441,7 +446,7 @@ MMO_Files_::graph ()
     }
   matrix.close ();
   wMatrix.close ();
-  hwMatrix.close();
+  hwMatrix.close ();
   tmp1.close ();
   tmp2.close ();
   tmp3.close ();

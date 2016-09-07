@@ -698,6 +698,11 @@ public:
    */
   void
   settings ();
+  /**
+   *
+   */
+  int
+  getNodeWeight(Index e, NOD_Type type);
 private:
   MMO_Model _model;
   MMO_CompileFlags _flags;

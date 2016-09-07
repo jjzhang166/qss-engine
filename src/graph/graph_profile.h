@@ -20,6 +20,13 @@
 #ifndef GRAPH_GRAPH_PROFILE_H_
 #define GRAPH_GRAPH_PROFILE_H_
 
+typedef enum
+{
+  GRP_CONT,
+  GRP_DSC,
+  GRP_VIRT
+} GRP_EdgeType;
+
 /**
  *
  */
@@ -41,8 +48,8 @@ typedef struct GRP_graphProfile_ *GRP_graphProfile;
  * @param
  * @param
  */
-typedef int
-(*GRP_graphProfileWeight) (GRP_graphProfile, int, int);
+typedef double
+(*GRP_graphProfileWeight) (GRP_graphProfile, GRP_EdgeType);
 
 /**
  *
@@ -59,6 +66,9 @@ struct GRP_graphProfileState_
 {
   int states; //!<
   int events; //!<
+  double contEdgeWeight;
+  double dscEdgeWeight;
+  double virtEdgeWeight;
 };
 
 /**
@@ -113,8 +123,8 @@ GRP_GraphProfileState ();
 void
 GRP_freeGraphProfileState (GRP_graphProfileState state);
 
-int
-GRP_Weight (GRP_graphProfile g, int node, int edge);
+double
+GRP_Weight (GRP_graphProfile g, GRP_EdgeType type);
 
 
 #endif /* GRAPH_GRAPH_PROFILE_H_ */

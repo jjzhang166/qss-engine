@@ -44,6 +44,15 @@ then
 fi
 
 if [ "$PARALLEL" == "true" ]; then
+	if [[ -e ${FILE}.vwgts ]];
+	then
+  	cp ${FILE}.vwgts ${FILE}.vweights
+	else
+		if [[ -e $MMOC_BUILD/$FILE/${FILE}.vweights ]];
+		then
+			cp $MMOC_BUILD/$FILE/${FILE}.vweights . 
+		fi
+	fi
 	if [[ -e ${FILE}.ewgts ]];
 	then
   	cp ${FILE}.ewgts ${FILE}.eweights

@@ -22,9 +22,21 @@
 #include "graph_profile.h"
 
 
-int
-GRP_nodeWeight (GRP_graphProfile g, int node, int edge)
+double
+GRP_nodeWeight (GRP_graphProfile g, GRP_EdgeType type)
 {
+  if (type == GRP_CONT)
+    {
+      return (g->state->contEdgeWeight);
+    }
+  else if (type == GRP_DSC)
+    {
+      return (g->state->dscEdgeWeight);
+    }
+  else
+    {
+      return (g->state->virtEdgeWeight);
+    }
   return (0);
 }
 
@@ -65,6 +77,9 @@ GRP_GraphProfileState ()
   GRP_graphProfileState p = malloc (sizeof(*p));
   p->states = 0;
   p->events = 0;
+  p->contEdgeWeight = 1;
+  p->dscEdgeWeight = 1;
+  p->virtEdgeWeight = 1;
   return (p);
 }
 
@@ -74,9 +89,9 @@ GRP_freeGraphProfileState (GRP_graphProfileState state)
   free (state);
 }
 
-int
-GRP_Weight (GRP_graphProfile g, int node, int edge)
+double
+GRP_Weight (GRP_graphProfile g, GRP_EdgeType type)
 {
-  return (g->ops->weight(g, node, edge));
+  return (g->ops->weight(g, type));
 }
 

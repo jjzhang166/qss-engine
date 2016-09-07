@@ -67,14 +67,11 @@ QSS_generateWeights (QSS_simulator simulator)
 	{
 	  int *xadj = NULL, *adjncy = NULL, *hevars = NULL, edges = 0;
 	  char fileName[256];
-	  strcpy (fileName, simulator->output->name);
-	  strcat (fileName, ".vweights");
+	  sprintf(fileName,"%s.vwgts",simulator->output->name);
 	  vweights = fopen (fileName, "wb");
-	  strcpy (fileName, simulator->output->name);
-	  strcat (fileName, ".ewgts");
+	  sprintf(fileName,"%s.ewgts",simulator->output->name);
 	  eweights = fopen (fileName, "wb");
-	  strcpy (fileName, simulator->output->name);
-	  strcat (fileName, ".hewgts");
+	  sprintf(fileName,"%s.hewgts",simulator->output->name);
 	  heweights = fopen (fileName, "wb");
 	  int states = simulator->data->states;
 	  int events = simulator->data->events;

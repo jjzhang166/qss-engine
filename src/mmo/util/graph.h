@@ -75,7 +75,7 @@ public:
    * @return
    */
   int
-  graphEdgeWeight (int node, int edge);
+  graphEdgeWeight (int node);
   /**
    *
    * @param node
@@ -83,7 +83,7 @@ public:
    * @return
    */
   int
-  hyperGraphEdgeWeight (int node, int edge);
+  hyperGraphEdgeWeight (int node);
   /**
    *
    */
@@ -114,11 +114,25 @@ public:
    */
   int
   hyperGraphEdges();
+  /**
+   *
+   */
+  int
+  nodeWeight(int node);
+  /**
+   *
+   */
+  void
+  addNodeWeight(int node, int weight);
 private:
+  int
+  edgeWeight(int node);
   int _states;
   int _events;
   int _graphEdges;
   map<int,set<int> > _graph;
+  map<int,set<int> > _graphInputs;
+  map<int,int> _graphDiscretes;
   map<int,set<int> > _hyperGraph;
   map<int, set<int> > _wmap;
   map<int, set<int> > _hwmap;
