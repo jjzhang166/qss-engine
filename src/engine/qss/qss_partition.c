@@ -229,6 +229,7 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 	    PaToH_Initialize_Parameters (&args, PATOH_CONPART,
 					 PATOH_SUGPARAM_DEFAULT);
 	    args._k = nparts;
+	    args.crs_alg = PATOH_CRS_HCM;
 	    partweights = (int *) malloc (args._k * nconst * sizeof(int));
 	    PaToH_Alloc (&args, nvtxs, edges, nconst, vwgt, ewgt, xadj, adjncy);
 	    PaToH_Part (&args, nvtxs, edges, nconst, 0, vwgt, ewgt, xadj,
