@@ -130,6 +130,7 @@ private:
   int _states;
   int _events;
   int _graphEdges;
+  int _maxNode;
   map<int,set<int> > _graph;
   map<int,set<int> > _graphInputs;
   map<int,int> _graphDiscretes;

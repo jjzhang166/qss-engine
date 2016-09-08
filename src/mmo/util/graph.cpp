@@ -22,7 +22,7 @@
 #include <iostream>
 
 Graph::Graph (int states, int events) :
-    _states (states), _events (events), _graphEdges (0), _graph (), _graphInputs (), _graphDiscretes (), _hyperGraph (), _wmap (), _hwmap ()
+    _states (states), _events (events), _graphEdges (0), _maxNode (0), _graph (), _graphInputs (), _graphDiscretes (), _hyperGraph (), _wmap (), _hwmap ()
 {
   _profile = GRP_GraphProfile ();
 }
@@ -48,6 +48,10 @@ Graph::addGraphEdge (int orig, int dest)
 {
   _graph[orig].insert (dest);
   _graphInputs[dest].insert (orig);
+  if (_graphInputs[dest].size() > _maxNode)
+    {
+      _maxNode = _graphInputs[dest].size();
+    }
 }
 
 void
@@ -148,7 +152,7 @@ Graph::empty ()
 int
 Graph::nodeWeight (int node)
 {
-  return (_graphInputs[node].size () * 100 + _graphDiscretes[node] * 100);
+  return ((_graphInputs[node].size () + _graphDiscretes[node]) * 100);
 }
 
 void
@@ -157,5 +161,9 @@ Graph::addNodeWeight (int node, int weight)
   if (node >= _states)
     {
       _graphDiscretes[node] = weight;
+      if (_graphInputs[node].size() + weight > _maxNode)
+	{
+	  _maxNode = _graphInputs[node].size() + weight;
+	}
     }
 }

@@ -304,7 +304,7 @@ private:
   _indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 		     map<int, int> *simpleMatrixDeps, WR_Section alloc,
 		     WR_Section init, string allocStr, string initStr,
-		     string counter, Intersection intersection);
+		     string counter, Intersection intersection, int assignments);
   void
   _eventVectorDependencies (Index index, Dependencies deps, WR_Section alloc,
 			   WR_Section init, string allocString,
@@ -685,7 +685,7 @@ public:
    * @param type
    */
   void
-  graphInsert(Index row, Index col, int offset = 0, NOD_Type type = NOD_SD);
+  graphInsert(Index row, Index col, int offset = 0, NOD_Type type = NOD_SD, int assignments = 0);
   /**
    *
    * @return
@@ -698,11 +698,6 @@ public:
    */
   void
   settings ();
-  /**
-   *
-   */
-  int
-  getNodeWeight(Index e, NOD_Type type);
 private:
   MMO_Model _model;
   MMO_CompileFlags _flags;

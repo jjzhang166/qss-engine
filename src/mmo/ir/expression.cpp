@@ -1273,8 +1273,17 @@ MMO_ReplaceInterval_::foldTraverseElement (AST_Expression exp)
 		  }
 		else
 		  {
+		    if (range[1] > 0)
+		      {
 		    _setIndex (range[0] - vi->index ().low () - 1, range[1],
 			       (range[2] - range[0]) / range[1] + 1, vi);
+		      }
+		    else
+		      {
+			Error::getInstance ()->add (
+					    exp->lineNum (), EM_IR | EM_FOR_DEF, ER_Fatal,
+					    "Range interval not valid");
+		      }
 		    ret->append (
 			newAST_String (cr->name ()),
 			newAST_SimpleList (

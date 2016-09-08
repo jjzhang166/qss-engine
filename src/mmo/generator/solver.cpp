@@ -201,7 +201,7 @@ bool
 QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 			  map<int, int> *simpleMatrixDeps, WR_Section alloc,
 			  WR_Section init, string allocStr, string initStr,
-			  string counter, Intersection intersection)
+			  string counter, Intersection intersection, int assignments)
 {
   stringstream buffer;
   string indent = _writer->indent (1);
@@ -263,7 +263,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 		  for (int i = infIdx.begin (); i < infIdx.end (); i++)
 		    {
 		      Index insertIdx = inf.indexValue (i);
-		      _common->graphInsert (st, insertIdx, nodOffset, nt);
+		      _common->graphInsert (st, insertIdx, nodOffset, nt, assignments);
 		    }
 		}
 	    }
@@ -283,7 +283,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 		  inf.setOffset (inf.offset () - infIdx.begin ());
 		  Index st (idx);
 		  st.setOffset (0);
-		  _common->graphInsert (st, inf, nodOffset, nt);
+		  _common->graphInsert (st, inf, nodOffset, nt, assignments);
 		}
 	    }
 	}
@@ -312,7 +312,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 		    {
 		      Index insertIdx = inf.indexValue (i);
 		      Index st = idx.indexValue (nIdx);
-		      _common->graphInsert (st, insertIdx, nodOffset, nt);
+		      _common->graphInsert (st, insertIdx, nodOffset, nt, assignments);
 		    }
 		}
 	    }
@@ -326,7 +326,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 		  Index inf (infIdx);
 		  inf.setOffset (inf.offset ());
 		  Index st (idx);
-		  _common->graphInsert (st, inf, nodOffset, nt);
+		  _common->graphInsert (st, inf, nodOffset, nt, assignments);
 		}
 	    }
 	  map<int, int>::iterator smd = simpleMatrixDeps->find (nIdx);
@@ -372,7 +372,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 	    st.setOffset (0);
 	    st.setLow (begin + 1);
 	    st.setHi (begin + infDIdx->range ());
-	    _common->graphInsert (st, inf, nodOffset, nt);
+	    _common->graphInsert (st, inf, nodOffset, nt, assignments);
 	  }
       }
       break;
@@ -405,7 +405,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 		inf.offset () - dIdx->offset () + infIdx.mappedBegin ());
 	    Index st (idx);
 	    st.setOffset (0);
-	    _common->graphInsert (st, inf, nodOffset, nt);
+	    _common->graphInsert (st, inf, nodOffset, nt, assignments);
 	  }
       }
       break;
@@ -440,7 +440,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 	    st.setHi (
 		idx.mappedBegin () + dIdx->lowValue () - infDIdx->hiValue ()
 		    + 1);
-	    _common->graphInsert (st, inf, nodOffset, nt);
+	    _common->graphInsert (st, inf, nodOffset, nt, assignments);
 	  }
       }
       break;
@@ -469,7 +469,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 	    Index st (idx);
 	    st.setOffset (0);
 	    st.setLow (begin + 1);
-	    _common->graphInsert (st, inf, nodOffset, nt);
+	    _common->graphInsert (st, inf, nodOffset, nt, assignments);
 	  }
       }
       break;
@@ -485,7 +485,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 	  {
 	    Index st = idx.indexValue (loc + 1);
 	    st.setOffset (0);
-	    _common->graphInsert (st, infIdx, nodOffset, nt);
+	    _common->graphInsert (st, infIdx, nodOffset, nt, assignments);
 	  }
       }
       break;
@@ -500,7 +500,9 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
   string indent = _writer->indent (1);
   stringstream buffer;
   Dependencies deps = e->lhs ();
+  int assignments = deps->discretes();
   map<int, int> simpleZCNDeps;
+  map<int, int> simpleDDDependencies;
   for (Index *hndIdx = deps->begin (type); !deps->end (type);
       hndIdx = deps->next (type))
     {
@@ -523,7 +525,7 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
 	      _indexDependencies (index, hndIdx, ecIndex, zcIdx, &simpleZCNDeps,
 				  WR_ALLOC_LD_HZ, WR_INIT_LD_HZ,
 				  "modelData->nHZ", "modelData->HZ", "events",
-				  is);
+				  is, assignments);
 	    }
 	  if (_parallel && type == DEP_DISCRETE)
 	    {
@@ -540,15 +542,24 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
 		  if (is.type () != IDX_DISJOINT)
 		    {
 		      events[ecIndex] = ecIndex;
-		      _hasDD = true;
+		      if (hndIdx->hasRange())
+			{
+		          _hasDD = true;
+			}
 		    }
 		  _indexDependencies (index, hndIdx, ecIndex, hdIdx,
-				      &simpleZCNDeps, WR_ALLOC_LD_DD,
+				      &simpleDDDependencies, WR_ALLOC_LD_DD,
 				      WR_INIT_LD_DD, "modelData->nDD",
-				      "modelData->DD", "events", is);
+				      "modelData->DD", "events", is, assignments);
 		}
 	    }
 	}
+    }
+  for (map<int, int>::iterator it = simpleDDDependencies.begin ();
+      it != simpleDDDependencies.end (); it++)
+    {
+      buffer << "modelData->nDD[" << it->first << "] += " << it->second << ";";
+      _writer->write (&buffer, WR_ALLOC_LD_DD);
     }
   for (map<int, int>::iterator it = simpleZCNDeps.begin ();
       it != simpleZCNDeps.end (); it++)
@@ -575,6 +586,7 @@ QSS_::_eventAlgebraicDeps (MMO_Event e, Index index, MMO_EventTable evt,
   string indent = _writer->indent (1);
   stringstream buffer;
   Dependencies deps = e->lhs ();
+  int assignments = deps->discretes();
   map<int, int> simpleZCNDeps;
   DEP_Type eventType = DEP_STATE;
   if (type == DEP_ALGEBRAIC_DISCRETE)
@@ -603,7 +615,7 @@ QSS_::_eventAlgebraicDeps (MMO_Event e, Index index, MMO_EventTable evt,
 	      _indexDependencies (index, hndIdx, ecIndex, &algVar,
 				  &simpleZCNDeps, WR_ALLOC_LD_HZ, WR_INIT_LD_HZ,
 				  "modelData->nHZ", "modelData->HZ", "events",
-				  is);
+				  is, assignments);
 	    }
 	}
     }
@@ -832,6 +844,7 @@ QSS_::initializeMatrices ()
 	    {
 	      Index eIndex = evt->key ();
 	      Dependencies eDeps = ev->lhs ();
+	      int assignments = eDeps->discretes();
 	      for (Index *eIdx = eDeps->begin (DEP_DISCRETE);
 		  !eDeps->end (DEP_DISCRETE); eIdx = eDeps->next (DEP_DISCRETE))
 		{
@@ -849,7 +862,7 @@ QSS_::initializeMatrices ()
 		  _indexDependencies (eIndex, eIdx, equationIndex, dIdx,
 				      &simpleHDDeps, WR_ALLOC_LD_HD,
 				      WR_INIT_LD_HD, "modelData->nHD",
-				      "modelData->HD", "events", is);
+				      "modelData->HD", "events", is, assignments);
 		  HD[eIndex].push_back (is);
 		}
 	    }
@@ -863,6 +876,7 @@ QSS_::initializeMatrices ()
 	    {
 	      Index eIndex = evt->key ();
 	      Dependencies eDeps = ev->lhs ();
+	      int assignments = eDeps->discretes();
 	      for (Index *eIdx = eDeps->begin (DEP_DISCRETE);
 		  !eDeps->end (DEP_DISCRETE); eIdx = eDeps->next (DEP_DISCRETE))
 		{
@@ -893,7 +907,7 @@ QSS_::initializeMatrices ()
 		  _indexDependencies (eIndex, eIdx, equationIndex, &algState,
 				      &simpleHDDeps, WR_ALLOC_LD_HD,
 				      WR_INIT_LD_HD, "modelData->nHD",
-				      "modelData->HD", "events", is);
+				      "modelData->HD", "events", is, assignments);
 		  HD[eIndex].push_back (is);
 		}
 	    }
@@ -909,6 +923,7 @@ QSS_::initializeMatrices ()
 	    {
 	      Index eIndex = evt->key ();
 	      Dependencies eDeps = ev->lhs ();
+	      int assignments = eDeps->discretes();
 	      for (Index *eIdx = eDeps->begin (DEP_DISCRETE);
 		  !eDeps->end (DEP_DISCRETE); eIdx = eDeps->next (DEP_DISCRETE))
 		{
@@ -930,7 +945,7 @@ QSS_::initializeMatrices ()
 		  _indexDependencies (eIndex, eIdx, equationIndex, dIdx,
 				      &simpleHDDeps, WR_ALLOC_LD_HD,
 				      WR_INIT_LD_HD, "modelData->nHD",
-				      "modelData->HD", "events", is);
+				      "modelData->HD", "events", is, assignments);
 		  HD[eIndex].push_back (is);
 		}
 	    }
@@ -2689,19 +2704,8 @@ SolverCommon_::addModelDeps (Dependencies deps, Index state, Index infIndex,
   modelDeps->insert (state, d);
 }
 
-int
-SolverCommon_::getNodeWeight (Index e, NOD_Type type)
-{
-  if (type == NOD_SD || type == NOD_SZ)
-    {
-      return (0);
-    }
-  MMO_Event ev = _model->events ()->lookup (e);
-  return (ev->deps ()->discretes ());
-}
-
 void
-SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
+SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type, int assignments)
 {
   if (_model->annotation ()->partitionMethod () == ANT_Manual
       || _generateGraph == false)
@@ -2714,7 +2718,6 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
       return;
     }
   int rowOffset = 0, colOffset = 0;
-  int nodeWeight = getNodeWeight (row, type);
   if (type == NOD_HD)
     {
       rowOffset = offset;
@@ -2745,7 +2748,7 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
 	      _graph.addHyperGraphEdge (row.mappedValue (i) + rowOffset,
 					row.mappedValue (i) + rowOffset);
 	      _graph.addNodeWeight (row.mappedValue (i) + rowOffset,
-				    nodeWeight);
+				    assignments);
 	    }
 	}
     }
@@ -2762,7 +2765,7 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type)
 				    col.mappedValue () + colOffset);
 	  _graph.addHyperGraphEdge (row.mappedValue () + rowOffset,
 				    row.mappedValue () + rowOffset);
-	  _graph.addNodeWeight (row.mappedValue () + rowOffset, nodeWeight);
+	  _graph.addNodeWeight (row.mappedValue () + rowOffset, assignments);
 	}
     }
 }
