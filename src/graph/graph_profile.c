@@ -77,8 +77,8 @@ GRP_GraphProfileState ()
   GRP_graphProfileState p = malloc (sizeof(*p));
   p->states = 0;
   p->events = 0;
-  p->contEdgeWeight = 1;
-  p->dscEdgeWeight = 1;
+  p->contEdgeWeight = 10;
+  p->dscEdgeWeight = 10;
   p->virtEdgeWeight = 1;
   return (p);
 }

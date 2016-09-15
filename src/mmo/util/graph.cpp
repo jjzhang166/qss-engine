@@ -22,7 +22,7 @@
 #include <iostream>
 
 Graph::Graph (int states, int events) :
-    _states (states), _events (events), _graphEdges (0), _maxNode (0), _graph (), _graphInputs (), _graphDiscretes (), _hyperGraph (), _wmap (), _hwmap ()
+    _states (states), _events (events), _nvtxs(states + events), _graphEdges (0), _graph (), _graphInputs (), _graphDiscretes (), _hyperGraph (), _wmap (), _hwmap ()
 {
   _profile = GRP_GraphProfile ();
 }
@@ -48,10 +48,6 @@ Graph::addGraphEdge (int orig, int dest)
 {
   _graph[orig].insert (dest);
   _graphInputs[dest].insert (orig);
-  if (_graphInputs[dest].size() > _maxNode)
-    {
-      _maxNode = _graphInputs[dest].size();
-    }
 }
 
 void
@@ -76,10 +72,14 @@ Graph::edgeWeight (int node)
 }
 
 int
-Graph::graphEdgeWeight (int node)
+Graph::graphEdgeWeight (int node, int inf)
 {
   int w = 1;
-  if (_wmap[node].find (node + 1) != _wmap[node].end ())
+  if ((inf == node + 1) && (_wmap[node].find (node + 1) != _wmap[node].end ()))
+    {
+      w = GRP_Weight (_profile, GRP_VIRT) * nodeWeight (node);
+    }
+  else if ((inf == node - 1) && (_wmap[node].find (node - 1) != _wmap[node].end ()))
     {
       w = GRP_Weight (_profile, GRP_VIRT) * nodeWeight (node);
     }
@@ -91,10 +91,10 @@ Graph::graphEdgeWeight (int node)
 }
 
 int
-Graph::hyperGraphEdgeWeight (int node)
+Graph::hyperGraphEdgeWeight (int node, int inf)
 {
   int w = 1;
-  if (_hwmap[node].find (node + 1) != _hwmap[node].end ())
+  if ((inf == node + 1) && (_hwmap[node].find (node + 1) != _hwmap[node].end ()))
     {
       w = GRP_Weight (_profile, GRP_VIRT) * nodeWeight (node);
     }
@@ -114,15 +114,19 @@ Graph::connectGraphs ()
       if (_graph[i].find (i + 1) == _graph[i].end ())
 	{
 	  _graph[i].insert (i + 1);
+	  _graph[i + 1].insert (i);
 	  _wmap[i].insert (i + 1);
+	  _wmap[i + 1].insert (i);
 	}
       if (_hyperGraph[i].find (i + 1) == _hyperGraph[i].end ())
 	{
 	  _hyperGraph[i].insert (i + 1);
+	  _hyperGraph[i].insert (i);
 	  _hwmap[i].insert (i + 1);
 	}
       _graphEdges += _graph[i].size ();
     }
+  _graphEdges += _graph[nvtxs].size ();
 }
 
 int
@@ -152,7 +156,7 @@ Graph::empty ()
 int
 Graph::nodeWeight (int node)
 {
-  return ((_graphInputs[node].size () + _graphDiscretes[node]) * 100);
+  return (_graphInputs[node].size () + _graphDiscretes[node] + 1);
 }
 
 void
@@ -161,9 +165,5 @@ Graph::addNodeWeight (int node, int weight)
   if (node >= _states)
     {
       _graphDiscretes[node] = weight;
-      if (_graphInputs[node].size() + weight > _maxNode)
-	{
-	  _maxNode = _graphInputs[node].size() + weight;
-	}
     }
 }

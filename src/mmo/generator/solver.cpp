@@ -183,12 +183,12 @@ QSS_::makefile (SOL_Makefile m)
   return (_engine->makefile (m));
 }
 
-/*! \brief Compares two variable indexes and return the intersection (if any) between them.
+/*! @brief Compares two variable indexes and return the intersection (if any) between them.
  *
- * 	\param idx: Equation index. \f$ a_e*i+b_e \f$ where \f$ i \in [A_e,B_e] \f$
- * 	\param dIdx: Discrete variable index. \f$ a_ed*i+b_ed \f$ where \f$ i \in [A_ed,B_ed] \f$
- * 	\param infIdx: Influenced equation index.\f$ a_ie*i+b_ie \f$ where \f$ i \in [A_ie,B_ie] \f$
- * 	\param infDIdx: Influenced equation state variable index.\f$ a_ied*i+b_ied \f$ where \f$ i \in [A_ied,B_ied] \f$
+ * 	@param idx: Equation index. \f$ a_e*i+b_e \f$ where \f$ i \in [A_e,B_e] \f$
+ * 	@param dIdx: Discrete variable index. \f$ a_ed*i+b_ed \f$ where \f$ i \in [A_ed,B_ed] \f$
+ * 	@param infIdx: Influenced equation index.\f$ a_ie*i+b_ie \f$ where \f$ i \in [A_ie,B_ie] \f$
+ * 	@param infDIdx: Influenced equation state variable index.\f$ a_ied*i+b_ied \f$ where \f$ i \in [A_ied,B_ied] \f$
  *
  *  Each index has the form: \f$ a*i+b \f$ where \f$ i \in [A,B] \f$
  *
@@ -280,7 +280,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 	      if (_parallel)
 		{
 		  Index inf (infIdx);
-		  inf.setOffset (inf.offset () - infIdx.begin ());
+		  inf.setOffset (inf.offset () - infIdx.begin());
 		  Index st (idx);
 		  st.setOffset (0);
 		  _common->graphInsert (st, inf, nodOffset, nt, assignments);
@@ -308,7 +308,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 		{
 		  Index inf (infIdx);
 		  inf.setOffset (inf.offset () - infIdx.begin ());
-		  for (int i = infIdx.begin (); i < infIdx.end (); i++)
+		  for (int i = infIdx.low (); i <= infIdx.hi (); i++)
 		    {
 		      Index insertIdx = inf.indexValue (i);
 		      Index st = idx.indexValue (nIdx);

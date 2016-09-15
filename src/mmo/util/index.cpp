@@ -56,7 +56,14 @@ Index_::setLow (int l)
 int
 Index_::low () const
 {
-  return (_low);
+  if (_low < 1)
+    {
+      return (1);
+    }
+  else
+    {
+      return (_low);
+    }
 }
 
 void
@@ -69,7 +76,14 @@ Index_::setHi (int h)
 int
 Index_::hi () const
 {
-  return (_hi);
+  if (_hi < 1)
+    {
+      return (1);
+    }
+  else
+    {
+      return (_hi);
+    }
 }
 
 int
@@ -127,7 +141,8 @@ Index_::setRange ()
 bool
 Index_::equalExp (const Index_& other) const
 {
-  return (operConstant () == other.operConstant () && factor () == other.factor ());
+  return (operConstant () == other.operConstant ()
+      && factor () == other.factor ());
 }
 
 bool
@@ -539,13 +554,13 @@ Index_::operator< (const Index_& other) const
 int
 Index_::begin () const
 {
-  return (_low - 1);
+  return (low () - 1);
 }
 
 int
 Index_::end () const
 {
-  return (_hi - 1);
+  return (hi () - 1);
 }
 
 int
@@ -786,6 +801,7 @@ Intersection::equal (Intersection b)
 int
 Intersection::low ()
 {
+
   return (_low);
 }
 

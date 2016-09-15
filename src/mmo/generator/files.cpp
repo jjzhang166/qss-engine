@@ -419,7 +419,7 @@ MMO_Files_::graph ()
 	{
 	  int inf = *it;
 	  matrix.write ((char*) &inf, sizeof(int));
-	  w = g.graphEdgeWeight (i);
+	  w = g.graphEdgeWeight (i, inf);
 	  wMatrix.write ((char*) &w, sizeof(int));
 	}
       w = g.nodeWeight (i);
@@ -434,7 +434,7 @@ MMO_Files_::graph ()
 	{
 	  int inf = *it;
 	  tmp2.write ((char*) &inf, sizeof(int));
-	  w = g.hyperGraphEdgeWeight (i);
+	  w = g.hyperGraphEdgeWeight (i, inf);
 	  hwMatrix.write ((char*) &w, sizeof(int));
 	}
       if (!hGraph[i].empty ())

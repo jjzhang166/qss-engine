@@ -85,14 +85,22 @@ QSS_generateWeights (QSS_simulator simulator)
 	    }
 	  for (eiter = 0; eiter < states; eiter++)
 	    {
-	      vwgt[eiter] = vwgt[eiter]
-		  * simulator->simulationLog->states[eiter];
+	      int steps = simulator->simulationLog->handlers[eiter];
+	      if (steps == 0)
+		{
+		  steps++;
+		}
+	      vwgt[eiter] = vwgt[eiter] * steps;
 	      fwrite (&(vwgt[eiter]), sizeof(int), 1, vweights);
 	    }
-	  for (eiter = states; eiter < events; eiter++)
+	  for (eiter = states; eiter < vsize; eiter++)
 	    {
-	      vwgt[eiter] = vwgt[eiter]
-		  * simulator->simulationLog->handlers[eiter - states];
+	      int steps = simulator->simulationLog->handlers[eiter - states];
+	      if (steps == 0)
+		{
+		  steps++;
+		}
+	      vwgt[eiter] = vwgt[eiter] * steps;
 	      fwrite (&(vwgt[eiter]), sizeof(int), 1, vweights);
 	    }
 	  for (eiter = 0; eiter < states; eiter++)
@@ -103,7 +111,6 @@ QSS_generateWeights (QSS_simulator simulator)
 		{
 		  steps++;
 		}
-	  //    printf("%d %d %d %d\n",ewgt[init],init,steps,xadj[eiter]);
 	      ewgt[init] = ewgt[init] * steps;
 	      for (iter = init; iter < end; iter++)
 		{
