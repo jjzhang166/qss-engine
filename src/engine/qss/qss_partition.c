@@ -92,7 +92,7 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
       return;
     }
   char fileName[256];
-  char graphType[64] = "unweighted";
+  char graphType[64] = "static";
   int nparts = (data->params->lps == 0 ? 64 : data->params->lps);
   int nvtxs = data->states + data->events;
   FILE *file;
@@ -226,7 +226,7 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 	  {
 	    int nconst = 1, edgecut, *partweights;
 	    PaToH_Parameters args;
-	    PaToH_Initialize_Parameters (&args, PATOH_CONPART,
+	    PaToH_Initialize_Parameters (&args, PATOH_CUTPART,
 					 PATOH_SUGPARAM_DEFAULT);
 	    args._k = nparts;
 	    args.crs_alg = PATOH_CRS_HCM;
@@ -244,9 +244,9 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 	  break;
 	}
     }
-  if (vwgt != NULL && ewgt != NULL)
+  if (vwgt[nvtxs] == 1)
     {
-      sprintf (graphType, "weighted");
+      sprintf (graphType, "semistatic");
     }
   switch (pm)
     {

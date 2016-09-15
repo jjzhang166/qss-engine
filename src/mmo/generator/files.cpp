@@ -425,6 +425,8 @@ MMO_Files_::graph ()
       w = g.nodeWeight (i);
       nwMatrix.write ((char*) &w, sizeof(int));
     }
+  w = 0;
+  nwMatrix.write ((char*) &w, sizeof(int));
   size = 0;
   tmp1.write ((char*) &hedges, sizeof(int));
   for (int i = 0; i < nvtxs; i++)

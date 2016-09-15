@@ -442,8 +442,8 @@ GRP_readGraph (char *name, QSS_data data, int **xadj, int **adjncy, int *edges,
       file = fopen (fileName, "rb");
       if (file)
 	{
-	  *vwgt = (int*) checkedMalloc (nvtxs * sizeof(int));
-	  if (fread (vwgt[0], sizeof(int), nvtxs, file) != nvtxs)
+	  *vwgt = (int*) checkedMalloc ((nvtxs + 1) * sizeof(int));
+	  if (fread (vwgt[0], sizeof(int), nvtxs + 1, file) != nvtxs + 1)
 	    {
 	      fclose (file);
 	      return (GRP_ReadError);
