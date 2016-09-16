@@ -837,11 +837,43 @@ struct MLB_mailbox_
   int dummy;
 };
 
+MLB_mailbox
+MLB_Mailbox(int lps);
+
 /**
  *
+ * @param mailbox
  */
 void
 MLB_freeMailbox(MLB_mailbox mailbox);
+
+/**
+ *
+ * @param mailbox
+ * @param to
+ * @param from
+ * @param message
+ */
+void
+MLB_send(MLB_mailbox mailbox, int to, int from, IBX_message message);
+
+/**
+ *
+ * @param mailbox
+ * @param to
+ * @param from
+ */
+void
+MLB_ack(MLB_mailbox mailbox, int to, int from);
+
+/**
+ *
+ * @param mailbox
+ * @param to
+ * @param dir
+ */
+void
+MLB_close(MLB_mailbox mailbox, int to, int dir);
 
 #endif
 

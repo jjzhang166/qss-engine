@@ -596,6 +596,12 @@ vectorNext (vector v)
   return (v->values[tmpIter]);
 }
 
+bool
+vectorEnd (vector v)
+{
+  return (v->iter >= v->used);
+}
+
 vMatrix
 VMatrix (int rows, int cols)
 {
@@ -764,6 +770,56 @@ BIT_numberOfSetBits (word_t i)
   i = i - ((i >> 1) & 0x55555555);
   i = (i & 0x33333333) + ((i >> 2) & 0x33333333);
   return ((((i + (i >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24);
+}
+
+void
+BIT_set (BIT_vector b, int bit)
+{
+  b->words[bit >> 5] |= 1 << (bit % BITS_PER_WORD);
+}
+
+void
+BIT_clear (BIT_vector b, int bit)
+{
+  b->words[bit >> 5] &= ~(1 << (bit % BITS_PER_WORD));
+}
+
+unsigned long
+BIT_isSet (BIT_vector b, int bit)
+{
+  return (b->words[bit >> 5] & (1 << (bit % BITS_PER_WORD)));
+}
+
+void
+BIT_clearAll (BIT_vector b)
+{
+  b->words[0] &= b->resetMask[0];
+  b->words[1] &= b->resetMask[1];
+}
+
+void
+BIT_setAll (BIT_vector b)
+{
+  b->words[0] |= SET_ALL;
+  b->words[1] |= SET_ALL;
+}
+
+word_t
+BIT_isAnySet (BIT_vector b)
+{
+  return ((b->words[0] & 0xFFFFFFFF) || (b->words[1] & 0xFFFFFFFF));
+}
+
+word_t
+BIT_setBits (BIT_vector b)
+{
+  return (BIT_numberOfSetBits (b->words[0]) + BIT_numberOfSetBits (b->words[1]));
+}
+
+void
+BIT_setMask (BIT_vector b, int bit)
+{
+  b->resetMask[bit >> 5] |= 1 << (bit % BITS_PER_WORD);
 }
 
 #ifdef __linux__
@@ -1053,55 +1109,6 @@ MLB_close (MLB_mailbox mailbox, int to, int dir)
   IBX_close (mailbox->inbox[MSG_ACK][to], dir);
 }
 
-void
-BIT_set (BIT_vector b, int bit)
-{
-  b->words[bit >> 5] |= 1 << (bit % BITS_PER_WORD);
-}
-
-void
-BIT_clear (BIT_vector b, int bit)
-{
-  b->words[bit >> 5] &= ~(1 << (bit % BITS_PER_WORD));
-}
-
-unsigned long
-BIT_isSet (BIT_vector b, int bit)
-{
-  return (b->words[bit >> 5] & (1 << (bit % BITS_PER_WORD)));
-}
-
-void
-BIT_clearAll (BIT_vector b)
-{
-  b->words[0] &= b->resetMask[0];
-  b->words[1] &= b->resetMask[1];
-}
-
-void
-BIT_setAll (BIT_vector b)
-{
-  b->words[0] |= SET_ALL;
-  b->words[1] |= SET_ALL;
-}
-
-word_t
-BIT_isAnySet (BIT_vector b)
-{
-  return ((b->words[0] & 0xFFFFFFFF) || (b->words[1] & 0xFFFFFFFF));
-}
-
-word_t
-BIT_setBits (BIT_vector b)
-{
-  return (BIT_numberOfSetBits (b->words[0]) + BIT_numberOfSetBits (b->words[1]));
-}
-
-void
-BIT_setMask (BIT_vector b, int bit)
-{
-  b->resetMask[bit >> 5] |= 1 << (bit % BITS_PER_WORD);
-}
 
 void
 IBX_ack (IBX_inbox inbox, int from)
@@ -1177,18 +1184,36 @@ MLB_ack (MLB_mailbox mailbox, int to, int from)
   IBX_ack (mailbox->inbox[MSG_ACK][to], from);
 }
 
-bool
-vectorEnd (vector v)
-{
-  return (v->iter >= v->used);
-}
-
 #else
 
+MLB_mailbox
+MLB_Mailbox(int lps)
+{
+  return (NULL);
+}
+
 void
-MLB_freeMailbox (MLB_mailbox mailbox)
-  {
-    return;
-  }
+MLB_freeMailbox(MLB_mailbox mailbox)
+{
+  return;
+}
+
+void
+MLB_send(MLB_mailbox mailbox, int to, int from, IBX_message message)
+{
+  return;
+}
+
+void
+MLB_ack(MLB_mailbox mailbox, int to, int from)
+{
+  return;
+}
+
+void
+MLB_close(MLB_mailbox mailbox, int to, int dir)
+{
+  return;
+}
 
 #endif
