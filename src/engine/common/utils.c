@@ -112,6 +112,47 @@ subTime (struct timespec *v, struct timespec *u)
 #endif
 }
 
+void
+cleanVector (int *vector, int value, int size)
+{
+  memset (vector, value, size * sizeof(int));
+}
+
+void
+cleanDoubleVector (double *vector, int value, int size)
+{
+  memset (vector, value, size * sizeof(double));
+}
+
+#ifdef _WIN32
+double
+getTimeValue (struct timeval *te)
+#else
+double
+getTimeValue (struct timespec *te)
+#endif
+{
+#ifdef _WIN32
+  return (te->tv_usec);
+#else
+  return ((te->tv_sec * 1e3 + te->tv_nsec / 1e6));
+#endif
+}
+
+int
+sign (double x)
+{
+  if (x >= 0)
+    {
+      return (1);
+    }
+  else
+    {
+      return (-1);
+    }
+}
+
+
 double
 minPosRoot (double *coeff, int order)
 {
@@ -1010,46 +1051,6 @@ MLB_close (MLB_mailbox mailbox, int to, int dir)
 {
   IBX_ack (mailbox->inbox[MSG_ACK][to], dir);
   IBX_close (mailbox->inbox[MSG_ACK][to], dir);
-}
-
-void
-cleanVector (int *vector, int value, int size)
-{
-  memset (vector, value, size * sizeof(int));
-}
-
-void
-cleanDoubleVector (double *vector, int value, int size)
-{
-  memset (vector, value, size * sizeof(double));
-}
-
-#ifdef _WIN32
-double
-getTimeValue (struct timeval *te)
-#else
-double
-getTimeValue (struct timespec *te)
-#endif
-{
-#ifdef _WIN32
-  return (te->tv_usec);
-#else
-  return ((te->tv_sec * 1e3 + te->tv_nsec / 1e6));
-#endif
-}
-
-int
-sign (double x)
-{
-  if (x >= 0)
-    {
-      return (1);
-    }
-  else
-    {
-      return (-1);
-    }
 }
 
 void

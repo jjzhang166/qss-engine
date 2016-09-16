@@ -101,6 +101,12 @@
 /**
  *
  */
+#define MAX_LPS 64
+
+
+/**
+ *
+ */
 typedef char bool;
 
 /**
@@ -580,11 +586,6 @@ BIT_next (BIT_vector v);
  *
  */
 #define MESSAGE_SIZE 1024
-
-/**
- *
- */
-#define MAX_LPS 64
 
 /**
  *
