@@ -1490,7 +1490,7 @@ QSS_PAR_initialize (SIM_simulator simulate)
   }
 
 void
-QSS_PAR_synchronize (QSS_simulator simulator, int synchronize, QSS_externaEventHandler externalEvent)
+QSS_PAR_synchronize (QSS_simulator simulator, int synchronize, QSS_externaEventHandler externalEvent, QSS_internalEventHandler internalEvent)
   {
     return;
   }
