@@ -986,3 +986,9 @@ Index_::operator == (const Index_& other) const
       && this->_map == other._map && this->_parameter == other._parameter
       && this->_rangeOp == other._rangeOp && this->_array == other._array);
 }
+
+int
+Intersection::range ()
+{
+  return (end() - begin() + 1);
+}

@@ -134,6 +134,8 @@ public:
   hasRange ();
   void
   setRange (bool range);
+  int
+  range ();
 private:
   int _low;
   int _hi;

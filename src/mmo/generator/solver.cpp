@@ -545,7 +545,7 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
 		  Intersection is = hndIdx->intersection (*hdIdx);
 		  if (is.type () != IDX_DISJOINT)
 		    {
-		      if (events.find(ecIndex) != events.end())
+		      if (events.find (ecIndex) != events.end ())
 			{
 			  continue;
 			}
@@ -561,7 +561,48 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
 				      "modelData->DD", "events", is,
 				      assignments);
 		}
-	     /* hndDeps = ev->lhs ();
+	      for (Index *hdIdx = hndDeps->begin (DEP_DISCRETE_VECTOR);
+		  !hndDeps->end (DEP_DISCRETE_VECTOR);
+		  hdIdx = hndDeps->next (DEP_DISCRETE_VECTOR))
+		{
+		  if (e->index ().hasRange () && e->index () == ev->index ()
+		      && *hndIdx == *hdIdx && hndIdx->hasRange ())
+		    {
+		      continue;
+		    }
+		  _setInterval (hdIdx, &ecIndex);
+		  Intersection is = hndIdx->intersection (*hdIdx);
+		  if (is.type () != IDX_DISJOINT)
+		    {
+		      if (events.find (ecIndex) != events.end ())
+			{
+			  continue;
+			}
+		      events[ecIndex] = ecIndex;
+		      string fi = Util::getInstance ()->newVarName (
+			  "tmp", _model->varTable ());
+		      _common->addLocalVar (fi, &_initializeVars);
+		      string sIdx = e->index ().print (fi);
+		      string hhIdx = ev->index ().print (fi);
+		      buffer << "for(" << fi << " = " << is.begin () << "; "
+			  << fi << " <= " << is.end () << "; " << fi << "++)";
+		      _writer->write (&buffer, WR_ALLOC_LD_DD, false);
+		      _writer->write (&buffer, WR_INIT_LD_DD);
+		      _writer->write ("{", WR_ALLOC_LD_DD);
+		      _writer->write ("{", WR_INIT_LD_DD);
+		      buffer << indent << "modelData->nDD[" << sIdx << "] += "
+			  << is.range () << ";";
+		      _writer->write (&buffer, WR_ALLOC_LD_DD);
+		      buffer << indent << "modelData->DD[" << sIdx
+			  << "][events[" << sIdx << "]++] = " << hhIdx << ";";
+		      _writer->write (&buffer, WR_INIT_LD_DD);
+		      _writer->write ("}", WR_ALLOC_LD_DD);
+		      _writer->write ("}", WR_INIT_LD_DD);
+		      _common->graphInsert (e->index (), ev->index (),
+					    _model->states (), NOD_DD);
+		    }
+		}
+	      hndDeps = ev->lhs ();
 	      for (Index *hdIdx = hndDeps->begin (type); !hndDeps->end (type);
 		  hdIdx = hndDeps->next (type))
 		{
@@ -574,7 +615,7 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
 		  Intersection is = hndIdx->intersection (*hdIdx);
 		  if (is.type () != IDX_DISJOINT)
 		    {
-		      if (events.find(ecIndex) != events.end())
+		      if (events.find (ecIndex) != events.end ())
 			{
 			  continue;
 			}
@@ -589,7 +630,7 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
 				      WR_INIT_LD_DD, "modelData->nDD",
 				      "modelData->DD", "events", is,
 				      assignments);
-		}*/
+		}
 	    }
 	}
     }
@@ -2778,7 +2819,7 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type,
       int i, begin = row.begin (), end = row.end ();
       for (i = begin; i <= end; i++)
 	{
-	  if (!((type == NOD_SD || type == NOD_HZ)
+	  if (!((type == NOD_SD || type == NOD_HZ || type == NOD_DD)
 	      && row.mappedValue (i) == col.mappedValue (i)))
 	    {
 	      _graph.addGraphEdge (row.mappedValue (i) + rowOffset,
@@ -2796,7 +2837,7 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type,
     }
   else
     {
-      if (!((type == NOD_SD || type == NOD_HZ)
+      if (!((type == NOD_SD || type == NOD_HZ || type == NOD_DD)
 	  && row.mappedValue () == col.mappedValue ()))
 	{
 	  _graph.addGraphEdge (row.mappedValue () + rowOffset,
@@ -3580,6 +3621,12 @@ SolverCommon_::vectorDependencies (Index index, Dependencies deps,
   NOD_Type nt = NOD_SD;
   if (_parallel)
     {
+      if (alloc == WR_ALLOC_LD_DD)
+	{
+	  offset = _model->states ();
+	  nt = NOD_DD;
+	  eval = true;
+	}
       if (allocInverse == WR_ALLOC_LD_SZ)
 	{
 	  offset = _model->states ();
