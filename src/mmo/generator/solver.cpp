@@ -602,34 +602,37 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
 					    _model->states (), NOD_DD);
 		    }
 		}
-	      hndDeps = ev->lhs ();
-	      for (Index *hdIdx = hndDeps->begin (type); !hndDeps->end (type);
-		  hdIdx = hndDeps->next (type))
+	      if (!(ev->index () == e->index ()))
 		{
-		  if (e->index ().hasRange () && e->index () == ev->index ()
-		      && *hndIdx == *hdIdx && hndIdx->hasRange ())
+		  hndDeps = ev->lhs ();
+		  for (Index *hdIdx = hndDeps->begin (type);
+		      !hndDeps->end (type); hdIdx = hndDeps->next (type))
 		    {
-		      continue;
-		    }
-		  _setInterval (hdIdx, &ecIndex);
-		  Intersection is = hndIdx->intersection (*hdIdx);
-		  if (is.type () != IDX_DISJOINT)
-		    {
-		      if (events.find (ecIndex) != events.end ())
+		      if (e->index ().hasRange () && e->index () == ev->index ()
+			  && *hndIdx == *hdIdx && hndIdx->hasRange ())
 			{
 			  continue;
 			}
-		      events[ecIndex] = ecIndex;
-		      if (hndIdx->hasRange ())
+		      _setInterval (hdIdx, &ecIndex);
+		      Intersection is = hndIdx->intersection (*hdIdx);
+		      if (is.type () != IDX_DISJOINT)
 			{
-			  _hasDD = true;
+			  if (events.find (ecIndex) != events.end ())
+			    {
+			      continue;
+			    }
+			  events[ecIndex] = ecIndex;
+			  if (hndIdx->hasRange ())
+			    {
+			      _hasDD = true;
+			    }
 			}
+		      _indexDependencies (index, hndIdx, ecIndex, hdIdx,
+					  &simpleDDDependencies, WR_ALLOC_LD_DD,
+					  WR_INIT_LD_DD, "modelData->nDD",
+					  "modelData->DD", "events", is,
+					  assignments);
 		    }
-		  _indexDependencies (index, hndIdx, ecIndex, hdIdx,
-				      &simpleDDDependencies, WR_ALLOC_LD_DD,
-				      WR_INIT_LD_DD, "modelData->nDD",
-				      "modelData->DD", "events", is,
-				      assignments);
 		}
 	    }
 	}
