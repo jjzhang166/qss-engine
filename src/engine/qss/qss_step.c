@@ -182,6 +182,7 @@ ST_write (OUT_output output, QSS_data simData, QSS_time simTime,
 		{
 		  variable = lp->oMap[j];
 		  ST_PAR_writeOutvar (output, simData, simTime, simOutput, j, variable);
+
 #else
 	      ST_writeOutvar (output, simData, simTime, simOutput, j, variable);
 #endif

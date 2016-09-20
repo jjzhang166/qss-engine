@@ -89,7 +89,7 @@ if [ "$PARALLEL" == "true" ]; then
   if test -n "$(find . -maxdepth 1 -name '*-discrete-*.dat' -print -quit)"; then
   	for p in $(ls *-discrete-*.dat | cut -d '-' -f 1 | sort -u); do
     	FNAME=$(printf '%q' "$p")
-		sort -k1n ${FNAME}-discrete-*.dat > ${p}.dat
+		sort -k1n ${FNAME}-discrete-*.dat > ${FNAME}.dat
   	done
   	rm *-discrete-*.dat
   fi

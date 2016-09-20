@@ -201,7 +201,8 @@ bool
 QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 			  map<int, int> *simpleMatrixDeps, WR_Section alloc,
 			  WR_Section init, string allocStr, string initStr,
-			  string counter, Intersection intersection, int assignments)
+			  string counter, Intersection intersection,
+			  int assignments)
 {
   stringstream buffer;
   string indent = _writer->indent (1);
@@ -263,7 +264,8 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 		  for (int i = infIdx.begin (); i < infIdx.end (); i++)
 		    {
 		      Index insertIdx = inf.indexValue (i);
-		      _common->graphInsert (st, insertIdx, nodOffset, nt, assignments);
+		      _common->graphInsert (st, insertIdx, nodOffset, nt,
+					    assignments);
 		    }
 		}
 	    }
@@ -280,7 +282,7 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 	      if (_parallel)
 		{
 		  Index inf (infIdx);
-		  inf.setOffset (inf.offset () - infIdx.begin());
+		  inf.setOffset (inf.offset () - infIdx.begin ());
 		  Index st (idx);
 		  st.setOffset (0);
 		  _common->graphInsert (st, inf, nodOffset, nt, assignments);
@@ -312,7 +314,8 @@ QSS_::_indexDependencies (Index idx, Index *dIdx, Index infIdx, Index *infDIdx,
 		    {
 		      Index insertIdx = inf.indexValue (i);
 		      Index st = idx.indexValue (nIdx);
-		      _common->graphInsert (st, insertIdx, nodOffset, nt, assignments);
+		      _common->graphInsert (st, insertIdx, nodOffset, nt,
+					    assignments);
 		    }
 		}
 	    }
@@ -500,7 +503,7 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
   string indent = _writer->indent (1);
   stringstream buffer;
   Dependencies deps = e->lhs ();
-  int assignments = deps->discretes();
+  int assignments = deps->discretes ();
   map<int, int> simpleZCNDeps;
   map<int, int> simpleDDDependencies;
   for (Index *hndIdx = deps->begin (type); !deps->end (type);
@@ -533,7 +536,8 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
 	      for (Index *hdIdx = hndDeps->begin (type); !hndDeps->end (type);
 		  hdIdx = hndDeps->next (type))
 		{
-		  if (e->index () == ev->index ())
+		  if (e->index ().hasRange () && e->index () == ev->index ()
+		      && *hndIdx == *hdIdx && hndIdx->hasRange ())
 		    {
 		      continue;
 		    }
@@ -541,17 +545,51 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
 		  Intersection is = hndIdx->intersection (*hdIdx);
 		  if (is.type () != IDX_DISJOINT)
 		    {
-		      events[ecIndex] = ecIndex;
-		      if (hndIdx->hasRange())
+		      if (events.find(ecIndex) != events.end())
 			{
-		          _hasDD = true;
+			  continue;
+			}
+		      events[ecIndex] = ecIndex;
+		      if (hndIdx->hasRange ())
+			{
+			  _hasDD = true;
 			}
 		    }
 		  _indexDependencies (index, hndIdx, ecIndex, hdIdx,
 				      &simpleDDDependencies, WR_ALLOC_LD_DD,
 				      WR_INIT_LD_DD, "modelData->nDD",
-				      "modelData->DD", "events", is, assignments);
+				      "modelData->DD", "events", is,
+				      assignments);
 		}
+	     /* hndDeps = ev->lhs ();
+	      for (Index *hdIdx = hndDeps->begin (type); !hndDeps->end (type);
+		  hdIdx = hndDeps->next (type))
+		{
+		  if (e->index ().hasRange () && e->index () == ev->index ()
+		      && *hndIdx == *hdIdx && hndIdx->hasRange ())
+		    {
+		      continue;
+		    }
+		  _setInterval (hdIdx, &ecIndex);
+		  Intersection is = hndIdx->intersection (*hdIdx);
+		  if (is.type () != IDX_DISJOINT)
+		    {
+		      if (events.find(ecIndex) != events.end())
+			{
+			  continue;
+			}
+		      events[ecIndex] = ecIndex;
+		      if (hndIdx->hasRange ())
+			{
+			  _hasDD = true;
+			}
+		    }
+		  _indexDependencies (index, hndIdx, ecIndex, hdIdx,
+				      &simpleDDDependencies, WR_ALLOC_LD_DD,
+				      WR_INIT_LD_DD, "modelData->nDD",
+				      "modelData->DD", "events", is,
+				      assignments);
+		}*/
 	    }
 	}
     }
@@ -586,7 +624,7 @@ QSS_::_eventAlgebraicDeps (MMO_Event e, Index index, MMO_EventTable evt,
   string indent = _writer->indent (1);
   stringstream buffer;
   Dependencies deps = e->lhs ();
-  int assignments = deps->discretes();
+  int assignments = deps->discretes ();
   map<int, int> simpleZCNDeps;
   DEP_Type eventType = DEP_STATE;
   if (type == DEP_ALGEBRAIC_DISCRETE)
@@ -844,7 +882,7 @@ QSS_::initializeMatrices ()
 	    {
 	      Index eIndex = evt->key ();
 	      Dependencies eDeps = ev->lhs ();
-	      int assignments = eDeps->discretes();
+	      int assignments = eDeps->discretes ();
 	      for (Index *eIdx = eDeps->begin (DEP_DISCRETE);
 		  !eDeps->end (DEP_DISCRETE); eIdx = eDeps->next (DEP_DISCRETE))
 		{
@@ -862,7 +900,8 @@ QSS_::initializeMatrices ()
 		  _indexDependencies (eIndex, eIdx, equationIndex, dIdx,
 				      &simpleHDDeps, WR_ALLOC_LD_HD,
 				      WR_INIT_LD_HD, "modelData->nHD",
-				      "modelData->HD", "events", is, assignments);
+				      "modelData->HD", "events", is,
+				      assignments);
 		  HD[eIndex].push_back (is);
 		}
 	    }
@@ -876,7 +915,7 @@ QSS_::initializeMatrices ()
 	    {
 	      Index eIndex = evt->key ();
 	      Dependencies eDeps = ev->lhs ();
-	      int assignments = eDeps->discretes();
+	      int assignments = eDeps->discretes ();
 	      for (Index *eIdx = eDeps->begin (DEP_DISCRETE);
 		  !eDeps->end (DEP_DISCRETE); eIdx = eDeps->next (DEP_DISCRETE))
 		{
@@ -907,7 +946,8 @@ QSS_::initializeMatrices ()
 		  _indexDependencies (eIndex, eIdx, equationIndex, &algState,
 				      &simpleHDDeps, WR_ALLOC_LD_HD,
 				      WR_INIT_LD_HD, "modelData->nHD",
-				      "modelData->HD", "events", is, assignments);
+				      "modelData->HD", "events", is,
+				      assignments);
 		  HD[eIndex].push_back (is);
 		}
 	    }
@@ -923,7 +963,7 @@ QSS_::initializeMatrices ()
 	    {
 	      Index eIndex = evt->key ();
 	      Dependencies eDeps = ev->lhs ();
-	      int assignments = eDeps->discretes();
+	      int assignments = eDeps->discretes ();
 	      for (Index *eIdx = eDeps->begin (DEP_DISCRETE);
 		  !eDeps->end (DEP_DISCRETE); eIdx = eDeps->next (DEP_DISCRETE))
 		{
@@ -945,7 +985,8 @@ QSS_::initializeMatrices ()
 		  _indexDependencies (eIndex, eIdx, equationIndex, dIdx,
 				      &simpleHDDeps, WR_ALLOC_LD_HD,
 				      WR_INIT_LD_HD, "modelData->nHD",
-				      "modelData->HD", "events", is, assignments);
+				      "modelData->HD", "events", is,
+				      assignments);
 		  HD[eIndex].push_back (is);
 		}
 	    }
@@ -2705,7 +2746,8 @@ SolverCommon_::addModelDeps (Dependencies deps, Index state, Index infIndex,
 }
 
 void
-SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type, int assignments)
+SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type,
+			    int assignments)
 {
   if (_model->annotation ()->partitionMethod () == ANT_Manual
       || _generateGraph == false)

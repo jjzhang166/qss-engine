@@ -189,7 +189,7 @@ LP_processPartition (QSS_simulator simulator, PRT_partition partition)
       for (j = 0; j < nDD; j++)
 	{
 	  int k = simulatorData->DD[handlerNumber][j];
-	  int hndPartitionNumber = partition->values[k];
+	  int hndPartitionNumber = partition->values[beginHandlers + k];
 	  LP_partitionInfo hndPartition = pi[hndPartitionNumber];
 	  if (hndPartitionNumber != partitionNumber
 	      && hndPartition->handlerInput[hndPartition->lastHandler]
@@ -361,7 +361,7 @@ LP_processPartition (QSS_simulator simulator, PRT_partition partition)
 	  for (g = 0; g < nDH; g++)
 	    {
 	      int h = simulator->data->DH[k][g];
-	      LP_partitionInfo handlerPartition = pi[partition->values[h]];
+	      LP_partitionInfo handlerPartition = pi[partition->values[partition->beginHandlers + h]];
 	      if (!LP_find (handlerPartition->output, handlerPartition->outputs,
 			    i))
 		{
