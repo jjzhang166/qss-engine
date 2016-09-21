@@ -115,6 +115,7 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 	    idx_t options[METIS_NOPTIONS];
 	    METIS_SetDefaultOptions (options);
 	    options[METIS_OPTION_PTYPE] = METIS_PTYPE_KWAY;
+	    options[METIS_OPTION_CONTIG] = 1;
 	    METIS_PartGraphKway (&nvtxs, &ncon, xadj, adjncy, vwgt, NULL, ewgt,
 				 &nparts, NULL, NULL, options, &edgecut,
 				 partition->values);
@@ -125,6 +126,7 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 	    idx_t ncon = 1, edgecut;
 	    idx_t options[METIS_NOPTIONS];
 	    METIS_SetDefaultOptions (options);
+	    options[METIS_OPTION_CONTIG] = 1;
 	    options[METIS_OPTION_PTYPE] = METIS_PTYPE_KWAY;
 	    options[METIS_OPTION_OBJTYPE] = METIS_OBJTYPE_VOL;
 	    METIS_PartGraphKway (&nvtxs, &ncon, xadj, adjncy, vwgt, NULL, ewgt,
@@ -195,7 +197,7 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 		  }
 		char parts[10];
 		sprintf (parts, "%d", nparts);
-		execlp ("./khmetis", "./khmetis", hgraphName, parts, "5", "1",
+		execlp ("./khmetis", "./khmetis", hgraphName, parts, "10", "10",
 			"1", "1", "0", "0", NULL);
 		abort ();
 	      }
@@ -230,6 +232,8 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 					 PATOH_SUGPARAM_DEFAULT);
 	    args._k = nparts;
 	    args.crs_alg = PATOH_CRS_HCM;
+	    printf("%g\n",args.final_imbal);
+	   // args.final_imbal = 0.2;
 	    partweights = (int *) malloc (args._k * nconst * sizeof(int));
 	    PaToH_Alloc (&args, nvtxs, edges, nconst, vwgt, ewgt, xadj, adjncy);
 	    PaToH_Part (&args, nvtxs, edges, nconst, 0, vwgt, ewgt, xadj,

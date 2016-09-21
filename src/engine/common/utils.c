@@ -851,6 +851,8 @@ IBX_Inbox (int states, int ack, int *qMap)
 	  p->orderedMessages[i].sendAck = 1;
 	}
       p->qMap = qMap;
+      if (states > 0)
+	{
       p->waiting = (IBX_message*) checkedMalloc (states * sizeof(IBX_message));
       for (i = 0; i < states; i++)
 	{
@@ -860,6 +862,13 @@ IBX_Inbox (int states, int ack, int *qMap)
 	}
       p->waitingMessage = BIT_Vector (states);
       p->waitingAck = BIT_Vector (states);
+	}
+      else
+	{
+	  p->waiting = NULL;
+	  p->waitingMessage = NULL;
+	  p->waitingAck = NULL;
+	}
     }
   else
     {
@@ -992,7 +1001,7 @@ IBX_receiveAndAckMessages (IBX_inbox inbox, MLB_mailbox mailbox, int id)
 	  inbox->orderedMessages[tail].sendAck = 0;
 	  MLB_ack (mailbox, inbox->orderedMessages[tail].from, id);
 	}
-      size++;
+       size++;
       tail++;
       BIT_clear (inbox->received, j);
     }
@@ -1000,12 +1009,15 @@ IBX_receiveAndAckMessages (IBX_inbox inbox, MLB_mailbox mailbox, int id)
   inbox->size = size;
   inbox->tail = size;
   inbox->head = 0;
+  if (inbox->waitingAck != NULL)
+    {
   for (j = BIT_first (inbox->waitingAck); j < states;
       j = BIT_next (inbox->waitingAck))
     {
       inbox->waiting[j].sendAck = 0;
       MLB_ack (mailbox, inbox->waiting[j].from, id);
       BIT_clear (inbox->waitingAck, j);
+    }
     }
   pthread_mutex_unlock (&(inbox->receivedMutex));
 }

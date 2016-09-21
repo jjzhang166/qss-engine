@@ -22,7 +22,7 @@
 
 #include "../common/utils.h"
 
-#define SIM_STEPS_BUFFER 128
+#define SIM_STEPS_BUFFER 10024
 
 typedef struct QSS_simSteps_ *QSS_simSteps;
 
