@@ -116,6 +116,8 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 	    METIS_SetDefaultOptions (options);
 	    options[METIS_OPTION_PTYPE] = METIS_PTYPE_KWAY;
 	    options[METIS_OPTION_CONTIG] = 1;
+	    options[METIS_OPTION_SEED] = 1;
+	 //   options[METIS_OPTION_UFACTOR] = 100;
 	    METIS_PartGraphKway (&nvtxs, &ncon, xadj, adjncy, vwgt, NULL, ewgt,
 				 &nparts, NULL, NULL, options, &edgecut,
 				 partition->values);
@@ -129,6 +131,8 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 	    options[METIS_OPTION_CONTIG] = 1;
 	    options[METIS_OPTION_PTYPE] = METIS_PTYPE_KWAY;
 	    options[METIS_OPTION_OBJTYPE] = METIS_OBJTYPE_VOL;
+	    options[METIS_OPTION_SEED] = 1;
+	    //options[METIS_OPTION_UFACTOR] = 100;
 	    METIS_PartGraphKway (&nvtxs, &ncon, xadj, adjncy, vwgt, NULL, ewgt,
 				 &nparts, NULL, NULL, options, &edgecut,
 				 partition->values);
@@ -229,11 +233,10 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 	    int nconst = 1, edgecut, *partweights;
 	    PaToH_Parameters args;
 	    PaToH_Initialize_Parameters (&args, PATOH_CUTPART,
-					 PATOH_SUGPARAM_DEFAULT);
+					 PATOH_SUGPARAM_QUALITY);
 	    args._k = nparts;
-	    args.crs_alg = PATOH_CRS_HCM;
-	    printf("%g\n",args.final_imbal);
-	   // args.final_imbal = 0.2;
+	    args.final_imbal = 0.1;
+	    args.seed = 1;
 	    partweights = (int *) malloc (args._k * nconst * sizeof(int));
 	    PaToH_Alloc (&args, nvtxs, edges, nconst, vwgt, ewgt, xadj, adjncy);
 	    PaToH_Part (&args, nvtxs, edges, nconst, 0, vwgt, ewgt, xadj,

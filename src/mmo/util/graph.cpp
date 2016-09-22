@@ -62,12 +62,10 @@ Graph::edgeWeight (int node)
   int w = 0;
   if (node < _states)
     {
-      //w = GRP_Weight (_profile, GRP_CONT) * nodeWeight (node);
       w = GRP_Weight (_profile, GRP_CONT);
     }
   else
     {
-      //w = GRP_Weight (_profile, GRP_DSC) * nodeWeight (node);
       w = GRP_Weight (_profile, GRP_DSC);
     }
   return (w);
@@ -79,12 +77,10 @@ Graph::graphEdgeWeight (int node, int inf)
   int w = 1;
   if ((inf == node + 1) && (_wmap[node].find (node + 1) != _wmap[node].end ()))
     {
-      //w = GRP_Weight (_profile, GRP_VIRT) * nodeWeight (node);
       w = GRP_Weight (_profile, GRP_VIRT);
     }
   else if ((inf == node - 1) && (_wmap[node].find (node - 1) != _wmap[node].end ()))
     {
-      //w = GRP_Weight (_profile, GRP_VIRT) * nodeWeight (node);
       w = GRP_Weight (_profile, GRP_VIRT);
     }
   else
@@ -100,7 +96,6 @@ Graph::hyperGraphEdgeWeight (int node, int inf)
   int w = 1;
   if ((inf == node + 1) && (_hwmap[node].find (node + 1) != _hwmap[node].end ()))
     {
-      //w = GRP_Weight (_profile, GRP_VIRT) * nodeWeight (node);
       w = GRP_Weight (_profile, GRP_VIRT);
     }
   else

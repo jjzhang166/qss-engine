@@ -138,10 +138,10 @@ QSS_simulate (SIM_simulator simulate)
   Random ();
   QSS_simulator simulator = (QSS_simulator) simulate->state->sim;
   INT_integrator integrator = INT_Integrator (simulate);
-#ifdef __linux__
+/*#ifdef __linux__
   signal (SIGFPE, fpe_handler);
   feenableexcept (FE_DIVBYZERO);
-#endif
+#endif*/
   getTime (simulator->stats->iTime);
   QSS_initializeDataStructs (simulator);
   QSS_orderDataMatrix(simulator->data);
