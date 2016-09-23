@@ -450,6 +450,9 @@ GRP_readGraph (char *name, QSS_data data, int **xadj, int **adjncy, int *edges,
 	    }
 	  fclose (file);
 	  file = NULL;
+	  int w;
+	  for (w =0; w < nvtxs; w++)
+	    printf("Node %d weight %d\n",w,vwgt[0][w]);
 	}
     }
   if (pm == SD_Scotch || pm == SD_MetisCut || pm == SD_MetisVol)
@@ -477,6 +480,14 @@ GRP_readGraph (char *name, QSS_data data, int **xadj, int **adjncy, int *edges,
 	      fclose (file);
 	      return (GRP_ReadError);
 	    }
+	  int w,ww;
+	  for (w =0; w < nvtxs; w++)
+	    {
+	      int wb = xadj[0][w], we = xadj[0][w+1];
+	      for (ww = wb; ww < we; ww++)
+	 	    printf("Edge from %d to %d\n",w,adjncy[0][ww]);
+	    }
+
 	  if (wFile != NULL)
 	    {
 	      *ewgt = (int *) checkedMalloc (edges[0] * sizeof(int));

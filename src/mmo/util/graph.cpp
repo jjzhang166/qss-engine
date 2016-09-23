@@ -156,6 +156,7 @@ Graph::empty ()
 int
 Graph::nodeWeight (int node)
 {
+  cout << "Node inputs: " << _graphInputs[node].size () << " Node " << node << endl;
   return (_graphInputs[node].size () + _graphDiscretes[node] + 1);
 }
 
@@ -164,6 +165,7 @@ Graph::addNodeWeight (int node, int weight)
 {
   if (node >= _states)
     {
+      cout << "Discrete weight: " << weight << " Node " << node << endl;
       _graphDiscretes[node] = weight;
     }
 }
