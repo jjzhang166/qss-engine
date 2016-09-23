@@ -591,8 +591,7 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
 		      _writer->write (&buffer, WR_INIT_LD_DD);
 		      _writer->write ("{", WR_ALLOC_LD_DD);
 		      _writer->write ("{", WR_INIT_LD_DD);
-		      buffer << indent << "modelData->nDD[" << sIdx << "] += "
-			  << is.range () << ";";
+		      buffer << indent << "modelData->nDD[" << sIdx << "]++;";
 		      _writer->write (&buffer, WR_ALLOC_LD_DD);
 		      buffer << indent << "modelData->DD[" << sIdx
 			  << "][events[" << sIdx << "]++] = " << hhIdx << ";";

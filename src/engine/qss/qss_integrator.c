@@ -103,8 +103,8 @@ QSS_generateWeights (QSS_simulator simulator)
 	      vwgt[eiter] = vwgt[eiter] * steps;
 	      fwrite (&(vwgt[eiter]), sizeof(int), 1, vweights);
 	    }
-	  eiter = 1;
-	  fwrite (&(eiter), sizeof(int), 1, vweights);
+	//  eiter = 1;
+	//  fwrite (&(eiter), sizeof(int), 1, vweights);
 	  for (eiter = 0; eiter < states; eiter++)
 	    {
 	      int steps = simulator->simulationLog->states[eiter];

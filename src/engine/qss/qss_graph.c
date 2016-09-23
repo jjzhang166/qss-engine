@@ -442,17 +442,17 @@ GRP_readGraph (char *name, QSS_data data, int **xadj, int **adjncy, int *edges,
       file = fopen (fileName, "rb");
       if (file)
 	{
-	  *vwgt = (int*) checkedMalloc ((nvtxs + 1) * sizeof(int));
-	  if (fread (vwgt[0], sizeof(int), nvtxs + 1, file) != nvtxs + 1)
+	  *vwgt = (int*) checkedMalloc (nvtxs * sizeof(int));
+	  if (fread (vwgt[0], sizeof(int), nvtxs, file) != nvtxs)
 	    {
 	      fclose (file);
 	      return (GRP_ReadError);
 	    }
 	  fclose (file);
 	  file = NULL;
-	  int w;
+	/*  int w;
 	  for (w =0; w < nvtxs; w++)
-	    printf("Node %d weight %d\n",w,vwgt[0][w]);
+	    printf("Node %d weight %d\n",w,vwgt[0][w]);*/
 	}
     }
   if (pm == SD_Scotch || pm == SD_MetisCut || pm == SD_MetisVol)
@@ -480,14 +480,14 @@ GRP_readGraph (char *name, QSS_data data, int **xadj, int **adjncy, int *edges,
 	      fclose (file);
 	      return (GRP_ReadError);
 	    }
-	  int w,ww;
+	 /* int w,ww;
 	  for (w =0; w < nvtxs; w++)
 	    {
 	      int wb = xadj[0][w], we = xadj[0][w+1];
 	      for (ww = wb; ww < we; ww++)
 	 	    printf("Edge from %d to %d\n",w,adjncy[0][ww]);
 	    }
-
+*/
 	  if (wFile != NULL)
 	    {
 	      *ewgt = (int *) checkedMalloc (edges[0] * sizeof(int));
