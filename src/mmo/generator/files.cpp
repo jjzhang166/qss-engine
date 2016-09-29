@@ -400,16 +400,16 @@ MMO_Files_::graph ()
   tmp2.seekp (0);
   ofstream tmp3 (tmp3FileName.c_str (), ios::out | ios::binary);
   tmp3.seekp (0);
-  int nvtxs = _model->evs () + _model->states ();
-  int w;
+  grp_t nvtxs = _model->evs () + _model->states ();
+  grp_t w, size = 0;
   g.connectGraphs ();
-  int i, size = 0;
+  grp_t i;
   for (i = 0; i < nvtxs; i++)
     {
       size += g.graphNodeEdges (i);
-      matrix.write ((char*) &size, sizeof(int));
+      matrix.write ((char*) &size, sizeof(grp_t));
     }
-  int hedges = g.hyperGraphEdges ();
+  grp_t hedges = g.hyperGraphEdges ();
   map<int, set<int> > graph = g.graph ();
   map<int, set<int> > hGraph = g.hyperGraph ();
   for (i = 0; i < nvtxs; i++)
@@ -417,33 +417,31 @@ MMO_Files_::graph ()
       set<int>::iterator it;
       for (it = graph[i].begin (); it != graph[i].end (); it++)
 	{
-	  int inf = *it;
-	  matrix.write ((char*) &inf, sizeof(int));
-	  w = g.graphEdgeWeight (i, inf);
-	  wMatrix.write ((char*) &w, sizeof(int));
+	  grp_t inf = *it;
+	  matrix.write ((char*) &inf, sizeof(grp_t));
+	  w = g.graphEdgeWeight (i, *it);
+	  wMatrix.write ((char*) &w, sizeof(grp_t));
 	}
       w = g.nodeWeight (i);
-      nwMatrix.write ((char*) &w, sizeof(int));
+      nwMatrix.write ((char*) &w, sizeof(grp_t));
     }
-//  w = 0;
-//  nwMatrix.write ((char*) &w, sizeof(int));
   size = 0;
-  tmp1.write ((char*) &hedges, sizeof(int));
-  for (int i = 0; i < nvtxs; i++)
+  tmp1.write ((char*) &hedges, sizeof(grp_t));
+  for (i = 0; i < nvtxs; i++)
     {
       set<int>::iterator it;
       for (it = hGraph[i].begin (); it != hGraph[i].end (); ++it)
 	{
-	  int inf = *it;
-	  tmp2.write ((char*) &inf, sizeof(int));
-	  w = g.hyperGraphEdgeWeight (i, inf);
-	  hwMatrix.write ((char*) &w, sizeof(int));
+	  grp_t inf = *it;
+	  tmp2.write ((char*) &inf, sizeof(grp_t));
+	  w = g.hyperGraphEdgeWeight (i, *it);
+	  hwMatrix.write ((char*) &w, sizeof(grp_t));
 	}
       if (!hGraph[i].empty ())
 	{
 	  size += hGraph[i].size ();
-	  tmp1.write ((char*) &size, sizeof(int));
-	  tmp3.write ((char*) &i, sizeof(int));
+	  tmp1.write ((char*) &size, sizeof(grp_t));
+	  tmp3.write ((char*) &i, sizeof(grp_t));
 	}
     }
   matrix.close ();

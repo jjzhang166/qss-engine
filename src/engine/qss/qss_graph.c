@@ -25,10 +25,10 @@
 #include "../common/utils.h"
 
 int
-GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,
-		 int **ewgt, int rhe, int **hevars)
+GRP_createGraph (QSS_data data, grp_t **xadj, grp_t **adjncy, int rwgt, FILE *wFile,
+		 grp_t **ewgt, int rhe, grp_t **hevars)
 {
-  int states = data->states, events = data->events, nvtxs = states + events,
+  grp_t states = data->states, events = data->events, nvtxs = states + events,
       edges = 0, i, j;
   if (data->params->pm == SD_HMetis || data->params->pm == SD_Patoh)
     {
@@ -140,11 +140,11 @@ GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,
 	      pinsSize++;
 	    }
 	}
-      *xadj = (int*) checkedMalloc ((edges + 1) * sizeof(int));
-      *adjncy = (int*) checkedMalloc (pinsSize * sizeof(int));
+      *xadj = (grp_t*) checkedMalloc ((edges + 1) * sizeof(grp_t));
+      *adjncy = (grp_t*) checkedMalloc (pinsSize * sizeof(grp_t));
       if (rhe)
 	{
-	  *hevars = (int*) checkedMalloc (edges * sizeof(int));
+	  *hevars = (grp_t*) checkedMalloc (edges * sizeof(grp_t));
 	}
       xadj[0][0] = 0;
       int end = 0;
@@ -152,7 +152,7 @@ GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,
 	{
 	  if (wFile == NULL)
 	    {
-	      *ewgt = (int*) checkedMalloc (edges * sizeof(int));
+	      *ewgt = (grp_t*) checkedMalloc (edges * sizeof(grp_t));
 	      edges = 0;
 	      for (i = 0; i < states; i++)
 		{
@@ -205,8 +205,8 @@ GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,
 		      edges++;
 		    }
 		}
-	      *ewgt = (int *) checkedMalloc (edges * sizeof(int));
-	      if (fread (ewgt[0], sizeof(int), edges, wFile) != edges)
+	      *ewgt = (grp_t*) checkedMalloc (edges * sizeof(grp_t));
+	      if (fread (ewgt[0], sizeof(grp_t), edges, wFile) != edges)
 		{
 		  free (*ewgt);
 		  *ewgt = NULL;
@@ -358,15 +358,15 @@ GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,
 	      edges += 2;
 	    }
 	}
-      *xadj = (int*) checkedMalloc ((nvtxs + 1) * sizeof(int));
-      *adjncy = (int*) checkedMalloc (edges * sizeof(int));
+      *xadj = (grp_t*) checkedMalloc ((nvtxs + 1) * sizeof(grp_t));
+      *adjncy = (grp_t*) checkedMalloc (edges * sizeof(grp_t));
       xadj[0][0] = 0;
       int end = 0;
       if (rwgt)
 	{
 	  if (wFile == NULL)
 	    {
-	      *ewgt = (int*) checkedMalloc (edges * sizeof(int));
+	      *ewgt = (grp_t*) checkedMalloc (edges * sizeof(grp_t));
 	      for (i = 0; i < states; i++)
 		{
 		  for (j = vectorFirst (adjMatrix[i]);
@@ -401,8 +401,8 @@ GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,
 		  xadj[0][i + 1] = end;
 		}
 	      edges = xadj[0][nvtxs];
-	      *ewgt = (int *) checkedMalloc (edges * sizeof(int));
-	      if (fread (ewgt[0], sizeof(int), edges, wFile) != edges)
+	      *ewgt = (grp_t*) checkedMalloc (edges * sizeof(grp_t));
+	      if (fread (ewgt[0], sizeof(grp_t), edges, wFile) != edges)
 		{
 		  free (*ewgt);
 		  *ewgt = NULL;
@@ -429,30 +429,27 @@ GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,
 }
 
 int
-GRP_readGraph (char *name, QSS_data data, int **xadj, int **adjncy, int *edges,
-	       int rwgt, int **vwgt, int **ewgt, int rhe, int **hevars)
+GRP_readGraph (char *name, QSS_data data, grp_t **xadj, grp_t **adjncy, grp_t *edges,
+	       int rwgt, grp_t **vwgt, grp_t **ewgt, int rhe, grp_t **hevars)
 {
   char fileName[256];
   FILE *file, *wFile = NULL;
   SD_PartitionMethod pm = data->params->pm;
-  int nvtxs = data->states + data->events;
+  grp_t nvtxs = data->states + data->events;
   if (rwgt)
     {
       sprintf (fileName, "%s.vweights", name);
       file = fopen (fileName, "rb");
       if (file)
 	{
-	  *vwgt = (int*) checkedMalloc (nvtxs * sizeof(int));
-	  if (fread (vwgt[0], sizeof(int), nvtxs, file) != nvtxs)
+	  *vwgt = (grp_t*) checkedMalloc (nvtxs * sizeof(grp_t));
+	  if (fread (vwgt[0], sizeof(grp_t), nvtxs, file) != nvtxs)
 	    {
 	      fclose (file);
 	      return (GRP_ReadError);
 	    }
 	  fclose (file);
 	  file = NULL;
-	/*  int w;
-	  for (w =0; w < nvtxs; w++)
-	    printf("Node %d weight %d\n",w,vwgt[0][w]);*/
 	}
     }
   if (pm == SD_Scotch || pm == SD_MetisCut || pm == SD_MetisVol)
@@ -466,32 +463,24 @@ GRP_readGraph (char *name, QSS_data data, int **xadj, int **adjncy, int *edges,
       file = fopen (fileName, "rb");
       if (file)
 	{
-	  *xadj = (int*) checkedMalloc ((nvtxs + 1) * sizeof(int));
+	  *xadj = (grp_t*) checkedMalloc ((nvtxs + 1) * sizeof(grp_t));
 	  xadj[0][0] = 0;
-	  if (fread (&(xadj[0][1]), sizeof(int), nvtxs, file) != nvtxs)
+	  if (fread (&(xadj[0][1]), sizeof(grp_t), nvtxs, file) != nvtxs)
 	    {
 	      fclose (file);
 	      return (GRP_ReadError);
 	    }
 	  edges[0] = xadj[0][nvtxs];
-	  *adjncy = (int *) checkedMalloc (edges[0] * sizeof(int));
-	  if (fread (adjncy[0], sizeof(int), edges[0], file) != edges[0])
+	  *adjncy = (grp_t*) checkedMalloc (edges[0] * sizeof(grp_t));
+	  if (fread (adjncy[0], sizeof(grp_t), edges[0], file) != edges[0])
 	    {
 	      fclose (file);
 	      return (GRP_ReadError);
 	    }
-	 /* int w,ww;
-	  for (w =0; w < nvtxs; w++)
-	    {
-	      int wb = xadj[0][w], we = xadj[0][w+1];
-	      for (ww = wb; ww < we; ww++)
-	 	    printf("Edge from %d to %d\n",w,adjncy[0][ww]);
-	    }
-*/
 	  if (wFile != NULL)
 	    {
-	      *ewgt = (int *) checkedMalloc (edges[0] * sizeof(int));
-	      if (fread (ewgt[0], sizeof(int), edges[0], wFile) != edges[0])
+	      *ewgt = (grp_t*) checkedMalloc (edges[0] * sizeof(grp_t));
+	      if (fread (ewgt[0], sizeof(grp_t), edges[0], wFile) != edges[0])
 		{
 		  fclose (wFile);
 		  return (GRP_ReadError);
@@ -517,29 +506,29 @@ GRP_readGraph (char *name, QSS_data data, int **xadj, int **adjncy, int *edges,
       file = fopen (fileName, "rb");
       if (file)
 	{
-	  if (fread (edges, sizeof(int), 1, file) != 1)
+	  if (fread (edges, sizeof(grp_t), 1, file) != 1)
 	    {
 	      fclose (file);
 	      return (GRP_ReadError);
 	    }
-	  *xadj = (int*) checkedMalloc ((edges[0] + 1) * sizeof(int));
+	  *xadj = (grp_t*) checkedMalloc ((edges[0] + 1) * sizeof(grp_t));
 	  xadj[0][0] = 0;
-	  if (fread (&(xadj[0][1]), sizeof(int), edges[0], file) != edges[0])
+	  if (fread (&(xadj[0][1]), sizeof(grp_t), edges[0], file) != edges[0])
 	    {
 	      fclose (file);
 	      return (GRP_ReadError);
 	    }
 	  int npins = xadj[0][edges[0]];
-	  *adjncy = (int*) checkedMalloc (npins * sizeof(int));
-	  if (fread (adjncy[0], sizeof(int), npins, file) != npins)
+	  *adjncy = (grp_t*) checkedMalloc (npins * sizeof(grp_t));
+	  if (fread (adjncy[0], sizeof(grp_t), npins, file) != npins)
 	    {
 	      fclose (file);
 	      return (GRP_ReadError);
 	    }
 	  if (rhe)
 	    {
-	      *hevars = (int*) checkedMalloc (edges[0] * sizeof(int));
-	      if (fread (hevars[0], sizeof(int), edges[0], file) != edges[0])
+	      *hevars = (grp_t*) checkedMalloc (edges[0] * sizeof(grp_t));
+	      if (fread (hevars[0], sizeof(grp_t), edges[0], file) != edges[0])
 		{
 		  fclose (file);
 		  return (GRP_ReadError);
@@ -547,8 +536,8 @@ GRP_readGraph (char *name, QSS_data data, int **xadj, int **adjncy, int *edges,
 	    }
 	  if (wFile != NULL)
 	    {
-	      *ewgt = (int *) checkedMalloc (edges[0] * sizeof(int));
-	      if (fread (ewgt[0], sizeof(int), edges[0], wFile) != edges[0])
+	      *ewgt = (grp_t*) checkedMalloc (edges[0] * sizeof(grp_t));
+	      if (fread (ewgt[0], sizeof(grp_t), edges[0], wFile) != edges[0])
 		{
 		  fclose (wFile);
 		  return (GRP_ReadError);

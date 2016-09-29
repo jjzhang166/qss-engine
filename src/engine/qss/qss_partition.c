@@ -32,9 +32,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <scotch/scotch.h>
-#include <metis.h>
 
-#include "../common/patoh.h"
+#include "../common/metis.h"
+//#include "../common/patoh.h"
 #include "../common/utils.h"
 #include "qss_graph.h"
 
@@ -93,11 +93,11 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
     }
   char fileName[256];
   char graphType[64] = "static";
-  int nparts = (data->params->lps == 0 ? 64 : data->params->lps);
-  int nvtxs = data->states + data->events;
+  grp_t nparts = (data->params->lps == 0 ? 64 : data->params->lps);
+  grp_t nvtxs = data->states + data->events;
   FILE *file;
-  int *xadj = NULL, *adjncy = NULL, *vwgt = NULL, *ewgt = NULL;
-  int i, edges;
+  grp_t *xadj = NULL, *adjncy = NULL, *vwgt = NULL, *ewgt = NULL;
+  grp_t i, edges;
   SD_PartitionMethod pm = data->params->pm;
   if (GRP_readGraph (name, data, &xadj, &adjncy, &edges, 1, &vwgt, &ewgt, 0,
   NULL) == GRP_ReadError)
@@ -117,7 +117,6 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 	    options[METIS_OPTION_PTYPE] = METIS_PTYPE_KWAY;
 	    options[METIS_OPTION_CONTIG] = 1;
 	    options[METIS_OPTION_SEED] = 1;
-	 //   options[METIS_OPTION_UFACTOR] = 100;
 	    METIS_PartGraphKway (&nvtxs, &ncon, xadj, adjncy, vwgt, NULL, ewgt,
 				 &nparts, NULL, NULL, options, &edgecut,
 				 partition->values);
@@ -132,7 +131,6 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 	    options[METIS_OPTION_PTYPE] = METIS_PTYPE_KWAY;
 	    options[METIS_OPTION_OBJTYPE] = METIS_OBJTYPE_VOL;
 	    options[METIS_OPTION_SEED] = 1;
-	    //options[METIS_OPTION_UFACTOR] = 100;
 	    METIS_PartGraphKway (&nvtxs, &ncon, xadj, adjncy, vwgt, NULL, ewgt,
 				 &nparts, NULL, NULL, options, &edgecut,
 				 partition->values);
@@ -145,7 +143,7 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 	    if ((pid = fork ()))
 	      {
 		wait (NULL);
-		sprintf (hgraphName, "%s.hmetis.part.%d", name, nparts);
+		sprintf (hgraphName, "%s.hmetis.part.%lld", name, nparts);
 		file = fopen (hgraphName, "r");
 		if (file)
 		  {
@@ -155,8 +153,8 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 		    int index = 0;
 		    while ((read = getline (&line, &len, file)) != -1)
 		      {
-			int part;
-			sscanf (line, "%d", &part);
+			grp_t part;
+			sscanf (line, "%lld", &part);
 			partition->values[index++] = part;
 		      }
 		    fclose (file);
@@ -172,21 +170,21 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 		    int i, j;
 		    if (vwgt == NULL)
 		      {
-			fprintf (file, "%d %d 1\n", edges, nvtxs);
+			fprintf (file, "%lld %lld 1\n", edges, nvtxs);
 		      }
 		    else
 		      {
-			fprintf (file, "%d %d 11\n", edges, nvtxs);
+			fprintf (file, "%lld %lld 11\n", edges, nvtxs);
 		      }
 		    int begin, end;
 		    for (i = 0; i < edges; i++)
 		      {
 			begin = xadj[i];
 			end = xadj[i + 1];
-			fprintf (file, "%d ", ewgt[i]);
+			fprintf (file, "%lld ", ewgt[i]);
 			for (j = begin; j < end; j++)
 			  {
-			    fprintf (file, "%d ", adjncy[j] + 1);
+			    fprintf (file, "%lld ", adjncy[j] + 1);
 			  }
 			fprintf (file, "\n");
 		      }
@@ -194,21 +192,21 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 		      {
 			for (i = 0; i < nvtxs; i++)
 			  {
-			    fprintf (file, "%d\n", vwgt[i]);
+			    fprintf (file, "%lld\n", vwgt[i]);
 			  }
 		      }
 		    fclose (file);
 		  }
 		char parts[10];
-		sprintf (parts, "%d", nparts);
-		execlp ("./khmetis", "./khmetis", hgraphName, parts, "10", "10",
+		sprintf (parts, "%lld", nparts);
+		execlp ("./khmetis", "./khmetis", hgraphName, parts, "1", "10",
 			"1", "1", "0", "0", NULL);
 		abort ();
 	      }
 	  }
 	  break;
 	case SD_Scotch:
-	  {
+	 /* {
 	    // Run scotch partition
 	    SCOTCH_Graph *graph_sc = SCOTCH_graphAlloc ();
 	    SCOTCH_Strat *strat = SCOTCH_stratAlloc ();
@@ -226,10 +224,10 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 	      }
 	    SCOTCH_stratExit (strat);
 	    SCOTCH_graphFree (graph_sc);
-	  }
+	  }*/
 	  break;
 	case SD_Patoh:
-	  {
+/*	  {
 	    int nconst = 1, edgecut, *partweights;
 	    PaToH_Parameters args;
 	    PaToH_Initialize_Parameters (&args, PATOH_CUTPART,
@@ -245,34 +243,30 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 			partition->values, partweights, &edgecut);
 	    free (partweights);
 	    PaToH_Free ();
-	  }
+	  }*/
 	  break;
 	default:
 	  break;
 	}
     }
-  if (vwgt[nvtxs] == 1)
-    {
-      sprintf (graphType, "semistatic");
-    }
   switch (pm)
     {
     case SD_MetisCut:
-      sprintf (fileName, "%s-MetisCut-%s-%d.partition", name, graphType,
+      sprintf (fileName, "%s-MetisCut-%s-%lld.partition", name, graphType,
 	       nparts);
       break;
     case SD_MetisVol:
-      sprintf (fileName, "%s-MetisVol-%s-%d.partition", name, graphType,
+      sprintf (fileName, "%s-MetisVol-%s-%lld.partition", name, graphType,
 	       nparts);
       break;
     case SD_HMetis:
-      sprintf (fileName, "%s-HMetis-%s-%d.partition", name, graphType, nparts);
+      sprintf (fileName, "%s-HMetis-%s-%lld.partition", name, graphType, nparts);
       break;
     case SD_Scotch:
-      sprintf (fileName, "%s-Scoth-%s-%d.partition", name, graphType, nparts);
+      sprintf (fileName, "%s-Scoth-%s-%lld.partition", name, graphType, nparts);
       break;
     case SD_Patoh:
-      sprintf (fileName, "%s-Patoh-%s-%d.partition", name, graphType, nparts);
+      sprintf (fileName, "%s-Patoh-%s-%lld.partition", name, graphType, nparts);
       break;
     default:
       break;
@@ -282,7 +276,7 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
     {
       for (i = 0; i < nvtxs; i++)
 	{
-	  fprintf (file, "%d\n", partition->values[i]);
+	  fprintf (file, "%lld\n", partition->values[i]);
 	}
       fclose (file);
     }
@@ -301,11 +295,12 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 PRT_partition
 PRT_Partition (QSS_data data, char *name)
 {
-  idx_t nvtxs = data->states + data->events;
+  grp_t nvtxs = data->states + data->events;
   int lps = data->params->lps, i;
   PRT_partition p = checkedMalloc (sizeof(*p));
-  p->values = (idx_t*) checkedMalloc (nvtxs * sizeof(idx_t));
-  cleanVector (p->values, 0, nvtxs);
+  p->values = (grp_t*) checkedMalloc (nvtxs * sizeof(grp_t));
+  memset (p->values, 0, nvtxs * sizeof(long long int));
+//  cleanVector (p->values, 0, nvtxs);
   p->beginStates = 0;
   p->beginHandlers = data->states;
   p->endStates = data->states;

@@ -40,6 +40,8 @@ using namespace std;
  */
 #define 	BINOPS 18
 
+typedef long long int grp_t;
+
 /**
  *
  */

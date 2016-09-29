@@ -504,7 +504,7 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
   stringstream buffer;
   Dependencies deps = e->lhs ();
   int assignments = deps->discretes ();
-  cout << "AA " << assignments << endl;
+ // cout << "AA " << assignments << endl;
   map<int, int> simpleZCNDeps;
   map<int, int> simpleDDDependencies;
   for (Index *hndIdx = deps->begin (type); !deps->end (type);
@@ -2825,7 +2825,7 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type,
 	  if (!((type == NOD_SD || type == NOD_HZ || type == NOD_DD)
 	      && row.mappedValue (i) == col.mappedValue (i)))
 	    {
-	      cout << "Agrega arista desde " << row.mappedValue (i) + rowOffset << " a " << col.mappedValue (i) + colOffset << " Assignments " << assignments << endl;
+	//      cout << "Agrega arista desde " << row.mappedValue (i) + rowOffset << " a " << col.mappedValue (i) + colOffset << " Assignments " << assignments << endl;
 	      _graph.addGraphEdge (row.mappedValue (i) + rowOffset,
 				   col.mappedValue (i) + colOffset);
 	      _graph.addGraphEdge (col.mappedValue (i) + colOffset,
@@ -2844,7 +2844,7 @@ SolverCommon_::graphInsert (Index row, Index col, int offset, NOD_Type type,
       if (!((type == NOD_SD || type == NOD_HZ || type == NOD_DD)
 	  && row.mappedValue () == col.mappedValue ()))
 	{
-	  cout << "Agrega arista desde " << row.mappedValue () + rowOffset << " a " << col.mappedValue () + colOffset << " Assignments " << assignments << endl;
+//	  cout << "Agrega arista desde " << row.mappedValue () + rowOffset << " a " << col.mappedValue () + colOffset << " Assignments " << assignments << endl;
 	  _graph.addGraphEdge (row.mappedValue () + rowOffset,
 			       col.mappedValue () + colOffset);
 	  _graph.addGraphEdge (col.mappedValue () + colOffset,

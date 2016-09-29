@@ -24,6 +24,8 @@
 
 #include "qss_data.h"
 
+typedef long long int grp_t;
+
 typedef enum
 {
   GRP_ReadError,
@@ -31,10 +33,10 @@ typedef enum
 } GRP_Status;
 
 int
-GRP_readGraph (char *name, QSS_data data, int **xadj, int **adjncy, int *edges, int rwgt, int **vwgt, int **ewgt, int rhe, int **hevars);
+GRP_readGraph (char *name, QSS_data data, grp_t **xadj, grp_t **adjncy, grp_t *edges, int rwgt, grp_t **vwgt, grp_t **ewgt, int rhe, grp_t **hevars);
 
 int
-GRP_createGraph (QSS_data data, int **xadj, int **adjncy, int rwgt, FILE *wFile,
-		 int **ewgt, int rhe, int **hevars);
+GRP_createGraph (QSS_data data, grp_t **xadj, grp_t **adjncy, int rwgt, FILE *wFile,
+		 grp_t **ewgt, int rhe, grp_t **hevars);
 
 #endif /* QSS_GRAPH_H_ */
