@@ -1301,7 +1301,8 @@ QSS_PAR_synchronize (QSS_simulator simulator, int synchronize,
 	{
 	  externalEvent (simulator, IBX_nextMessage (inbox));
 	  SC_update (scheduler, qssData, qssTime);
-	  while (qssTime->time == stepTime)
+
+	  while (qssTime->time == stepTime && qssTime->minIndex != index)
 	    {
 	      internalEvent (simulator);
 	      SC_update (scheduler, qssData, qssTime);

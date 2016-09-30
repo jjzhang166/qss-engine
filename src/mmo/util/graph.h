@@ -83,7 +83,7 @@ public:
    * @return
    */
   int
-  hyperGraphEdgeWeight (int node, int inf);
+  hyperGraphEdgeWeight (int node);
   /**
    *
    */

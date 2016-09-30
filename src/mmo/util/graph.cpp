@@ -22,7 +22,8 @@
 #include <iostream>
 
 Graph::Graph (int states, int events) :
-    _states (states), _events (events), _nvtxs(states + events), _graphEdges (0), _graph (), _graphInputs (), _graphDiscretes (), _hyperGraph (), _wmap (), _hwmap ()
+    _states (states), _events (events), _nvtxs (states + events), _graphEdges (
+	0), _graph (), _graphInputs (), _graphDiscretes (), _hyperGraph (), _wmap (), _hwmap ()
 {
   _profile = GRP_GraphProfile ();
 }
@@ -79,7 +80,8 @@ Graph::graphEdgeWeight (int node, int inf)
     {
       w = GRP_Weight (_profile, GRP_VIRT);
     }
-  else if ((inf == node - 1) && (_wmap[node].find (node - 1) != _wmap[node].end ()))
+  else if ((inf == node - 1)
+      && (_wmap[node].find (node - 1) != _wmap[node].end ()))
     {
       w = GRP_Weight (_profile, GRP_VIRT);
     }
@@ -91,16 +93,24 @@ Graph::graphEdgeWeight (int node, int inf)
 }
 
 int
-Graph::hyperGraphEdgeWeight (int node, int inf)
+Graph::hyperGraphEdgeWeight (int node)
 {
   int w = 1;
-  if ((inf == node + 1) && (_hwmap[node].find (node + 1) != _hwmap[node].end ()))
+  set<int>::iterator it;
+  for (it = _hyperGraph[node].begin (); it != _hyperGraph[node].end (); ++it)
     {
-      w = GRP_Weight (_profile, GRP_VIRT);
-    }
-  else
-    {
-      w = edgeWeight (node);
+      if (*it != node)
+	{
+	  if ((*it == node + 1)
+	      && (_hwmap[node].find (node + 1) != _hwmap[node].end ()))
+	    {
+	      w += GRP_Weight (_profile, GRP_VIRT);
+	    }
+	  else
+	    {
+	      w += edgeWeight (node);
+	    }
+	}
     }
   return (w);
 }
@@ -156,7 +166,6 @@ Graph::empty ()
 int
 Graph::nodeWeight (int node)
 {
-//  cout << "Node inputs: " << _graphInputs[node].size () << " Node " << node << endl;
   return (_graphInputs[node].size () + _graphDiscretes[node] + 1);
 }
 
@@ -165,7 +174,6 @@ Graph::addNodeWeight (int node, int weight)
 {
   if (node >= _states)
     {
-  //    cout << "Discrete weight: " << weight << " Node " << node << endl;
       _graphDiscretes[node] = weight;
     }
 }

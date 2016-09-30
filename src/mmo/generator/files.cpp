@@ -434,11 +434,11 @@ MMO_Files_::graph ()
 	{
 	  grp_t inf = *it;
 	  tmp2.write ((char*) &inf, sizeof(grp_t));
-	  w = g.hyperGraphEdgeWeight (i, *it);
-	  hwMatrix.write ((char*) &w, sizeof(grp_t));
 	}
       if (!hGraph[i].empty ())
 	{
+	  w = g.hyperGraphEdgeWeight (i);
+	  hwMatrix.write ((char*) &w, sizeof(grp_t));
 	  size += hGraph[i].size ();
 	  tmp1.write ((char*) &size, sizeof(grp_t));
 	  tmp3.write ((char*) &i, sizeof(grp_t));

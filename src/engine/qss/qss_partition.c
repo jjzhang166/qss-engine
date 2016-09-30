@@ -199,7 +199,7 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 		  }
 		char parts[10];
 		sprintf (parts, "%lld", nparts);
-		execlp ("./khmetis", "./khmetis", hgraphName, parts, "1", "10",
+		execlp ("./khmetis", "./khmetis", hgraphName, parts, "5", "10",
 			"1", "1", "0", "0", NULL);
 		abort ();
 	      }
