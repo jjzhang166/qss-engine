@@ -31,10 +31,10 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <scotch/scotch.h>
 
+#include "../common/scotch.h"
 #include "../common/metis.h"
-//#include "../common/patoh.h"
+#include "../common/patoh.h"
 #include "../common/utils.h"
 #include "qss_graph.h"
 
@@ -80,6 +80,72 @@ PRT_readPartition (PRT_partition partition, QSS_data data, char *name)
 	  abort ();
 	}
       return;
+    }
+}
+
+void
+getPartition (int *val, PRT_partition partition, grp_t nvtxs)
+{
+  int i;
+  for (i = 0; i < nvtxs; i++)
+    {
+      partition->values[i] = val[i];
+    }
+}
+
+void
+generateIntStructure (int *n, int *e, int *np, int **x, int **xa, int **vw,
+		      int **ew, int **val, grp_t nvtxs, grp_t edges,
+		      grp_t nparts, grp_t *xadj, grp_t *adjcny, grp_t *vwgt,
+		      grp_t *ewgt, SD_PartitionMethod pm)
+{
+  int i;
+  n[0] = nvtxs;
+  e[0] = edges;
+  np[0] = nparts;
+  vw[0] = (int*) checkedMalloc (nvtxs * sizeof(int));
+  for (i = 0; i < nvtxs; i++)
+    {
+      vw[0][i] = vwgt[i];
+    }
+  ew[0] = (int*) checkedMalloc (edges * sizeof(int));
+  for (i = 0; i < edges; i++)
+    {
+      ew[0][i] = ewgt[i];
+    }
+  if (pm == SD_Scotch || pm == SD_MetisCut || pm == SD_MetisVol)
+    {
+      x[0] = (int*) checkedMalloc ((nvtxs + 1) * sizeof(int));
+      x[0][0] = 0;
+      for (i = 1; i <= nvtxs; i++)
+	{
+	  x[0][i] = xadj[i];
+	}
+      xa[0] = (int*) checkedMalloc (edges * sizeof(int));
+      for (i = 0; i < edges; i++)
+	{
+	  xa[0][i] = adjcny[i];
+	}
+    }
+  else if (pm == SD_Patoh || pm == SD_HMetis)
+    {
+      x[0] = (int*) checkedMalloc ((edges + 1) * sizeof(int));
+      x[0][0] = 0;
+      for (i = 1; i <= edges; i++)
+	{
+	  x[0][i] = xadj[i];
+	}
+      int npins = xadj[edges];
+      xa[0] = (int*) checkedMalloc (npins * sizeof(int));
+      for (i = 0; i < npins; i++)
+	{
+	  xa[0][i] = adjcny[i];
+	}
+    }
+  val[0] = (int*) checkedMalloc (nvtxs * sizeof(int));
+  for (i = 1; i < nvtxs; i++)
+    {
+      val[0][i] = 0;
     }
 }
 
@@ -206,44 +272,50 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 	  }
 	  break;
 	case SD_Scotch:
-	 /* {
+	  {
 	    // Run scotch partition
+	    int n, e, np, *x, *xa, *vw, *ew, *val;
+	    generateIntStructure (&n, &e, &np, &x, &xa, &vw, &ew, &val, nvtxs,
+				  edges, nparts, xadj, adjncy, vwgt, ewgt, pm);
 	    SCOTCH_Graph *graph_sc = SCOTCH_graphAlloc ();
 	    SCOTCH_Strat *strat = SCOTCH_stratAlloc ();
 	    SCOTCH_stratInit (strat);
-	    if (SCOTCH_graphBuild (graph_sc, 0, nvtxs, xadj, xadj + 1, vwgt,
+	    if (SCOTCH_graphBuild (graph_sc, 0, n, x, x + 1, vw,
 	    NULL,
-				   edges, adjncy, ewgt) != 0)
+				   e, xa, ew) != 0)
 	      {
 		printf ("Error: Scotch Graph Build\n");
 	      }
-	    if (SCOTCH_graphPart (graph_sc, nparts, strat, partition->values)
-		!= 0)
+	    if (SCOTCH_graphPart (graph_sc, np, strat, val) != 0)
 	      {
 		printf ("Error: Scotch Graph Partition\n");
 	      }
 	    SCOTCH_stratExit (strat);
 	    SCOTCH_graphFree (graph_sc);
-	  }*/
+	    getPartition (val, partition, nvtxs);
+	  }
 	  break;
 	case SD_Patoh:
-/*	  {
+	  {
+	    int n, e, np, *x, *xa, *vw, *ew, *val;
+	    generateIntStructure (&n, &e, &np, &x, &xa, &vw, &ew, &val, nvtxs,
+				  edges, nparts, xadj, adjncy, vwgt, ewgt, pm);
 	    int nconst = 1, edgecut, *partweights;
 	    PaToH_Parameters args;
 	    PaToH_Initialize_Parameters (&args, PATOH_CUTPART,
-					 PATOH_SUGPARAM_QUALITY);
+	    PATOH_SUGPARAM_QUALITY);
 	    args._k = nparts;
 	    args.final_imbal = 0.1;
 	    args.seed = 1;
 	    partweights = (int *) malloc (args._k * nconst * sizeof(int));
-	    PaToH_Alloc (&args, nvtxs, edges, nconst, vwgt, ewgt, xadj, adjncy);
-	    PaToH_Part (&args, nvtxs, edges, nconst, 0, vwgt, ewgt, xadj,
-			adjncy,
-			NULL,
-			partition->values, partweights, &edgecut);
+	    PaToH_Alloc (&args, n, e, nconst, vw, ew, x, xa);
+	    PaToH_Part (&args, n, e, nconst, 0, vw, ew, x, xa,
+	    NULL,
+			val, partweights, &edgecut);
 	    free (partweights);
 	    PaToH_Free ();
-	  }*/
+	    getPartition (val, partition, nvtxs);
+	  }
 	  break;
 	default:
 	  break;
@@ -260,7 +332,8 @@ PRT_createPartitions (PRT_partition partition, QSS_data data, char *name)
 	       nparts);
       break;
     case SD_HMetis:
-      sprintf (fileName, "%s-HMetis-%s-%lld.partition", name, graphType, nparts);
+      sprintf (fileName, "%s-HMetis-%s-%lld.partition", name, graphType,
+	       nparts);
       break;
     case SD_Scotch:
       sprintf (fileName, "%s-Scoth-%s-%lld.partition", name, graphType, nparts);

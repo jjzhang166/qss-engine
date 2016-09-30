@@ -53,6 +53,20 @@ QSS_SEQ_saveLog (QSS_simulator simulator)
     }
 }
 
+grp_t
+getSteps (QSS_simulator simulator, grp_t infVar)
+{
+  grp_t states = simulator->data->states;
+  if (infVar < states)
+    {
+      return (simulator->simulationLog->states[infVar]);
+    }
+  else
+    {
+      return (simulator->simulationLog->handlers[infVar - states]);
+    }
+}
+
 void
 QSS_generateWeights (QSS_simulator simulator)
 {
@@ -61,10 +75,10 @@ QSS_generateWeights (QSS_simulator simulator)
       FILE* vweights = NULL;
       FILE* eweights = NULL;
       FILE* heweights = NULL;
-      int *vwgt = NULL, *ewgt = NULL;
+      grp_t *vwgt = NULL, *ewgt = NULL;
       if (simulator->settings->debug & SD_DBG_Weights)
 	{
-	  int *xadj = NULL, *adjncy = NULL, *hevars = NULL, edges = 0;
+	  grp_t *xadj = NULL, *adjncy = NULL, *hevars = NULL, edges = 0;
 	  char fileName[256];
 	  sprintf (fileName, "%s.vwgts", simulator->output->name);
 	  vweights = fopen (fileName, "wb");
@@ -83,54 +97,36 @@ QSS_generateWeights (QSS_simulator simulator)
 	      fprintf (stderr, "Could not read generated graph files.\n");
 	      abort ();
 	    }
-	  for (eiter = 0; eiter < states; eiter++)
+	  for (eiter = 0; eiter < vsize; eiter++)
 	    {
-	      int steps = simulator->simulationLog->handlers[eiter];
+	      grp_t steps = getSteps (simulator, eiter);
 	      if (steps == 0)
 		{
 		  steps++;
 		}
 	      vwgt[eiter] = vwgt[eiter] * steps;
-	      fwrite (&(vwgt[eiter]), sizeof(int), 1, vweights);
+	      fwrite (&(vwgt[eiter]), sizeof(grp_t), 1, vweights);
 	    }
-	  for (eiter = states; eiter < vsize; eiter++)
+	  for (eiter = 0; eiter < vsize; eiter++)
 	    {
-	      int steps = simulator->simulationLog->handlers[eiter - states];
-	      if (steps == 0)
-		{
-		  steps++;
-		}
-	      vwgt[eiter] = vwgt[eiter] * steps;
-	      fwrite (&(vwgt[eiter]), sizeof(int), 1, vweights);
-	    }
-	//  eiter = 1;
-	//  fwrite (&(eiter), sizeof(int), 1, vweights);
-	  for (eiter = 0; eiter < states; eiter++)
-	    {
-	      int steps = simulator->simulationLog->states[eiter];
+	      grp_t steps = getSteps (simulator, eiter);
 	      int init = xadj[eiter], end = xadj[eiter + 1], iter;
 	      if (steps == 0)
 		{
 		  steps++;
 		}
-	      ewgt[init] = ewgt[init] * steps;
 	      for (iter = init; iter < end; iter++)
 		{
-		  fwrite (&(ewgt[init]), sizeof(int), 1, eweights);
-		}
-	    }
-	  for (eiter = states; eiter < vsize; eiter++)
-	    {
-	      int init = xadj[eiter], end = xadj[eiter + 1], iter;
-	      int steps = simulator->simulationLog->handlers[eiter - states];
-	      if (steps == 0)
-		{
-		  steps++;
-		}
-	      ewgt[init] = ewgt[init] * steps;
-	      for (iter = init; iter < end; iter++)
-		{
-		  fwrite (&(ewgt[init]), sizeof(int), 1, eweights);
+		  if (ewgt[iter] == 1)
+		    {
+		      fwrite (&(ewgt[iter]), sizeof(grp_t), 1, eweights);
+		    }
+		  else
+		    {
+		      grp_t infVar = adjncy[iter];
+		      grp_t totalWgt = ewgt[iter] * steps * getSteps (simulator, infVar);
+		      fwrite (&(totalWgt), sizeof(grp_t), 1, eweights);
+		    }
 		}
 	    }
 	  free (xadj);
@@ -152,26 +148,13 @@ QSS_generateWeights (QSS_simulator simulator)
 	  for (eiter = 0; eiter < edges; eiter++)
 	    {
 	      int var = hevars[eiter];
-	      if (var < states)
+	      grp_t steps = getSteps (simulator, var);
+	      if (steps == 0)
 		{
-		  int steps = simulator->simulationLog->states[var];
-		  if (steps == 0)
-		    {
-		      steps++;
-		    }
-		  ewgt[eiter] = ewgt[eiter] * steps;
-		  fwrite (&(ewgt[eiter]), sizeof(int), 1, heweights);
+		  steps++;
 		}
-	      else
-		{
-		  int steps = simulator->simulationLog->handlers[var - states];
-		  if (steps == 0)
-		    {
-		      steps++;
-		    }
-		  ewgt[eiter] = ewgt[eiter] * steps;
-		  fwrite (&(ewgt[eiter]), sizeof(int), 1, heweights);
-		}
+	      ewgt[eiter] = ewgt[eiter] * steps;
+	      fwrite (&(ewgt[eiter]), sizeof(grp_t), 1, heweights);
 	    }
 	  free (xadj);
 	  free (adjncy);

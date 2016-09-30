@@ -186,7 +186,7 @@ MMO_Files_::makefile ()
     }
   buffer << " $(TARGET_SRC) $(CFLAGS) -o $@ -lm -lgsl -lconfig -lgfortran";
 #ifdef	__linux__
-  buffer << " -lpthread -lmetis -lscotch -lpatoh -lrt";
+  buffer << " -lpthread -lmetis -lscotch -lscotcherr -lpatoh -lrt";
 #endif
   buffer << " -lgslcblas" << includes.str ();
   if (_flags->parallel ())
