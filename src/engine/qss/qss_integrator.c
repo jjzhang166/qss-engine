@@ -89,6 +89,9 @@ QSS_generateWeights (QSS_simulator simulator)
 	  int states = simulator->data->states;
 	  int events = simulator->data->events;
 	  int vsize = states + events, eiter;
+	  double normSteps = 0;
+	  grp_t maxVSteps = 0;
+	  grp_t maxESteps = 0;
 	  simulator->data->params->pm = SD_MetisCut;
 	  if (GRP_readGraph (simulator->output->name, simulator->data, &xadj,
 			     &adjncy, &edges, 1, &vwgt, &ewgt, 0, NULL)
@@ -100,21 +103,35 @@ QSS_generateWeights (QSS_simulator simulator)
 	  for (eiter = 0; eiter < vsize; eiter++)
 	    {
 	      grp_t steps = getSteps (simulator, eiter);
-	      if (steps == 0)
+	      if (steps > maxVSteps)
 		{
-		  steps++;
+		  maxVSteps = steps;
 		}
-	      vwgt[eiter] = vwgt[eiter] * steps;
+	    }
+	  for (eiter = 0; eiter < vsize; eiter++)
+	    {
+	      grp_t steps = getSteps (simulator, eiter);
+	      normSteps = steps / (double) maxVSteps;
+	      vwgt[eiter] = vwgt[eiter] + (int) (100 * normSteps);
 	      fwrite (&(vwgt[eiter]), sizeof(grp_t), 1, vweights);
 	    }
 	  for (eiter = 0; eiter < vsize; eiter++)
 	    {
 	      grp_t steps = getSteps (simulator, eiter);
 	      int init = xadj[eiter], end = xadj[eiter + 1], iter;
-	      if (steps == 0)
+	      for (iter = init; iter < end; iter++)
 		{
-		  steps++;
+		  grp_t infVar = adjncy[iter];
+		  if (steps + getSteps (simulator, infVar) > maxESteps)
+		    {
+		      maxESteps = steps + getSteps (simulator, infVar);
+		    }
 		}
+	    }
+	  for (eiter = 0; eiter < vsize; eiter++)
+	    {
+	      grp_t steps = getSteps (simulator, eiter);
+	      int init = xadj[eiter], end = xadj[eiter + 1], iter;
 	      for (iter = init; iter < end; iter++)
 		{
 		  if (ewgt[iter] == 1)
@@ -124,7 +141,9 @@ QSS_generateWeights (QSS_simulator simulator)
 		  else
 		    {
 		      grp_t infVar = adjncy[iter];
-		      grp_t totalWgt = ewgt[iter] * steps * getSteps (simulator, infVar);
+		      grp_t infVarSteps = getSteps (simulator, infVar);
+		      normSteps = (steps + infVarSteps) / (double) maxESteps;
+		      grp_t totalWgt = ewgt[iter] + (int) 100 * normSteps;
 		      fwrite (&(totalWgt), sizeof(grp_t), 1, eweights);
 		    }
 		}
@@ -149,11 +168,8 @@ QSS_generateWeights (QSS_simulator simulator)
 	    {
 	      int var = hevars[eiter];
 	      grp_t steps = getSteps (simulator, var);
-	      if (steps == 0)
-		{
-		  steps++;
-		}
-	      ewgt[eiter] = ewgt[eiter] * steps;
+	      normSteps = steps / (double) maxVSteps;
+	      ewgt[eiter] = ewgt[eiter] + (int)(100*normSteps);
 	      fwrite (&(ewgt[eiter]), sizeof(grp_t), 1, heweights);
 	    }
 	  free (xadj);
