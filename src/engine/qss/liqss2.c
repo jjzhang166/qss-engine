@@ -151,14 +151,12 @@ LIQSS2_recomputeNextTime (QA_quantizer quantizer, int var, double t,
 	      + quantizer->state->finTime * quantizer->state->minStep;
 	}
     }
- //           printf("time=%g: q[0]=%g, q[1]=%g, next time=%g\n",t,q[cf0],q[cf1],nTime[var]);
     if (q[cf0]*q[cf1]<0&&fabs(q[cf0])>10*lqu[var]) 
     {
         double timeaux2=-q[cf0]/q[cf1]-2*fabs(lqu[var]/q[cf1]);
         if (nTime[var]>t+timeaux2)
         {
             nTime[var]=t+timeaux2;
-//           printf("time=%g: q[0]=%g, q[1]=%g, dQ=%g, new next time=%g\n",t,q[cf0],q[cf1],lqu[var],nTime[var]);
         }
     }
 }
