@@ -1141,6 +1141,7 @@ QSS_PAR_integrator (QSS_simulator simulator)
       nextMessageTime = IBX_nextMessageTime (inbox);
       if (nextMessageTime <= qssTime->time)
 	{
+
 	  lp->externalEvent = TRUE;
 	  qssTime->time = nextMessageTime;
 	  if (nextMessageTime < qssTime->previousTime)

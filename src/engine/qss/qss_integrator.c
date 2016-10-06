@@ -1383,6 +1383,7 @@ QSS_PAR_passiveLP (QSS_simulator simulator,
 	      t = qssTime->time;
 	    }
 	  simulator->lpTime[id] = t;
+
 	  QSS_dtCheck (dt);
 	  if (t != ft)
 	    {

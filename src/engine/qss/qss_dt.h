@@ -127,6 +127,7 @@ struct QSS_dtState_
   double *t; //!< Current simulation time.
   double *elapsed; //!< Elapsed time.
   double simTime; //!< Total simulation time.
+  SD_DtSynch strategy;
   QSS_idxMap dscMap;
   QSS_idxMap qMap;
   SD_simulationLog log;
