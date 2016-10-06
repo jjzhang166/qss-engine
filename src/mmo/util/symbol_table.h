@@ -598,16 +598,16 @@ public:
 	 list<Index> idxs = list<Index> (), int constant = -1,
 	 int forOffset = 0);
   string
-  printIndex (Index idx, list<Index> idxs, string sub, int offset,
-	      int constant, VarInfo vi, int order);
+  printIndex (Index idx, list<Index> idxs, string sub, int offset, int constant,
+	      VarInfo vi, int order);
   void
-  setPolyCoeffs(int order);
+  setPolyCoeffs (int order);
   void
   insert (VarName n, VarInfo vi);
   list<VarInfo>
-  parameters();
+  parameters ();
   string
-  getTypePrefix();
+  getTypePrefix ();
 private:
   VST_Environment _vste;
   int _coeffs;
@@ -676,12 +676,16 @@ template<class Value>
 	  _beginRange = true;
 	  _endRange = false;
 	  _range = i.range ();
+	  _begin = i.begin ();
+	  _end = i.end ();
 	}
       else
 	{
 	  _beginRange = false;
 	  _endRange = false;
 	  _range = 0;
+	  _begin = 0;
+	  _end = 0;
 	}
       return (e);
     }
@@ -716,7 +720,9 @@ template<class Value>
       if (i.hasRange ())
 	{
 	  int range = i.range ();
-	  if (range == _range)
+	  int begin = i.begin ();
+	  int end = i.end ();
+	  if (range == _range && _begin == begin && _end == end)
 	    {
 	      _beginRange = false;
 	      _endRange = false;
@@ -726,12 +732,16 @@ template<class Value>
 	      _endRange = true;
 	      _beginRange = true;
 	      _range = range;
+	      _begin = begin;
+	      _end = end;
 	    }
 	  else if (_range == 0)
 	    {
 	      _beginRange = true;
 	      _endRange = false;
 	      _range = range;
+	      _begin = begin;
+	      _end = end;
 	    }
 	}
       else
@@ -746,6 +756,8 @@ template<class Value>
 	    }
 	  _beginRange = false;
 	  _range = 0;
+	  _begin = 0;
+	  _end = 0;
 	}
       return (e);
     }
@@ -816,6 +828,8 @@ template<class Value>
     }
   private:
     int _range;
+    int _begin;
+    int _end;
     bool _beginRange;
     bool _endRange;
   };
@@ -847,7 +861,7 @@ public:
   bool
   equations (Index index);
   bool
-  findGenericDependencies(int val);
+  findGenericDependencies (int val);
 private:
   MMO_Equation
   _equation (Index index);
