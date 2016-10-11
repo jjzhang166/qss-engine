@@ -34,7 +34,6 @@ equation
 	experiment(
 		MMO_Description="",
 		MMO_Solver=QSS3,
-		MMO_SymDiff=false,
 		MMO_Output={p[1:N/5:N]},
 		StartTime=0.0,
 		StopTime=1,

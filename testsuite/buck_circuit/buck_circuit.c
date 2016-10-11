@@ -128,7 +128,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int *states = (int*)malloc(2*sizeof(int));
 	int i;
 	simulator->data = QSS_Data(2,4,3,0,0,"buck_circuit");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_C = 1.000000000000000047921736e-04;
@@ -154,7 +155,7 @@ QSS_data modelData = simulator->data;
 	modelData->nSD[1]++;
 	modelData->nZS[2] = 1;
 	modelData->nSZ[1]++;
-	modelData->nHZ[0] = 2;
+	modelData->nHZ[0] += 2;
 	modelData->nHD[0] = 1;
 	modelData->nHD[1] = 1;
 	modelData->nHD[2] = 1;

@@ -416,7 +416,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int i;
 	int j = 0;
 	simulator->data = QSS_Data(18,34,18,0,13,"sisthibgen");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_Cboost = 1.000000000000000047921736e-04;

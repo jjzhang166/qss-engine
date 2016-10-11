@@ -36,11 +36,15 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	{
 		case 0:
 			alg[0] = (d[(1)]*x[3]-x[0]-__PAR_U)/(d[(0)]+d[(1)]);
+			alg[0 + 1] = -(1.0/(d[(1)]+d[(0)]))*(x[1]-d[(1)]*x[4]);
 			dx[1] = (alg[0]-x[0]/__PAR_R)/__PAR_C;
+			dx[2] = ((1.0/(__PAR_C))*(alg[1]-(1.0/(__PAR_R))*x[1]))/2;
 			return;
 		case 1:
 			alg[0] = (d[(1)]*x[3]-x[0]-__PAR_U)/(d[(0)]+d[(1)]);
+			alg[0 + 1] = -(1.0/(d[(1)]+d[(0)]))*(x[1]-d[(1)]*x[4]);
 			dx[1] = (-x[0]-alg[0]*d[(0)])/__PAR_L;
+			dx[2] = (-(1.0/(__PAR_L))*(d[(0)]*alg[1]+x[1]))/2;
 			return;
 	}
 }
@@ -52,13 +56,19 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	{
 		case 0:
 			alg[0] = (d[(1)]*x[3]-x[0]-__PAR_U)/(d[(0)]+d[(1)]);
+			alg[0 + 1] = -(1.0/(d[(1)]+d[(0)]))*(x[1]-d[(1)]*x[4]);
 			der[0 + 1] = (alg[0]-x[0]/__PAR_R)/__PAR_C;
+			der[0 + 2] = ((1.0/(__PAR_C))*(alg[1]-(1.0/(__PAR_R))*x[1]))/2;
 			der[3 + 1] = (-x[0]-alg[0]*d[(0)])/__PAR_L;
+			der[3 + 2] = (-(1.0/(__PAR_L))*(d[(0)]*alg[1]+x[1]))/2;
 			return;
 		case 1:
 			alg[0] = (d[(1)]*x[3]-x[0]-__PAR_U)/(d[(0)]+d[(1)]);
+			alg[0 + 1] = -(1.0/(d[(1)]+d[(0)]))*(x[1]-d[(1)]*x[4]);
 			der[0 + 1] = (alg[0]-x[0]/__PAR_R)/__PAR_C;
+			der[0 + 2] = ((1.0/(__PAR_C))*(alg[1]-(1.0/(__PAR_R))*x[1]))/2;
 			der[3 + 1] = (-x[0]-alg[0]*d[(0)])/__PAR_L;
+			der[3 + 2] = (-(1.0/(__PAR_L))*(d[(0)]*alg[1]+x[1]))/2;
 			return;
 	}
 }
@@ -70,13 +80,17 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 	{
 		case 0:
 			zc[0] = t-(d[(2)]);
+			zc[1] = 1.0;
 			return;
 		case 1:
 			zc[0] = t-d[(3)]-__PAR_DC*__PAR_T-(0.0);
+			zc[1] = 1.0;
 			return;
 		case 2:
 			alg[0] = (d[(1)]*x[3]-x[0]-__PAR_U)/(d[(0)]+d[(1)]);
+			alg[0 + 1] = -(1.0/(d[(1)]+d[(0)]))*(x[1]-d[(1)]*x[4]);
 			zc[0] = alg[0]*d[(4)]-(0.0);
+			zc[1] = d[(4)]*alg[1];
 			return;
 	}
 }
@@ -134,7 +148,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int *states = (int*)malloc(2*sizeof(int));
 	int i;
 	simulator->data = QSS_Data(2,5,3,0,1,"buckboost");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_C = 1.000000000000000047921736e-04;
@@ -161,11 +176,11 @@ QSS_data modelData = simulator->data;
 	modelData->nZS[2]++;
 	modelData->nSZ[0]++;
 	modelData->nSZ[1]++;
-	modelData->nHZ[0] = 2;
+	modelData->nHZ[0] += 2;
 	modelData->nHZ[0] += 1;
-	modelData->nHZ[1] = 1;
+	modelData->nHZ[1] += 1;
 	modelData->nHZ[1] += 2;
-	modelData->nHZ[2] = 1;
+	modelData->nHZ[2] += 1;
 	modelData->nHZ[2] += 1;
 	modelData->nHD[0] = 2;
 	modelData->nHD[1] = 2;

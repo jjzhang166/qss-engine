@@ -24,7 +24,6 @@ end for;
 	experiment(
 		MMO_Description=" Advection Equation.",
 		MMO_Solver=LIQSS2,
-		MMO_SymDiff=false,
 		MMO_Output={u[N]},
 		StartTime= 0.0,
 		StopTime= 1,

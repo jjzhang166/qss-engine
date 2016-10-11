@@ -94,7 +94,6 @@ algorithm
 	experiment(
 		MMO_Description=" ",
 		MMO_Solver=LIQSS2,
-		MMO_SymDiff=false,
 		MMO_Period={360000/5000},
 		MMO_Output={Tza[N]},
 		MMO_OutputType=CI_Sampled,

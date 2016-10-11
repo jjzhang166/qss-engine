@@ -96,8 +96,8 @@ MOD_definition(double *x, double *d, double *alg, double t, double *dx)
 void
 MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 {
-	int j210 = 0;
-	int j211 = 0;
+	int j30 = 0;
+	int j31 = 0;
 	modelData->zeroCrossings++;
 	switch(i)
 	{
@@ -108,10 +108,10 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			if(i >= 0 && i <= 9)
 			{
 				alg[90] = __PAR_R*x[0]-x[20];
-				j210 = i;
-	if (j210 >= 1 && j210 <= 8)
+				j30 = i;
+	if (j30 >= 1 && j30 <= 8)
 	{
-				alg[(i+90) * 1] = __PAR_R*x[(j210) * 1]-x[(j210+20) * 1];
+				alg[(i+90) * 1] = __PAR_R*x[(j30) * 1]-x[(j30+20) * 1];
 				}
 				alg[99] = __PAR_R*x[9]-x[29];
 				zc[0] = alg[(i+90) * 1]-(__PAR_vslipmax);
@@ -119,10 +119,10 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			if(i >= 10 && i <= 19)
 			{
 				alg[90] = __PAR_R*x[0]-x[20];
-				j211 = i;
-	if (j211 >= 1 && j211 <= 8)
+				j31 = i;
+	if (j31 >= 1 && j31 <= 8)
 	{
-				alg[(i+80) * 1] = __PAR_R*x[(j211-10) * 1]-x[(j211+10) * 1];
+				alg[(i+80) * 1] = __PAR_R*x[(j31-10) * 1]-x[(j31+10) * 1];
 				}
 				alg[99] = __PAR_R*x[9]-x[29];
 				zc[0] = alg[(i+80) * 1]-(__PAR_vslipmax);
@@ -179,11 +179,12 @@ CLC_initializeDataStructs(CLC_simulator simulator)
 {
 	int discretes[11];
 	int i = 0;
-	int i212;
+	int i32;
 	int outputs[1];
 	int states[30];
 	simulator->data = CLC_Data(30,11,21,0,120,"train4DASSL");
-modelData = simulator->data;
+  modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_g = 9.810000000000000497379915e+00;
@@ -206,9 +207,9 @@ modelData = simulator->data;
 	}
 	modelData->d[(10)] = 190000.0;
 	// Initialize model code.
-	for(i212 = 0; i212 <= 9; i212++)
+	for(i32 = 0; i32 <= 9; i32++)
 	{
-		modelData->x[(i212+10) * 1] = ((i212+1)-1.0)*__PAR_L;
+		modelData->x[(i32+10) * 1] = ((i32+1)-1.0)*__PAR_L;
 	}
 	for(i = 0; i <= 9; i++)
 	{

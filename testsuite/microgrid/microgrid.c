@@ -46,10 +46,13 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	{
 		case 30:
 			alg[66] = 0.000000000000000000000000e+00+(1.0-d[(20)])*(d[(21)]*__PAR_Qcmax+(1.0-d[(21)])*(__PAR_kpcw*(x[93]-__PAR_Tcwsp)+x[90]));
+			alg[66 + 1] = (__PAR_kpcw*x[94]+x[91])*(-1.0+d[(20)])*(-1.0+d[(21)]);
 			dx[1] = __PAR_kicw/__PAR_kpcw*(alg[66]-x[90]);
+			dx[2] = (-(1.0/(__PAR_kpcw))*__PAR_kicw*(x[91]-alg[67]))/2;
 			return;
 		case 31:
 			alg[66] = 0.000000000000000000000000e+00+(1.0-d[(20)])*(d[(21)]*__PAR_Qcmax+(1.0-d[(21)])*(__PAR_kpcw*(x[93]-__PAR_Tcwsp)+x[90]));
+			alg[66 + 1] = (__PAR_kpcw*x[94]+x[91])*(-1.0+d[(20)])*(-1.0+d[(21)]);
 	for(j25 = 0;j25 < 3; j25++)
 	{
 		tmp22[j25] = 0;
@@ -61,25 +64,32 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 		tmp22[2] += x[(j25+10) * 3 + 2];
 	}
 			dx[1] = (tmp22[0]-alg[66])/__PAR_Ccw;
+			dx[2] = ((1.0/(__PAR_Ccw))*(tmp22[1]-alg[67]))/2;
 			return;
 		default:
 			j = i;
 			if(j >=0 && j <= 9)
 			{
 				dx[1] = -__PAR_kiz/__PAR_kpz*x[(j) * 3]+__PAR_kiz/__PAR_kpz*(d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__PAR_kpz*(x[(j+20) * 3]-__PAR_Tzasp)+x[(j) * 3])));
+				dx[2] = (-x[(j) * 3 + 1]*__PAR_kiz*(1.0/(__PAR_kpz))+(-1.0+d[(j+32)])*__PAR_kiz*(x[(j+20) * 3 + 1]*__PAR_kpz+x[(j) * 3 + 1])*(1.0/(__PAR_kpz))*(-1.0+d[(j+22)]))/2;
 			}
 			j = i-10;
 			if(j >=0 && j <= 9)
 			{
 				alg[(j+1) * 3] = d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__PAR_kpz*(x[(j+20) * 3]-__PAR_Tzasp)+x[(j) * 3]));
+				alg[(j+1) * 3 + 1] = (-1.0+d[(j+22)])*(__PAR_kpz*x[(j+20) * 3 + 1]+x[(j) * 3 + 1])*(-1.0+d[(j+32)]);
 				dx[1] = alg[(j+1) * 3]*__PAR_kcw*(x[(j+20) * 3]-x[93])-x[(j+10) * 3];
+				dx[2] = (-__PAR_kcw*(x[94]-x[(j+20) * 3 + 1])*alg[(j+1) * 3]-x[(j+10) * 3 + 1]+alg[(j+1) * 3 + 1]*__PAR_kcw*(x[(j+20) * 3]-x[93]))/2;
 			}
 			j = i-20;
 			if(j >=0 && j <= 9)
 			{
 				alg[0] = 26.0+4.0*sin(t/3600.0/24.0*6.280000000000000248689958e+00)+9.999999999999999451532715e-21*x[87];
+				alg[0 + 1] = (9.999999999999999451532715e-21)*x[88]+(2.907407407407407704848235e-04)*cos((7.268518518518519262120586e-05)*t);
 				alg[(j+11) * 3] = (__PAR_p1*pow(x[(j+20) * 3],2.0)+__PAR_p2*x[(j+20) * 3]+__PAR_p3)*d[(j)];
+				alg[(j+11) * 3 + 1] = d[(j)]*(2.0*x[(j+20) * 3 + 1]*__PAR_p1*x[(j+20) * 3]+x[(j+20) * 3 + 1]*__PAR_p2);
 				dx[1] = (-x[(j+10) * 3]+__PAR_kout*(alg[0]-x[(j+20) * 3])+alg[(j+11) * 3])/__PAR_Cza;
+				dx[2] = ((alg[(j+11) * 3 + 1]+__PAR_kout*(alg[1]-x[(j+20) * 3 + 1])-x[(j+10) * 3 + 1])*(1.0/(__PAR_Cza)))/2;
 			}
 	}
 }
@@ -95,18 +105,23 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	{
 		case 29:
 			alg[0] = 26.0+4.0*sin(t/3600.0/24.0*6.280000000000000248689958e+00)+9.999999999999999451532715e-21*x[87];
+			alg[0 + 1] = (9.999999999999999451532715e-21)*x[88]+(2.907407407407407704848235e-04)*cos((7.268518518518519262120586e-05)*t);
 			for(j = 0;j <= 9; j++)
 			{
 				alg[(j+11) * 3] = (__PAR_p1*pow(x[(j+20) * 3],2.0)+__PAR_p2*x[(j+20) * 3]+__PAR_p3)*d[(j)];
+				alg[(j+11) * 3 + 1] = d[(j)]*(2.0*x[(j+20) * 3 + 1]*__PAR_p1*x[(j+20) * 3]+x[(j+20) * 3 + 1]*__PAR_p2);
 			}
 			for(j = 0; j <= 9; j++)
 			{
 				der[(j+20) * 3 + 1] = (-x[(j+10) * 3]+__PAR_kout*(alg[0]-x[(j+20) * 3])+alg[(j+11) * 3])/__PAR_Cza;
+				der[(j+20) * 3 + 2] = ((alg[(j+11) * 3 + 1]+__PAR_kout*(alg[1]-x[(j+20) * 3 + 1])-x[(j+10) * 3 + 1])*(1.0/(__PAR_Cza)))/2;
 			}
 			break;
 		case 30:
 			alg[66] = 0.000000000000000000000000e+00+(1.0-d[(20)])*(d[(21)]*__PAR_Qcmax+(1.0-d[(21)])*(__PAR_kpcw*(x[93]-__PAR_Tcwsp)+x[90]));
+			alg[66 + 1] = (__PAR_kpcw*x[94]+x[91])*(-1.0+d[(20)])*(-1.0+d[(21)]);
 			der[90 + 1] = __PAR_kicw/__PAR_kpcw*(alg[66]-x[90]);
+			der[90 + 2] = (-(1.0/(__PAR_kpcw))*__PAR_kicw*(x[91]-alg[67]))/2;
 	for(j25 = 0;j25 < 3; j25++)
 	{
 		tmp22[j25] = 0;
@@ -118,6 +133,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp22[2] += x[(j25+10) * 3 + 2];
 	}
 			der[93 + 1] = (tmp22[0]-alg[66])/__PAR_Ccw;
+			der[93 + 2] = ((1.0/(__PAR_Ccw))*(tmp22[1]-alg[67]))/2;
 			return;
 		case 31:
 			for(j = 0;j <= 9; j++)
@@ -126,14 +142,18 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 			if (j26 >= 0 && j26 <= 9)
 			{
 				alg[(j+1) * 3] = d[(j26+32)]+(1.0-d[(j26+32)])*(0.0+(1.0-d[(j26+22)])*(__PAR_kpz*(x[(j26+20) * 3]-__PAR_Tzasp)+x[(j26) * 3]));
+				alg[(j+1) * 3 + 1] = (-1.0+d[(j26+22)])*(__PAR_kpz*x[(j26+20) * 3 + 1]+x[(j26) * 3 + 1])*(-1.0+d[(j26+32)]);
 			}
 			}
 			alg[66] = 0.000000000000000000000000e+00+(1.0-d[(20)])*(d[(21)]*__PAR_Qcmax+(1.0-d[(21)])*(__PAR_kpcw*(x[93]-__PAR_Tcwsp)+x[90]));
+			alg[66 + 1] = (__PAR_kpcw*x[94]+x[91])*(-1.0+d[(20)])*(-1.0+d[(21)]);
 			for(j = 0; j <= 9; j++)
 			{
 				der[(j+10) * 3 + 1] = alg[(j+1) * 3]*__PAR_kcw*(x[(j+20) * 3]-x[93])-x[(j+10) * 3];
+				der[(j+10) * 3 + 2] = (-__PAR_kcw*(x[94]-x[(j+20) * 3 + 1])*alg[(j+1) * 3]-x[(j+10) * 3 + 1]+alg[(j+1) * 3 + 1]*__PAR_kcw*(x[(j+20) * 3]-x[93]))/2;
 			}
 			der[90 + 1] = __PAR_kicw/__PAR_kpcw*(alg[66]-x[90]);
+			der[90 + 2] = (-(1.0/(__PAR_kpcw))*__PAR_kicw*(x[91]-alg[67]))/2;
 	for(j25 = 0;j25 < 3; j25++)
 	{
 		tmp22[j25] = 0;
@@ -145,38 +165,54 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp22[2] += x[(j25+10) * 3 + 2];
 	}
 			der[93 + 1] = (tmp22[0]-alg[66])/__PAR_Ccw;
+			der[93 + 2] = ((1.0/(__PAR_Ccw))*(tmp22[1]-alg[67]))/2;
 			break;
 	}
 	j = i;
 	if(j >=0 && j <= 9)
 	{
 		alg[(j+1) * 3] = d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__PAR_kpz*(x[(j+20) * 3]-__PAR_Tzasp)+x[(j) * 3]));
+		alg[(j+1) * 3 + 1] = (-1.0+d[(j+22)])*(__PAR_kpz*x[(j+20) * 3 + 1]+x[(j) * 3 + 1])*(-1.0+d[(j+32)]);
 		der[(j) * 3 + 1] = -__PAR_kiz/__PAR_kpz*x[(j) * 3]+__PAR_kiz/__PAR_kpz*(d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__PAR_kpz*(x[(j+20) * 3]-__PAR_Tzasp)+x[(j) * 3])));
+		der[(j) * 3 + 2] = (-x[(j) * 3 + 1]*__PAR_kiz*(1.0/(__PAR_kpz))+(-1.0+d[(j+32)])*__PAR_kiz*(x[(j+20) * 3 + 1]*__PAR_kpz+x[(j) * 3 + 1])*(1.0/(__PAR_kpz))*(-1.0+d[(j+22)]))/2;
 		der[(j+10) * 3 + 1] = alg[(j+1) * 3]*__PAR_kcw*(x[(j+20) * 3]-x[93])-x[(j+10) * 3];
+		der[(j+10) * 3 + 2] = (-__PAR_kcw*(x[94]-x[(j+20) * 3 + 1])*alg[(j+1) * 3]-x[(j+10) * 3 + 1]+alg[(j+1) * 3 + 1]*__PAR_kcw*(x[(j+20) * 3]-x[93]))/2;
 	}
 	j = i-10;
 	if(j >=0 && j <= 9)
 	{
 		alg[0] = 26.0+4.0*sin(t/3600.0/24.0*6.280000000000000248689958e+00)+9.999999999999999451532715e-21*x[87];
+		alg[0 + 1] = (9.999999999999999451532715e-21)*x[88]+(2.907407407407407704848235e-04)*cos((7.268518518518519262120586e-05)*t);
 		alg[(j+1) * 3] = d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__PAR_kpz*(x[(j+20) * 3]-__PAR_Tzasp)+x[(j) * 3]));
+		alg[(j+1) * 3 + 1] = (-1.0+d[(j+22)])*(__PAR_kpz*x[(j+20) * 3 + 1]+x[(j) * 3 + 1])*(-1.0+d[(j+32)]);
 		alg[(j+11) * 3] = (__PAR_p1*pow(x[(j+20) * 3],2.0)+__PAR_p2*x[(j+20) * 3]+__PAR_p3)*d[(j)];
+		alg[(j+11) * 3 + 1] = d[(j)]*(2.0*x[(j+20) * 3 + 1]*__PAR_p1*x[(j+20) * 3]+x[(j+20) * 3 + 1]*__PAR_p2);
 		der[(j+10) * 3 + 1] = alg[(j+1) * 3]*__PAR_kcw*(x[(j+20) * 3]-x[93])-x[(j+10) * 3];
+		der[(j+10) * 3 + 2] = (-__PAR_kcw*(x[94]-x[(j+20) * 3 + 1])*alg[(j+1) * 3]-x[(j+10) * 3 + 1]+alg[(j+1) * 3 + 1]*__PAR_kcw*(x[(j+20) * 3]-x[93]))/2;
 		der[(j+20) * 3 + 1] = (-x[(j+10) * 3]+__PAR_kout*(alg[0]-x[(j+20) * 3])+alg[(j+11) * 3])/__PAR_Cza;
+		der[(j+20) * 3 + 2] = ((alg[(j+11) * 3 + 1]+__PAR_kout*(alg[1]-x[(j+20) * 3 + 1])-x[(j+10) * 3 + 1])*(1.0/(__PAR_Cza)))/2;
 	}
 	j = i-20;
 	if(j >=0 && j <= 9)
 	{
 		alg[0] = 26.0+4.0*sin(t/3600.0/24.0*6.280000000000000248689958e+00)+9.999999999999999451532715e-21*x[87];
+		alg[0 + 1] = (9.999999999999999451532715e-21)*x[88]+(2.907407407407407704848235e-04)*cos((7.268518518518519262120586e-05)*t);
 		alg[(j+1) * 3] = d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__PAR_kpz*(x[(j+20) * 3]-__PAR_Tzasp)+x[(j) * 3]));
+		alg[(j+1) * 3 + 1] = (-1.0+d[(j+22)])*(__PAR_kpz*x[(j+20) * 3 + 1]+x[(j) * 3 + 1])*(-1.0+d[(j+32)]);
 		alg[(j+11) * 3] = (__PAR_p1*pow(x[(j+20) * 3],2.0)+__PAR_p2*x[(j+20) * 3]+__PAR_p3)*d[(j)];
+		alg[(j+11) * 3 + 1] = d[(j)]*(2.0*x[(j+20) * 3 + 1]*__PAR_p1*x[(j+20) * 3]+x[(j+20) * 3 + 1]*__PAR_p2);
 		der[(j) * 3 + 1] = -__PAR_kiz/__PAR_kpz*x[(j) * 3]+__PAR_kiz/__PAR_kpz*(d[(j+32)]+(1.0-d[(j+32)])*(0.0+(1.0-d[(j+22)])*(__PAR_kpz*(x[(j+20) * 3]-__PAR_Tzasp)+x[(j) * 3])));
+		der[(j) * 3 + 2] = (-x[(j) * 3 + 1]*__PAR_kiz*(1.0/(__PAR_kpz))+(-1.0+d[(j+32)])*__PAR_kiz*(x[(j+20) * 3 + 1]*__PAR_kpz+x[(j) * 3 + 1])*(1.0/(__PAR_kpz))*(-1.0+d[(j+22)]))/2;
 		der[(j+10) * 3 + 1] = alg[(j+1) * 3]*__PAR_kcw*(x[(j+20) * 3]-x[93])-x[(j+10) * 3];
+		der[(j+10) * 3 + 2] = (-__PAR_kcw*(x[94]-x[(j+20) * 3 + 1])*alg[(j+1) * 3]-x[(j+10) * 3 + 1]+alg[(j+1) * 3 + 1]*__PAR_kcw*(x[(j+20) * 3]-x[93]))/2;
 		der[(j+20) * 3 + 1] = (-x[(j+10) * 3]+__PAR_kout*(alg[0]-x[(j+20) * 3])+alg[(j+11) * 3])/__PAR_Cza;
+		der[(j+20) * 3 + 2] = ((alg[(j+11) * 3 + 1]+__PAR_kout*(alg[1]-x[(j+20) * 3 + 1])-x[(j+10) * 3 + 1])*(1.0/(__PAR_Cza)))/2;
 	}
 	j = i-10;
 	if(j >=0 && j <= 9)
 	{
 		alg[66] = 0.000000000000000000000000e+00+(1.0-d[(20)])*(d[(21)]*__PAR_Qcmax+(1.0-d[(21)])*(__PAR_kpcw*(x[93]-__PAR_Tcwsp)+x[90]));
+		alg[66 + 1] = (__PAR_kpcw*x[94]+x[91])*(-1.0+d[(20)])*(-1.0+d[(21)]);
 	for(j25 = 0;j25 < 3; j25++)
 	{
 		tmp22[j25] = 0;
@@ -188,6 +224,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp22[2] += x[(j25+10) * 3 + 2];
 	}
 		der[93 + 1] = (tmp22[0]-alg[66])/__PAR_Ccw;
+		der[93 + 2] = ((1.0/(__PAR_Ccw))*(tmp22[1]-alg[67]))/2;
 	}
 }
 
@@ -198,22 +235,27 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 	{
 		case 30:
 			zc[0] = __PAR_kpcw*(x[93]-__PAR_Tcwsp)+x[90]-(0.0);
+			zc[1] = x[91]+__PAR_kpcw*x[94];
 			return;
 		case 31:
 			zc[0] = __PAR_kpcw*(x[93]-__PAR_Tcwsp)+x[90]-(__PAR_Qcmax);
+			zc[1] = __PAR_kpcw*x[94]+x[91];
 			return;
 		default:
 			if(i >= 0 && i <= 9)
 			{
 				zc[0] = t-(d[(i+10)]);
+				zc[1] = 1.0;
 			}
 			if(i >= 10 && i <= 19)
 			{
 				zc[0] = __PAR_kpz*(x[(i+10) * 3]-__PAR_Tzasp)+x[(i-10) * 3]-(0.0);
+				zc[1] = x[(i+10) * 3 + 1]*__PAR_kpz+x[(i-10) * 3 + 1];
 			}
 			if(i >= 20 && i <= 29)
 			{
 				zc[0] = __PAR_kpz*(x[(i) * 3]-__PAR_Tzasp)+x[(i-20) * 3]-(1.0);
+				zc[1] = __PAR_kpz*x[(i) * 3 + 1]+x[(i-20) * 3 + 1];
 			}
 	}
 }
@@ -292,7 +334,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int j = 0;
 	int td = 0;
 	simulator->data = QSS_Data(32,42,32,10,23,"microgrid");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_Cza = 6.092000000000000000000000e+06;

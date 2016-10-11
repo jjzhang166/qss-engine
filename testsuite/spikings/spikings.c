@@ -36,11 +36,13 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	if(j >=0 && j <= 999)
 	{
 		dx[1] = 4.000000000000000083266727e-02*x[(j) * 3]*x[(j) * 3]+5.0*x[(j) * 3]+140.0-x[(j+1000) * 3]+__PAR_I[(j)];
+		dx[2] = (-x[(j+1000) * 3 + 1]+5.0*x[(j) * 3 + 1]+(8.000000000000000166533454e-02)*x[(j) * 3]*x[(j) * 3 + 1])/2;
 	}
 	j = i-1000;
 	if(j >=0 && j <= 999)
 	{
 		dx[1] = __PAR_a*(__PAR_b*x[(j) * 3]-x[(j+1000) * 3]);
+		dx[2] = (-(x[(j+1000) * 3 + 1]-x[(j) * 3 + 1]*__PAR_b)*__PAR_a)/2;
 	}
 }
 
@@ -52,13 +54,17 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	if(j >=0 && j <= 999)
 	{
 		der[(j) * 3 + 1] = 4.000000000000000083266727e-02*x[(j) * 3]*x[(j) * 3]+5.0*x[(j) * 3]+140.0-x[(j+1000) * 3]+__PAR_I[(j)];
+		der[(j) * 3 + 2] = (-x[(j+1000) * 3 + 1]+5.0*x[(j) * 3 + 1]+(8.000000000000000166533454e-02)*x[(j) * 3]*x[(j) * 3 + 1])/2;
 		der[(j+1000) * 3 + 1] = __PAR_a*(__PAR_b*x[(j) * 3]-x[(j+1000) * 3]);
+		der[(j+1000) * 3 + 2] = (-(x[(j+1000) * 3 + 1]-x[(j) * 3 + 1]*__PAR_b)*__PAR_a)/2;
 	}
 	j = i-1000;
 	if(j >=0 && j <= 999)
 	{
 		der[(j) * 3 + 1] = 4.000000000000000083266727e-02*x[(j) * 3]*x[(j) * 3]+5.0*x[(j) * 3]+140.0-x[(j+1000) * 3]+__PAR_I[(j)];
+		der[(j) * 3 + 2] = (-x[(j+1000) * 3 + 1]+5.0*x[(j) * 3 + 1]+(8.000000000000000166533454e-02)*x[(j) * 3]*x[(j) * 3 + 1])/2;
 		der[(j+1000) * 3 + 1] = __PAR_a*(__PAR_b*x[(j) * 3]-x[(j+1000) * 3]);
+		der[(j+1000) * 3 + 2] = (-(x[(j+1000) * 3 + 1]-x[(j) * 3 + 1]*__PAR_b)*__PAR_a)/2;
 	}
 }
 
@@ -68,6 +74,7 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 	if(i >= 0 && i <= 999)
 	{
 		zc[0] = x[(i) * 3]-(30.0);
+		zc[1] = x[(i) * 3 + 1];
 	}
 }
 
@@ -105,7 +112,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int i;
 	int j = 0;
 	simulator->data = QSS_Data(2000,0,1000,0,0,"spikings");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_a = 2.000000000000000041633363e-02;

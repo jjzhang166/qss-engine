@@ -40,8 +40,11 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	{
 		case 0:
 			alg[0] = __PAR_v*__PAR_inVal;
+			alg[0 + 1] = 0.0;
 			alg[3] = __PAR_v*x[0];
+			alg[3 + 1] = __PAR_v*x[1];
 			dx[1] = -(alg[3]-alg[0])*100/__PAR_L;
+			dx[2] = ((alg[1]-alg[4])*(1.0/(__PAR_L))*100)/2;
 			return;
 		default:
 			j = i;
@@ -51,6 +54,7 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	if (j0 >= 1 && j0 <= 100)
 	{
 				alg[(j) * 3] = __PAR_v*x[(j0-1) * 3];
+				alg[(j) * 3 + 1] = __PAR_v*x[(j0-1) * 3 + 1];
 				}
 				j0 = j;
 	if (j0 >= 1 && j0 <= 100)
@@ -59,9 +63,11 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	if (j0 >= 1 && j0 <= 99)
 	{
 				alg[(j0+1) * 3] = __PAR_v*x[(j1-1) * 3];
+				alg[(j0+1) * 3 + 1] = __PAR_v*x[(j1-1) * 3 + 1];
 				}
 				}
 				dx[1] = -(alg[(j+1) * 3]-alg[(j) * 3])*100/__PAR_L;
+				dx[2] = (-(1.0/(__PAR_L))*(alg[(j+1) * 3 + 1]-alg[(j) * 3 + 1])*100)/2;
 			}
 	}
 }
@@ -80,8 +86,11 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	{
 		case 0:
 			alg[0] = __PAR_v*__PAR_inVal;
+			alg[0 + 1] = 0.0;
 			alg[3] = __PAR_v*x[0];
+			alg[3 + 1] = __PAR_v*x[1];
 			der[0 + 1] = -(alg[3]-alg[0])*100/__PAR_L;
+			der[0 + 2] = ((alg[1]-alg[4])*(1.0/(__PAR_L))*100)/2;
 			break;
 	}
 	j = i+1;
@@ -91,6 +100,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	if (j2 >= 1 && j2 <= 100)
 	{
 		alg[(j) * 3] = __PAR_v*x[(j2-1) * 3];
+		alg[(j) * 3 + 1] = __PAR_v*x[(j2-1) * 3 + 1];
 		}
 		j2 = j;
 	if (j2 >= 1 && j2 <= 100)
@@ -99,9 +109,11 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	if (j2 >= 1 && j2 <= 99)
 	{
 		alg[(j+1) * 3] = __PAR_v*x[(j3-1) * 3];
+		alg[(j+1) * 3 + 1] = __PAR_v*x[(j3-1) * 3 + 1];
 		}
 		}
 		der[(j) * 3 + 1] = -(alg[(j+1) * 3]-alg[(j) * 3])*100/__PAR_L;
+		der[(j) * 3 + 2] = (-(1.0/(__PAR_L))*(alg[(j+1) * 3 + 1]-alg[(j) * 3 + 1])*100)/2;
 	}
 	j = i;
 	if(j >=1 && j <= 100)
@@ -110,6 +122,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	if (j4 >= 1 && j4 <= 100)
 	{
 		alg[(j) * 3] = __PAR_v*x[(j4-1) * 3];
+		alg[(j) * 3 + 1] = __PAR_v*x[(j4-1) * 3 + 1];
 		}
 		j4 = j;
 	if (j4 >= 1 && j4 <= 100)
@@ -118,9 +131,11 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	if (j4 >= 1 && j4 <= 99)
 	{
 		alg[(j+1) * 3] = __PAR_v*x[(j5-1) * 3];
+		alg[(j+1) * 3 + 1] = __PAR_v*x[(j5-1) * 3 + 1];
 		}
 		}
 		der[(j) * 3 + 1] = -(alg[(j+1) * 3]-alg[(j) * 3])*100/__PAR_L;
+		der[(j) * 3 + 2] = (-(1.0/(__PAR_L))*(alg[(j+1) * 3 + 1]-alg[(j) * 3 + 1])*100)/2;
 	}
 }
 
@@ -144,7 +159,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int i;
 	int j = 0;
 	simulator->data = QSS_Data(100,0,0,0,101,"advectionFlux");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_L = 1.000000000000000000000000e+00;

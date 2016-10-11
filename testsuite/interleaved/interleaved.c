@@ -49,12 +49,14 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 		tmp0[2] += x[(j1+1) * 3 + 2];
 	}
 			dx[1] = (tmp0[0]-x[0]/__PAR_R)/__PAR_C;
+			dx[2] = (-(1.0/(__PAR_C))*((1.0/(__PAR_R))*x[1]-tmp0[1]))/2;
 			return;
 		default:
 			j = i-1;
 			if(j >=0 && j <= 3)
 			{
 				dx[1] = (((__PAR_U/d[(j+4)])-x[(j+1) * 3])*(d[(j+4)]*d[(j)]/(d[(j+4)]+d[(j)]))-x[0])/__PAR_L;
+				dx[2] = (-(x[1]+d[(j+4)]*(1.0/(d[(j+4)]+d[(j)]))*x[(j+1) * 3 + 1]*d[(j)])*(1.0/(__PAR_L)))/2;
 			}
 	}
 }
@@ -79,9 +81,11 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp0[2] += x[(j1+1) * 3 + 2];
 	}
 			der[0 + 1] = (tmp0[0]-x[0]/__PAR_R)/__PAR_C;
+			der[0 + 2] = (-(1.0/(__PAR_C))*((1.0/(__PAR_R))*x[1]-tmp0[1]))/2;
 			for(j = 0; j <= 3; j++)
 			{
 				der[(j+1) * 3 + 1] = (((__PAR_U/d[(j+4)])-x[(j+1) * 3])*(d[(j+4)]*d[(j)]/(d[(j+4)]+d[(j)]))-x[0])/__PAR_L;
+				der[(j+1) * 3 + 2] = (-(x[1]+d[(j+4)]*(1.0/(d[(j+4)]+d[(j)]))*x[(j+1) * 3 + 1]*d[(j)])*(1.0/(__PAR_L)))/2;
 			}
 			break;
 	}
@@ -89,6 +93,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	if(j >=0 && j <= 3)
 	{
 		der[(j+1) * 3 + 1] = (((__PAR_U/d[(j+4)])-x[(j+1) * 3])*(d[(j+4)]*d[(j)]/(d[(j+4)]+d[(j)]))-x[0])/__PAR_L;
+		der[(j+1) * 3 + 2] = (-(x[1]+d[(j+4)]*(1.0/(d[(j+4)]+d[(j)]))*x[(j+1) * 3 + 1]*d[(j)])*(1.0/(__PAR_L)))/2;
 	}
 	j = i-1;
 	if(j >=0 && j <= 3)
@@ -104,6 +109,7 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		tmp0[2] += x[(j1+1) * 3 + 2];
 	}
 		der[0 + 1] = (tmp0[0]-x[0]/__PAR_R)/__PAR_C;
+		der[0 + 2] = (-(1.0/(__PAR_C))*((1.0/(__PAR_R))*x[1]-tmp0[1]))/2;
 	}
 }
 
@@ -114,19 +120,23 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 	{
 		case 0:
 			zc[0] = t-(d[(8)]);
+			zc[1] = 1.0;
 			return;
 		default:
 			if(i >= 1 && i <= 4)
 			{
 				zc[0] = t-d[(9)]-__PAR_T*(i-1.0)/4-1.000000000000000020816682e-02*__PAR_T-(0.0);
+				zc[1] = 1.0;
 			}
 			if(i >= 5 && i <= 8)
 			{
 				zc[0] = t-d[(9)]-__PAR_T*((i-4)-1.0)/4-__PAR_DC*__PAR_T/4-1.000000000000000020816682e-02*__PAR_T-(0.0);
+				zc[1] = 1.0;
 			}
 			if(i >= 9 && i <= 12)
 			{
 				zc[0] = x[(i-8) * 3]-(0.0);
+				zc[1] = x[(i-8) * 3 + 1];
 			}
 	}
 }
@@ -191,7 +201,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int i;
 	int j = 0;
 	simulator->data = QSS_Data(5,10,13,0,0,"interleaved");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_C = 1.000000000000000047921736e-04;
@@ -236,7 +247,7 @@ QSS_data modelData = simulator->data;
 	{
 		modelData->nSZ[i+1]++;
 	}
-	modelData->nHZ[0] = 9;
+	modelData->nHZ[0] += 9;
 	for(i = 1; i <= 4; i++)
 	{
 		modelData->nHD[i]++;

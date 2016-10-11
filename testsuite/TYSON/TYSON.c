@@ -144,7 +144,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int *states = (int*)malloc(6*sizeof(int));
 	int i;
 	simulator->data = QSS_Data(6,0,0,0,4,"TYSON");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_k1 = 1.499999999999999944488849e-02;

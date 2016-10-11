@@ -50,7 +50,6 @@ model TYSON
 	experiment(
 		MMO_Description="TYSON automatic model translation.",
 		MMO_Solver=LIQSS2,
-		MMO_SymDiff=false,
 		MMO_Output={C2,CP,pM,M,Y,yP},
 		StartTime=0.0,
 		StopTime=100,

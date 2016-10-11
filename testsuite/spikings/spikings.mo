@@ -34,7 +34,6 @@ model spikings
 	experiment(
 		MMO_Description="Spiking Neurons.",
 		MMO_Solver=LIQSS2,
-		MMO_SymDiff=false,
 		MMO_Output={v[1],v[2]},
 		StartTime=0,
 		StopTime=1000,

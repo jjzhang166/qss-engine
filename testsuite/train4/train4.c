@@ -350,8 +350,8 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 void
 MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 {
-	int j210 = 0;
-	int j211 = 0;
+	int j30 = 0;
+	int j31 = 0;
 	switch(i)
 	{
 		case 20:
@@ -361,10 +361,10 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			if(i >= 0 && i <= 9)
 			{
 				alg[270] = __PAR_R*x[0]-x[60];
-				j210 = i;
-	if (j210 >= 1 && j210 <= 8)
+				j30 = i;
+	if (j30 >= 1 && j30 <= 8)
 	{
-				alg[(i+90) * 3] = __PAR_R*x[(j210) * 3]-x[(j210+20) * 3];
+				alg[(i+90) * 3] = __PAR_R*x[(j30) * 3]-x[(j30+20) * 3];
 				}
 				alg[297] = __PAR_R*x[27]-x[87];
 				zc[0] = alg[(i+90) * 3]-(__PAR_vslipmax);
@@ -372,10 +372,10 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 			if(i >= 10 && i <= 19)
 			{
 				alg[270] = __PAR_R*x[0]-x[60];
-				j211 = i;
-	if (j211 >= 1 && j211 <= 8)
+				j31 = i;
+	if (j31 >= 1 && j31 <= 8)
 	{
-				alg[(i+80) * 3] = __PAR_R*x[(j211-10) * 3]-x[(j211+10) * 3];
+				alg[(i+80) * 3] = __PAR_R*x[(j31-10) * 3]-x[(j31+10) * 3];
 				}
 				alg[297] = __PAR_R*x[27]-x[87];
 				zc[0] = alg[(i+80) * 3]-(__PAR_vslipmax);
@@ -434,11 +434,12 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int *events = (int*)malloc(21*sizeof(int));
 	int *outputs = (int*)malloc(1*sizeof(int));
 	int *states = (int*)malloc(30*sizeof(int));
-	int i212;
+	int i32;
 	int i;
 	int j = 0;
 	simulator->data = QSS_Data(30,11,21,0,120,"train4");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_g = 9.810000000000000497379915e+00;
@@ -461,9 +462,9 @@ QSS_data modelData = simulator->data;
 	}
 	modelData->d[(10)] = 190000.0;
 	// Initialize model code.
-	for(i212 = 0; i212 <= 9; i212++)
+	for(i32 = 0; i32 <= 9; i32++)
 	{
-		modelData->x[(i212+10) * 3] = ((i212+1)-1.0)*__PAR_L;
+		modelData->x[(i32+10) * 3] = ((i32+1)-1.0)*__PAR_L;
 	}
 	modelData->nDS[0] = 1;
 	modelData->nDS[10] = 1;

@@ -230,7 +230,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int i;
 	int j = 0;
 	simulator->data = QSS_Data(3000,2201,2201,0,0,"spl_neurons_layers");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_tau = 20.0;

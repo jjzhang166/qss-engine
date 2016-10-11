@@ -46,7 +46,6 @@ end for;
 	experiment(
 		MMO_Description=" Shallow Water wave equation",
 		MMO_Solver=LIQSS2,
-		MMO_SymDiff=false,
 		MMO_Output={h[249]},
 		StartTime= 0.0,
 		StopTime= 5.0,

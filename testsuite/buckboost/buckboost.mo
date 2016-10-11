@@ -36,7 +36,6 @@ model buckboost
 	experiment(
 		MMO_Description="Buck-Boost Circuit.",
 		MMO_Solver=LIQSS2,
-		MMO_SymDiff=false,
 		MMO_Output={uC,iL},
 		StartTime=0,
 		StopTime=0.01,

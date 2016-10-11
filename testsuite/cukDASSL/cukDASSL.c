@@ -119,7 +119,8 @@ CLC_initializeDataStructs(CLC_simulator simulator)
 	int outputs[4];
 	int states[4];
 	simulator->data = CLC_Data(4,4,3,0,1,"cukDASSL");
-modelData = simulator->data;
+  modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_C = 1.000000000000000047921736e-04;

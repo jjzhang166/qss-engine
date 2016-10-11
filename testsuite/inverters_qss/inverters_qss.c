@@ -64,9 +64,9 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 {
 	double tmp0[3];
 	int j = 0;
-	int j21 = 0;
-	int j22;
-	int j23 = 0;
+	int j10;
+	int j11 = 0;
+	int j9 = 0;
 	j = i;
 	if(j >=0 && j <= 99)
 	{
@@ -74,10 +74,10 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 		alg[3] = ((-75.0/2.0*d[(402)]))+5.0*d[(403)]+75.0/2.0*d[(402)]*d[(403)]-5.0/2.0*d[(402)]*d[(403)]*t+5.0/2.0*d[(402)]*t;
 		alg[6] = 1.0;
 		alg[9] = 5.0;
-		j21 = j-1;
+		j9 = j-1;
 	if (j >= 1 && j <= 99)
 	{
-		alg[(j-1+4) * 3] = x[(j21) * 3];
+		alg[(j-1+4) * 3] = x[(j9) * 3];
 		}
 		alg[(j+104) * 3] = x[(j) * 3];
 		alg[(j+304) * 3] = x[(j) * 3];
@@ -89,33 +89,33 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 		alg[(j+608) * 3] = alg[1215];
 		alg[(j+708) * 3] = alg[(j+508) * 3];
 		alg[(j+808) * 3] = alg[(j+608) * 3];
-	for(j22 = 0;j22 < 3; j22++)
+	for(j10 = 0;j10 < 3; j10++)
 	{
-		tmp0[j22] = 0;
+		tmp0[j10] = 0;
 	}
-	for(j22 = 0; j22 <= 1; j22++)
+	for(j10 = 0; j10 <= 1; j10++)
 	{
-		tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-		tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-		tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+		tmp0[0] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 0];
+		tmp0[1] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 1];
+		tmp0[2] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 2];
 	}
 		alg[2724] = tmp0[0];
 		alg[2727] = alg[2724];
 		alg[2730] = alg[2727];
-		j23 = j;
-	if (j23 >= 1 && j23 <= 99)
+		j11 = j;
+	if (j11 >= 1 && j11 <= 99)
 	{
 		alg[(j+910) * 3] = 0.0;
 		}
-		j23 = j;
-	if (j23 >= 0 && j23 <= 0)
+		j11 = j;
+	if (j11 >= 0 && j11 <= 0)
 	{
 		alg[(j+1010) * 3] = 0.0;
 		}
-		j23 = j-1;
-	if (j23 >= 0 && j23 <= 98)
+		j11 = j-1;
+	if (j11 >= 0 && j11 <= 98)
 	{
-		alg[(j+1010) * 3] = alg[(j23+4) * 3];
+		alg[(j+1010) * 3] = alg[(j11+4) * 3];
 		}
 		alg[(j+1110) * 3] = alg[(j+1010) * 3];
 		alg[(j+1210) * 3] = alg[(j+910) * 3];
@@ -143,13 +143,13 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 {
 	double tmp0[3];
 	int j = 0;
-	int j21 = 0;
-	int j22;
-	int j23 = 0;
-	int j24 = 0;
-	int j25 = 0;
-	int j26 = 0;
-	int j27 = 0;
+	int j10;
+	int j11 = 0;
+	int j12 = 0;
+	int j13 = 0;
+	int j14 = 0;
+	int j15 = 0;
+	int j9 = 0;
 	j = i+1;
 	if(j >=0 && j <= 99)
 	{
@@ -157,10 +157,10 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		alg[3] = ((-75.0/2.0*d[(402)]))+5.0*d[(403)]+75.0/2.0*d[(402)]*d[(403)]-5.0/2.0*d[(402)]*d[(403)]*t+5.0/2.0*d[(402)]*t;
 		alg[6] = 1.0;
 		alg[9] = 5.0;
-		j24 = j-1;
+		j12 = j-1;
 	if (j >= 1 && j <= 99)
 	{
-		alg[(j-1+4) * 3] = x[(j24) * 3];
+		alg[(j-1+4) * 3] = x[(j12) * 3];
 		}
 		alg[(j+104) * 3] = x[(j) * 3];
 		alg[(j+304) * 3] = x[(j) * 3];
@@ -172,33 +172,33 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		alg[(j+608) * 3] = alg[1215];
 		alg[(j+708) * 3] = alg[(j+508) * 3];
 		alg[(j+808) * 3] = alg[(j+608) * 3];
-	for(j22 = 0;j22 < 3; j22++)
+	for(j10 = 0;j10 < 3; j10++)
 	{
-		tmp0[j22] = 0;
+		tmp0[j10] = 0;
 	}
-	for(j22 = 0; j22 <= 1; j22++)
+	for(j10 = 0; j10 <= 1; j10++)
 	{
-		tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-		tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-		tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+		tmp0[0] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 0];
+		tmp0[1] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 1];
+		tmp0[2] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 2];
 	}
 		alg[2724] = tmp0[0];
 		alg[2727] = alg[2724];
 		alg[2730] = alg[2727];
-		j25 = j;
-	if (j25 >= 1 && j25 <= 99)
+		j13 = j;
+	if (j13 >= 1 && j13 <= 99)
 	{
 		alg[(j+910) * 3] = 0.0;
 		}
-		j25 = j;
-	if (j25 >= 0 && j25 <= 0)
+		j13 = j;
+	if (j13 >= 0 && j13 <= 0)
 	{
 		alg[(j+1010) * 3] = 0.0;
 		}
-		j25 = j-1;
-	if (j25 >= 0 && j25 <= 98)
+		j13 = j-1;
+	if (j13 >= 0 && j13 <= 98)
 	{
-		alg[(j+1010) * 3] = alg[(j25+4) * 3];
+		alg[(j+1010) * 3] = alg[(j13+4) * 3];
 		}
 		alg[(j+1110) * 3] = alg[(j+1010) * 3];
 		alg[(j+1210) * 3] = alg[(j+910) * 3];
@@ -226,10 +226,10 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		alg[3] = ((-75.0/2.0*d[(402)]))+5.0*d[(403)]+75.0/2.0*d[(402)]*d[(403)]-5.0/2.0*d[(402)]*d[(403)]*t+5.0/2.0*d[(402)]*t;
 		alg[6] = 1.0;
 		alg[9] = 5.0;
-		j26 = j-1;
+		j14 = j-1;
 	if (j >= 1 && j <= 99)
 	{
-		alg[(j-1+4) * 3] = x[(j26) * 3];
+		alg[(j-1+4) * 3] = x[(j14) * 3];
 		}
 		alg[(j+104) * 3] = x[(j) * 3];
 		alg[(j+304) * 3] = x[(j) * 3];
@@ -241,33 +241,33 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 		alg[(j+608) * 3] = alg[1215];
 		alg[(j+708) * 3] = alg[(j+508) * 3];
 		alg[(j+808) * 3] = alg[(j+608) * 3];
-	for(j22 = 0;j22 < 3; j22++)
+	for(j10 = 0;j10 < 3; j10++)
 	{
-		tmp0[j22] = 0;
+		tmp0[j10] = 0;
 	}
-	for(j22 = 0; j22 <= 1; j22++)
+	for(j10 = 0; j10 <= 1; j10++)
 	{
-		tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-		tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-		tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+		tmp0[0] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 0];
+		tmp0[1] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 1];
+		tmp0[2] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 2];
 	}
 		alg[2724] = tmp0[0];
 		alg[2727] = alg[2724];
 		alg[2730] = alg[2727];
-		j27 = j;
-	if (j27 >= 1 && j27 <= 99)
+		j15 = j;
+	if (j15 >= 1 && j15 <= 99)
 	{
 		alg[(j+910) * 3] = 0.0;
 		}
-		j27 = j;
-	if (j27 >= 0 && j27 <= 0)
+		j15 = j;
+	if (j15 >= 0 && j15 <= 0)
 	{
 		alg[(j+1010) * 3] = 0.0;
 		}
-		j27 = j-1;
-	if (j27 >= 0 && j27 <= 98)
+		j15 = j-1;
+	if (j15 >= 0 && j15 <= 98)
 	{
-		alg[(j+1010) * 3] = alg[(j27+4) * 3];
+		alg[(j+1010) * 3] = alg[(j15+4) * 3];
 		}
 		alg[(j+1110) * 3] = alg[(j+1010) * 3];
 		alg[(j+1210) * 3] = alg[(j+910) * 3];
@@ -294,23 +294,23 @@ void
 MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 {
 	double tmp0[3];
-	int j22;
+	int j10;
+	int j16 = 0;
+	int j17 = 0;
+	int j18 = 0;
+	int j19 = 0;
+	int j20 = 0;
+	int j21 = 0;
+	int j22 = 0;
+	int j23 = 0;
+	int j24 = 0;
+	int j25 = 0;
+	int j26 = 0;
+	int j27 = 0;
 	int j28 = 0;
 	int j29 = 0;
 	int j30 = 0;
 	int j31 = 0;
-	int j32 = 0;
-	int j33 = 0;
-	int j34 = 0;
-	int j35 = 0;
-	int j36 = 0;
-	int j37 = 0;
-	int j38 = 0;
-	int j39 = 0;
-	int j40 = 0;
-	int j41 = 0;
-	int j42 = 0;
-	int j43 = 0;
 	switch(i)
 	{
 		case 800:
@@ -331,43 +331,43 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				alg[0] = ((-d[(401)]*t*d[(400)]))+5.0*d[(401)]+5.0*d[(401)]*d[(400)]+t*d[(400)]-5.0*d[(400)];
 				alg[3] = ((-75.0/2.0*d[(402)]))+5.0*d[(403)]+75.0/2.0*d[(402)]*d[(403)]-5.0/2.0*d[(402)]*d[(403)]*t+5.0/2.0*d[(402)]*t;
 				alg[6] = 1.0;
-				j28 = i-1;
+				j16 = i-1;
 	if (i >= 1 && i <= 99)
 	{
-				alg[(i-1+4) * 3] = x[(j28) * 3];
+				alg[(i-1+4) * 3] = x[(j16) * 3];
 				}
 				alg[1212] = alg[6];
 					alg[1518] = alg[0];
 					alg[1521] = alg[3];
 				alg[(i+508) * 3] = alg[1212];
 				alg[(i+708) * 3] = alg[(i+508) * 3];
-			for(j22 = 0;j22 < 3; j22++)
+			for(j10 = 0;j10 < 3; j10++)
 			{
-				tmp0[j22] = 0;
+				tmp0[j10] = 0;
 			}
-			for(j22 = 0; j22 <= 1; j22++)
+			for(j10 = 0; j10 <= 1; j10++)
 			{
-				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
 				alg[2730] = alg[2727];
-				j29 = i;
-	if (j29 >= 1 && j29 <= 99)
+				j17 = i;
+	if (j17 >= 1 && j17 <= 99)
 	{
 				alg[(i+910) * 3] = 0.0;
 				}
-				j29 = i;
-	if (j29 >= 0 && j29 <= 0)
+				j17 = i;
+	if (j17 >= 0 && j17 <= 0)
 	{
 				alg[(i+1010) * 3] = 0.0;
 				}
-				j29 = i-1;
-	if (j29 >= 0 && j29 <= 98)
+				j17 = i-1;
+	if (j17 >= 0 && j17 <= 98)
 	{
-				alg[(i+1010) * 3] = alg[(j29+4) * 3];
+				alg[(i+1010) * 3] = alg[(j17+4) * 3];
 				}
 				alg[(i+1110) * 3] = alg[(i+1010) * 3];
 				alg[(i+1210) * 3] = alg[(i+910) * 3];
@@ -380,43 +380,43 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				alg[0] = ((-d[(401)]*t*d[(400)]))+5.0*d[(401)]+5.0*d[(401)]*d[(400)]+t*d[(400)]-5.0*d[(400)];
 				alg[3] = ((-75.0/2.0*d[(402)]))+5.0*d[(403)]+75.0/2.0*d[(402)]*d[(403)]-5.0/2.0*d[(402)]*d[(403)]*t+5.0/2.0*d[(402)]*t;
 				alg[6] = 1.0;
-				j30 = i-1;
+				j18 = i-1;
 	if (i >= 1 && i <= 99)
 	{
-				alg[(i-1-96) * 3] = x[(j30-100) * 3];
+				alg[(i-1-96) * 3] = x[(j18-100) * 3];
 				}
 				alg[1212] = alg[6];
 					alg[1518] = alg[0];
 					alg[1521] = alg[3];
 				alg[(i+408) * 3] = alg[1212];
 				alg[(i+608) * 3] = alg[(i+408) * 3];
-			for(j22 = 0;j22 < 3; j22++)
+			for(j10 = 0;j10 < 3; j10++)
 			{
-				tmp0[j22] = 0;
+				tmp0[j10] = 0;
 			}
-			for(j22 = 0; j22 <= 1; j22++)
+			for(j10 = 0; j10 <= 1; j10++)
 			{
-				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
 				alg[2730] = alg[2727];
-				j31 = i;
-	if (j31 >= 1 && j31 <= 99)
+				j19 = i;
+	if (j19 >= 1 && j19 <= 99)
 	{
 				alg[(i+810) * 3] = 0.0;
 				}
-				j31 = i;
-	if (j31 >= 0 && j31 <= 0)
+				j19 = i;
+	if (j19 >= 0 && j19 <= 0)
 	{
 				alg[(i+910) * 3] = 0.0;
 				}
-				j31 = i-1;
-	if (j31 >= 0 && j31 <= 98)
+				j19 = i-1;
+	if (j19 >= 0 && j19 <= 98)
 	{
-				alg[(i+910) * 3] = alg[(j31-96) * 3];
+				alg[(i+910) * 3] = alg[(j19-96) * 3];
 				}
 				alg[(i+1010) * 3] = alg[(i+910) * 3];
 				alg[(i+1110) * 3] = alg[(i+810) * 3];
@@ -429,43 +429,43 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				alg[0] = ((-d[(401)]*t*d[(400)]))+5.0*d[(401)]+5.0*d[(401)]*d[(400)]+t*d[(400)]-5.0*d[(400)];
 				alg[3] = ((-75.0/2.0*d[(402)]))+5.0*d[(403)]+75.0/2.0*d[(402)]*d[(403)]-5.0/2.0*d[(402)]*d[(403)]*t+5.0/2.0*d[(402)]*t;
 				alg[6] = 1.0;
-				j32 = i-1;
+				j20 = i-1;
 	if (i >= 1 && i <= 99)
 	{
-				alg[(i-1-196) * 3] = x[(j32-200) * 3];
+				alg[(i-1-196) * 3] = x[(j20-200) * 3];
 				}
 				alg[1212] = alg[6];
 					alg[1518] = alg[0];
 					alg[1521] = alg[3];
 				alg[(i+308) * 3] = alg[1212];
 				alg[(i+508) * 3] = alg[(i+308) * 3];
-			for(j22 = 0;j22 < 3; j22++)
+			for(j10 = 0;j10 < 3; j10++)
 			{
-				tmp0[j22] = 0;
+				tmp0[j10] = 0;
 			}
-			for(j22 = 0; j22 <= 1; j22++)
+			for(j10 = 0; j10 <= 1; j10++)
 			{
-				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
 				alg[2730] = alg[2727];
-				j33 = i;
-	if (j33 >= 1 && j33 <= 99)
+				j21 = i;
+	if (j21 >= 1 && j21 <= 99)
 	{
 				alg[(i+710) * 3] = 0.0;
 				}
-				j33 = i;
-	if (j33 >= 0 && j33 <= 0)
+				j21 = i;
+	if (j21 >= 0 && j21 <= 0)
 	{
 				alg[(i+810) * 3] = 0.0;
 				}
-				j33 = i-1;
-	if (j33 >= 0 && j33 <= 98)
+				j21 = i-1;
+	if (j21 >= 0 && j21 <= 98)
 	{
-				alg[(i+810) * 3] = alg[(j33-196) * 3];
+				alg[(i+810) * 3] = alg[(j21-196) * 3];
 				}
 				alg[(i+910) * 3] = alg[(i+810) * 3];
 				alg[(i+1010) * 3] = alg[(i+710) * 3];
@@ -478,43 +478,43 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				alg[0] = ((-d[(401)]*t*d[(400)]))+5.0*d[(401)]+5.0*d[(401)]*d[(400)]+t*d[(400)]-5.0*d[(400)];
 				alg[3] = ((-75.0/2.0*d[(402)]))+5.0*d[(403)]+75.0/2.0*d[(402)]*d[(403)]-5.0/2.0*d[(402)]*d[(403)]*t+5.0/2.0*d[(402)]*t;
 				alg[6] = 1.0;
-				j34 = i-1;
+				j22 = i-1;
 	if (i >= 1 && i <= 99)
 	{
-				alg[(i-1-296) * 3] = x[(j34-300) * 3];
+				alg[(i-1-296) * 3] = x[(j22-300) * 3];
 				}
 				alg[1212] = alg[6];
 					alg[1518] = alg[0];
 					alg[1521] = alg[3];
 				alg[(i+208) * 3] = alg[1212];
 				alg[(i+408) * 3] = alg[(i+208) * 3];
-			for(j22 = 0;j22 < 3; j22++)
+			for(j10 = 0;j10 < 3; j10++)
 			{
-				tmp0[j22] = 0;
+				tmp0[j10] = 0;
 			}
-			for(j22 = 0; j22 <= 1; j22++)
+			for(j10 = 0; j10 <= 1; j10++)
 			{
-				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
 				alg[2730] = alg[2727];
-				j35 = i;
-	if (j35 >= 1 && j35 <= 99)
+				j23 = i;
+	if (j23 >= 1 && j23 <= 99)
 	{
 				alg[(i+610) * 3] = 0.0;
 				}
-				j35 = i;
-	if (j35 >= 0 && j35 <= 0)
+				j23 = i;
+	if (j23 >= 0 && j23 <= 0)
 	{
 				alg[(i+710) * 3] = 0.0;
 				}
-				j35 = i-1;
-	if (j35 >= 0 && j35 <= 98)
+				j23 = i-1;
+	if (j23 >= 0 && j23 <= 98)
 	{
-				alg[(i+710) * 3] = alg[(j35-296) * 3];
+				alg[(i+710) * 3] = alg[(j23-296) * 3];
 				}
 				alg[(i+810) * 3] = alg[(i+710) * 3];
 				alg[(i+910) * 3] = alg[(i+610) * 3];
@@ -527,10 +527,10 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				alg[0] = ((-d[(401)]*t*d[(400)]))+5.0*d[(401)]+5.0*d[(401)]*d[(400)]+t*d[(400)]-5.0*d[(400)];
 				alg[3] = ((-75.0/2.0*d[(402)]))+5.0*d[(403)]+75.0/2.0*d[(402)]*d[(403)]-5.0/2.0*d[(402)]*d[(403)]*t+5.0/2.0*d[(402)]*t;
 				alg[6] = 1.0;
-				j36 = i-1;
+				j24 = i-1;
 	if (i >= 1 && i <= 99)
 	{
-				alg[(i-1-396) * 3] = x[(j36-400) * 3];
+				alg[(i-1-396) * 3] = x[(j24-400) * 3];
 				}
 				alg[(i-96) * 3] = x[(i-400) * 3];
 				alg[1212] = alg[6];
@@ -538,33 +538,33 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 					alg[1521] = alg[3];
 				alg[(i+108) * 3] = alg[1212];
 				alg[(i+308) * 3] = alg[(i+108) * 3];
-			for(j22 = 0;j22 < 3; j22++)
+			for(j10 = 0;j10 < 3; j10++)
 			{
-				tmp0[j22] = 0;
+				tmp0[j10] = 0;
 			}
-			for(j22 = 0; j22 <= 1; j22++)
+			for(j10 = 0; j10 <= 1; j10++)
 			{
-				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
 				alg[2730] = alg[2727];
-				j37 = i;
-	if (j37 >= 1 && j37 <= 99)
+				j25 = i;
+	if (j25 >= 1 && j25 <= 99)
 	{
 				alg[(i+510) * 3] = 0.0;
 				}
-				j37 = i;
-	if (j37 >= 0 && j37 <= 0)
+				j25 = i;
+	if (j25 >= 0 && j25 <= 0)
 	{
 				alg[(i+610) * 3] = 0.0;
 				}
-				j37 = i-1;
-	if (j37 >= 0 && j37 <= 98)
+				j25 = i-1;
+	if (j25 >= 0 && j25 <= 98)
 	{
-				alg[(i+610) * 3] = alg[(j37-396) * 3];
+				alg[(i+610) * 3] = alg[(j25-396) * 3];
 				}
 				alg[(i+710) * 3] = alg[(i+610) * 3];
 				alg[(i+810) * 3] = alg[(i+510) * 3];
@@ -579,10 +579,10 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				alg[0] = ((-d[(401)]*t*d[(400)]))+5.0*d[(401)]+5.0*d[(401)]*d[(400)]+t*d[(400)]-5.0*d[(400)];
 				alg[3] = ((-75.0/2.0*d[(402)]))+5.0*d[(403)]+75.0/2.0*d[(402)]*d[(403)]-5.0/2.0*d[(402)]*d[(403)]*t+5.0/2.0*d[(402)]*t;
 				alg[6] = 1.0;
-				j38 = i-1;
+				j26 = i-1;
 	if (i >= 1 && i <= 99)
 	{
-				alg[(i-1-496) * 3] = x[(j38-500) * 3];
+				alg[(i-1-496) * 3] = x[(j26-500) * 3];
 				}
 				alg[(i-196) * 3] = x[(i-500) * 3];
 				alg[1212] = alg[6];
@@ -590,33 +590,33 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 					alg[1521] = alg[3];
 				alg[(i+8) * 3] = alg[1212];
 				alg[(i+208) * 3] = alg[(i+8) * 3];
-			for(j22 = 0;j22 < 3; j22++)
+			for(j10 = 0;j10 < 3; j10++)
 			{
-				tmp0[j22] = 0;
+				tmp0[j10] = 0;
 			}
-			for(j22 = 0; j22 <= 1; j22++)
+			for(j10 = 0; j10 <= 1; j10++)
 			{
-				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
 				alg[2730] = alg[2727];
-				j39 = i;
-	if (j39 >= 1 && j39 <= 99)
+				j27 = i;
+	if (j27 >= 1 && j27 <= 99)
 	{
 				alg[(i+410) * 3] = 0.0;
 				}
-				j39 = i;
-	if (j39 >= 0 && j39 <= 0)
+				j27 = i;
+	if (j27 >= 0 && j27 <= 0)
 	{
 				alg[(i+510) * 3] = 0.0;
 				}
-				j39 = i-1;
-	if (j39 >= 0 && j39 <= 98)
+				j27 = i-1;
+	if (j27 >= 0 && j27 <= 98)
 	{
-				alg[(i+510) * 3] = alg[(j39-496) * 3];
+				alg[(i+510) * 3] = alg[(j27-496) * 3];
 				}
 				alg[(i+610) * 3] = alg[(i+510) * 3];
 				alg[(i+710) * 3] = alg[(i+410) * 3];
@@ -631,10 +631,10 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				alg[0] = ((-d[(401)]*t*d[(400)]))+5.0*d[(401)]+5.0*d[(401)]*d[(400)]+t*d[(400)]-5.0*d[(400)];
 				alg[3] = ((-75.0/2.0*d[(402)]))+5.0*d[(403)]+75.0/2.0*d[(402)]*d[(403)]-5.0/2.0*d[(402)]*d[(403)]*t+5.0/2.0*d[(402)]*t;
 				alg[6] = 1.0;
-				j40 = i-1;
+				j28 = i-1;
 	if (i >= 1 && i <= 99)
 	{
-				alg[(i-1-596) * 3] = x[(j40-600) * 3];
+				alg[(i-1-596) * 3] = x[(j28-600) * 3];
 				}
 				alg[(i-296) * 3] = x[(i-600) * 3];
 				alg[1212] = alg[6];
@@ -642,33 +642,33 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 					alg[1521] = alg[3];
 				alg[(i-92) * 3] = alg[1212];
 				alg[(i+108) * 3] = alg[(i-92) * 3];
-			for(j22 = 0;j22 < 3; j22++)
+			for(j10 = 0;j10 < 3; j10++)
 			{
-				tmp0[j22] = 0;
+				tmp0[j10] = 0;
 			}
-			for(j22 = 0; j22 <= 1; j22++)
+			for(j10 = 0; j10 <= 1; j10++)
 			{
-				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
 				alg[2730] = alg[2727];
-				j41 = i;
-	if (j41 >= 1 && j41 <= 99)
+				j29 = i;
+	if (j29 >= 1 && j29 <= 99)
 	{
 				alg[(i+310) * 3] = 0.0;
 				}
-				j41 = i;
-	if (j41 >= 0 && j41 <= 0)
+				j29 = i;
+	if (j29 >= 0 && j29 <= 0)
 	{
 				alg[(i+410) * 3] = 0.0;
 				}
-				j41 = i-1;
-	if (j41 >= 0 && j41 <= 98)
+				j29 = i-1;
+	if (j29 >= 0 && j29 <= 98)
 	{
-				alg[(i+410) * 3] = alg[(j41-596) * 3];
+				alg[(i+410) * 3] = alg[(j29-596) * 3];
 				}
 				alg[(i+510) * 3] = alg[(i+410) * 3];
 				alg[(i+610) * 3] = alg[(i+310) * 3];
@@ -683,10 +683,10 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 				alg[0] = ((-d[(401)]*t*d[(400)]))+5.0*d[(401)]+5.0*d[(401)]*d[(400)]+t*d[(400)]-5.0*d[(400)];
 				alg[3] = ((-75.0/2.0*d[(402)]))+5.0*d[(403)]+75.0/2.0*d[(402)]*d[(403)]-5.0/2.0*d[(402)]*d[(403)]*t+5.0/2.0*d[(402)]*t;
 				alg[6] = 1.0;
-				j42 = i-1;
+				j30 = i-1;
 	if (i >= 1 && i <= 99)
 	{
-				alg[(i-1-696) * 3] = x[(j42-700) * 3];
+				alg[(i-1-696) * 3] = x[(j30-700) * 3];
 				}
 				alg[(i-396) * 3] = x[(i-700) * 3];
 				alg[1212] = alg[6];
@@ -694,33 +694,33 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 					alg[1521] = alg[3];
 				alg[(i-192) * 3] = alg[1212];
 				alg[(i+8) * 3] = alg[(i-192) * 3];
-			for(j22 = 0;j22 < 3; j22++)
+			for(j10 = 0;j10 < 3; j10++)
 			{
-				tmp0[j22] = 0;
+				tmp0[j10] = 0;
 			}
-			for(j22 = 0; j22 <= 1; j22++)
+			for(j10 = 0; j10 <= 1; j10++)
 			{
-				tmp0[0] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 0];
-				tmp0[1] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 1];
-				tmp0[2] += __PAR_WSum_20_w[j22]*alg[(j22+506) * 3 + 2];
+				tmp0[0] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 0];
+				tmp0[1] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 1];
+				tmp0[2] += __PAR_WSum_20_w[j10]*alg[(j10+506) * 3 + 2];
 			}
 				alg[2724] = tmp0[0];
 				alg[2727] = alg[2724];
 				alg[2730] = alg[2727];
-				j43 = i;
-	if (j43 >= 1 && j43 <= 99)
+				j31 = i;
+	if (j31 >= 1 && j31 <= 99)
 	{
 				alg[(i+210) * 3] = 0.0;
 				}
-				j43 = i;
-	if (j43 >= 0 && j43 <= 0)
+				j31 = i;
+	if (j31 >= 0 && j31 <= 0)
 	{
 				alg[(i+310) * 3] = 0.0;
 				}
-				j43 = i-1;
-	if (j43 >= 0 && j43 <= 98)
+				j31 = i-1;
+	if (j31 >= 0 && j31 <= 98)
 	{
-				alg[(i+310) * 3] = alg[(j43-696) * 3];
+				alg[(i+310) * 3] = alg[(j31-696) * 3];
 				}
 				alg[(i+410) * 3] = alg[(i+310) * 3];
 				alg[(i+510) * 3] = alg[(i+210) * 3];
@@ -812,18 +812,19 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int *events = (int*)malloc(804*sizeof(int));
 	int *outputs = (int*)malloc(2*sizeof(int));
 	int *states = (int*)malloc(100*sizeof(int));
-	int i44;
-	int i45;
-	int i46;
-	int i47;
-	int i48;
-	int i49;
-	int i50;
+	int i32;
+	int i33;
+	int i34;
+	int i35;
+	int i36;
+	int i37;
+	int i38;
 	int i;
 	int j = 0;
 	int td = 0;
 	simulator->data = QSS_Data(100,404,804,100,2812,"inverters_qss");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_VecInt_2_x0 = 5.0;
@@ -840,19 +841,19 @@ QSS_data modelData = simulator->data;
 	__PAR_Constant_16_k = 5.0;
 	__PAR_Vec2Scalar_18_Index = 100.0;
 	// Initialize model code.
-	for(i44 = 0; i44 <= 99; i44++)
+	for(i32 = 0; i32 <= 99; i32++)
 	{
-		modelData->x[(i44) * 3] = 5.0;
+		modelData->x[(i32) * 3] = 5.0;
 	}
-	for(i45 = 0; i45 <= 99; i45++)
+	for(i33 = 0; i33 <= 99; i33++)
 	{
-		modelData->d[(i45)] = 0.0;
-		modelData->d[(i45+100)] = 0.0;
+		modelData->d[(i33)] = 0.0;
+		modelData->d[(i33+100)] = 0.0;
 	}
-	for(i46 = 0; i46 <= 99; i46++)
+	for(i34 = 0; i34 <= 99; i34++)
 	{
-		modelData->d[(i46+200)] = 1.0;
-		modelData->d[(i46+300)] = 0.0;
+		modelData->d[(i34+200)] = 1.0;
+		modelData->d[(i34+300)] = 0.0;
 	}
 		modelData->d[(401)] = 0.0;
 		modelData->d[(400)] = 0.0;
@@ -875,9 +876,9 @@ QSS_data modelData = simulator->data;
 		__PAR_VectorSum_3_p[(7)] = 0.0;
 		__PAR_VectorSum_3_p[(8)] = 4.0;
 		__PAR_VectorSum_3_p[(9)] = 100.0;
-	for(i47 = 0; i47 <= 3; i47++)
+	for(i35 = 0; i35 <= 3; i35++)
 	{
-		__PAR_VectorSum_3_w[(i47)] = __PAR_VectorSum_3_p[(i47)];
+		__PAR_VectorSum_3_w[(i35)] = __PAR_VectorSum_3_p[(i35)];
 	}
 		__PAR_vector_sat_4_p[(0)] = 0.0;
 		__PAR_vector_sat_4_p[(1)] = 1.000000000000000000000000e+06;
@@ -901,9 +902,9 @@ QSS_data modelData = simulator->data;
 		__PAR_VectorSum_10_p[(7)] = 0.0;
 		__PAR_VectorSum_10_p[(8)] = 3.0;
 		__PAR_VectorSum_10_p[(9)] = 100.0;
-	for(i48 = 0; i48 <= 2; i48++)
+	for(i36 = 0; i36 <= 2; i36++)
 	{
-		__PAR_VectorSum_10_w[(i48)] = __PAR_VectorSum_10_p[(i48)];
+		__PAR_VectorSum_10_w[(i36)] = __PAR_VectorSum_10_p[(i36)];
 	}
 		__PAR_VectorSum_11_p[(0)] = 1.0;
 		__PAR_VectorSum_11_p[(1)] = (((-1.0)));
@@ -915,9 +916,9 @@ QSS_data modelData = simulator->data;
 		__PAR_VectorSum_11_p[(7)] = 0.0;
 		__PAR_VectorSum_11_p[(8)] = 2.0;
 		__PAR_VectorSum_11_p[(9)] = 100.0;
-	for(i49 = 0; i49 <= 1; i49++)
+	for(i37 = 0; i37 <= 1; i37++)
 	{
-		__PAR_VectorSum_11_w[(i49)] = __PAR_VectorSum_11_p[(i49)];
+		__PAR_VectorSum_11_w[(i37)] = __PAR_VectorSum_11_p[(i37)];
 	}
 		__PAR_Scalar2Vector_12_p[(0)] = (((-1.0)));
 		__PAR_Scalar2Vector_12_p[(1)] = 100.0;
@@ -946,9 +947,9 @@ QSS_data modelData = simulator->data;
 		__PAR_WSum_20_p[(6)] = 0.0;
 		__PAR_WSum_20_p[(7)] = 0.0;
 		__PAR_WSum_20_p[(8)] = 2.0;
-	for(i50 = 0; i50 <= 1; i50++)
+	for(i38 = 0; i38 <= 1; i38++)
 	{
-		__PAR_WSum_20_w[(i50)] = __PAR_WSum_20_p[(i50)];
+		__PAR_WSum_20_w[(i38)] = __PAR_WSum_20_p[(i38)];
 	}
 	for ( i = 1; i <= 99; i++) 
 	{

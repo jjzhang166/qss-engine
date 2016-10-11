@@ -95,7 +95,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int *states = (int*)malloc(3*sizeof(int));
 	int i;
 	simulator->data = QSS_Data(3,0,0,0,0,"GOLDBETER");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_vm1 = 3.000000000000000000000000e+00;

@@ -47,7 +47,8 @@ CLC_initializeDataStructs(CLC_simulator simulator)
 	int outputs[2];
 	int states[2];
 	simulator->data = CLC_Data(2,0,0,0,0,"lotka_volterraDOPRI");
-modelData = simulator->data;
+  modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	// Initialize model code.

@@ -22,7 +22,6 @@ model lc_line
 	experiment(
 		MMO_Description="LC transmission line",
 		MMO_Solver=QSS3,
-		MMO_SymDiff=false,
 		MMO_Output={x[1],x[N],x[101],x[100]},
 		StartTime=0,
 		StopTime=200,

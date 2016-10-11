@@ -19,7 +19,6 @@ model bball_downstairs
 	experiment(
 		MMO_Description="Ball bouncing downstairs.",
 		MMO_Solver=QSS3,
-		MMO_SymDiff=false,
 		MMO_Output={y},
 		StartTime=0,
 		StopTime=30,

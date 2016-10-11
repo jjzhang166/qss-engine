@@ -908,7 +908,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int *states = (int*)malloc(31*sizeof(int));
 	int i;
 	simulator->data = QSS_Data(31,7,10,0,41,"osteoadipo");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_cytoplasm = 1.000000000000000000000000e+00;
@@ -1248,15 +1249,15 @@ QSS_data modelData = simulator->data;
 	modelData->nSD[27]++;
 	modelData->nZS[2] = 1;
 	modelData->nSZ[13]++;
-	modelData->nHZ[0] = 1;
-	modelData->nHZ[1] = 1;
-	modelData->nHZ[3] = 4;
-	modelData->nHZ[4] = 4;
-	modelData->nHZ[5] = 4;
-	modelData->nHZ[6] = 4;
-	modelData->nHZ[7] = 4;
-	modelData->nHZ[8] = 4;
-	modelData->nHZ[9] = 4;
+	modelData->nHZ[0] += 1;
+	modelData->nHZ[1] += 1;
+	modelData->nHZ[3] += 4;
+	modelData->nHZ[4] += 4;
+	modelData->nHZ[5] += 4;
+	modelData->nHZ[6] += 4;
+	modelData->nHZ[7] += 4;
+	modelData->nHZ[8] += 4;
+	modelData->nHZ[9] += 4;
 	modelData->nHD[0] = 1;
 	modelData->nHD[1] = 1;
 	modelData->nHD[2] = 1;

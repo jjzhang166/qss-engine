@@ -57,7 +57,6 @@ model aircont
 	experiment(
 		MMO_Description="Control of the power consumption of a large populaion of  air conditioners.",
 		MMO_Solver=QSS3,
-		MMO_SymDiff=false,
 		MMO_Output={ptotal},
 		StartTime=0,
 		StopTime=3000,

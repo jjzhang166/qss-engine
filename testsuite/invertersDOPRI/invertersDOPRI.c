@@ -132,7 +132,8 @@ CLC_initializeDataStructs(CLC_simulator simulator)
 	int outputs[2];
 	int states[502];
 	simulator->data = CLC_Data(502,1004,1003,0,0,"invertersDOPRI");
-modelData = simulator->data;
+  modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_UOP = 5.0;

@@ -156,7 +156,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int i;
 	int j = 0;
 	simulator->data = QSS_Data(502,1004,1003,0,0,"inverters");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_UOP = 5.0;
@@ -208,7 +209,7 @@ QSS_data modelData = simulator->data;
 		modelData->nSZ[i]++;
 		modelData->nSZ[i+1]++;
 	}
-	modelData->nHZ[1002] = 1;
+	modelData->nHZ[1002] += 1;
 	for(i = 0; i <= 500; i++)
 	{
 		modelData->nHD[i]++;

@@ -37,7 +37,6 @@ model cuk
 	experiment(
 		MMO_Description="Cuk converter with non-solved stiffness.",
 		MMO_Solver=LIQSS2,
-		MMO_SymDiff=false,
 		MMO_Output={uC,iL,uC1,iL1},
 		StartTime=0,
 		StopTime=0.001,

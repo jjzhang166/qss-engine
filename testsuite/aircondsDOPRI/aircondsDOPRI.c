@@ -115,7 +115,8 @@ CLC_initializeDataStructs(CLC_simulator simulator)
 	int i2;
 	int outputs[1];
 	simulator->data = CLC_Data(200,801,800,0,0,"aircondsDOPRI");
-modelData = simulator->data;
+  modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_THA = 32.0;

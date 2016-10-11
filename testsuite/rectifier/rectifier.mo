@@ -18,7 +18,6 @@ model rectifier
 	experiment(
 		MMO_Description="Half wave rectifier.",
 		MMO_Solver=LIQSS2,
-		MMO_SymDiff=false,
 		MMO_Output={iL,u},
 		StartTime=0,
 		StopTime=1,

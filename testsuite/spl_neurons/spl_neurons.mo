@@ -121,7 +121,6 @@ algorithm
 	experiment(
 		MMO_Description="",
 		MMO_Solver=QSS3,
-		MMO_SymDiff=false,
 		MMO_Parallel=true,
 		MMO_LPS=4,
 		MMO_DT_Min=1,

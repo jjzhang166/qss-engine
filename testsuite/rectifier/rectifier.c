@@ -34,9 +34,11 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	{
 		case 0:
 			dx[1] = 1000.0*(__PAR_U*sin(__PAR_w*t)-x[0]);
+			dx[2] = (-1000.0*x[1]+1000.0*cos(t*__PAR_w)*__PAR_U*__PAR_w)/2;
 			return;
 		case 1:
 			dx[1] = (x[0]-x[3]*(__PAR_R+d[(0)]))/__PAR_L;
+			dx[2] = (-(1.0/(__PAR_L))*(x[4]*(d[(0)]+__PAR_R)-x[1]))/2;
 			return;
 	}
 }
@@ -48,10 +50,13 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	{
 		case 0:
 			der[0 + 1] = 1000.0*(__PAR_U*sin(__PAR_w*t)-x[0]);
+			der[0 + 2] = (-1000.0*x[1]+1000.0*cos(t*__PAR_w)*__PAR_U*__PAR_w)/2;
 			der[3 + 1] = (x[0]-x[3]*(__PAR_R+d[(0)]))/__PAR_L;
+			der[3 + 2] = (-(1.0/(__PAR_L))*(x[4]*(d[(0)]+__PAR_R)-x[1]))/2;
 			return;
 		case 1:
 			der[3 + 1] = (x[0]-x[3]*(__PAR_R+d[(0)]))/__PAR_L;
+			der[3 + 2] = (-(1.0/(__PAR_L))*(x[4]*(d[(0)]+__PAR_R)-x[1]))/2;
 			return;
 	}
 }
@@ -63,9 +68,11 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 	{
 		case 0:
 			zc[0] = x[3]-(0.0);
+			zc[1] = x[4];
 			return;
 		case 1:
 			zc[0] = x[0]-(0.0);
+			zc[1] = x[1];
 			return;
 	}
 }
@@ -116,7 +123,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int i;
 	int td = 0;
 	simulator->data = QSS_Data(2,1,2,1,0,"rectifier");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_Ron = 1.000000000000000081803054e-05;

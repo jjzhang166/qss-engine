@@ -40,26 +40,32 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	{
 		case 0:
 			dx[1] = __PAR_K0*(-x[600]+x[1197])*200;
+			dx[2] = ((x[1198]-x[601])*200*__PAR_K0)/2;
 			return;
 		case 200:
 			dx[1] = 1.0/__PAR_rho0*(-x[3]+x[0])*200;
+			dx[2] = ((1.0/(__PAR_rho0))*(x[1]-x[4])*200)/2;
 			return;
 		case 199:
 			dx[1] = __PAR_K0*(-x[1197]+x[1194])*200;
+			dx[2] = (__PAR_K0*(x[1195]-x[1198])*200)/2;
 			return;
 		case 399:
 			dx[1] = 1.0/__PAR_rho0*(-x[0]+x[597])*200;
+			dx[2] = (-(x[1]-x[598])*200*(1.0/(__PAR_rho0)))/2;
 			return;
 		default:
 			j = i;
 			if(j >=1 && j <= 198)
 			{
 				dx[1] = __PAR_K0*(-x[(j+200) * 3]+x[(j+199) * 3])*200;
+				dx[2] = (-(x[(j+200) * 3 + 1]-x[(j+199) * 3 + 1])*200*__PAR_K0)/2;
 			}
 			j = i-200;
 			if(j >=1 && j <= 198)
 			{
 				dx[1] = 1.0/__PAR_rho0*(-x[(j+1) * 3]+x[(j) * 3])*200;
+				dx[2] = (200*(1.0/(__PAR_rho0))*(x[(j) * 3 + 1]-x[(j+1) * 3 + 1]))/2;
 			}
 	}
 }
@@ -72,44 +78,56 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	{
 		case 0:
 			der[600 + 1] = 1.0/__PAR_rho0*(-x[3]+x[0])*200;
+			der[600 + 2] = ((1.0/(__PAR_rho0))*(x[1]-x[4])*200)/2;
 			der[1197 + 1] = 1.0/__PAR_rho0*(-x[0]+x[597])*200;
+			der[1197 + 2] = (-(x[1]-x[598])*200*(1.0/(__PAR_rho0)))/2;
 			return;
 		case 1:
 			der[600 + 1] = 1.0/__PAR_rho0*(-x[3]+x[0])*200;
+			der[600 + 2] = ((1.0/(__PAR_rho0))*(x[1]-x[4])*200)/2;
 			break;
 		case 199:
 			der[1197 + 1] = 1.0/__PAR_rho0*(-x[0]+x[597])*200;
+			der[1197 + 2] = (-(x[1]-x[598])*200*(1.0/(__PAR_rho0)))/2;
 			break;
 		case 200:
 			der[0 + 1] = __PAR_K0*(-x[600]+x[1197])*200;
+			der[0 + 2] = ((x[1198]-x[601])*200*__PAR_K0)/2;
 			break;
 		case 398:
 			der[597 + 1] = __PAR_K0*(-x[1197]+x[1194])*200;
+			der[597 + 2] = (__PAR_K0*(x[1195]-x[1198])*200)/2;
 			break;
 		case 399:
 			der[0 + 1] = __PAR_K0*(-x[600]+x[1197])*200;
+			der[0 + 2] = ((x[1198]-x[601])*200*__PAR_K0)/2;
 			der[597 + 1] = __PAR_K0*(-x[1197]+x[1194])*200;
+			der[597 + 2] = (__PAR_K0*(x[1195]-x[1198])*200)/2;
 			return;
 	}
 	j = i;
 	if(j >=1 && j <= 198)
 	{
 		der[(j+200) * 3 + 1] = 1.0/__PAR_rho0*(-x[(j+1) * 3]+x[(j) * 3])*200;
+		der[(j+200) * 3 + 2] = (200*(1.0/(__PAR_rho0))*(x[(j) * 3 + 1]-x[(j+1) * 3 + 1]))/2;
 	}
 	j = i-1;
 	if(j >=1 && j <= 198)
 	{
 		der[(j+200) * 3 + 1] = 1.0/__PAR_rho0*(-x[(j+1) * 3]+x[(j) * 3])*200;
+		der[(j+200) * 3 + 2] = (200*(1.0/(__PAR_rho0))*(x[(j) * 3 + 1]-x[(j+1) * 3 + 1]))/2;
 	}
 	j = i-199;
 	if(j >=1 && j <= 198)
 	{
 		der[(j) * 3 + 1] = __PAR_K0*(-x[(j+200) * 3]+x[(j+199) * 3])*200;
+		der[(j) * 3 + 2] = (-(x[(j+200) * 3 + 1]-x[(j+199) * 3 + 1])*200*__PAR_K0)/2;
 	}
 	j = i-200;
 	if(j >=1 && j <= 198)
 	{
 		der[(j) * 3 + 1] = __PAR_K0*(-x[(j+200) * 3]+x[(j+199) * 3])*200;
+		der[(j) * 3 + 2] = (-(x[(j+200) * 3 + 1]-x[(j+199) * 3 + 1])*200*__PAR_K0)/2;
 	}
 }
 
@@ -140,7 +158,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int i;
 	int j = 0;
 	simulator->data = QSS_Data(400,0,0,0,0,"acousticsBase");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_K0 = 1.000000000000000000000000e+00;

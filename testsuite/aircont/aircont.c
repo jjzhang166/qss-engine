@@ -38,12 +38,16 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	{
 		case 200:
 			dx[1] = d[(203)]-d[(1)]/__PAR_pmax;
+			dx[2] = (0.0)/2;
+			dx[3] = (0.0)/6;
 			return;
 		default:
 			j = i;
 			if(j >=0 && j <= 199)
 			{
 				dx[1] = (__PAR_THA/__PAR_RES[(j)]-__PAR_POT[(j)]*d[(j+2)]-x[(j) * 4]/__PAR_RES[(j)]+d[(205)]/__PAR_RES[(j)])/__PAR_CAP[(j)];
+				dx[2] = (-(1.0/(__PAR_CAP[(j)]))*x[(j) * 4 + 1]*(1.0/(__PAR_RES[(j)])))/2;
+				dx[3] = (-(1.0/(__PAR_CAP[(j)]))*(1.0/(__PAR_RES[(j)]))*x[(j) * 4 + 2]*2)/6;
 			}
 	}
 }
@@ -56,6 +60,8 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	if(j >=0 && j <= 199)
 	{
 		der[(j) * 4 + 1] = (__PAR_THA/__PAR_RES[(j)]-__PAR_POT[(j)]*d[(j+2)]-x[(j) * 4]/__PAR_RES[(j)]+d[(205)]/__PAR_RES[(j)])/__PAR_CAP[(j)];
+		der[(j) * 4 + 2] = (-(1.0/(__PAR_CAP[(j)]))*x[(j) * 4 + 1]*(1.0/(__PAR_RES[(j)])))/2;
+		der[(j) * 4 + 3] = (-(1.0/(__PAR_CAP[(j)]))*(1.0/(__PAR_RES[(j)]))*x[(j) * 4 + 2]*2)/6;
 	}
 }
 
@@ -66,17 +72,25 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 	{
 		case 200:
 			zc[0] = t-(1000.0);
+			zc[1] = 1.0;
+			zc[2] = (0.0)/2;
 			return;
 		case 201:
 			zc[0] = t-(2000.0);
+			zc[1] = 1.0;
+			zc[2] = (0.0)/2;
 			return;
 		case 202:
 			zc[0] = t-(d[(204)]);
+			zc[1] = 1.0;
+			zc[2] = (0.0)/2;
 			return;
 		default:
 			if(i >= 0 && i <= 199)
 			{
 				zc[0] = x[(i) * 4]-__PAR_tref-d[(202)]+d[(i+2)]-5.000000000000000000000000e-01-(0.0);
+				zc[1] = x[(i) * 4 + 1];
+				zc[2] = (x[(i) * 4 + 2]*2)/2;
 			}
 	}
 }
@@ -139,7 +153,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int i;
 	int j = 0;
 	simulator->data = QSS_Data(201,206,203,0,0,"aircont");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_THA = 32.0;
@@ -184,7 +199,7 @@ QSS_data modelData = simulator->data;
 	{
 		modelData->nHZ[i]++;
 	}
-	modelData->nHZ[202] = 201;
+	modelData->nHZ[202] += 201;
 	for(i = 0; i <= 199; i++)
 	{
 		modelData->nHD[i]++;

@@ -94,7 +94,8 @@ CLC_initializeDataStructs(CLC_simulator simulator)
 	int outputs[2];
 	int states[2];
 	simulator->data = CLC_Data(2,1,2,1,0,"rectifierDASSL");
-modelData = simulator->data;
+  modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_Ron = 1.000000000000000081803054e-05;

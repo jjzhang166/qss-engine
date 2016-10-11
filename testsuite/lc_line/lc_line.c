@@ -29,15 +29,21 @@ MOD_definition(int i, double *x, double *d, double *alg, double t, double *dx)
 	{
 		case 0:
 			dx[1] = d[(0)]-x[4];
+			dx[2] = (-x[5])/2;
+			dx[3] = (-x[6]*2)/6;
 			return;
 		case 199:
 			dx[1] = x[792];
+			dx[2] = (x[793])/2;
+			dx[3] = (x[794]*2)/6;
 			return;
 		default:
 			j = i;
 			if(j >=1 && j <= 198)
 			{
 				dx[1] = x[(j-1) * 4]-x[(j+1) * 4];
+				dx[2] = (-x[(j+1) * 4 + 1]+x[(j-1) * 4 + 1])/2;
+				dx[3] = (x[(j-1) * 4 + 2]*2-x[(j+1) * 4 + 2]*2)/6;
 			}
 	}
 }
@@ -50,20 +56,28 @@ MOD_dependencies(int i, double *x, double *d, double *alg, double t, double *der
 	{
 		case 1:
 			der[0 + 1] = d[(0)]-x[4];
+			der[0 + 2] = (-x[5])/2;
+			der[0 + 3] = (-x[6]*2)/6;
 			break;
 		case 198:
 			der[796 + 1] = x[792];
+			der[796 + 2] = (x[793])/2;
+			der[796 + 3] = (x[794]*2)/6;
 			break;
 	}
 	j = i+1;
 	if(j >=1 && j <= 198)
 	{
 		der[(j) * 4 + 1] = x[(j-1) * 4]-x[(j+1) * 4];
+		der[(j) * 4 + 2] = (-x[(j+1) * 4 + 1]+x[(j-1) * 4 + 1])/2;
+		der[(j) * 4 + 3] = (x[(j-1) * 4 + 2]*2-x[(j+1) * 4 + 2]*2)/6;
 	}
 	j = i-1;
 	if(j >=1 && j <= 198)
 	{
 		der[(j) * 4 + 1] = x[(j-1) * 4]-x[(j+1) * 4];
+		der[(j) * 4 + 2] = (-x[(j+1) * 4 + 1]+x[(j-1) * 4 + 1])/2;
+		der[(j) * 4 + 3] = (x[(j-1) * 4 + 2]*2-x[(j+1) * 4 + 2]*2)/6;
 	}
 }
 
@@ -74,6 +88,8 @@ MOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)
 	{
 		case 0:
 			zc[0] = t-(1.0);
+			zc[1] = 1.0;
+			zc[2] = (0.0)/2;
 			return;
 	}
 }
@@ -130,7 +146,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int i;
 	int j = 0;
 	simulator->data = QSS_Data(200,1,1,0,0,"lc_line");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	modelData->d[(0)] = 1.0;

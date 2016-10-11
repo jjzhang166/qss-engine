@@ -1127,7 +1127,8 @@ QSS_initializeDataStructs(QSS_simulator simulator)
 	int *states = (int*)malloc(16*sizeof(int));
 	int i;
 	simulator->data = QSS_Data(16,55,43,0,96,"ModeloCompletoFinalEscalado");
-QSS_data modelData = simulator->data;
+  QSS_data modelData = simulator->data;
+  const double t = 0;
 
 	// Allocate main data structures.
 	__PAR_lambda2_k = 100.0;
@@ -1465,15 +1466,15 @@ QSS_data modelData = simulator->data;
 	modelData->nSZ[11]++;
 	modelData->nSZ[5]++;
 	modelData->nSZ[7]++;
-	modelData->nHZ[0] = 1;
-	modelData->nHZ[1] = 2;
+	modelData->nHZ[0] += 1;
+	modelData->nHZ[1] += 2;
 	modelData->nHZ[1] += 2;
 	modelData->nHZ[2] += 2;
-	modelData->nHZ[3] = 2;
+	modelData->nHZ[3] += 2;
 	modelData->nHZ[3] += 4;
 	modelData->nHZ[4] += 4;
-	modelData->nHZ[9] = 1;
-	modelData->nHZ[10] = 2;
+	modelData->nHZ[9] += 1;
+	modelData->nHZ[10] += 2;
 	modelData->nHZ[10] += 2;
 	modelData->nHZ[11] += 2;
 	modelData->nHZ[20] += 4;

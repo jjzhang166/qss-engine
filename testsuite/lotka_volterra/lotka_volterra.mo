@@ -11,7 +11,6 @@ model lotka_volterra
 	experiment(
 		MMO_Description="Lotka Volterra model",
 		MMO_Solver=QSS3,
-		MMO_SymDiff=false,
 		MMO_Output={x[:]},
 		StartTime= 0.0,
 		StopTime= 300.0,

@@ -55,7 +55,6 @@ algorithm
 	experiment(
 		MMO_Description="",
 		MMO_Solver=QSS3,
-		MMO_SymDiff=false,
 		MMO_Output={ball1_y},
 		MMO_OutputType=CI_Sampled,
 		StartTime=0.0,

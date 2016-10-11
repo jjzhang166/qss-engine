@@ -38,7 +38,6 @@ model interleaved
 	experiment(
 		MMO_Description="",
 		MMO_Solver=LIQSS2,
-		MMO_SymDiff=false,
 		MMO_Output={uC,iL},
 		StartTime=0.0,
 		StopTime=0.01,

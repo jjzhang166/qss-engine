@@ -26,7 +26,6 @@ model acoustics
 	experiment(
 		MMO_Description="Linear acoustics.",
 		MMO_Solver=LIQSS2,
-		MMO_SymDiff=false,
 		MMO_Output={p[1:N/5:N],p[250]},
 		StartTime=0.0,
 		StopTime=1,
