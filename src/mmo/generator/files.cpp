@@ -367,7 +367,32 @@ MMO_Files_::settings (MMO_Annotation annotation)
     }
   buffer << ");";
   _writer->print (&buffer);
+  _printList(annotation->patohSettings(), "patohOptions", annotation);
+  _printList(annotation->scotchSettings(), "scotchOptions", annotation);
+  _printList(annotation->metisSettings(), "metisOptions", annotation);
   _writer->clearFile ();
+}
+
+void
+MMO_Files_::_printList (list<string> ann, string tag, MMO_Annotation annotation)
+{
+  stringstream buffer;
+  if (ann.empty ())
+    {
+      return;
+    }
+  buffer << tag << "=(";
+  int count = 0, size = ann.size ();
+  for (list<string>::iterator it = ann.begin (); it != ann.end (); it++)
+    {
+      buffer << *it;
+      if (++count < size)
+	{
+	  buffer << ",";
+	}
+    }
+  buffer << ");";
+  _writer->print (&buffer);
 }
 
 void

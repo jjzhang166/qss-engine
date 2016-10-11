@@ -462,7 +462,9 @@ public:
   }
   ;
   bool
-  enableSemiStaticPartitioning ();
+  semiStaticPartitioning ();
+  void
+  setSemiStaticPartitioning (bool st);
 private slots:
   void
   on__commInterval_currentIndexChanged (int index);

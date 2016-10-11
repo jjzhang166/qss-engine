@@ -294,9 +294,15 @@ RunDlg::enableDebug ()
 }
 
 bool
-RunDlg::enableSemiStaticPartitioning ()
+RunDlg::semiStaticPartitioning ()
 {
-  return (_simeStaticChk->checkState () == Qt::Checked);
+  return (_semiStaticChk->checkState () == Qt::Checked);
+}
+
+void
+RunDlg::setSemiStaticPartitioning (bool st)
+{
+    _semiStaticChk->setChecked (st);
 }
 
 QString

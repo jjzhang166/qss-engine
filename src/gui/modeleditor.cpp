@@ -491,7 +491,8 @@ ModelEditor::_setAnnotations (QString tag, QString value, bool separator)
 {
 QString add = value;
 if (tag == "Tolerance" || tag == "AbsTolerance" || tag == "MMO_Output"
-|| tag == "MMO_Period")
+|| tag == "MMO_Period" || tag == "MMO_PatohSettings"
+    || tag == "MMO_ScotchSettings" || tag == "MMO_MetisSettings")
 {
 add.prepend ("{");
 add.append ("}");
@@ -1026,6 +1027,12 @@ if (!_outputType.isEmpty ())
 _setAnnotations ("MMO_OutputType", _outputType, true);
 if (!_scheduler.isEmpty ())
 _setAnnotations ("MMO_Scheduler", _scheduler, true);
+if (!_patohSettings.isEmpty ())
+_setAnnotations ("MMO_PatohSettings", _patohSettings, true);
+if (!_scotchSettings.isEmpty ())
+_setAnnotations ("MMO_ScotchSettings", _scotchSettings, true);
+if (!_metisSettings.isEmpty ())
+_setAnnotations ("MMO_MetisSettings", _metisSettings, true);
 _setAnnotations ("StartTime", _startTime, true);
 _setAnnotations ("StopTime", _stopTime, true);
 _setAnnotations ("Tolerance", _tolerance, true);
@@ -1096,4 +1103,34 @@ if (tc.atEnd ())
 }
 }
 _annotations.clear ();
+}
+
+QString
+ModelEditor::patohSettings ()
+{
+return (_getAnnotations ("MMO_PatohSettings"));
+}
+
+QString
+ModelEditor::scotchSettings ()
+{
+return (_getAnnotations ("MMO_ScotchSettings"));
+}
+
+QString
+ModelEditor::metisSettings ()
+{
+return (_getAnnotations ("MMO_MetisSettings"));
+}
+
+void
+ModelEditor::setSemiStaticPartitioning (bool st)
+{
+  _semiStaticPartitioning = st;
+}
+
+bool
+ModelEditor::semiStaticPartitioning ()
+{
+  return (_semiStaticPartitioning);
 }

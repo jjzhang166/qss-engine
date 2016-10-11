@@ -504,6 +504,34 @@ public:
   {
   return (_getAnnotations ("MMO_DT_StepLog"));
   };
+  void
+  setPatohSettings (QString str)
+  {
+    _patohSettings = str;
+  }
+  ;
+  void
+  setScotchSettings (QString str)
+  {
+    _scotchSettings = str;
+  }
+  ;
+  void
+  setMetisSettings (QString str)
+  {
+    _metisSettings = str;
+  }
+  ;
+  QString
+  patohSettings ();
+  QString
+  scotchSettings ();
+  QString
+  metisSettings ();
+  void
+  setSemiStaticPartitioning (bool st);
+  bool
+  semiStaticPartitioning ();
 protected:
   void
   reject ()
@@ -596,6 +624,10 @@ private:
   QString _dt;
   QString _parallel;
   QString _partitionMethod;
+  QString _patohSettings;
+  QString _scotchSettings;
+  QString _metisSettings;
+  bool _semiStaticPartitioning;
   QTabWidget *_model_editor_tab;
   QList<ModelInfo> *_models;
   Utils *_utils;

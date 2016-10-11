@@ -421,7 +421,7 @@ MMO_ModelAnnotation_::_processList (AST_Expression x, list<string> *l)
       foreach(it,el)
 	{
 	  av = ea.foldTraverse (current_element(it));
-	  l->push_back (av.str() ());
+	  l->push_back (av.str ());
 	}
     }
   else
@@ -932,6 +932,42 @@ list<AST_Expression>
 MMO_ModelAnnotation_::output ()
 {
   return (_output);
+}
+
+list<string>
+MMO_ModelAnnotation_::patohSettings ()
+{
+  return (_patohSettings);
+}
+
+list<string>
+MMO_ModelAnnotation_::scotchSettings ()
+{
+  return (_scotchSettings);
+}
+
+list<string>
+MMO_ModelAnnotation_::metisSettings ()
+{
+  return (_metisSettings);
+}
+
+void
+MMO_ModelAnnotation_::setPatohSettings (string l)
+{
+  _patohSettings.push_back(l);
+}
+
+void
+MMO_ModelAnnotation_::setScotchSettings (string l)
+{
+  _scotchSettings.push_back(l);
+}
+
+void
+MMO_ModelAnnotation_::setMetisSettings (string l)
+{
+  _metisSettings.push_back(l);
 }
 
 MMO_ModelAnnotation
@@ -1569,3 +1605,40 @@ MMO_Annotation_::dtSynch ()
 {
   return (ANT_DT_Asynchronous);
 }
+
+list<string>
+MMO_Annotation_::patohSettings()
+{
+  return (list<string>());
+}
+
+list<string>
+MMO_Annotation_::scotchSettings()
+{
+  return (list<string>());
+}
+
+list<string>
+MMO_Annotation_::metisSettings()
+{
+  return (list<string>());
+}
+
+void
+MMO_Annotation_::setPatohSettings(string l)
+{
+  return;
+}
+
+void
+MMO_Annotation_::setScotchSettings(string l)
+{
+  return;
+}
+
+void
+MMO_Annotation_::setMetisSettings(string l)
+{
+  return;
+}
+

@@ -30,8 +30,11 @@
  GCC does provides these definitions in stdint.h, but it may require some
  modifications on other architectures.
 --------------------------------------------------------------------------*/
-#define IDXTYPEWIDTH 64 
-
+#if __x86_64__
+  #define IDXTYPEWIDTH 64
+#else
+  #define IDXTYPEWIDTH 32
+#endif
 
 /*--------------------------------------------------------------------------
  Specifies the data type that will hold floating-point style information.
@@ -40,7 +43,12 @@
    32 : single precission floating point (float)
    64 : double precission floating point (double)
 --------------------------------------------------------------------------*/
-#define REALTYPEWIDTH 64
+#if __x86_64__
+  #define REALTYPEWIDTH 64
+#else
+  #define REALTYPEWIDTH 32
+#endif
+
 
 
 

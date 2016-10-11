@@ -189,13 +189,25 @@ public:
   virtual bool
   parallel ();
   virtual int
-  polyCoeffs();
+  polyCoeffs ();
   virtual void
   setDtSynch (ANT_DT_Synch synch);
   virtual string
   dtSynchString ();
   virtual ANT_DT_Synch
   dtSynch ();
+  virtual list<string>
+  patohSettings ();
+  virtual list<string>
+  scotchSettings ();
+  virtual list<string>
+  metisSettings ();
+  virtual void
+  setPatohSettings (string l);
+  virtual void
+  setScotchSettings (string l);
+  virtual void
+  setMetisSettings (string l);
 };
 
 /**
@@ -567,10 +579,6 @@ public:
    */
   void
   setStoreData (string save);
-  /**
-   *
-   * @return
-   */
   string
   storeData ();
   /**
@@ -608,7 +616,7 @@ public:
    * @return
    */
   int
-  polyCoeffs();
+  polyCoeffs ();
   /**
    *
    * @param synch
@@ -621,12 +629,24 @@ public:
    */
   string
   dtSynchString ();
-/**
- *
- * @return
- */
+  /**
+   *
+   * @return
+   */
   ANT_DT_Synch
   dtSynch ();
+  list<string>
+  patohSettings ();
+  list<string>
+  scotchSettings ();
+  list<string>
+  metisSettings ();
+  void
+  setPatohSettings (string l);
+  void
+  setScotchSettings (string l);
+  void
+  setMetisSettings (string l);
 private:
   /**
    *

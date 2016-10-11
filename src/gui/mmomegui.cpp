@@ -363,6 +363,14 @@ MmomeGui::_run (QString name)
     {
       args << QString ("false");
     }
+  if (Editor::instance ()->semiStaticPartitioning())
+    {
+      args << QString ("true");
+    }
+  else
+    {
+      args << QString ("false");
+    }
   connect (_proc, SIGNAL (readyReadStandardError ()), this,
 	   SLOT (_simulation_message ()));
   _timeInterval = Editor::instance ()->stopTime ().toDouble ()
@@ -435,6 +443,10 @@ MmomeGui::runDlgClose ()
   Editor::instance ()->setDT (_runDlg->DT ());
   Editor::instance ()->setDtSynch (_runDlg->dtSynch ());
   Editor::instance ()->setPartitionMethod (_runDlg->partitionMethod ());
+  Editor::instance()->setPatohSettings(_runDlg->patohSettings());
+  Editor::instance()->setScotchSettings(_runDlg->scotchSettings());
+  Editor::instance()->setMetisSettings(_runDlg->metisSettings());
+  Editor::instance()->setSemiStaticPartitioning(_runDlg->semiStaticPartitioning());
   Editor::instance ()->setDescription (_runDlg->description ());
   Editor::instance ()->writeAnnotations ();
   bool debugFlag = _runDlg->enableDebug ();
@@ -502,6 +514,10 @@ MmomeGui::on_actionRun_triggered ()
   _runDlg->setLPS (Editor::instance ()->LPS ());
   _runDlg->setDT (Editor::instance ()->DT ());
   _runDlg->setPartitionMethod (Editor::instance ()->partitionMethod ());
+  _runDlg->setPatohSettings (Editor::instance ()->patohSettings ());
+  _runDlg->setScotchSettings (Editor::instance ()->scotchSettings ());
+  _runDlg->setMetisSettings (Editor::instance ()->metisSettings ());
+  _runDlg->setSemiStaticPartitioning(Editor::instance()->semiStaticPartitioning());
   _runDlg->setDtSynch (Editor::instance ()->dtSynch ());
   _runDlg->setDescription (Editor::instance ()->description ());
   _runDlg->show ();

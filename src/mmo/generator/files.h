@@ -22,6 +22,7 @@
 
 #include <fstream>
 #include <string>
+#include <list>
 
 #include "../ir/mmo_types.h"
 #include "../util/util_types.h"
@@ -78,6 +79,8 @@ public:
 private:
   string
   _variableSettings (Dependencies deps, string varName);
+  void
+  _printList(list<string> ann, string tag, MMO_Annotation annotation);
   string _fname;
   MMO_Model _model;
   MMO_Solver _solver;

@@ -89,19 +89,9 @@ else
 ifeq ($(OS),win32)
 	@cp $(ROOT)/deploy/windows/scripts/* $(ROOT)/bin/
 	@cp $(ROOT)/deploy/windows/qss-solver.ini $(ROOT)/bin/
-	@cp $(ROOT)/src/tools/partitioners/hmetis/khmetis $(ROOT)/bin/
-	@cp $(ROOT)/src/tools/partitioners/patoh/Linux-i386/libpatoh.a $(ROOT)/src/libs/
-	@cp $(ROOT)/src/tools/partitioners/metis/Linux-i386/libmetis.a $(ROOT)/src/libs/
-	@cp $(ROOT)/src/tools/partitioners/scotch/Linux-i386/libscotch.a $(ROOT)/src/libs/
-	@cp $(ROOT)/src/tools/partitioners/scotch/Linux-i386/libscotcherr.a $(ROOT)/src/libs/
 else
 	@cp $(ROOT)/deploy/mac/scripts/* $(ROOT)/bin/
 	@cp $(ROOT)/deploy/mac/qss-solver.ini $(ROOT)/bin/
-	@cp $(ROOT)/src/tools/partitioners/hmetis/khmetis $(ROOT)/bin/
-	@cp $(ROOT)/src/tools/partitioners/patoh/Linux-x86_64/libpatoh.a $(ROOT)/src/libs/
-	@cp $(ROOT)/src/tools/partitioners/metis/Linux-x86_64/libmetis.a $(ROOT)/src/libs/
-	@cp $(ROOT)/src/tools/partitioners/scotch/Linux-x86_64/libscotch.a $(ROOT)/src/libs/
-	@cp $(ROOT)/src/tools/partitioners/scotch/Linux-x86_64/libscotcherr.a $(ROOT)/src/libs/
 endif
 endif
 	
