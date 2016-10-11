@@ -92,7 +92,7 @@ QSS_generateWeights (QSS_simulator simulator)
 	  double normSteps = 0;
 	  grp_t maxVSteps = 0;
 	  grp_t maxESteps = 0;
-	  simulator->data->params->pm = SD_MetisCut;
+	  simulator->data->params->pm = SD_Metis;
 	  if (GRP_readGraph (simulator->output->name, simulator->data, &xadj,
 			     &adjncy, &edges, 1, &vwgt, &ewgt, 0, NULL)
 	      == GRP_ReadError)

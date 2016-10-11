@@ -99,7 +99,8 @@ CLC_Data (int states, int discretes, int events, int inputs, int algebraics,
   p->params = SD_Parameters (settings->derdelta, settings->zchyst,
 			     settings->minstep, settings->symdiff,
 			     settings->lps, settings->nodesize, settings->pm,
-			     settings->dt, settings->dtSynch);
+			     settings->dt, settings->dtSynch,
+			     settings->partitionerOptions);
   p->scalarEvaluations = 0;
   p->zeroCrossings = 0;
   p->funEvaluations = 0;
@@ -132,7 +133,7 @@ CLC_freeData (CLC_data data)
     }
   free (data->x);
   free (data->nSD);
-  if (data->inputs> 0)
+  if (data->inputs > 0)
     {
       free (data->IT);
     }

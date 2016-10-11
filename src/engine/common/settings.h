@@ -49,6 +49,7 @@ struct SET_settings_
   int nDQRel; //!<
   SD_PartitionMethod pm; //!<
   SD_DtSynch dtSynch; //!< \f $ \delta t $ \f synchronization policy.
+  SD_partitionerOptions partitionerOptions;
 };
 /**
  *

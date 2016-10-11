@@ -274,18 +274,16 @@ RunDlg::_getParallelString (int idx)
 int
 RunDlg::_getPartitionMethodIdx (QString str)
 {
-  if (str.trimmed () == "MetisCut")
+  if (str.trimmed () == "Metis")
     return (0);
-  if (str.trimmed () == "MetisVol")
-    return (1);
   if (str.trimmed () == "HMetis")
-    return (2);
+    return (1);
   if (str.trimmed () == "Scotch")
-    return (3);
+    return (2);
   if (str.trimmed () == "Patoh")
-    return (4);
+    return (3);
   if (str.trimmed () == "Manual")
-    return (5);
+    return (4);
   return (0);
 }
 
@@ -295,25 +293,29 @@ RunDlg::enableDebug ()
   return (_debugChk->checkState () == Qt::Checked);
 }
 
+bool
+RunDlg::enableSemiStaticPartitioning ()
+{
+  return (_simeStaticChk->checkState () == Qt::Checked);
+}
+
 QString
 RunDlg::_getPartitionMethodString (int idx)
 {
   switch (idx)
     {
     case 0:
-      return ("MetisCut");
+      return ("Metis");
     case 1:
-      return ("MetisVol");
-    case 2:
       return ("HMetis");
-    case 3:
+    case 2:
       return ("Scotch");
-    case 4:
+    case 3:
       return ("Patoh");
-    case 5:
+    case 4:
       return ("Manual");
     }
-  return ("MetisCut");
+  return ("Metis");
 }
 
 int

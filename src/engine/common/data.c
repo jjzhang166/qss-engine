@@ -192,7 +192,7 @@ SD_cleanEventData(SD_eventData events, int size)
 
 SD_parameters
 SD_Parameters (double derDelta, double zcHyst, double minStep, int symDiff,
-	       int lps, int nodeSize, SD_PartitionMethod pm, double dt, SD_DtSynch synch)
+	       int lps, int nodeSize, SD_PartitionMethod pm, double dt, SD_DtSynch synch,   SD_partitionerOptions partitionerOptions)
 {
   SD_parameters p = checkedMalloc (sizeof(*p));
   p->derDelta = derDelta;
@@ -204,6 +204,7 @@ SD_Parameters (double derDelta, double zcHyst, double minStep, int symDiff,
   p->pm = pm;
   p->dt = dt;
   p->dtSynch = synch;
+  p->partitionerOptions = partitionerOptions;
   return (p);
 }
 

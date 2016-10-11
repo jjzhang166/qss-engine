@@ -529,7 +529,8 @@ QSS_Data (int states, int discretes, int events, int inputs, int algs,
   p->params = SD_Parameters (settings->derdelta, settings->zchyst,
 			     settings->minstep, settings->symdiff,
 			     settings->lps, settings->nodesize, settings->pm,
-			     settings->dt, settings->dtSynch);
+			     settings->dt, settings->dtSynch,
+			     settings->partitionerOptions);
   p->lp = NULL;
   if (settings->lps > 0)
     {

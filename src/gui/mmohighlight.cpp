@@ -52,7 +52,7 @@ MmoHighlighter::MmoHighlighter (QTextDocument *parent, h_type file) :
 	  << "\\bIncludeDirectory\\b" << "\\bLibrary\\b"
 	  << "\\bLibraryDirectory\\b" << "\\bMMO_NodeSize\\b"
 	  << "\\bMMO_Parallel\\b" << "\\bMMO_PartitionMethod\\b" << "\\bMMO_DT_Min\\b"
-	  << "\\bMMO_DT_Synch\\b"
+	  << "\\bMMO_DT_Synch\\b" << "\\bMMO_PatohSettings\\b" << "\\bMMO_ScotchSettings\\b" << "\\bMMO_MetisSettings\\b"
 	  << "\\bMMO_StoreData\\b" << "\\bderivative\\b";
 
       foreach (const QString &pattern, keywordPatterns){
@@ -94,7 +94,7 @@ MmoHighlighter::MmoHighlighter (QTextDocument *parent, h_type file) :
   << "\\bLIQSS2\\b" << "\\bQSS3\\b" << "\\bLIQSS3\\b"
   << "\\bCI_Sampled\\b" << "\\bCI_Step\\b" << "\\bCI_Dense\\b"
   << "\\bSD_DT_Fixed\\b" << "\\bSD_DT_Asynchronous\\b"
-  << "\\bMetisCut\\b" << "\\bMetisVol\\b" << "\\bHMetis\\b"
+  << "\\bMetis\\b" << "\\bHMetis\\b"
   << "\\bScotch\\b" << "\\bPatoh\\b" << "\\bManual\\b"
   << "\\btrue\\b" << "\\bfalse\\b" << "\\bDOPRI\\b" << "\\bDASSL\\b";
 

@@ -452,7 +452,7 @@ GRP_readGraph (char *name, QSS_data data, grp_t **xadj, grp_t **adjncy, grp_t *e
 	  file = NULL;
 	}
     }
-  if (pm == SD_Scotch || pm == SD_MetisCut || pm == SD_MetisVol)
+  if (pm == SD_Scotch || pm == SD_Metis)
     {
       if (rwgt)
 	{

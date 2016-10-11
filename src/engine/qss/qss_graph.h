@@ -24,7 +24,7 @@
 
 #include "qss_data.h"
 
-typedef long long int grp_t;
+typedef long int grp_t;
 
 typedef enum
 {

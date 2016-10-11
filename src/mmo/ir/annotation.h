@@ -53,8 +53,7 @@ typedef enum
 
 typedef enum
 {
-  ANT_MetisCut, //!< ANT_MetisCut
-  ANT_MetisVol, //!< ANT_MetisVol
+  ANT_Metis, //!< ANT_Metis
   ANT_HMetis, //!< ANT_HMetis
   ANT_Scotch, //!< ANT_Scoth
   ANT_Patoh, //!< ANT_Patoh
@@ -656,7 +655,10 @@ private:
     PARTITION_METHOD, //!< PARTITION_METHOD
     PARALLEL, //!< PARALLEL
     DELTAT, //!< DT
-    DELTAT_SYNCH //!< DT_SYNCH
+    DELTAT_SYNCH, //!< DT_SYNCH
+    PATOH_SETTINGS, //!< PATOH_SETTINGS
+    SCOTCH_SETTINGS, //!< SCOTCH_SETTINGS
+    METIS_SETTINGS //!< METIS_SETTINGS
   } type;
   void
   _processAnnotation (string annot, AST_Modification_Equal x);
@@ -664,6 +666,8 @@ private:
   _processArgument (AST_Argument_Modification arg);
   void
   _processList (AST_Expression x, list<double> *l);
+  void
+  _processList (AST_Expression x, list<string> *l);
   void
   _processExpressionList (AST_Expression x, list<AST_Expression> *l);
   ANT_Solver
@@ -701,6 +705,9 @@ private:
   ANT_DT_Synch _dtSynch;
   string _dtSynchString;
   string _desc;
+  list<string> _patohSettings;
+  list<string> _scotchSettings;
+  list<string> _metisSettings;
 };
 /**
  *

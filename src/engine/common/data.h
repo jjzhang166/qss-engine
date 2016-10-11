@@ -135,8 +135,7 @@ typedef enum
  */
 typedef enum
 {
-  SD_MetisCut, //!< SD_MetisCut
-  SD_MetisVol, //!< SD_MetisVol
+  SD_Metis, //!< SD_Metis
   SD_HMetis,   //!< SD_HMetis
   SD_Scotch,   //!< SD_Scotch
   SD_Patoh,     //!< SD_Patoh
@@ -153,6 +152,21 @@ typedef enum
   SD_DT_AdaptiveDiscrete
 } SD_DtSynch;
 
+typedef struct
+{
+  char lvalue[128];
+  char value[128];
+} SD_partitionerOption;
+
+typedef struct
+{
+  SD_partitionerOption patoh[50];
+  SD_partitionerOption scotch[50];
+  SD_partitionerOption metis[50];
+  int nPatoh;
+  int nScotch;
+  int nMetis;
+} SD_partitionerOptions;
 
 /**
  *
@@ -301,7 +315,7 @@ void
 SD_freeEventData (SD_eventData events, int size);
 
 void
-SD_cleanEventData(SD_eventData events, int size);
+SD_cleanEventData (SD_eventData events, int size);
 
 /**
  *
@@ -322,6 +336,7 @@ struct SD_parameters_
   int nodeSize; //!< Node size used in the memory list for output simulation values.
   SD_PartitionMethod pm; //!< Partition method used to obtain a model partition for parallel simulations.
   SD_DtSynch dtSynch; //!< \f $ \delta t $ \f synchronization policy.
+  SD_partitionerOptions partitionerOptions;
 };
 
 /**
@@ -334,7 +349,8 @@ struct SD_parameters_
  */
 SD_parameters
 SD_Parameters (double derDelta, double zcHyst, double minStep, int symDiff,
-	       int lps, int nodeSize, SD_PartitionMethod pm, double dt, SD_DtSynch synch);
+	       int lps, int nodeSize, SD_PartitionMethod pm, double dt,
+	       SD_DtSynch synch, SD_partitionerOptions partitionerOptions);
 
 /**
  *
@@ -491,31 +507,31 @@ typedef struct SD_statistics_ *SD_statistics;
 struct SD_statistics_
 {
   double *simulationTimes;
-    double partitioningTime;
-    double initializeLPS;
-    int *steps;
-    unsigned long *simulationMessages;
-    unsigned long *simulationExternalEvents;
-    unsigned long modelEvaluations;
-    unsigned long totalSteps;
-    unsigned long reinits;
-    unsigned long memory;
-    double initTime;
-    double simulationTime;
-    double saveTime;
-    double sequentialMemory;
-    unsigned long messages;
-    unsigned long extTrans;
-    unsigned int pastEvents;
-  #ifdef _WIN32
-    struct timeval *iTime;
-    struct timeval *sTime;
-    struct timeval *sdTime;
-  #else
-    struct timespec *iTime;
-    struct timespec *sTime;
-    struct timespec *sdTime;
-  #endif
+  double partitioningTime;
+  double initializeLPS;
+  int *steps;
+  unsigned long *simulationMessages;
+  unsigned long *simulationExternalEvents;
+  unsigned long modelEvaluations;
+  unsigned long totalSteps;
+  unsigned long reinits;
+  unsigned long memory;
+  double initTime;
+  double simulationTime;
+  double saveTime;
+  double sequentialMemory;
+  unsigned long messages;
+  unsigned long extTrans;
+  unsigned int pastEvents;
+#ifdef _WIN32
+  struct timeval *iTime;
+  struct timeval *sTime;
+  struct timeval *sdTime;
+#else
+  struct timespec *iTime;
+  struct timespec *sTime;
+  struct timespec *sdTime;
+#endif
 };
 
 /**
@@ -524,14 +540,14 @@ struct SD_statistics_
  * @return
  */
 SD_statistics
-SD_Statistics();
+SD_Statistics ();
 
 /**
  *
  * @param stats
  */
 void
-SD_freeStatistics(SD_statistics stats);
+SD_freeStatistics (SD_statistics stats);
 
 void
 SD_setStatisticsLPS (SD_statistics stats, int lps);

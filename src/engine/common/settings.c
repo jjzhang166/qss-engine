@@ -75,13 +75,9 @@ _getSolver (const char *sol)
 SD_PartitionMethod
 _getPartitionMethod (const char *sol)
 {
-  if (!strcmp (sol, "MetisCut"))
+  if (!strcmp (sol, "Metis"))
     {
-      return (SD_MetisCut);
-    }
-  else if (!strcmp (sol, "MetisVol"))
-    {
-      return (SD_MetisVol);
+      return (SD_Metis);
     }
   else if (!strcmp (sol, "HMetis"))
     {
@@ -99,7 +95,7 @@ _getPartitionMethod (const char *sol)
     {
       return (SD_Manual);
     }
-  return (SD_MetisCut);
+  return (SD_Metis);
 }
 
 SD_DtSynch
@@ -144,7 +140,7 @@ SET_Settings (char *fname)
 {
   config_t cfg, *cf;
   const config_setting_t *lists;
-  int count, n, ires;
+  int count, n, ires, option;
   double dres;
   const char *sol;
   cf = &cfg;
@@ -172,7 +168,7 @@ SET_Settings (char *fname)
   p->solver = SD_QSS3;
   p->nDQMin = 0;
   p->nDQRel = 0;
-  p->pm = SD_MetisCut;
+  p->pm = SD_Metis;
   p->dtSynch = SD_DT_Adaptive;
   if (config_lookup_float (cf, "minstep", &dres))
     {
@@ -281,6 +277,49 @@ SET_Settings (char *fname)
       p->dqrel[n] = config_setting_get_float_elem (lists, n);
     }
   p->nDQRel = count;
+  lists = config_lookup (cf, "scotchOptions");
+  p->partitionerOptions.nScotch = 0;
+  if (lists != NULL)
+    {
+      count = config_setting_length (lists);
+      for (n = 0, option = 0; n < count; n += 2, option++)
+	{
+	  sprintf (p->partitionerOptions.scotch[option].lvalue, "%s",
+		   config_setting_get_string_elem (lists, n));
+	  sprintf (p->partitionerOptions.scotch[option].value, "%s",
+		   config_setting_get_string_elem (lists, n + 1));
+	}
+      p->partitionerOptions.nScotch = option;
+    }
+  lists = config_lookup (cf, "patohOptions");
+  p->partitionerOptions.nPatoh = 0;
+  if (lists != NULL)
+    {
+
+      count = config_setting_length (lists);
+      for (n = 0, option = 0; n < count; n += 2, option++)
+	{
+	  sprintf (p->partitionerOptions.patoh[option].lvalue, "%s",
+		   config_setting_get_string_elem (lists, n));
+	  sprintf (p->partitionerOptions.patoh[option].value, "%s",
+		   config_setting_get_string_elem (lists, n + 1));
+	}
+      p->partitionerOptions.nPatoh = option;
+    }
+  lists = config_lookup (cf, "metisOptions");
+  p->partitionerOptions.nMetis = 0;
+  if (lists != NULL)
+    {
+      count = config_setting_length (lists);
+      for (n = 0, option = 0; n < count; n += 2, option++)
+	{
+	  sprintf (p->partitionerOptions.metis[option].lvalue, "%s",
+		   config_setting_get_string_elem (lists, n));
+	  sprintf (p->partitionerOptions.metis[option].value, "%s",
+		   config_setting_get_string_elem (lists, n + 1));
+	}
+      p->partitionerOptions.nMetis = option;
+    }
   config_destroy (cf);
   return ((p));
 }

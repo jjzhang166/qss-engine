@@ -213,8 +213,9 @@ MMO_ModelAnnotation_::MMO_ModelAnnotation_ (MMO_ModelData data) :
 	true), _minStep (1e-14), _lps (1), _derDelta (1e-8), _nodeSize (10000), _ZCHyst (
 	1e-12), _order (1), _scheduler ("ST_Binary"), _storeData ("SD_Memory"), _annotations (), _data (
 	data), _DQMin (), _DQRel (), _weight (-1), _sample (), _output (), _initialTime (
-	0), _finalTime (0), _partitionMethod (ANT_MetisCut), _partitionMethodString (
-	"MetisCut"), _parallel (false), _dt (0), _polyCoeffs(1), _dtSynch(ANT_DT_Fixed), _dtSynchString("SD_DT_Asynchronous"), _desc()
+	0), _finalTime (0), _partitionMethod (ANT_Metis), _partitionMethodString (
+	"MetisCut"), _parallel (false), _dt (0), _polyCoeffs (1), _dtSynch (
+	ANT_DT_Fixed), _dtSynchString ("SD_DT_Asynchronous"), _desc (), _patohSettings (), _scotchSettings (), _metisSettings ()
 {
   _annotations.insert (
       pair<string, MMO_ModelAnnotation_::type> ("experiment", EXPERIMENT));
@@ -263,7 +264,16 @@ MMO_ModelAnnotation_::MMO_ModelAnnotation_ (MMO_ModelData data) :
   _annotations.insert (
       pair<string, MMO_ModelAnnotation_::type> ("MMO_DT_Min", DELTAT));
   _annotations.insert (
-       pair<string, MMO_ModelAnnotation_::type> ("MMO_DT_Synch", DELTAT_SYNCH));
+      pair<string, MMO_ModelAnnotation_::type> ("MMO_DT_Synch", DELTAT_SYNCH));
+  _annotations.insert (
+      pair<string, MMO_ModelAnnotation_::type> ("MMO_PatohSettings",
+						PATOH_SETTINGS));
+  _annotations.insert (
+      pair<string, MMO_ModelAnnotation_::type> ("MMO_MetisSettings",
+						METIS_SETTINGS));
+  _annotations.insert (
+      pair<string, MMO_ModelAnnotation_::type> ("MMO_ScotchSettings",
+						SCOTCH_SETTINGS));
   _sample.push_back (1e-2);
   _DQMin.push_back (1e-3);
   _DQRel.push_back (1e-3);
@@ -398,6 +408,31 @@ MMO_ModelAnnotation_::_processList (AST_Expression x, list<double> *l)
 }
 
 void
+MMO_ModelAnnotation_::_processList (AST_Expression x, list<string> *l)
+{
+  l->clear ();
+  MMO_EvalAnnotation_ ea (_data->symbols ());
+  MMO_AnnotationValue av;
+  if (x->expressionType () == EXPBRACE)
+    {
+      AST_Expression_Brace b = x->getAsBrace ();
+      AST_ExpressionList el = b->arguments ();
+      AST_ExpressionListIterator it;
+      foreach(it,el)
+	{
+	  av = ea.foldTraverse (current_element(it));
+	  l->push_back (av.str() ());
+	}
+    }
+  else
+    {
+      av = ea.foldTraverse (x);
+      l->push_back (av.str ());
+    }
+}
+
+
+void
 MMO_ModelAnnotation_::_processExpressionList (AST_Expression x,
 					      list<AST_Expression> *l)
 {
@@ -436,13 +471,9 @@ MMO_ModelAnnotation_::_getDtSynch (string s)
 ANT_PartitionMethod
 MMO_ModelAnnotation_::_getPartitionMethod (string s)
 {
-  if (!s.compare ("MetisCut"))
+  if (!s.compare ("Metis"))
     {
-      return (ANT_MetisCut);
-    }
-  else if (!s.compare ("MetisVol"))
-    {
-      return (ANT_MetisVol);
+      return (ANT_Metis);
     }
   else if (!s.compare ("HMetis"))
     {
@@ -460,7 +491,7 @@ MMO_ModelAnnotation_::_getPartitionMethod (string s)
     {
       return (ANT_Manual);
     }
-  return (ANT_MetisCut);
+  return (ANT_Metis);
 }
 
 ANT_Solver
@@ -610,9 +641,9 @@ MMO_ModelAnnotation_::_processAnnotation (string annot,
       _partitionMethodString = av.str ();
       break;
     case DELTAT_SYNCH:
-          _dtSynch = _getDtSynch (av.str ());
-          _dtSynchString = av.str ();
-          break;
+      _dtSynch = _getDtSynch (av.str ());
+      _dtSynchString = av.str ();
+      break;
     case PARALLEL:
       _parallel = true;
       if (av.integer () == 0)
@@ -624,6 +655,15 @@ MMO_ModelAnnotation_::_processAnnotation (string annot,
       _dt = av.real ();
       break;
     case STORE_DATA:
+      break;
+    case PATOH_SETTINGS:
+      _processList (x->exp (), &_patohSettings);
+      break;
+    case SCOTCH_SETTINGS:
+      _processList (x->exp (), &_scotchSettings);
+      break;
+    case METIS_SETTINGS:
+      _processList (x->exp (), &_metisSettings);
       break;
     default:
       break;
@@ -976,14 +1016,14 @@ MMO_EvalAnnotation_::MMO_EvalAnnotation_ (VarSymbolTable st) :
   _tokens.insert (pair<string, string> ("CI_Sampled", "CI_Sampled"));
   _tokens.insert (pair<string, string> ("SD_File", "SD_File"));
   _tokens.insert (pair<string, string> ("SD_Memory", "SD_Memory"));
-  _tokens.insert (pair<string, string> ("MetisCut", "MetisCut"));
-  _tokens.insert (pair<string, string> ("MetisVol", "MetisVol"));
+  _tokens.insert (pair<string, string> ("Metis", "Metis"));
   _tokens.insert (pair<string, string> ("HMetis", "HMetis"));
   _tokens.insert (pair<string, string> ("Scotch", "Scotch"));
   _tokens.insert (pair<string, string> ("Patoh", "Patoh"));
   _tokens.insert (pair<string, string> ("Manual", "Manual"));
   _tokens.insert (pair<string, string> ("SD_DT_Fixed", "SD_DT_Fixed"));
-  _tokens.insert (pair<string, string> ("SD_DT_Asynchronous", "SD_DT_Asynchronous"));
+  _tokens.insert (
+      pair<string, string> ("SD_DT_Asynchronous", "SD_DT_Asynchronous"));
 }
 
 MMO_AnnotationValue
@@ -1221,7 +1261,7 @@ MMO_Annotation_::includeDirectory ()
 list<string>
 MMO_Annotation_::libraries ()
 {
-  return (list<string>());
+  return (list<string> ());
 }
 
 string
@@ -1263,13 +1303,13 @@ MMO_Annotation_::setDQMin (double dqmin)
 list<double>
 MMO_Annotation_::dqmin ()
 {
-  return (list<double>());
+  return (list<double> ());
 }
 
 list<double>
 MMO_Annotation_::dqrel ()
 {
-  return (list<double>());
+  return (list<double> ());
 }
 
 void
@@ -1425,7 +1465,7 @@ MMO_Annotation_::setSample (double s)
 list<double>
 MMO_Annotation_::sample ()
 {
-  return (list<double>());
+  return (list<double> ());
 }
 
 void
@@ -1461,7 +1501,7 @@ MMO_Annotation_::setScheduler (string sched)
 list<AST_Expression>
 MMO_Annotation_::output ()
 {
-  return (list<AST_Expression>());
+  return (list<AST_Expression> ());
 }
 
 void
@@ -1491,7 +1531,7 @@ MMO_Annotation_::partitionMethodString ()
 ANT_PartitionMethod
 MMO_Annotation_::partitionMethod ()
 {
-  return (ANT_MetisCut);
+  return (ANT_Metis);
 }
 
 void

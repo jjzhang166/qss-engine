@@ -425,6 +425,44 @@ public:
    */
   bool
   enableDebug ();
+  QString
+  patohSettings ()
+  {
+    return (_patohSettings->text ());
+  }
+  ;
+  void
+  setPatohSettings (QString str)
+  {
+    _patohSettings->setText (str.remove ("{").remove ("}"));
+  }
+  ;
+  QString
+  scotchSettings ()
+  {
+    return (_scotchSettings->text ());
+  }
+  ;
+  void
+  setScotchSettings (QString str)
+  {
+    _scotchSettings->setText (str.remove ("{").remove ("}"));
+  }
+  ;
+  QString
+  metisSettings ()
+  {
+    return (_metisSettings->text ());
+  }
+  ;
+  void
+  setMetisSettings (QString str)
+  {
+    _metisSettings->setText (str.remove ("{").remove ("}"));
+  }
+  ;
+  bool
+  enableSemiStaticPartitioning ();
 private slots:
   void
   on__commInterval_currentIndexChanged (int index);
