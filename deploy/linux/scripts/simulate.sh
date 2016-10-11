@@ -13,6 +13,7 @@
 #    PARAMETERS: <FILE> simulation executable file.
 #    						 <PARALLEL> True for parallel simulations, False otherwise.
 #    						 <FOLDER> Location of the weights files for graph partition algorithms.
+#    						 <WEIGHTS> Use semi-static weights file.
 #       OPTIONS: --- 
 #  REQUIREMENTS: MMOC_OUTPUT MMOC_BUILD must point to the corresponding default 
 # 							 directories used by the QSS Solver GUI.
@@ -27,6 +28,8 @@ FILE=$1
 PARALLEL=$2
 
 FOLDER=$3
+
+WEIGHTS=$4
 
 mkdir -p $MMOC_OUTPUT/$FILE
 
@@ -68,7 +71,7 @@ then
 	cp $MMOC_BUILD/$FILE/${FILE}.heweights . 
 fi
 
-if [ "$PARALLEL" == "true" ]; then
+if [ "$WEIGHTS" == "true" ]; then
 	if [[ -e ${FILE}.vwgts ]];
 	then
   		cp ${FILE}.vwgts ${FILE}.vweights
@@ -89,8 +92,8 @@ if [ "$PARALLEL" == "true" ]; then
   if test -n "$(find . -maxdepth 1 -name '*-discrete-*.dat' -print -quit)"; then
   	for p in $(ls *-discrete-*.dat | cut -d '-' -f 1 | sort -u); do
     	FNAME=$(printf '%q' "$p")
-		sort -k1n ${FNAME}-discrete-*.dat > ${FNAME}.dat
-  	done
+		sort -k1n ${FNAME}-discrete-*.dat >> ${FNAME}.dat
+    done
   	rm *-discrete-*.dat
   fi
 fi
