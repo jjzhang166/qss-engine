@@ -55,6 +55,7 @@ cp deploy/mac/qss-solver.ini ./bin/qss-solver.app/Contents/MacOS/qss-solver.ini
 cp doc/COPYING  ./bin/qss-solver.app/Contents/MacOS/ 
 cp doc/INSTALL  ./bin/qss-solver.app/Contents/MacOS/ 
 cp doc/README.txt  ./bin/qss-solver.app/Contents/MacOS/ 
+cp doc/ChangeLog  ./bin/qss-solver.app/Contents/MacOS/ 
 cp -r ./tmp/doc ./bin/qss-solver.app/Contents/Resources/
 cp -r ./tmp/models ./bin/qss-solver.app/Contents/Resources/
 cp -r ./tmp/usr/* ./bin/qss-solver.app/Contents/Resources/usr/

@@ -28,6 +28,9 @@ git pull
 head ./doc/version.major -c 4 > vm
 git rev-list --count HEAD > rvn
 cat vm rvn > version
+vversion=`cat version`
+git tag -a ${vversion} -m "Version ${vversion}"
+./gitchangelog.py >> ./doc/ChangeLog
 REV=`cat rvn`
 ./deploy/linux/setRevision.sh ./deploy/linux/qss-solver.ini $REV
 VER=`cat version`
@@ -72,6 +75,7 @@ chmod 0755 `find tmp_deb/opt/qss-solver/bin`
 cp doc/COPYING ./tmp_deb/opt/qss-solver/
 cp doc/INSTALL ./tmp_deb/opt/qss-solver/
 cp doc/README.txt ./tmp_deb/opt/qss-solver/
+cp doc/ChangeLog ./tmp_deb/opt/qss-solver/
 cp version ./tmp_deb/opt/qss-solver/
 cp -r ./tmp/doc ./tmp_deb/opt/qss-solver/
 cp -r ./tmp/models ./tmp_deb/opt/qss-solver/
@@ -81,12 +85,18 @@ cp -r ./tmp/src ./tmp_deb/opt/qss-solver/
 cp src/libs/*.a ./tmp_deb/opt/qss-solver/src/libs
 cp usr/libs/*.a ./tmp_deb/opt/qss-solver/usr/libs
 if [ "$ARCH" == "i686" ]; then
-	cp /usr/lib/libsbml.so.5.6.0 ./tmp_deb/opt/qss-solver/src/libs/libsbml.so.5
+	cp /usr/lib/libsbml.so.5.13.0 ./tmp_deb/opt/qss-solver/src/libs/libsbml.so.5
 	cp src/tools/partitioners/patoh/Linux-i386/libpatoh.a ./tmp_deb/opt/qss-solver/src/libs/libpatoh.a
+	cp src/tools/partitioners/metis/Linux-i386/libmetis.a ./tmp_deb/opt/qss-solver/src/libs/libmetis.a
+	cp src/tools/partitioners/scotch/Linux-i386/libscoth.a ./tmp_deb/opt/qss-solver/src/libs/libscotch.a
+	cp src/tools/partitioners/scotch/Linux-i386/libscotherr.a ./tmp_deb/opt/qss-solver/src/libs/libscotcherr.a
 fi
 if [ "$ARCH" == "x86_64" ]; then
 	cp /usr/lib64/libsbml.so.5.10.2 ./tmp_deb/opt/qss-solver/src/libs/libsbml.so.5
 	cp src/tools/partitioners/patoh/Linux-x86_64/libpatoh.a ./tmp_deb/opt/qss-solver/src/libs/libpatoh.a
+	cp src/tools/partitioners/metis/Linux-x86_64/libmetis.a ./tmp_deb/opt/qss-solver/src/libs/libmetis.a
+	cp src/tools/partitioners/scotch/Linux-x86_64/libscotch.a ./tmp_deb/opt/qss-solver/src/libs/libscotch.a
+	cp src/tools/partitioners/scotch/Linux-x86_64/libscotcherr.a ./tmp_deb/opt/qss-solver/src/libs/libscotcherr.a
 fi
 chmod 0644 `find tmp_deb/ -iname *.cpp`
 chmod 0644 `find tmp_deb/ -iname *.c`

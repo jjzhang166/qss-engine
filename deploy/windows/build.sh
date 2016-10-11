@@ -52,6 +52,7 @@ cp -r ./tmp/doc ./tmp-win-installer/qss-solver/
 cp doc/COPYING ./tmp-win-installer/qss-solver/
 cp doc/INSTALL ./tmp-win-installer/qss-solver/
 cp doc/README.txt ./tmp-win-installer/qss-solver/
+cp doc/ChangeLog ./tmp-win-installer/qss-solver/
 cp deploy/images/integrator.svg ./tmp-win-installer/qss-solver/bin
 cp deploy/windows/qss-solver.ini ./tmp-win-installer/qss-solver/bin
 cp deploy/windows/qss-solver.gpr ./tmp-win-installer

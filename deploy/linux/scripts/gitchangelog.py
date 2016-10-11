@@ -714,7 +714,7 @@ def rest_py(data, opts={}):
 
     def render_commit(commit, opts=opts):
         subject = commit["subject"]
-        subject += " [%s]" % (commit["author"], )
+       ## subject += " [%s]" % (commit["author"], )
 
         entry = indent('\n'.join(textwrap.wrap(subject)),
                        first="- ").strip() + "\n\n"
@@ -888,6 +888,7 @@ def changelog(repository,
 
             ## Finally storing the commit in the matching section
 
+                ##"author": commit.author_name,
             sections[matched_section].append({
                 "author": commit.author_name,
                 "subject": subject_process(commit.subject),
