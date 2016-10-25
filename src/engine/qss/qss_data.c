@@ -27,6 +27,7 @@
 
 static bool QSS_allocBuffer = FALSE;
 static bool QSS_hardCopyStruct = FALSE;
+static bool QSS_sharedState = TRUE;
 
 void
 QSS_setReinitBuffer (bool b)
@@ -778,8 +779,6 @@ QSS_copyData (QSS_data data)
   p->solver = data->solver;
   p->it = data->it;
   p->ft = data->ft;
-  p->lqu = (double*) malloc (states * sizeof(double));
-  cleanDoubleVector (p->lqu, 0, states);
   if (discretes)
     {
       p->d = (double*) malloc (discretes * sizeof(double));
@@ -792,8 +791,24 @@ QSS_copyData (QSS_data data)
     {
       p->d = NULL;
     }
-  p->x = (double*) malloc (states * xOrder * sizeof(double));
-  p->q = (double*) malloc (states * xOrder * sizeof(double));
+  if (QSS_sharedState == TRUE)
+    {
+      p->lqu = data->lqu;
+      p->x = data->x;
+      p->q = data->q;
+    }
+  else
+    {
+      p->lqu = (double*) malloc (states * sizeof(double));
+      cleanDoubleVector (p->lqu, 0, states);
+      p->x = (double*) malloc (states * xOrder * sizeof(double));
+      p->q = (double*) malloc (states * xOrder * sizeof(double));
+      for (i = 0; i < states; i++)
+	{
+	  p->x[i * xOrder] = data->x[i * xOrder];
+	  p->q[i * xOrder] = data->q[i * xOrder];
+	}
+    }
   if (algs)
     {
       p->alg = (double*) malloc (algs * xOrder * sizeof(double));
@@ -807,11 +822,6 @@ QSS_copyData (QSS_data data)
   cleanDoubleVector (p->tmp1, 0, states * xOrder);
   p->tmp2 = (double*) malloc (states * xOrder * sizeof(double));
   cleanDoubleVector (p->tmp2, 0, states * xOrder);
-  for (i = 0; i < states; i++)
-    {
-      p->x[i * xOrder] = data->x[i * xOrder];
-      p->q[i * xOrder] = data->q[i * xOrder];
-    }
   if (events)
     {
       p->event = SD_copyEventData (events, data->event);
@@ -1098,7 +1108,6 @@ QSS_cleanData (QSS_data data)
     }
   else
     {
-      free (data->lqu);
       if (data->discretes)
 	{
 	  free (data->d);
@@ -1107,8 +1116,12 @@ QSS_cleanData (QSS_data data)
 	{
 	  free (data->alg);
 	}
-      free (data->x);
-      free (data->q);
+      if (QSS_sharedState == FALSE)
+	{
+	  free (data->lqu);
+	  free (data->x);
+	  free (data->q);
+	}
       free (data->tmp1);
       free (data->tmp2);
       SD_cleanEventData (data->event, data->events);
