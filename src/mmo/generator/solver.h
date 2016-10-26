@@ -471,6 +471,7 @@ private:
   map<string, string> _initializeVars;
   SolverCommon _common;
   string _name;
+  map<string, string> _freeVars;
 };
 /**
  *

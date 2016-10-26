@@ -598,41 +598,42 @@ QSS_::_eventDeps (MMO_Event e, Index index, MMO_EventTable evt, DEP_Type type,
 		      _writer->write ("}", WR_ALLOC_LD_DD);
 		      _writer->write ("}", WR_INIT_LD_DD);
 		      _common->graphInsert (e->index (), ev->index (),
-					    _model->states (), NOD_DD, assignments);
+					    _model->states (), NOD_DD,
+					    assignments);
 		    }
 		}
-	     /* if (!(ev->index () == e->index ()))
-		{
-		  hndDeps = ev->lhs ();
-		  for (Index *hdIdx = hndDeps->begin (type);
-		      !hndDeps->end (type); hdIdx = hndDeps->next (type))
-		    {
-		      if (e->index ().hasRange () && e->index () == ev->index ()
-			  && *hndIdx == *hdIdx && hndIdx->hasRange ())
-			{
-			  continue;
-			}
-		      _setInterval (hdIdx, &ecIndex);
-		      Intersection is = hndIdx->intersection (*hdIdx);
-		      if (is.type () != IDX_DISJOINT)
-			{
-			  if (events.find (ecIndex) != events.end ())
-			    {
-			      continue;
-			    }
-			  events[ecIndex] = ecIndex;
-			  if (hndIdx->hasRange ())
-			    {
-			      _hasDD = true;
-			    }
-			}
-		      _indexDependencies (index, hndIdx, ecIndex, hdIdx,
-					  &simpleDDDependencies, WR_ALLOC_LD_DD,
-					  WR_INIT_LD_DD, "modelData->nDD",
-					  "modelData->DD", "events", is,
-					  assignments);
-		    }
-		}*/
+	      /* if (!(ev->index () == e->index ()))
+	       {
+	       hndDeps = ev->lhs ();
+	       for (Index *hdIdx = hndDeps->begin (type);
+	       !hndDeps->end (type); hdIdx = hndDeps->next (type))
+	       {
+	       if (e->index ().hasRange () && e->index () == ev->index ()
+	       && *hndIdx == *hdIdx && hndIdx->hasRange ())
+	       {
+	       continue;
+	       }
+	       _setInterval (hdIdx, &ecIndex);
+	       Intersection is = hndIdx->intersection (*hdIdx);
+	       if (is.type () != IDX_DISJOINT)
+	       {
+	       if (events.find (ecIndex) != events.end ())
+	       {
+	       continue;
+	       }
+	       events[ecIndex] = ecIndex;
+	       if (hndIdx->hasRange ())
+	       {
+	       _hasDD = true;
+	       }
+	       }
+	       _indexDependencies (index, hndIdx, ecIndex, hdIdx,
+	       &simpleDDDependencies, WR_ALLOC_LD_DD,
+	       WR_INIT_LD_DD, "modelData->nDD",
+	       "modelData->DD", "events", is,
+	       assignments);
+	       }
+	       }*/
 	    }
 	}
     }
@@ -2141,7 +2142,7 @@ deleteQSS (QSS m)
 
 Classic_::Classic_ (MMO_Model model, MMO_CompileFlags flags, MMO_Writer writer) :
     _flags (flags), _model (model), _writer (writer), _modelVars (), _zcVars (), _handlerPosVars (), _handlerNegVars (), _outputVars (), _initializeVars (), _name (
-	model->name ())
+	model->name ()), _freeVars ()
 {
   if (_flags->hasOutputFile ())
     {
@@ -2294,13 +2295,17 @@ Classic_::initializeMatrices ()
   _model->initOutput ();
   if (_model->outs ())
     {
-      buffer << "int outputs[" << _model->outs () << "];";
+      buffer << "int *outputs = (int*)malloc(" << _model->outs ()
+	  << "*sizeof(int));";
       _initializeVars[buffer.str ()] = buffer.str ();
+      _freeVars["outputs"] = "outputs";
       buffer.str ("");
       if (_model->discretes ())
 	{
-	  buffer << "int discretes[" << _model->discretes () << "];";
+	  buffer << "int *discretes = (int*)malloc(" << _model->discretes ()
+	      << "*sizeof(int));";
 	  _initializeVars[buffer.str ()] = buffer.str ();
+	  _freeVars["discretes"] = "discretes";
 	}
     }
 }
@@ -2442,14 +2447,18 @@ Classic_::_init ()
   _writer->beginBlock ();
   if (!_writer->isEmpty (WR_INIT_OUTPUT_STATES))
     {
-      buffer << "int states[" << _model->states () << "];";
+      buffer << "int *states = (int*)malloc(" << _model->states ()
+	  << "*sizeof(int));";
       _initializeVars[buffer.str ()] = buffer.str ();
+      _freeVars["states"] = "states";
       buffer.str ("");
     }
   if (!_writer->isEmpty (WR_INIT_OUTPUT_DSC))
     {
-      buffer << "int discretes[" << _model->discretes () << "];";
+      buffer << "int *discretes = (int*)malloc(" << _model->discretes ()
+	  << "*sizeof(int));";
       _initializeVars[buffer.str ()] = buffer.str ();
+      _freeVars["discretes"] = "discretes";
       buffer.str ("");
     }
   for (map<string, string>::iterator it = _initializeVars.begin ();
@@ -2483,6 +2492,11 @@ Classic_::_init ()
   _common->printSection ("outputs", _model->outs (), WR_INIT_OUTPUT_STATES);
   _common->printSection ("outputs", _model->outs (), WR_INIT_OUTPUT_DSC);
   _writer->print (initModel ());
+  for (map<string, string>::iterator it = _freeVars.begin ();
+      it != _freeVars.end (); it++)
+    {
+      _writer->print ("free(" + it->second + ");");
+    }
   _writer->endBlock ();
   _writer->print ("}");
   _writer->print ("");
