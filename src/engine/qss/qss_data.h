@@ -336,8 +336,8 @@ struct QSS_data_
   double *q;  //!<
   double *x; //!<
   double *alg; //!<
-  double *tmp1;  //!<
-  double *tmp2;  //!<
+//  double *tmp1;  //!<
+//  double *tmp2;  //!<
   double it;  //!<
   double ft;  //!<
   int *nSD;  //!<
@@ -365,6 +365,7 @@ struct QSS_data_
   int events;  //!<
   int inputs;  //!<
   int order;  //!<
+  int maxRHS; //!<
   SD_Solver solver;  //!<
   SD_eventData event;  //!<
   SD_parameters params; //!<
