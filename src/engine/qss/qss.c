@@ -39,7 +39,6 @@ QSS_init (QA_quantizer quantizer, QSS_data simData, QSS_time simTime)
     {
       int cf0 = i * 2;
       simData->q[cf0] = simData->x[cf0];
-      simData->tmp1[cf0] = simData->x[cf0];
     }
 #ifdef QSS_PARALLEL
   quantizer->state->qMap = simData->lp->qMap;

@@ -43,8 +43,7 @@ QSS3_init (QA_quantizer quantizer, QSS_data simData, QSS_time simTime)
       simData->q[cf0] = simData->x[cf0];
       simData->q[cf0 + 1] = 0;
       simData->q[cf0 + 2] = 0;
-      simData->tmp1[cf0] = simData->x[cf0];
-    }
+   }
 #ifdef QSS_PARALLEL
   quantizer->state->qMap = simData->lp->qMap;
   quantizer->ops->recomputeNextTimes = QSS3_PAR_recomputeNextTimes;

@@ -42,23 +42,31 @@ ST_writeOutvar (OUT_output output, QSS_data simData, QSS_time simTime,
   int nOS = simOutput->nOS[index], order = simData->order - 1, coeffs = order
       + 2;
   double *q = simData->q;
-  double *tmp2 = simData->tmp2;
+  int max = simData->maxRHS;
+  if (nOS > max)
+    {
+      max = nOS;
+    }
+  double tmp[max];
   for (j = 0; j < nOS; j++)
     {
       k = simOutput->OS[index][j];
       e = simTime->time - simTime->tq[k];
       int cf0 = k * coeffs;
+      tmp[j] = q[cf0];
       if (e)
 	{
-	  tmp2[cf0] = evaluatePoly (cf0, e, q, order);
-	}
-      else
-	{
-	  tmp2[cf0] = q[cf0];
+	  q[cf0] = evaluatePoly (cf0, e, q, order);
 	}
     }
-  simOutput->value (index, tmp2, simData->d, simData->alg, simTime->time, &e);
+  simOutput->value (index, q, simData->d, simData->alg, simTime->time, &e);
   LG_write (output->state->log, variable, simTime->time, e);
+  for (j = 0; j < nOS; j++)
+    {
+      k = simOutput->OS[index][j];
+      int cf0 = k * coeffs;
+      q[cf0] = tmp[j];
+    }
 }
 
 #ifdef QSS_PARALLEL

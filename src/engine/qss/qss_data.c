@@ -412,8 +412,6 @@ QSS_Data (int states, int discretes, int events, int inputs, int algs,
     {
       p->alg = NULL;
     }
-//  p->tmp1 = NULL;
-//  p->tmp2 = NULL;
   p->it = settings->it;
   p->ft = settings->ft;
   p->nSD = (int*) malloc (states * sizeof(int));
@@ -817,10 +815,6 @@ QSS_copyData (QSS_data data)
     {
       p->alg = NULL;
     }
-/*  p->tmp1 = (double*) malloc (data->maxRHS * xOrder * sizeof(double));
-  cleanDoubleVector (p->tmp1, 0, data->maxRHS * xOrder);
-  p->tmp2 = (double*) malloc (data->maxRHS * xOrder * sizeof(double));
-  cleanDoubleVector (p->tmp2, 0, data->maxRHS * xOrder);*/
   if (events)
     {
       p->event = SD_copyEventData (events, data->event);
@@ -840,7 +834,6 @@ void
 QSS_allocDataMatrix (QSS_data data)
 {
   int i, states = data->states, events = data->events, mRHS = 0;
-  int xOrder = data->order + 1;
   for (i = 0; i < states; i++)
     {
       data->SD[i] =
@@ -884,23 +877,15 @@ QSS_allocDataMatrix (QSS_data data)
       data->event[i].LHSSt =
 	  (data->event[i].nLHSSt > 0) ?
 	      (int*) malloc (data->event[i].nLHSSt * sizeof(int)) : NULL;
-      if (data->event[i].nLHSSt > mRHS)
-	{
-	  mRHS = data->event[i].nLHSSt;
-	}
       data->event[i].LHSDsc =
 	  (data->event[i].nLHSDsc > 0) ?
 	      (int*) malloc (data->event[i].nLHSDsc * sizeof(int)) : NULL;
-      if (data->event[i].nLHSDsc > mRHS)
-	{
-	  mRHS = data->event[i].nLHSDsc;
-	}
       data->event[i].RHSSt =
 	  (data->event[i].nRHSSt > 0) ?
 	      (int*) malloc (data->event[i].nRHSSt * sizeof(int)) : NULL;
-      if (data->event[i].nRHSSt > mRHS)
+      if (data->event[i].nRHSSt + data->event[i].nLHSSt > mRHS)
 	{
-	  mRHS = data->event[i].nRHSSt;
+	  mRHS = data->event[i].nRHSSt + data->event[i].nLHSSt;
 	}
       if (data->nDD != NULL)
 	{
@@ -920,10 +905,6 @@ QSS_allocDataMatrix (QSS_data data)
 	}
     }
   data->maxRHS = mRHS;
-/*  data->tmp1 = (double*) malloc (mRHS * xOrder * sizeof(double));
-  data->tmp2 = (double*) malloc (mRHS * xOrder * sizeof(double));
-  cleanDoubleVector (data->tmp1, 0, mRHS * xOrder);
-  cleanDoubleVector (data->tmp2, 0, mRHS * xOrder);*/
 }
 
 int
@@ -1008,8 +989,6 @@ QSS_freeData (QSS_data data)
     }
   free (data->x);
   free (data->q);
- // free (data->tmp1);
- // free (data->tmp2);
   free (data->nSD);
   free (data->nDS);
   if (data->events)
@@ -1146,8 +1125,6 @@ QSS_cleanData (QSS_data data)
 	  free (data->x);
 	  free (data->q);
 	}
-  //    free (data->tmp1);
-  //    free (data->tmp2);
       SD_cleanEventData (data->event, data->events);
       free (data->lp);
       free (data);

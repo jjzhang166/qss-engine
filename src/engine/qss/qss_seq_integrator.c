@@ -76,7 +76,7 @@ QSS_SEQ_integrate (SIM_simulator simulate)
   int nSZ, nLHSSt, nRHSSt, nHD, nHZ;
   SD_eventData event = qssData->event;
   double *d = qssData->d;
-  double *tmp1 = qssData->tmp1;
+  double tmp1[qssData->maxRHS];
   int **SZ = qssData->SZ;
   int **ZS = qssData->ZS;
   int **HD = qssData->HD;
@@ -231,12 +231,13 @@ QSS_SEQ_integrate (SIM_simulator simulate)
 			elapsed = t - tq[j];
 			if (elapsed > 0)
 			  {
-			    tmp1[infCf0] = evaluatePoly (infCf0, elapsed, q,
+			    tmp1[i] = q[infCf0];
+			    q[infCf0] = evaluatePoly (infCf0, elapsed, q,
 							 qOrder);
 			  }
 			else
 			  {
-			    tmp1[infCf0] = q[infCf0];
+			    tmp1[i] = q[infCf0];
 			  }
 		      }
 		    nLHSSt = event[index].nLHSSt;
@@ -247,27 +248,35 @@ QSS_SEQ_integrate (SIM_simulator simulate)
 			elapsed = t - tq[j];
 			if (elapsed > 0)
 			  {
-			    tmp1[infCf0] = evaluatePoly (infCf0, elapsed, q,
+			    tmp1[nLHSSt + i] = q[infCf0];
+			    q[infCf0] = evaluatePoly (infCf0, elapsed, q,
 							 qOrder);
 			  }
 			else
 			  {
-			    tmp1[infCf0] = q[infCf0];
+			    tmp1[nLHSSt + i] = q[infCf0];
 			  }
 		      }
 		    if (s >= 0)
 		      {
-			qssModel->events->handlerPos (index, tmp1, d, a, t);
+			qssModel->events->handlerPos (index, q, d, a, t);
 		      }
 		    else
 		      {
-			qssModel->events->handlerNeg (index, tmp1, d, a, t);
+			qssModel->events->handlerNeg (index, q, d, a, t);
+		      }
+		    for (i = 0; i < nRHSSt; i++)
+		      {
+			j = event[index].RHSSt[i];
+			infCf0 = j * coeffs;
+			q[infCf0] = tmp1[i];
 		      }
 		    for (i = 0; i < nLHSSt; i++)
 		      {
 			j = event[index].LHSSt[i];
 			infCf0 = j * coeffs;
-			x[infCf0] = tmp1[infCf0];
+			x[infCf0] = q[infCf0];
+			q[infCf0] = tmp1[nLHSSt + i];
 			tx[j] = t;
 			lqu[j] = dQRel[j] * fabs (x[infCf0]);
 			if (lqu[j] < dQMin[j])

@@ -20,6 +20,7 @@
 #include <qss/qss_memory.h>
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../common/data.h"
 #include "../common/utils.h"
@@ -159,6 +160,7 @@ M_toFile (LG_log log)
       int localIdx = 0;
 #endif
       outputs = log->state->output->outputs;
+      double *tmp1 = (double*) malloc (log->state->data->states * sizeof(double));
       for (i = 0; i < outputs; i++)
 	{
 #ifdef QSS_PARALLEL
@@ -211,7 +213,6 @@ M_toFile (LG_log log)
 		    {
 		      int g;
 		      double tmpval = 0;
-		      double *tmp1 = log->state->data->tmp1;
 		      double *d = log->state->data->d;
 		      double *alg = log->state->data->alg;
 		      if (log->state->output->nOS[i])
@@ -244,6 +245,7 @@ M_toFile (LG_log log)
 	      n = n->next;
 	    }
 	}
+      free (tmp1);
     }
   LG_freeLog (fileLog);
   log->state->output->store = SD_Memory;

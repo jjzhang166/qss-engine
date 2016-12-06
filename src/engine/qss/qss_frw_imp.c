@@ -326,7 +326,8 @@ SO_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
 	  int infCf0 = j * 3;
 	  q[infCf0] = tmp1[it];
 	}
-      tmp2[i] = x[w * 3 + 1];
+      tmp3[i] = x[w * 3 + 1];
+      x[w * 3 + 1] = tmp2[i];
 #ifdef QSS_PARALLEL
     }
 #endif
@@ -341,7 +342,7 @@ SO_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
       if (f->state->delta > 0)
 	{
 	  int cf0 = j * 3;
-	  x[cf0 + 2] = (tmp1[cf0 + 1] - x[cf0 + 1]) / (f->state->delta * 2);
+	  x[cf0 + 2] = (tmp3[k] - x[cf0 + 1]) / (f->state->delta * 2);
 	}
 #ifdef QSS_PARALLEL
     }
@@ -361,7 +362,8 @@ SO_recomputeDerivative (FRW_framework f, QSS_model simModel, QSS_data simData,
 {
   double *q = simData->q;
   double *x = simData->x;
-  double *tmp1 = simData->tmp1;
+  int nDS = simData->nDS[index];
+  double tmp1[simData->maxRHS], tmp2, tmp3;
   int cf0 = index * 3;
   int k, j;
   double e;
@@ -371,7 +373,6 @@ SO_recomputeDerivative (FRW_framework f, QSS_model simModel, QSS_data simData,
       integrateState (index * 3, e, q, 1);
       simTime->tq[index] = simTime->time;
     }
-  int nDS = simData->nDS[index];
   for (k = 0; k < nDS; k++)
     {
       j = simData->DS[index][k];
@@ -382,15 +383,30 @@ SO_recomputeDerivative (FRW_framework f, QSS_model simModel, QSS_data simData,
 	  integrateState (infCf0, e, q, 1);
 	}
       simTime->tq[j] = simTime->time;
-      tmp1[infCf0] = evaluatePoly (infCf0, f->state->delta, q, 1);
     }
   simModel->f (index, q, simData->d, simData->alg, simTime->time, &(x[cf0]));
-  simModel->f (index, tmp1, simData->d, simData->alg,
-	       simTime->time + f->state->delta, &(tmp1[cf0]));
+  for (k = 0; k < nDS; k++)
+    {
+      j = simData->DS[index][k];
+      int infCf0 = j * 3;
+      tmp1[k] = q [infCf0];
+      q[infCf0] = evaluatePoly (infCf0, f->state->delta, q, 1);
+    }
+  tmp2 = x[cf0 + 1];
+  simModel->f (index, q, simData->d, simData->alg,
+	       simTime->time + f->state->delta, &(x[cf0]));
+  for (k = 0; k < nDS; k++)
+    {
+      j = simData->DS[index][k];
+      int infCf0 = j * 3;
+      q[infCf0] = tmp1[k];
+    }
+  tmp3 = x[cf0 + 1];
+  x[cf0 + 1] = tmp2;
   f->state->dxnOld = x[cf0 + 2];
   if (f->state->delta > 0)
     {
-      x[cf0 + 2] = (tmp1[cf0 + 1] - x[cf0 + 1]) / (f->state->delta * 2);
+      x[cf0 + 2] = (tmp3 - x[cf0 + 1]) / (f->state->delta * 2);
     }
 }
 
@@ -407,7 +423,7 @@ TO_nextEventTime (FRW_framework f, QSS_model simModel, QSS_data simData,
 #endif
 {
   double *q = simData->q;
-  double *tmp1 = simData->tmp1;
+  double tmp1[simData->maxRHS];
   int i, j, s;
   double coeff[5], t = simTime->time;
   double dNew, dOld;
@@ -415,10 +431,16 @@ TO_nextEventTime (FRW_framework f, QSS_model simModel, QSS_data simData,
   for (i = 0; i < nZS; i++)
     {
       j = simData->ZS[index][i];
-      tmp1[j * 4] = evaluatePoly (j * 4, t - simTime->tq[j], q, 2);
+      tmp1[i] = q[j * 4];
+      q[j * 4] = evaluatePoly (j * 4, t - simTime->tq[j], q, 2);
     }
-  simModel->events->zeroCrossing (index, tmp1, simData->d, simData->alg, t,
+  simModel->events->zeroCrossing (index, q, simData->d, simData->alg, t,
 				  &coeff[0]);
+  for (i = 0; i < nZS; i++)
+    {
+      j = simData->ZS[index][i];
+      q[j * 4] = tmp1[i];
+    }
   s = sign (coeff[0]);
   if (simData->event[index].zcSign != s)
     {
@@ -429,22 +451,34 @@ TO_nextEventTime (FRW_framework f, QSS_model simModel, QSS_data simData,
       for (i = 0; i < nZS; i++)
 	{
 	  j = simData->ZS[index][i];
-	  tmp1[j * 4] = evaluatePoly (j * 4,
+	  tmp1[i] = q[j * 4];
+	  q[j * 4] = evaluatePoly (j * 4,
 				      t - simTime->tq[j] + f->state->delta, q,
 				      2);
 	}
-      simModel->events->zeroCrossing (index, tmp1, simData->d, simData->alg,
+      simModel->events->zeroCrossing (index, q, simData->d, simData->alg,
 				      t + f->state->delta, &dNew);
+      for (i = 0; i < nZS; i++)
+	{
+	  j = simData->ZS[index][i];
+	  q[j * 4] = tmp1[i];
+	}
       coeff[1] = (dNew - coeff[0]) / (f->state->delta);
       for (i = 0; i < nZS; i++)
 	{
 	  j = simData->ZS[index][i];
-	  tmp1[j * 4] = evaluatePoly (j * 4,
+	  tmp1[i] = q[j * 4];
+	  q[j * 4] = evaluatePoly (j * 4,
 				      t - simTime->tq[j] - f->state->delta, q,
 				      2);
 	}
-      simModel->events->zeroCrossing (index, tmp1, simData->d, simData->alg,
+      simModel->events->zeroCrossing (index, q, simData->d, simData->alg,
 				      t - f->state->delta, &dOld);
+      for (i = 0; i < nZS; i++)
+      	{
+      	  j = simData->ZS[index][i];
+      	  q[j * 4] = tmp1[i];
+      	}
       coeff[2] = (dNew - 2 * coeff[0] + dOld)
 	  / (f->state->delta * f->state->delta * 2);
       coeff[0] += simData->event[index].zcSign * simData->event[index].zcHyst;
@@ -495,11 +529,11 @@ TO_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
 {
   double *q = simData->q;
   double *x = simData->x;
-  double *tmp1 = simData->tmp1;
-  double *tmp2 = simData->tmp2;
-  int k, j, i, w;
-  double e;
   int nSD = simData->nSD[index];
+  int size = nSD * simData->maxRHS;
+  double tmp1[size], tmp2[nSD], tmp3[nSD], tmp4[nSD];
+  int k, j, i, w, it;
+  double e;
   for (i = 0; i < nSD; i++)
     {
       w = simData->SD[index][i];
@@ -523,8 +557,6 @@ TO_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
 	      integrateState (j * 4, e, q, 2);
 	    }
 	  simTime->tq[j] = simTime->time;
-	  tmp1[j * 4] = evaluatePoly (j * 4, f->state->delta, q, 2);
-	  tmp2[j * 4] = evaluatePoly (j * 4, -f->state->delta, q, 2);
 	}
 #ifdef QSS_PARALLEL
     }
@@ -532,20 +564,79 @@ TO_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
     }
 #ifdef QSS_PARALLEL
   simModel->deps (index, q, simData->d, simData->alg, simTime->time, x, simData->lp->qMap);
-  simModel->deps (index, tmp1, simData->d, simData->alg,
-      simTime->time + f->state->delta, tmp1, simData->lp->qMap);
 #else
   simModel->deps (index, q, simData->d, simData->alg, simTime->time, x, NULL);
-  simModel->deps (index, tmp1, simData->d, simData->alg,
-		  simTime->time + f->state->delta, tmp1, NULL);
 #endif
+  for (i = 0, it = 0; i < nSD; i++)
+    {
+      w = simData->SD[index][i];
 #ifdef QSS_PARALLEL
-  simModel->deps (index, tmp2, simData->d, simData->alg,
-      simTime->time - f->state->delta, tmp2, simData->lp->qMap);
-#else
-  simModel->deps (index, tmp2, simData->d, simData->alg,
-		  simTime->time - f->state->delta, tmp2, NULL);
+      if (simData->lp->qMap[w] > NOT_ASSIGNED)
+	{
 #endif
+      int nDS = simData->nDS[w];
+      for (k = 0; k < nDS; k++, it++)
+	{
+	  j = simData->DS[w][k];
+	  tmp1[it] = q[j * 4];
+	  q[j * 4] = evaluatePoly (j * 4, f->state->delta, q, 2);
+	}
+      tmp3[i] = x[j * 4 + 1];
+#ifdef QSS_PARALLEL
+    }
+#endif
+    }
+#ifdef QSS_PARALLEL
+  simModel->deps (index, q, simData->d, simData->alg,
+      simTime->time + f->state->delta, x, simData->lp->qMap);
+#else
+  simModel->deps (index, q, simData->d, simData->alg,
+		  simTime->time + f->state->delta, x, NULL);
+#endif
+  for (i = 0; i < nSD; i++)
+    {
+      w = simData->SD[index][i];
+#ifdef QSS_PARALLEL
+      if (simData->lp->qMap[w] > NOT_ASSIGNED)
+	{
+#endif
+      int nDS = simData->nDS[w];
+      for (k = 0; k < nDS; k++)
+	{
+	  j = simData->DS[w][k];
+	  q[j * 4] = evaluatePoly (j * 4, -f->state->delta, q, 2);
+	}
+      tmp4[i] = x[j * 4 + 1];
+#ifdef QSS_PARALLEL
+    }
+#endif
+    }
+#ifdef QSS_PARALLEL
+  simModel->deps (index, q, simData->d, simData->alg,
+      simTime->time - f->state->delta, x, simData->lp->qMap);
+#else
+  simModel->deps (index, q, simData->d, simData->alg,
+		  simTime->time - f->state->delta, x, NULL);
+#endif
+  for (i = 0, it = 0; i < nSD; i++)
+    {
+      w = simData->SD[index][i];
+#ifdef QSS_PARALLEL
+      if (simData->lp->qMap[w] > NOT_ASSIGNED)
+	{
+#endif
+      int nDS = simData->nDS[w];
+      for (k = 0; k < nDS; k++, it++)
+	{
+	  j = simData->DS[w][k];
+	  q[j * 4] = tmp1[it];
+	}
+      tmp2[i] = x[j * 4 + 1];
+      x[j * 4 + 1] = tmp3[i];
+#ifdef QSS_PARALLEL
+    }
+#endif
+    }
   for (k = 0; k < nSD; k++)
     {
       j = simData->SD[index][k];
@@ -556,8 +647,8 @@ TO_recomputeDerivatives (FRW_framework f, QSS_model simModel, QSS_data simData,
       if (f->state->delta > 0)
 	{
 	  int cf0 = j * 4;
-	  x[cf0 + 2] = (tmp1[cf0 + 1] - tmp2[cf0 + 1]) / (f->state->delta * 4);
-	  x[cf0 + 3] = (tmp1[cf0 + 1] - 2 * x[cf0 + 1] + tmp2[cf0 + 1])
+	  x[cf0 + 2] = (tmp4[k] - tmp2[k]) / (f->state->delta * 4);
+	  x[cf0 + 3] = (tmp4[k] - 2 * x[cf0 + 1] + tmp2[k])
 	      / (f->state->delta * f->state->delta * 6);
 	}
 #ifdef QSS_PARALLEL
@@ -578,8 +669,8 @@ TO_recomputeDerivative (FRW_framework f, QSS_model simModel, QSS_data simData,
 {
   double *q = simData->q;
   double *x = simData->x;
-  double *tmp1 = simData->tmp1;
-  double *tmp2 = simData->tmp2;
+  int nDS = simData->nDS[index];
+  double tmp1[simData->maxRHS], tmp2, tmp3, tmp4;
   int k, j;
   double e;
   e = simTime->time - simTime->tq[index];
@@ -588,7 +679,6 @@ TO_recomputeDerivative (FRW_framework f, QSS_model simModel, QSS_data simData,
       integrateState (index * 4, e, q, 2);
       simTime->tq[index] = simTime->time;
     }
-  int nDS = simData->nDS[index];
   int cf0 = index * 4;
   for (k = 0; k < nDS; k++)
     {
@@ -599,26 +689,36 @@ TO_recomputeDerivative (FRW_framework f, QSS_model simModel, QSS_data simData,
 	  integrateState (j * 4, e, q, 2);
 	}
       simTime->tq[j] = simTime->time;
-      tmp1[j * 4] = evaluatePoly (j * 4, f->state->delta, q, 2);
     }
   simModel->f (index, q, simData->d, simData->alg, simTime->time, &(x[cf0]));
-  simModel->f (index, tmp1, simData->d, simData->alg,
-	       simTime->time + f->state->delta, &(tmp1[cf0]));
+  for (k = 0; k < nDS; k++)
+    {
+      j = simData->DS[index][k];
+      tmp1[k] = q[j * 4];
+      q[j * 4] = evaluatePoly (j * 4, f->state->delta, q, 2);
+    }
+  tmp2 = x[cf0 + 1];
+  simModel->f (index, q, simData->d, simData->alg,
+	       simTime->time + f->state->delta, &(x[cf0]));
+  tmp3 = x[cf0 + 1];
   if (f->state->delta > 0)
     {
-      x[cf0 + 2] = (tmp1[cf0 + 1] - x[cf0 + 1]) / (f->state->delta * 2);
+      x[cf0 + 2] = (tmp3 - tmp2) / (f->state->delta * 2);
     }
   for (k = 0; k < nDS; k++)
     {
       j = simData->DS[index][k];
-      tmp2[j * 4] = evaluatePoly (j * 4, -(f->state->delta), q, 2);
+      tmp1[k] = q[j * 4];
+      q[j * 4] = evaluatePoly (j * 4, -(f->state->delta), q, 2);
     }
-  simModel->f (index, tmp2, simData->d, simData->alg,
-	       simTime->time - f->state->delta, &(tmp2[cf0]));
+  simModel->f (index, q, simData->d, simData->alg,
+	       simTime->time - f->state->delta, &(x[cf0]));
+  tmp4 = x[cf0 + 1];
+  x[cf0 + 1] = tmp2;
   f->state->dxnOld = x[cf0 + 3];
   if (f->state->delta > 0)
     {
-      x[cf0 + 3] = (tmp1[cf0 + 1] - 2 * x[cf0 + 1] + tmp2[cf0 + 1])
+      x[cf0 + 3] = (tmp3 - 2 * x[cf0 + 1] + tmp4)
 	  / (f->state->delta * f->state->delta * 6);
     }
 }

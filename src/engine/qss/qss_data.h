@@ -336,8 +336,6 @@ struct QSS_data_
   double *q;  //!<
   double *x; //!<
   double *alg; //!<
-//  double *tmp1;  //!<
-//  double *tmp2;  //!<
   double it;  //!<
   double ft;  //!<
   int *nSD;  //!<

@@ -44,7 +44,6 @@ CQSS_init (QA_quantizer quantizer, QSS_data simData, QSS_time simTime)
     {
       int cf0 = i*2;
       simData->q[cf0] = simData->x[cf0];
-   //   simData->tmp1[cf0] = simData->x[cf0];
       quantizer->state->qsup[i] = simData->q[cf0] + simData->dQMin[i];
       quantizer->state->qinf[i] = simData->q[cf0] - simData->dQMin[i];
       quantizer->state->lt[i] = simData->it;

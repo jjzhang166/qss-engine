@@ -46,7 +46,6 @@ LIQSS_init (QA_quantizer quantizer, QSS_data simData, QSS_time simTime)
   for (i = 0; i < states; i++)
     {
       int cf0 = i*2;
-    //  simData->tmp1[cf0] = simData->x[cf0];
       simData->q[cf0] = simData->x[cf0];
       quantizer->state->qAux[i] = simData->x[cf0];
       quantizer->state->oldDx[i] = 0;
