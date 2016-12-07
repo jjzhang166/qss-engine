@@ -42,12 +42,7 @@ ST_writeOutvar (OUT_output output, QSS_data simData, QSS_time simTime,
   int nOS = simOutput->nOS[index], order = simData->order - 1, coeffs = order
       + 2;
   double *q = simData->q;
-  int max = simData->maxRHS;
-  if (nOS > max)
-    {
-      max = nOS;
-    }
-  double tmp[max];
+  double tmp[nOS];
   for (j = 0; j < nOS; j++)
     {
       k = simOutput->OS[index][j];

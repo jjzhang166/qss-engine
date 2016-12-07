@@ -776,6 +776,7 @@ QSS_copyData (QSS_data data)
   p->solver = data->solver;
   p->it = data->it;
   p->ft = data->ft;
+  p->maxRHS = data->maxRHS;
   if (discretes)
     {
       p->d = (double*) malloc (discretes * sizeof(double));

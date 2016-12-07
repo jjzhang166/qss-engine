@@ -110,6 +110,7 @@ QSS_dtUpdate (QSS_dt dt)
 	  dt->state->dtGlobalLP = i;
 	}
     }
+  printf("%g \n", dtMin);
   dt->state->synch[0] = 0;
   dt->state->dt = dtMin;
   dt->state->dtLowerBound = dtMin * DT_LOWER_BOUND;

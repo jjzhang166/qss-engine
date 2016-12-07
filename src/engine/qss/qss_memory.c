@@ -160,7 +160,7 @@ M_toFile (LG_log log)
       int localIdx = 0;
 #endif
       outputs = log->state->output->outputs;
-      double *tmp1 = (double*) malloc (log->state->data->states * sizeof(double));
+      double *tmp1 = (double*) malloc (log->state->data->states * (log->state->data->order + 1) * sizeof(double));
       for (i = 0; i < outputs; i++)
 	{
 #ifdef QSS_PARALLEL

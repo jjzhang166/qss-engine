@@ -231,13 +231,7 @@ QSS_SEQ_integrate (SIM_simulator simulate)
 			elapsed = t - tq[j];
 			if (elapsed > 0)
 			  {
-			    tmp1[i] = q[infCf0];
-			    q[infCf0] = evaluatePoly (infCf0, elapsed, q,
-							 qOrder);
-			  }
-			else
-			  {
-			    tmp1[i] = q[infCf0];
+			    integrateState (infCf0, elapsed, q, qOrder);
 			  }
 		      }
 		    nLHSSt = event[index].nLHSSt;
@@ -248,13 +242,13 @@ QSS_SEQ_integrate (SIM_simulator simulate)
 			elapsed = t - tq[j];
 			if (elapsed > 0)
 			  {
-			    tmp1[nLHSSt + i] = q[infCf0];
+			    tmp1[i] = q[infCf0];
 			    q[infCf0] = evaluatePoly (infCf0, elapsed, q,
 							 qOrder);
 			  }
 			else
 			  {
-			    tmp1[nLHSSt + i] = q[infCf0];
+			    tmp1[i] = q[infCf0];
 			  }
 		      }
 		    if (s >= 0)
@@ -265,18 +259,12 @@ QSS_SEQ_integrate (SIM_simulator simulate)
 		      {
 			qssModel->events->handlerNeg (index, q, d, a, t);
 		      }
-		    for (i = 0; i < nRHSSt; i++)
-		      {
-			j = event[index].RHSSt[i];
-			infCf0 = j * coeffs;
-			q[infCf0] = tmp1[i];
-		      }
 		    for (i = 0; i < nLHSSt; i++)
 		      {
 			j = event[index].LHSSt[i];
 			infCf0 = j * coeffs;
 			x[infCf0] = q[infCf0];
-			q[infCf0] = tmp1[nLHSSt + i];
+			q[infCf0] = tmp1[i];
 			tx[j] = t;
 			lqu[j] = dQRel[j] * fabs (x[infCf0]);
 			if (lqu[j] < dQMin[j])
@@ -385,6 +373,10 @@ QSS_SEQ_integrate (SIM_simulator simulate)
 	  break;
 	}
       SC_update (scheduler, qssData, qssTime);
+      if (qssTime->time < t)
+           	{
+           	  printf("Vuelve atras\n");
+           	}
       t = qssTime->time;
       type = qssTime->type;
       index = qssTime->minIndex;
