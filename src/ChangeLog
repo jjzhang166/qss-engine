@@ -1,5 +1,7 @@
 2016-12-13  Joaquin  <joaquin.f.fernandez@gmail.com>
 
+	* engine/qss/qss_linear.c: Modified mapping data structures for linear search
+	algorithms.
 	* engine/qss/qss_integrator.c
 	(QSS_PAR_synchronize): Restore originial index after a simulataneous step.
 	* engine/qss/qss_data.c Set default shated state flag to false..
