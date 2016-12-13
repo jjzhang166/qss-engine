@@ -121,7 +121,6 @@ QSS_PAR_externalEvent (QSS_simulator simulator, IBX_message message)
 	  if (qMap[j] > NOT_ASSIGNED)
 	    {
 	      elapsed = t - tx[j];
-	      printf ("8 %d tx[%d]= %g\n", id, j,tx[j]);
 	      infCf0 = j * coeffs;
 	      if (elapsed > 0)
 		{
@@ -164,7 +163,6 @@ QSS_PAR_externalEvent (QSS_simulator simulator, IBX_message message)
 	      infCf0 = j * coeffs;
 	      x[infCf0] = message.value[i * coeffs + nLHSDsc];
 	      tx[j] = t;
-	      printf ("%d reinit  interno tx[%d]= %g\n", id, j,tx[j]);
 	      qssTime->reinits->time = t;
 	      qssTime->reinits->variable[qssTime->reinits->counter++] = j;
 	    }
@@ -185,7 +183,6 @@ QSS_PAR_externalEvent (QSS_simulator simulator, IBX_message message)
 		    {
 		      infCf0 = k * coeffs;
 		      elapsed = t - tx[k];
-		      printf ("9 %d tx[%d]= %g\n", id, k,tx[k]);
 		      if (elapsed > 0)
 			{
 			  x[infCf0] = evaluatePoly (infCf0, elapsed, x, xOrder);
@@ -224,7 +221,6 @@ QSS_PAR_externalEvent (QSS_simulator simulator, IBX_message message)
 	  if (qMap[j] > NOT_ASSIGNED)
 	    {
 	      elapsed = t - tx[j];
-	      printf ("10 %d tx[%d]= %g\n", id, j,tx[j]);
 	      infCf0 = j * coeffs;
 	      if (elapsed > 0)
 		{
@@ -294,7 +290,6 @@ QSS_PAR_internalEvent (QSS_simulator simulator)
 	// Internal trajectory change.
 	synchronize = qMap[index];
 	Dt = t - tx[index];
-	printf ("12 %d tx[%d]= %g\n", simulator->id, index,tx[index]);
 	elapsed = x[cf0];
 	integrateState (cf0, Dt, x, xOrder);
 	tx[index] = t;
@@ -329,7 +324,6 @@ QSS_PAR_internalEvent (QSS_simulator simulator)
 	    if (qMap[j] > NOT_ASSIGNED)
 	      {
 		elapsed = t - tx[j];
-		printf ("14 %d tx[%d]= %g\n", simulator->id, j,tx[j]);
 		infCf0 = j * coeffs;
 		if (elapsed > 0)
 		  {
@@ -443,7 +437,6 @@ QSS_PAR_internalEvent (QSS_simulator simulator)
 			x[infCf0] = q[infCf0];
 			q[infCf0] = tmp1[i];
 			tx[j] = t;
-			printf ("%d tx[%d]= %g\n", simulator->id, j,tx[j]);
 			lqu[j] = dQRel[j] * fabs (x[infCf0]);
 			if (lqu[j] < dQMin[j])
 			  {
@@ -493,7 +486,6 @@ QSS_PAR_internalEvent (QSS_simulator simulator)
 			    if (qMap[k] > NOT_ASSIGNED)
 			      {
 				elapsed = t - tx[k];
-				printf ("22 %d tx[%d]= %g\n", simulator->id, k,tx[k]);
 				infCf0 = k * coeffs;
 				if (elapsed > 0)
 				  {
@@ -540,7 +532,6 @@ QSS_PAR_internalEvent (QSS_simulator simulator)
 		    if (qMap[j] > NOT_ASSIGNED)
 		      {
 			elapsed = t - tx[j];
-			printf ("%d tx[%d]= %g\n", simulator->id, j,tx[j]);
 			if (elapsed > 0)
 			  {
 			    infCf0 = j * coeffs;
@@ -748,11 +739,6 @@ QSS_PAR_integrator (QSS_simulator simulator)
 		synchronize = qMap[index];
 		// Internal trajectory change.
 		Dt = t - tx[index];
-		printf ("%d tx[%d]= %g\n", id, index,tx[index]);
-		  if (Dt < 0)
-		    {
-		      printf ("Aca %g\n", Dt);
-		    }
 		elapsed = x[cf0];
 		integrateState (cf0, Dt, x, xOrder);
 		Dx = x[cf0] - elapsed;
@@ -795,7 +781,6 @@ QSS_PAR_integrator (QSS_simulator simulator)
 		    if (qMap[j] > NOT_ASSIGNED)
 		      {
 			elapsed = t - tx[j];
-			printf ("1 %d tx[%d]= %g\n", id, j,tx[j]);
 			infCf0 = j * coeffs;
 			if (elapsed > 0)
 			  {
@@ -926,7 +911,6 @@ QSS_PAR_integrator (QSS_simulator simulator)
 				x[infCf0] = q[infCf0];
 				q[infCf0] = tmp1[i];
 				tx[j] = t;
-				printf ("%d reinit tx[%d]= %g\n", id, j,tx[j]);
 				lqu[j] = dQRel[j] * fabs (x[infCf0]);
 				if (lqu[j] < dQMin[j])
 				  {
@@ -978,7 +962,6 @@ QSS_PAR_integrator (QSS_simulator simulator)
 				    if (qMap[k] > NOT_ASSIGNED)
 				      {
 					elapsed = t - tx[k];
-					printf ("%d tx[%d]= %g\n", id, k,tx[k]);
 					infCf0 = k * coeffs;
 					if (elapsed > 0)
 					  {
@@ -1031,7 +1014,6 @@ QSS_PAR_integrator (QSS_simulator simulator)
 			    if (qMap[j] > NOT_ASSIGNED)
 			      {
 				elapsed = t - tx[j];
-				printf ("4 %d tx[%d]= %g\n", id, j,tx[j]);
 				if (elapsed > 0)
 				  {
 				    infCf0 = j * coeffs;
@@ -1138,10 +1120,6 @@ QSS_PAR_integrator (QSS_simulator simulator)
 	    }
 	}
       SC_update (scheduler, qssData, qssTime);
-      if (qssTime->time < qssTime->previousTime)
-	{
-	  printf("Vuelve atras\n");
-	}
       if (qssTime->time == ft)
 	{
 	  IBX_checkInbox (inbox);

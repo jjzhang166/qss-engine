@@ -39,8 +39,7 @@ ST_writeOutvar (OUT_output output, QSS_data simData, QSS_time simTime,
 {
   int j, k;
   double e;
-  int nOS = simOutput->nOS[index], order = simData->order - 1, coeffs = order
-      + 2;
+  int nOS = simOutput->nOS[index], order = simData->order - 1, coeffs = order + 2;
   double *q = simData->q;
   double tmp[nOS];
   for (j = 0; j < nOS; j++)

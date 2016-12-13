@@ -27,7 +27,7 @@
 
 static bool QSS_allocBuffer = FALSE;
 static bool QSS_hardCopyStruct = FALSE;
-static bool QSS_sharedState = TRUE;
+static bool QSS_sharedState = FALSE;
 
 void
 QSS_setReinitBuffer (bool b)

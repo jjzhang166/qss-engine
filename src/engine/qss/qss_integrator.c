@@ -1321,6 +1321,10 @@ QSS_PAR_synchronize (QSS_simulator simulator, int synchronize,
       if (QSS_SIS_empty (simulator->simSteps))
 	{
 	  QSS_SIS_reset (simulator->simSteps);
+	  qssTime->time = stepTime;
+	  qssTime->minValue = stepTime;
+	  qssTime->minIndex = index;
+	  qssTime->type = type;
 	}
     }
 }
