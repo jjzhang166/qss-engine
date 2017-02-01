@@ -1,3 +1,14 @@
+2017-02-01  Joaquin  <joaquin.f.fernandez@gmail.com>
+
+	* engine/qss/liqss2.c
+	(LIQSS2_init): New LIQSS2 implementation.
+	* engine/qss/qss_seq_integrator.c
+	(QSS_SEQ_integrate): Removed extra printf.
+	(LIQSS2_recomputeNextTime): New LIQSS2 implementation.
+	(LIQSS2_recomputeNextTimes): New LIQSS2 implementation.
+	(LIQSS2_nextTime): New LIQSS2 implementation.
+	(LIQSS2_updateQuantizedState): New LIQSS2 implementation.
+
 2016-12-13  Joaquin  <joaquin.f.fernandez@gmail.com>
 
 	* engine/qss/qss_linear.c: Modified mapping data structures for linear search

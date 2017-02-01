@@ -373,10 +373,6 @@ QSS_SEQ_integrate (SIM_simulator simulate)
 	  break;
 	}
       SC_update (scheduler, qssData, qssTime);
-      if (qssTime->time < t)
-           	{
-           	  printf("Vuelve atras\n");
-           	}
       t = qssTime->time;
       type = qssTime->type;
       index = qssTime->minIndex;
