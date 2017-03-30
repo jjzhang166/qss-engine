@@ -495,6 +495,8 @@ dopcor (unsigned n, FcnEqDiff fcn, double x, double* y, double xend,
 		      for (i = 0; i < discont_count; i++)
 			jroot[discont[i]] = (val_t1[discont[i]] >= 0 ? 1 : -1);
 		      troot[0] = t1;
+		      for (j = 0; j < n; j++)
+    		    y[j] = contd5 (j, t1);
 #ifdef DEBUG
 		      fprintf (fileout,
 			  "%d Interval too small %13.30g vs %13.30g\n",
@@ -928,8 +930,8 @@ dopri5 (unsigned n, FcnEqDiff fcn, double x, double* y, double xend,
       free (k3);
       free (k2);
       free (k1);
-      //free (yy1);
-      //free (yold);
+      free (yy1);
+      free (yold);
       if (indir)
 	free (indir);
       if (rcont5)
