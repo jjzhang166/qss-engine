@@ -69,9 +69,13 @@ _getSolver (const char *sol)
     {
       return (SD_DOPRI);
     }
-  else if (!strcmp (sol, "CVODE"))
+  else if (!strcmp (sol, "CVODE_BDF"))
     {
-      return (SD_CVODE);
+      return (SD_CVODE_BDF);
+    }
+  else if (!strcmp (sol, "CVODE_AM"))
+    {
+      return (SD_CVODE_AM);
     }
   return (SD_QSS);
 }
@@ -126,7 +130,8 @@ _getOrder (SD_Solver sol)
     case SD_LIQSS:
     case SD_DASSL:
     case SD_DOPRI:
-    case SD_CVODE:
+    case SD_CVODE_BDF:
+    case SD_CVODE_AM:
       return (1);
     case SD_QSS2:
     case SD_LIQSS2:
