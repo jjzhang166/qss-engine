@@ -225,7 +225,7 @@ CVODE_integrate (SIM_simulator simulate)
   if (check_flag(&flag, "CVDense", 1, simulator)) return;
 
   flag = CVodeRootInit(cvode_mem, clcData->events, CVODE_events);
-  if (check_flag(&flag, "CVodeRootInit", 1, simulator)) return(1);
+  if (check_flag(&flag, "CVodeRootInit", 1, simulator)) return;
 
   getTime (simulator->stats->sTime);
   if (is_sampled) {
@@ -256,10 +256,28 @@ CVODE_integrate (SIM_simulator simulate)
 	    totalOutputSteps++;
       if (is_sampled)
 		    tout = t + step_size;
+      // Without this line the cummulative of simulation steps returns bogus values
+      flag = CVodeGetNumSteps(cvode_mem, &val);
+      /*check_flag(&flag, "CVodeGetNumSteps", 1, simulator);
+      nst += val;
+      printf("Stepts = %ld\n", val);*/
     } else if (flag == CV_ROOT_RETURN) {
       flag = CVodeGetRootInfo(cvode_mem, jroot);
-      if (check_flag(&flag, "CVodeGetRootInfo", 1, simulator)) return(1);
+      if (check_flag(&flag, "CVodeGetRootInfo", 1, simulator)) return;
   	  CLC_handle_event (clcData, clcModel, NV_DATA_S(y), jroot, t, NULL);
+      /* Update stats */
+      flag = CVodeGetNumSteps(cvode_mem, &val);
+      check_flag(&flag, "CVodeGetNumSteps", 1, simulator);
+      nst += val;
+      flag = CVodeGetNumRhsEvals(cvode_mem, &val);
+      check_flag(&flag, "CVodeGetNumRhsEvals" , 1, simulator);
+      nfe += val;
+      flag = CVodeGetNumErrTestFails(cvode_mem, &val);
+      check_flag(&flag, "CVodeGetNumErrTestFails", 1, simulator);
+      netf += val;
+      flag = CVodeGetNumNonlinSolvIters(cvode_mem, &val);
+      check_flag(&flag, "CVodeGetNumNonlinSolvIters", 1, simulator);
+      nni += val;
       CVodeReInit(cvode_mem, t, y);
 	    if (is_sampled) { // If the root was found close to a sample point take this as the actual step and continue with next sample
 	      if (fabs (tout - t) < 1e-12) {
