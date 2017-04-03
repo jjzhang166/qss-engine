@@ -23,6 +23,7 @@
 
 #include "../classic/classic_dassl_integrator.h"
 #include "../classic/classic_dopri_integrator.h"
+#include "../classic/classic_cvode_integrator.h"
 #include "../classic/classic_integrator.h"
 #include "../qss/qss_integrator.h"
 #include "../qss/qss_par_integrator.h"
@@ -47,6 +48,12 @@ INT_Integrator (SIM_simulator simulator)
       {
 	p->ops->initiliaze = CLC_initialize;
 	p->ops->integrate = DASSL_integrate;
+      }
+      break;
+    case SD_CVODE:
+      {
+	p->ops->initiliaze = CLC_initialize;
+	p->ops->integrate = CVODE_integrate;
       }
       break;
     default:

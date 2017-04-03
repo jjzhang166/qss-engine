@@ -76,6 +76,7 @@ MMO_Generator_::generate ()
 	      {
 	      case ANT_DOPRI:
 	      case ANT_DASSL:
+	      case ANT_CVODE:
 		_solver = newClassic (_model, _flags, _writer);
 		break;
 	      default:
@@ -237,7 +238,8 @@ MMO_Generator_::_variables ()
   VarSymbolTable vt = _model->varTable ();
   vt->setPrintEnvironment (VST_INIT);
   if (_model->annotation ()->solver () == ANT_DASSL
-      || _model->annotation ()->solver () == ANT_DOPRI)
+      || _model->annotation ()->solver () == ANT_DOPRI
+      || _model->annotation ()->solver () == ANT_CVODE)
     {
       vt->setPrintEnvironment (VST_CLASSIC_INIT);
     }
@@ -531,7 +533,8 @@ MMO_Generator_::_variablesInitCode ()
   VarSymbolTable vt = _model->varTable ();
   vt->setPrintEnvironment (VST_INIT);
   if (_model->annotation ()->solver () == ANT_DASSL
-      || _model->annotation ()->solver () == ANT_DOPRI)
+      || _model->annotation ()->solver () == ANT_DOPRI
+      || _model->annotation ()->solver () == ANT_CVODE)
     {
       vt->setPrintEnvironment (VST_CLASSIC_INIT);
     }
