@@ -49,7 +49,8 @@ typedef enum
   ANT_QSS4,
   ANT_DASSL,
   ANT_DOPRI,
-  ANT_CVODE
+  ANT_CVODE_BDF,
+  ANT_CVODE_AM
 } ANT_Solver;
 
 typedef enum

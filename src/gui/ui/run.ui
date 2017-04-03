@@ -134,7 +134,12 @@
         </item>
         <item>
          <property name="text">
-          <string>CVODE</string>
+          <string>CVODE_BDF</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>CVODE_AM</string>
          </property>
         </item>
        </widget>

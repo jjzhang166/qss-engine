@@ -50,7 +50,8 @@ INT_Integrator (SIM_simulator simulator)
 	p->ops->integrate = DASSL_integrate;
       }
       break;
-    case SD_CVODE:
+    case SD_CVODE_BDF:
+    case SD_CVODE_AM:
       {
 	p->ops->initiliaze = CLC_initialize;
 	p->ops->integrate = CVODE_integrate;

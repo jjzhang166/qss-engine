@@ -111,7 +111,8 @@ typedef enum
   SD_QSS4,   //!< SD_QSS4
   SD_DASSL, //!< SD_DASSL
   SD_DOPRI, //!< SD_DOPRI
-  SD_CVODE  //!< SD_CVODE
+  SD_CVODE_BDF,  //!< SD_CVODE_BDF
+  SD_CVODE_AM  //!< SD_CVODE_BDF
 } SD_Solver;
 
 /**

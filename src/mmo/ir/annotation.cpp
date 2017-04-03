@@ -551,13 +551,19 @@ MMO_ModelAnnotation_::_getSolver (string s)
       _polyCoeffs = 1;
       return (ANT_DOPRI);
     }
-  else if (!s.compare ("CVODE"))
+  else if (!s.compare ("CVODE_BDF"))
     {
       _order = 1;
       _polyCoeffs = 1;
-      return (ANT_CVODE);
+      return (ANT_CVODE_BDF);
     }
  
+  else if (!s.compare ("CVODE_AM"))
+    {
+      _order = 1;
+      _polyCoeffs = 1;
+      return (ANT_CVODE_AM);
+  }
   else if (!s.compare ("QSS4"))
     {
       _order = 4;
@@ -1051,7 +1057,8 @@ MMO_EvalAnnotation_::MMO_EvalAnnotation_ (VarSymbolTable st) :
   _tokens.insert (pair<string, string> ("QSS4", "QSS4"));
   _tokens.insert (pair<string, string> ("DASSL", "DASSL"));
   _tokens.insert (pair<string, string> ("DOPRI", "DOPRI"));
-  _tokens.insert (pair<string, string> ("CVODE", "CVODE"));
+  _tokens.insert (pair<string, string> ("CVODE_AM", "CVODE_AM"));
+  _tokens.insert (pair<string, string> ("CVODE_BDF", "CVODE_BDF"));
   _tokens.insert (pair<string, string> ("ST_Linear", "ST_Linear"));
   _tokens.insert (pair<string, string> ("ST_Binary", "ST_Binary"));
   _tokens.insert (pair<string, string> ("ST_Random", "ST_Random"));
