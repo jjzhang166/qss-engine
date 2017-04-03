@@ -139,6 +139,8 @@ RunDlg::_getSolverIdx (QString str)
     return (8);
   if (str.trimmed () == "DOPRI")
     return (9);
+  if (str.trimmed () == "CVODE")
+    return (10);
   return (-1);
 }
 
@@ -167,6 +169,8 @@ RunDlg::_getSolverString (int idx)
       return ("DASSL");
     case 9:
       return ("DOPRI");
+    case 10:
+      return ("CVODE");
     }
   return (QString ());
 }

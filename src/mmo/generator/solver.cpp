@@ -3432,10 +3432,12 @@ SolverCommon_::printSection (string var, int size, WR_Section section)
 void
 SolverCommon_::initialCode (map<string, string> *initializeVars)
 {
-    string indent = _writer->indent (1);
-    MMO_StatementTable st = _model->initialCode ();
-    _model->varTable ()->setPrintEnvironment (VST_INIT);
-    if (_model->annotation ()->solver () == ANT_DASSL || _model->annotation ()->solver () == ANT_DOPRI)
+  string indent = _writer->indent (1);
+  MMO_StatementTable st = _model->initialCode ();
+  _model->varTable ()->setPrintEnvironment (VST_INIT);
+  if (_model->annotation ()->solver () == ANT_DASSL
+      || _model->annotation ()->solver () == ANT_DOPRI
+      || _model->annotation ()->solver () == ANT_CVODE)
     {
         _model->varTable ()->setPrintEnvironment (VST_CLASSIC_INIT);
     }
