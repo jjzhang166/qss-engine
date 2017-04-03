@@ -96,7 +96,7 @@ MmoHighlighter::MmoHighlighter (QTextDocument *parent, h_type file) :
   << "\\bSD_DT_Fixed\\b" << "\\bSD_DT_Asynchronous\\b"
   << "\\bMetis\\b" << "\\bHMetis\\b"
   << "\\bScotch\\b" << "\\bPatoh\\b" << "\\bManual\\b"
-  << "\\btrue\\b" << "\\bfalse\\b" << "\\bDOPRI\\b" << "\\bDASSL\\b";
+  << "\\btrue\\b" << "\\bfalse\\b" << "\\bDOPRI\\b" << "\\bDASSL\\b" << "\\bCVODE\\b";
 
   foreach (const QString &pattern, qssTagsPatterns)
     {
@@ -128,7 +128,7 @@ MmoHighlighter::MmoHighlighter (QTextDocument *parent, h_type file) :
   << "\\bvalues\\b" << "\\bEvent\\b" << "\\bnext\\b" << "\\btransitions\\b" << "\\b-\\b"
   << "\\bFunction\\b" << "\\bevaluations\\b" << "\\bScalar\\b" << "\\bfunction\\b" << "\\breported\\b" << "\\bMiliseconds\\b"
   << "\\bVariables\\b" << "\\bHandler\\b" << "\\bexecution\\b" << "\\bAdditional\\b" << "\\ballocated\\b"
-  << "\\bby\\b" << "\\bDASSL\\b" << "\\bJacobian\\b" << "\\bcrossing\\b" << "\\bIndividual\\b" << "\\bCrossings\\b"
+  << "\\bby\\b" << "\\bDASSL\\b" << "\\bCVODE\\b" << "\\bJacobian\\b" << "\\bcrossing\\b" << "\\bIndividual\\b" << "\\bCrossings\\b"
   << "\\bResults\\b" << "\\bfor\\b" << "\\bPartitioning\\b" << "\\bLPS\\b" << "\\bexternal\\b" << "\\bpast\\b"
   << "\\bmin\\b" << "\\bmax\\b" << "\\bmessages\\b" << "\\bProcessed\\b" << "\\bsent\\b" << "\\bExternal\\b" << "\\bMessages\\b"
   << "\\bvariable\\b" << "\\breinits\\b" << "\\bCPU\\b" << "\\bper\\b" << "\\btransition\\b" << "\\bParallel\\b" << "\\bStatistics\\b"

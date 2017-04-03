@@ -46,9 +46,10 @@ typedef enum
   ANT_LIQSS2,
   ANT_QSS3,
   ANT_LIQSS3,
+  ANT_QSS4,
   ANT_DASSL,
   ANT_DOPRI,
-  ANT_QSS4
+  ANT_CVODE
 } ANT_Solver;
 
 typedef enum

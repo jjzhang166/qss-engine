@@ -3335,7 +3335,8 @@ SolverCommon_::initialCode (map<string, string> *initializeVars)
   MMO_StatementTable st = _model->initialCode ();
   _model->varTable ()->setPrintEnvironment (VST_INIT);
   if (_model->annotation ()->solver () == ANT_DASSL
-      || _model->annotation ()->solver () == ANT_DOPRI)
+      || _model->annotation ()->solver () == ANT_DOPRI
+      || _model->annotation ()->solver () == ANT_CVODE)
     {
       _model->varTable ()->setPrintEnvironment (VST_CLASSIC_INIT);
     }

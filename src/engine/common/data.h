@@ -108,9 +108,10 @@ typedef enum
   SD_LIQSS2,  //!< SD_LIQSS2
   SD_QSS3,  //!< SD_QSS3
   SD_LIQSS3,  //!< SD_LIQSS3
+  SD_QSS4,   //!< SD_QSS4
   SD_DASSL, //!< SD_DASSL
   SD_DOPRI, //!< SD_DOPRI
-  SD_QSS4   //!< SD_QSS4
+  SD_CVODE  //!< SD_CVODE
 } SD_Solver;
 
 /**

@@ -33,7 +33,7 @@ SIM_Simulator (SD_simulationSettings settings)
   p->ops = SIM_SimulatorOps ();
   p->state = SIM_SimulatorState ();
   p->state->settings = settings;
-  if (settings->method == SD_DASSL || settings->method == SD_DOPRI)
+  if (settings->method == SD_DASSL || settings->method == SD_DOPRI || settings->method == SD_CVODE)
     {
       CLC_initSimulator (p);
     }
