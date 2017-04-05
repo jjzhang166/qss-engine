@@ -25,6 +25,13 @@
 #include <sundials/sundials_dense.h> /* definitions DlsMat DENSE_ELEM */
 #include <sundials/sundials_types.h> /* definition of type realtype */
 
+//#define USE_JACOBIAN
+#ifdef USE_JACOBIAN
+#include <cvode/cvode_superlumt.h>   /* prototype for CVSUPERLUMT */
+#include <sundials/sundials_sparse.h> /* definitions SlsMat */
+#endif
+
+
 #include <classic/classic_cvode_integrator.h>
 
 #include <stdio.h>
@@ -48,27 +55,49 @@ static SD_output simOutput = NULL;
 
 int is_sampled;
 
-/*
-int dopri_percentage = 0;
+#ifdef USE_JACOBIAN
+/* Test jacobian */
+#define N 200
+extern double __PAR_CAP[N];
+extern double __PAR_RES[N];
+extern double __PAR_POT[N];
 
-struct simData_DOPRI
-{
-  double **solution;
-  double *solution_time;
-  double **outvar;
-  double *x;
-  double *t;
-  unsigned long *totalOutputSteps;
-  double last_step;
-  double step_size;
-  double *temp_x;
-  double final_time;
-  int size;
-};
+static int Jac(realtype t, N_Vector y, N_Vector fy, SlsMat JacMat, void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3) {
 
-struct simData_DOPRI simDataDopri;
+  static int init = 0;
+  realtype *yval;
+  int *colptrs = *JacMat->colptrs;
+  int *rowvals = *JacMat->rowvals;
 
-*/
+  yval = N_VGetArrayPointer_Serial(y);
+
+  if (!init) {
+    SparseSetMatToZero(JacMat);
+
+    colptrs[0] = 0;
+    for (int i=1; i<=N; i++) { 
+      colptrs[i] = i+1;
+    }
+    colptrs[N+1] = N;
+
+    for (int i=1; i<=N; i++)
+      rowvals [i] = i;
+    init = 1;
+  }
+  
+  for (int i=1; i<=N; i++) 
+    JacMat->data[i] = 0;//1/__PAR_RES[i-1]/__PAR_CAP[i-1];
+    //JacMat->data[i] = yval[i-1]/__PAR_RES[i-1]/__PAR_CAP[i-1];
+  
+
+  //SparsePrintMat (JacMat, stdout);
+  //abort();
+  return 0;
+
+}
+#endif
+
+/* Test jacobian */
 static int check_flag(void *flagvalue, const char *funcname, int opt, CLC_simulator simulator)
 {
   int *errflag;
@@ -139,7 +168,7 @@ CVODE_integrate (SIM_simulator simulate)
   double *solution_time = malloc (sizeof(double) * num_steps);
   double **outvar = malloc (sizeof(double) * simOutput->outputs);
   int *jroot = malloc (sizeof(int) * clcData->events), flag;
-  int size = clcData->states;
+  int size = clcData->states, nnz;
   int event_detected = 0;
   double rel_tol = dQRel, abs_tol = dQMin;
   realtype reltol = rel_tol, t = clcData->it, tout;
@@ -167,12 +196,25 @@ CVODE_integrate (SIM_simulator simulate)
   flag = CVodeSVtolerances(cvode_mem, reltol, abstol);
   if (check_flag(&flag, "CVodeInit", 1, simulator)) return;
 
-  flag = CVDense(cvode_mem, size);
-  if (check_flag(&flag, "CVDense", 1, simulator)) return;
 
   flag = CVodeRootInit(cvode_mem, clcData->events, CVODE_events);
   if (check_flag(&flag, "CVodeRootInit", 1, simulator)) return;
 
+/***************************************************************/
+#ifdef USE_JACOBIAN
+  nnz = size * size;
+  flag = CVSuperLUMT(cvode_mem, 1, size, nnz);
+  if (check_flag(&flag, "CVSuperLUMT", 1, simulator)) return;
+
+  /* Set the Jacobian routine to Jac (user-supplied) */
+  flag = CVSlsSetSparseJacFn(cvode_mem, Jac);
+  if (check_flag(&flag, "CVSlsSetSparseJacFn", 1, simulator)) return;
+#else
+  flag = CVDense(cvode_mem, size);
+  if (check_flag(&flag, "CVDense", 1, simulator)) return;
+#endif
+
+/***************************************************************/
   getTime (simulator->stats->sTime);
   if (is_sampled) {
     CLC_save_step (simOutput, solution, solution_time, t, totalOutputSteps, NV_DATA_S(y), clcData->d, clcData->alg);
@@ -202,15 +244,15 @@ CVODE_integrate (SIM_simulator simulate)
 		    tout = t + step_size;
       // Without this line the cummulative of simulation steps returns bogus values
       flag = CVodeGetNumSteps(cvode_mem, &val);
-      /*check_flag(&flag, "CVodeGetNumSteps", 1, simulator);
+      check_flag(&flag, "CVodeGetNumSteps", 1, simulator);
       nst += val;
-      printf("Stepts = %ld\n", val);*/
+      /*printf("Stepts = %ld\n", val);*/
     } else if (flag == CV_ROOT_RETURN) {
       flag = CVodeGetRootInfo(cvode_mem, jroot);
       if (check_flag(&flag, "CVodeGetRootInfo", 1, simulator)) return;
   	  CLC_handle_event (clcData, clcModel, NV_DATA_S(y), jroot, t, NULL);
       /* Update stats */
-      flag = CVodeGetNumSteps(cvode_mem, &val);
+      /*flag = CVodeGetNumSteps(cvode_mem, &val);
       check_flag(&flag, "CVodeGetNumSteps", 1, simulator);
       nst += val;
       flag = CVodeGetNumRhsEvals(cvode_mem, &val);
@@ -221,7 +263,7 @@ CVODE_integrate (SIM_simulator simulate)
       netf += val;
       flag = CVodeGetNumNonlinSolvIters(cvode_mem, &val);
       check_flag(&flag, "CVodeGetNumNonlinSolvIters", 1, simulator);
-      nni += val;
+      nni += val;*/
       CVodeReInit(cvode_mem, t, y);
 	    if (is_sampled) { // If the root was found close to a sample point take this as the actual step and continue with next sample
 	      if (fabs (tout - t) < 1e-12) {
@@ -246,6 +288,7 @@ CVODE_integrate (SIM_simulator simulate)
   waitUntil(t);
 #endif
   }
+  getTime (simulator->stats->sTime);
   if (is_sampled)
 	{
 	  if (totalOutputSteps < num_steps)
@@ -254,7 +297,6 @@ CVODE_integrate (SIM_simulator simulate)
         totalOutputSteps++;
 	    }
 	}
-  getTime (simulator->stats->sTime);
   subTime (simulator->stats->sTime, simulator->stats->iTime);
   if (simulator->settings->debug == 0 || simulator->settings->debug > 1)
     {

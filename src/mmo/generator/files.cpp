@@ -72,22 +72,23 @@ MMO_Files_::~MMO_Files_ ()
 void
 MMO_Files_::makefile ()
 {
-    stringstream buffer;
-    stringstream includes;
-    string fname = _fname;
-    map<string, string> include;
-    fname.append (".makefile");
-    _writer->setFile (fname);
-    _writer->print ("#Compiler and Linker");
-    _writer->print ("CC    := gcc");
-    _writer->print ("");
-    _writer->print ("#The Target Binary Program ");
-    _writer->print ("TARGET    := " + _fname);
-    _writer->print ("");
-    _writer->print ("#Flags, Libraries and Includes");
-    includes << "LDFLAGS    :=-L" << Util::getInstance ()->environmentVariable ("MMOC_LIBS");
-    list<string> tmp = _model->libraryDirectories ();
-    for (list<string>::iterator it = tmp.begin (); it != tmp.end (); it++)
+  stringstream buffer;
+  stringstream includes;
+  string fname = _fname;
+  map<string, string> include;
+  fname.append (".makefile");
+  _writer->setFile (fname);
+  _writer->print ("#Compiler and Linker");
+  _writer->print ("CC    := gcc");
+  _writer->print ("");
+  _writer->print ("#The Target Binary Program ");
+  _writer->print ("TARGET    := " + _fname);
+  _writer->print ("");
+  _writer->print ("#Flags, Libraries and Includes");
+  includes << "LDFLAGS    :=-L "
+      << Util::getInstance ()->environmentVariable ("MMOC_LIBS");
+  list<string> tmp = _model->libraryDirectories ();
+  for (list<string>::iterator it = tmp.begin (); it != tmp.end (); it++)
     {
         includes << " -L" << *it;
     }
@@ -178,7 +179,7 @@ MMO_Files_::makefile ()
     }
     buffer << " $(TARGET_SRC) $(CFLAGS) -o $@ -lm -lgsl -lconfig -lgfortran";
 #ifdef	__linux__
-  buffer << " -lpthread -lmetis -lscotch -lscotcherr -lpatoh -lrt -lsundials_cvode -lsundials_nvecserial";
+  buffer << " -lpthread -lmetis -lscotch -lscotcherr -lpatoh -lrt -lsundials_cvode -lsundials_nvecserial -llapack -latlas -lf77blas -lsuperlu_mt_PTHREAD";
 #endif
     buffer << " -lgslcblas" << includes.str ();
     if (_flags->parallel ())
