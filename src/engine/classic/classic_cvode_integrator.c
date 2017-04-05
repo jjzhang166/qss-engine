@@ -248,13 +248,16 @@ CVODE_integrate (SIM_simulator simulate)
       flag = CVodeGetNumSteps(cvode_mem, &val);
       check_flag(&flag, "CVodeGetNumSteps", 1, simulator);
       nst += val;
+      event_detected = 0;
+      if (tout > _ft)
+        break;
       /*printf("Stepts = %ld\n", val);*/
     } else if (flag == CV_ROOT_RETURN) {
       flag = CVodeGetRootInfo(cvode_mem, jroot);
       if (check_flag(&flag, "CVodeGetRootInfo", 1, simulator)) return;
   	  CLC_handle_event (clcData, clcModel, NV_DATA_S(y), jroot, t, NULL);
       /* Update stats */
-      /*flag = CVodeGetNumSteps(cvode_mem, &val);
+      flag = CVodeGetNumSteps(cvode_mem, &val);
       check_flag(&flag, "CVodeGetNumSteps", 1, simulator);
       nst += val;
       flag = CVodeGetNumRhsEvals(cvode_mem, &val);
@@ -265,7 +268,7 @@ CVODE_integrate (SIM_simulator simulate)
       netf += val;
       flag = CVodeGetNumNonlinSolvIters(cvode_mem, &val);
       check_flag(&flag, "CVodeGetNumNonlinSolvIters", 1, simulator);
-      nni += val;*/
+      nni += val;
       CVodeReInit(cvode_mem, t, y);
 	    if (is_sampled) { // If the root was found close to a sample point take this as the actual step and continue with next sample
 	      if (fabs (tout - t) < 1e-12) {
@@ -273,6 +276,7 @@ CVODE_integrate (SIM_simulator simulate)
 		      totalOutputSteps++;
     		  tout = t + step_size;
 		    }
+        event_detected = 1;
       } else { // When a root is found and the per-step output is selected, take roots as outputs
     		  CLC_save_step (simOutput, solution, solution_time, t, totalOutputSteps, NV_DATA_S(y), clcData->d, clcData->alg);
 		      totalOutputSteps++;
