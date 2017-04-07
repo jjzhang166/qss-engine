@@ -484,6 +484,8 @@ public:
   odd() const;
   bool
   even() const;
+  bool
+  sameRange(Index_ idx);
 private:
   void
   _setIndex ();

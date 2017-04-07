@@ -85,9 +85,9 @@ typedef struct CLC_event_ *CLC_event;
  */
 struct CLC_event_
 {
-  CLC_zc zeroCrossing; //!<
-  CLC_hnd handlerPos; //!<
-  CLC_hnd handlerNeg; //!<
+    CLC_zc zeroCrossing; //!<
+    CLC_hnd handlerPos; //!<
+    CLC_hnd handlerNeg; //!<
 };
 /**
  *
@@ -114,32 +114,35 @@ typedef struct CLC_data_ *CLC_data;
  */
 struct CLC_data_
 {
-  double *dQMin; //!<
-  double *dQRel; //!<
-  double *d; //!<
-  double *x; //!<
-  double *alg; //!<
-  double it; //!<
-  double ft; //!<
-  int *nSD; //!<
-  int *IT; //!<
-  int states; //!<
-  int discretes; //!<
-  int events; //!<
-  int inputs; //!<
-  char *fired;
-  unsigned long scalarEvaluations; //!<
-  unsigned long zeroCrossings; //!<
-  unsigned long long funEvaluations; //!<
-  unsigned long totalOutputSteps; //!<
-  unsigned long totalJacobians; //!<
-  unsigned long totalCrossingEvaluations; //!<
-  unsigned long totalStepsDASSL; //!<
-  unsigned long totalSteps; //!<
-  unsigned long totalEvents; //!<
-  SD_Solver solver; //!<
-  SD_eventData event; //!<
-  SD_parameters params; //!<
+    double *dQMin; //!<
+    double *dQRel; //!<
+    double *d; //!<
+    double *x; //!<
+    double *alg; //!<
+    double it; //!<
+    double ft; //!<
+    int *nSD; //!<
+    int *nDS; //!<
+    int *IT; //!<
+    int **SD; //!<
+    int **DS; //!<
+    int states; //!<
+    int discretes; //!<
+    int events; //!<
+    int inputs; //!<
+    char *fired;
+    unsigned long scalarEvaluations; //!<
+    unsigned long zeroCrossings; //!<
+    unsigned long long funEvaluations; //!<
+    unsigned long totalOutputSteps; //!<
+    unsigned long totalJacobians; //!<
+    unsigned long totalCrossingEvaluations; //!<
+    unsigned long totalStepsDASSL; //!<
+    unsigned long totalSteps; //!<
+    unsigned long totalEvents; //!<
+    SD_Solver solver; //!<
+    SD_eventData event; //!<
+    SD_parameters params; //!<
 };
 /**
  *
@@ -160,6 +163,12 @@ void
 CLC_freeData (CLC_data data);
 /**
  *
+ * @param data
+ */
+void
+CLC_allocDataMatrix (CLC_data data);
+/**
+ *
  */
 typedef struct CLC_model_ *CLC_model;
 /**
@@ -167,8 +176,8 @@ typedef struct CLC_model_ *CLC_model;
  */
 struct CLC_model_
 {
-  CLC_eq f; /**< Model definition \f$ \forall \imath \in [0,DIM] f(x_{i}(t),t)_{i} \f$ 		*/
-  CLC_event events; //!<
+    CLC_eq f; /**< Model definition \f$ \forall \imath \in [0,DIM] f(x_{i}(t),t)_{i} \f$ 		*/
+    CLC_event events; //!<
 };
 /**
  *
@@ -179,8 +188,7 @@ struct CLC_model_
  * @return
  */
 CLC_model
-CLC_Model (CLC_eq f, CLC_zc zeroCrossing, CLC_hnd handlerPos,
-	   CLC_hnd handlerNeg);
+CLC_Model (CLC_eq f, CLC_zc zeroCrossing, CLC_hnd handlerPos, CLC_hnd handlerNeg);
 /**
  *
  * @param model

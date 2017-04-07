@@ -992,3 +992,12 @@ Intersection::range ()
 {
   return (end() - begin() + 1);
 }
+
+bool
+Index_::sameRange (Index_ other)
+{
+    return (this->_hasRange == other._hasRange && this->_hi == other._hi
+        && this->_index == other._index && this->_isSet == other._isSet
+        && this->_low == other._low && this->_offset == other._offset
+        && this->_array == other._array);
+}
