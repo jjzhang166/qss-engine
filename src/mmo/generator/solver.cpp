@@ -2086,16 +2086,16 @@ Classic_::model ()
       {
         Index idx = algebraics->key ();
         Index lhs = eq->lhs ();
-        if (idx.hasRange ())
+        if (lhs.hasRange ())
           {
             _common->addLocalVar ("i", &_modelVars);
-            buffer << "for(i = " << idx.begin () << "; i <= " << idx.end () << "; i++)";
-            _writer->write (&buffer, WR_MODEL_GENERIC);
+            buffer << "for(i = " << lhs.begin () << "; i <= " << lhs.end () << "; i++)";
+            _writer->write (&buffer, WR_MODEL_SIMPLE);
             buffer << "{";
-            _writer->write (&buffer, WR_MODEL_GENERIC);
-            _common->print (eq->print (indent, "alg[" + lhs.print ("i") + "]", "i", false, algebraics, EQ_CLASSIC, order), WR_MODEL_GENERIC);
+            _writer->write (&buffer, WR_MODEL_SIMPLE);
+            _common->print (eq->print (indent, "alg[" + lhs.print ("i") + "]", "i", false, algebraics, EQ_CLASSIC, order), WR_MODEL_SIMPLE);
             buffer << "}";
-            _writer->write (&buffer, WR_MODEL_GENERIC);
+            _writer->write (&buffer, WR_MODEL_SIMPLE);
             _common->insertLocalVariables (&_modelVars, eq->getVariables ());
           }
         else
@@ -2112,12 +2112,12 @@ Classic_::model ()
         {
           _common->addLocalVar ("i", &_modelVars);
           buffer << "for(i = " << idx.begin () << "; i <= " << idx.end () << "; i++)";
-          _writer->write (&buffer, WR_MODEL_GENERIC);
+          _writer->write (&buffer, WR_MODEL_SIMPLE);
           buffer << "{";
-          _writer->write (&buffer, WR_MODEL_GENERIC);
-          _common->print (eq->print (indent, "dx[" + lhs.print ("i") + "]", "i", false, algebraics, EQ_CLASSIC, order), WR_MODEL_GENERIC);
+          _writer->write (&buffer, WR_MODEL_SIMPLE);
+          _common->print (eq->print (indent, "dx[" + lhs.print ("i") + "]", "i", false, algebraics, EQ_CLASSIC, order), WR_MODEL_SIMPLE);
           buffer << "}";
-          _writer->write (&buffer, WR_MODEL_GENERIC);
+          _writer->write (&buffer, WR_MODEL_SIMPLE);
           _common->insertLocalVariables (&_modelVars, eq->getVariables ());
         }
       else
