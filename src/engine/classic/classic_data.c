@@ -177,11 +177,3 @@ CLC_freeModel (CLC_model model)
     free (model);
 }
 
-void CLC_allocDataMatrix (CLC_data data) {
-  int i, states = data->states, events = data->events, mRHS = 0;
-
-  for (i = 0; i < states; i++) {
-      data->SD[i] = (data->nSD[i] > 0) ?  (int*) malloc (data->nSD[i] * sizeof(int)) : NULL;
-      data->DS[i] = (data->nDS[i] > 0) ?  (int*) malloc (data->nDS[i] * sizeof(int)) : NULL;
-	}
-}
