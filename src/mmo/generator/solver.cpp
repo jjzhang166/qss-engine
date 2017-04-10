@@ -1970,7 +1970,7 @@ Classic_::initModel ()
     {
         handlerNeg = "MOD_handlerNeg";
     }
-    buffer << "simulator->model = CLC_Model(MOD_definition," << zeroCrossing << "," << handlerPos << "," << handlerNeg << ");";
+    buffer << "simulator->model = CLC_Model(MOD_definition," << zeroCrossing << "," << handlerPos << "," << handlerNeg << ", MOD_jacobian);";
     return (buffer.str ());
 }
 

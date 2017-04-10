@@ -162,10 +162,11 @@ CLC_freeData (CLC_data data)
 }
 
 CLC_model
-CLC_Model (CLC_eq f, CLC_zc zeroCrossing, CLC_hnd handlerPos, CLC_hnd handlerNeg)
+CLC_Model (CLC_eq f, CLC_zc zeroCrossing, CLC_hnd handlerPos, CLC_hnd handlerNeg, CLC_jac jac)
 {
     CLC_model p = checkedMalloc (sizeof(*p));
     p->f = f;
+    p->jac = jac;
     p->events = CLC_Event (zeroCrossing, handlerPos, handlerNeg);
     return (p);
 }

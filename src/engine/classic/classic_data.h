@@ -89,6 +89,9 @@ struct CLC_event_
     CLC_hnd handlerPos; //!<
     CLC_hnd handlerNeg; //!<
 };
+
+typedef void
+(*CLC_jac) (double *x, double *d, double *alg, double t, double *j);
 /**
  *
  * @param zeroCrossing
@@ -177,6 +180,7 @@ typedef struct CLC_model_ *CLC_model;
 struct CLC_model_
 {
     CLC_eq f; /**< Model definition \f$ \forall \imath \in [0,DIM] f(x_{i}(t),t)_{i} \f$ 		*/
+    CLC_jac jac; 
     CLC_event events; //!<
 };
 /**
@@ -188,7 +192,7 @@ struct CLC_model_
  * @return
  */
 CLC_model
-CLC_Model (CLC_eq f, CLC_zc zeroCrossing, CLC_hnd handlerPos, CLC_hnd handlerNeg);
+CLC_Model (CLC_eq f, CLC_zc zeroCrossing, CLC_hnd handlerPos, CLC_hnd handlerNeg, CLC_jac);
 /**
  *
  * @param model

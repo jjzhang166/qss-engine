@@ -69,25 +69,26 @@ static int Jac(realtype t, N_Vector y, N_Vector fy, SlsMat JacMat, void *user_da
   if (!init) {
     SparseSetMatToZero(JacMat);
 
-    colptrs[0] = 0;
-    n = 0;
-    m = 1;
-    for (i=1; i<=size; i++) { 
-      for (j=0; j <= clcData->nSD[i-1]; j++) {
-       rowvals [n+j] = clcData->SD[i-1][j];
-      }
-      n += clcData->nSD[i-1];
+    for (i=0; i<size; i++) { 
       colptrs[i] = n;
+      printf("Indexes for col %d start at %d.\n", i, n);
+      for (j = n, m = 0; j < n + clcData->nSD[i] ; j++, m++) {
+        rowvals[j] = clcData->SD[i][m];
+        printf("Non null value at row %d in col %d. Saving it in %d \n", rowvals[j],i, j);
+      }
+      n += clcData->nSD[i];
     }
+    colptrs[i] = n;
     init = 1;
   }
   
-  for (int i=1; i<=n; i++) 
-    JacMat->data[i] = i;
   
 
-  SparsePrintMat (JacMat, stdout);
-  abort();
+  for (int i=0; i < n ; i++) 
+    JacMat->data[i] = 0;
+  clcModel->jac (NV_DATA_S(y), clcData->d, clcData->alg, t, JacMat->data);
+  //SparsePrintMat (JacMat, stdout);
+  //abort();
   return 0;
 
 }
