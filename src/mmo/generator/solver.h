@@ -47,7 +47,8 @@ typedef enum
   SOL_HANDLER_NEG,
   SOL_OUTPUT,
   SOL_INIT,
-  SOL_CALLBACK
+  SOL_CALLBACK,
+  SOL_JACOBIAN
 } SOL_Function;
 
 /**

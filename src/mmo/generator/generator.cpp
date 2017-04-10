@@ -163,6 +163,7 @@ MMO_Generator_::_generateModel ()
   _writer->print (WR_GLOBAL_VARS);
   _solver->print (SOL_MODEL_SETTINGS);
   _solver->print (SOL_MODEL);
+  _solver->print (SOL_JACOBIAN);
   _solver->print (SOL_DEPS);
   if (!_writer->isEmpty (WR_ZC_SIMPLE) || !_writer->isEmpty (WR_ZC_GENERIC))
     {

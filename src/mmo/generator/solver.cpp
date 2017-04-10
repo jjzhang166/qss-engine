@@ -2013,12 +2013,210 @@ Classic_::makefile (SOL_Makefile m)
 void
 Classic_::initializeMatrices ()
 {
+  MMO_DependenciesTable _modelDeps = newMMO_DependenciesTable();
   stringstream buffer;
   stringstream bufferGen;
   string indent = _writer->indent (1);
   MMO_EventTable evt = _model->events ();
+  MMO_EquationTable et = _model->derivatives ();
   bool genericEquation = false;
+  bool hasInit = false;
   bufferGen.str ("");
+  for (MMO_Equation e = et->begin (); !et->end (); e = et->next ())
+    {
+      Index index = et->key ();
+      string eqsIdx = e->lhs ().print ("i");
+      Dependencies deps = e->exp ()->deps ();
+      if (et->endGenericDefinition ())
+        {
+          genericEquation = false;
+          bufferGen.str ("");
+          if (hasInit)
+            {
+              indent = "";
+              hasInit = false;
+              _writer->write ("}", WR_ALLOC_LD_DS);
+              _writer->write ("}", WR_ALLOC_LD_SD);
+              _writer->write ("}", WR_INIT_LD_DS);
+              _writer->write ("}", WR_INIT_LD_SD);
+            }
+        }
+      if (et->beginGenericDefinition ())
+        {
+          genericEquation = true;
+          if (!hasInit)
+            {
+              bufferGen << "for(i = " << index.begin () << "; i <= " << index.end () << "; i++)";
+            }
+        }
+      if (deps->hasStates () && !bufferGen.str ().empty ())
+        {
+          indent = _writer->indent (1);
+          hasInit = true;
+          _writer->write (&bufferGen, WR_ALLOC_LD_DS, false);
+          _writer->write (&bufferGen, WR_INIT_LD_DS, false);
+          _writer->write (&bufferGen, WR_INIT_LD_SD, false);
+          _writer->write (&bufferGen, WR_ALLOC_LD_SD);
+          buffer << "{";
+          _writer->write (&buffer, WR_ALLOC_LD_DS, false);
+          _writer->write (&buffer, WR_INIT_LD_DS, false);
+          _writer->write (&buffer, WR_INIT_LD_SD, false);
+          _writer->write (&buffer, WR_ALLOC_LD_SD);
+        }
+      if (deps->states ())
+        {
+          buffer << indent << "modelData->nDS[" << eqsIdx << "] = " << deps->states () << ";";
+          _writer->write (&buffer, WR_ALLOC_LD_DS);
+        }
+      if (!deps->autonomous ())
+        {
+          _common->addLocalVar ("td", &_initializeVars);
+          if (e->lhs ().hasRange ())
+            {
+              buffer << indent << "for (i = " << e->lhs ().begin () << "; i <= " << e->lhs ().end () << ";i++)";
+              _writer->write (&buffer, WR_INIT_TIME);
+              _writer->write ("{", WR_INIT_TIME);
+            }
+          buffer << indent << "modelData->TD[td++] = " << eqsIdx << ";";
+          _writer->write (&buffer, WR_INIT_TIME);
+          if (e->lhs ().hasRange ())
+            {
+              _writer->write ("}", WR_INIT_TIME);
+            }
+        }
+      map<Index, Index> defStates;
+      for (Index *idx = deps->begin (DEP_STATE); !deps->end (DEP_STATE); idx = deps->next (DEP_STATE))
+        {
+          Index dIdx (*idx);
+          defStates[dIdx] = dIdx;
+          string sIdx = idx->print ("i");
+          buffer << indent << "modelData->DS[" << eqsIdx << "][states[" << eqsIdx << "]++] = " << sIdx << ";";
+          _writer->write (&buffer, WR_INIT_LD_DS);
+          buffer << indent << "modelData->nSD[" << sIdx << "]++;";
+          _writer->write (&buffer, WR_ALLOC_LD_SD);
+          buffer << indent << "modelData->SD[" << sIdx << "][states[" << sIdx << "]++] = " << eqsIdx << ";";
+          _writer->write (&buffer, WR_INIT_LD_SD);
+          //_common->addModelDeps (deps, dIdx, e->lhs (), _modelDeps);
+          /*if (_parallel)
+            {
+              _common->graphInsert (dIdx, e->lhs ());
+            }*/
+        }
+      _common->addAlgebriacDeps (deps, e->lhs (), defStates, "modelData->nDS", "modelData->nSD", "modelData->DS", "modelData->SD", WR_ALLOC_LD_ALG_DS, WR_ALLOC_LD_ALG_SD, WR_INIT_LD_ALG_DS, WR_INIT_LD_ALG_SD, "states", "states", DEP_ALGEBRAIC_STATE, _modelDeps);
+      /*
+      map<Index, list<Intersection> > HD;
+      for (Index *dIdx = deps->begin (DEP_DISCRETE); !deps->end (DEP_DISCRETE); dIdx = deps->next (DEP_DISCRETE))
+        {
+          _setInterval (dIdx, &index);
+          for (MMO_Event ev = evt->begin (); !evt->end (); ev = evt->next ())
+            {
+              Index eIndex = evt->key ();
+              Dependencies eDeps = ev->lhs ();
+              int assignments = eDeps->discretes ();
+              for (Index *eIdx = eDeps->begin (DEP_DISCRETE); !eDeps->end (DEP_DISCRETE); eIdx = eDeps->next (DEP_DISCRETE))
+                {
+                  _setInterval (eIdx, &eIndex);
+                  Intersection is = eIdx->intersection (*dIdx);
+                  if (is.type () == IDX_DISJOINT)
+                    {
+                      continue;
+                    }
+                  if (_controlIntersections (HD[eIndex], is))
+                    {
+                      continue;
+                    }
+                  Index equationIndex = e->lhs ();
+                  _indexDependencies (eIndex, eIdx, equationIndex, dIdx, &simpleHDDeps, WR_ALLOC_LD_HD, WR_INIT_LD_HD, "modelData->nHD",
+                                      "modelData->HD", "events", is, assignments);
+                  HD[eIndex].push_back (is);
+                }
+            }
+        }
+      for (Index *dIdx = deps->begin (DEP_ALGEBRAIC_DISCRETE); !deps->end (DEP_ALGEBRAIC_DISCRETE); dIdx = deps->next (DEP_ALGEBRAIC_DISCRETE))
+        {
+          Index algState = deps->key (DEP_ALGEBRAIC_DISCRETE);
+          for (MMO_Event ev = evt->begin (); !evt->end (); ev = evt->next ())
+            {
+              Index eIndex = evt->key ();
+              Dependencies eDeps = ev->lhs ();
+              int assignments = eDeps->discretes ();
+              for (Index *eIdx = eDeps->begin (DEP_DISCRETE); !eDeps->end (DEP_DISCRETE); eIdx = eDeps->next (DEP_DISCRETE))
+                {
+                  _setInterval (eIdx, &eIndex);
+                  Intersection is = eIdx->intersection (algState);
+                  if (is.type () == IDX_DISJOINT)
+                    {
+                      continue;
+                    }
+                  if (_controlIntersections (HD[eIndex], is))
+                    {
+                      continue;
+                    }
+                  Index equationIndex = e->lhs ();
+                  if (dIdx->hasRange () && !index.hasRange ())
+                    {
+                      equationIndex.setRange ();
+                      equationIndex.setLow (dIdx->low ());
+                      equationIndex.setHi (dIdx->hi ());
+                    }
+                  else if (index.hasRange () && !dIdx->hasRange ())
+                    {
+                      equationIndex.setConstant (dIdx->constant ());
+                      equationIndex.setFactor (0);
+                      equationIndex.setLow (1);
+                      equationIndex.setHi (1);
+                    }
+                  _indexDependencies (eIndex, eIdx, equationIndex, &algState, &simpleHDDeps, WR_ALLOC_LD_HD, WR_INIT_LD_HD, "modelData->nHD",
+                                      "modelData->HD", "events", is, assignments);
+                  HD[eIndex].push_back (is);
+                }
+            }
+        }
+      for (Index *dIdx = deps->begin (DEP_DISCRETE_VECTOR); !deps->end (DEP_DISCRETE_VECTOR); dIdx = deps->next (DEP_DISCRETE_VECTOR))
+        {
+          Index vectorIndex (index);
+          vectorIndex.setLow (dIdx->low ());
+          vectorIndex.setHi (dIdx->hi ());
+          for (MMO_Event ev = evt->begin (); !evt->end (); ev = evt->next ())
+            {
+              Index eIndex = evt->key ();
+              Dependencies eDeps = ev->lhs ();
+              int assignments = eDeps->discretes ();
+              for (Index *eIdx = eDeps->begin (DEP_DISCRETE); !eDeps->end (DEP_DISCRETE); eIdx = eDeps->next (DEP_DISCRETE))
+                {
+                  _setInterval (eIdx, &eIndex);
+                  Intersection is = eIdx->intersection (*dIdx);
+                  if (is.type () == IDX_DISJOINT)
+                    {
+                      continue;
+                    }
+                  if (_controlIntersections (HD[eIndex], is))
+                    {
+                      continue;
+                    }
+                  Index equationIndex = vectorIndex;
+                  if (is.type () >= 0 || is.type () == IDX_EQUAL)
+                    {
+                      equationIndex = e->lhs ();
+                    }
+                  _indexDependencies (eIndex, eIdx, equationIndex, dIdx, &simpleHDDeps, WR_ALLOC_LD_HD, WR_INIT_LD_HD, "modelData->nHD",
+                                      "modelData->HD", "events", is, assignments);
+                  HD[eIndex].push_back (is);
+                }
+            }
+        }
+        */
+      _common->vectorDependencies (e->lhs (), deps, WR_ALLOC_LD_DS, WR_INIT_LD_DS, "modelData->nDS", "modelData->DS", WR_ALLOC_LD_SD, WR_INIT_LD_SD,
+                                   "modelData->nSD", "modelData->SD", "states", "states", true, DEP_STATE_VECTOR, &_initializeVars);
+    }
+  if (genericEquation && hasInit)
+    {
+      _writer->write ("}", WR_ALLOC_LD_DS);
+      _writer->write ("}", WR_ALLOC_LD_SD);
+      _writer->write ("}", WR_INIT_LD_DS);
+      _writer->write ("}", WR_INIT_LD_SD);
+    }
+  genericEquation = false;
   for (MMO_Event e = evt->begin (); !evt->end (); e = evt->next ())
     {
       Index index = evt->key ();
@@ -2235,10 +2433,33 @@ Classic_::_init ()
     {
       _writer->print (it->second);
     }
-  _writer->print (initData ());
-  _writer->print (WR_ALLOC_LD);
-  _writer->print (WR_START_CODE);
-  _writer->print (WR_INIT_CODE);
+     _writer->print (initData ());
+    _writer->print (WR_INIT_CODE);
+    _writer->print (WR_ALLOC_LD);
+    _writer->print (WR_ALLOC_LD_DS);
+    _writer->print (WR_ALLOC_LD_SD);
+    _writer->print (WR_ALLOC_LD_ALG_DS);
+    _writer->print (WR_ALLOC_LD_ALG_SD);
+    _writer->print (WR_START_CODE);
+    _writer->print ("CLC_allocDataMatrix(modelData);");
+    _common->printSection ("states", _model->states (), WR_INIT_LD_DS);
+    if (_writer->isEmpty (WR_INIT_LD_DS))
+    {
+        _common->printSection ("states", _model->states (), WR_INIT_LD_ALG_DS);
+    }
+    else
+    {
+        _writer->print (WR_INIT_LD_ALG_DS);
+    }
+    _common->printSection ("states", _model->states (), WR_INIT_LD_SD);
+    if (_writer->isEmpty (WR_INIT_LD_SD))
+    {
+        _common->printSection ("states", _model->states (), WR_INIT_LD_ALG_SD);
+    }
+    else
+    {
+        _writer->print (WR_INIT_LD_ALG_SD);
+    }
   _writer->print (WR_INIT_EVENT);
   _writer->print (initOutput ());
   _writer->print (WR_ALLOC_OUTPUT_STATES);
@@ -2300,6 +2521,9 @@ Classic_::print (SOL_Function f)
     case SOL_OUTPUT:
       _print (f, _outputVars, WR_OUTPUT_SIMPLE, WR_OUTPUT_GENERIC, true);
       break;
+    case SOL_JACOBIAN:
+      _print (f, _modelVars, WR_MODEL_JACOBIAN, WR_MODEL_GENERIC, false);
+      break;
     default:
       break;
     }
@@ -2331,6 +2555,8 @@ Classic_::_prototype (SOL_Function f)
       return ("void\nCLC_initializeDataStructs(CLC_simulator simulator)\n{");
     case SOL_CALLBACK:
       return ("setData(modelData,modelOutput,modelDefinition,modelSettings);");
+    case SOL_JACOBIAN:
+      return ("void\nMOD_jacobian(double *x, double *d, double *alg, double t, double *jac)\n{");
     default:
       break;
     }

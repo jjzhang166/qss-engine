@@ -122,6 +122,9 @@ struct CLC_data_
   double it; //!<
   double ft; //!<
   int *nSD; //!<
+  int *nDS; //!<
+  int **SD; //!<
+  int **DS; //!<
   int *IT; //!<
   int states; //!<
   int discretes; //!<
@@ -197,4 +200,5 @@ CLC_freeModel (CLC_model model);
 typedef void
 (*CLC_setData) (CLC_data, SD_output, CLC_model, SD_simulationSettings);
 
+void CLC_allocDataMatrix (CLC_data data) ;
 #endif /* CLASSIC_DATA_H_ */

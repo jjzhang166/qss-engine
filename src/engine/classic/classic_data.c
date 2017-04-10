@@ -77,6 +77,9 @@ CLC_Data (int states, int discretes, int events, int inputs, int algebraics,
   p->it = settings->it;
   p->ft = settings->ft;
   p->nSD = (int*) malloc (states * sizeof(int));
+  p->nDS = (int*) malloc (states * sizeof(int));
+  p->SD = (int**) malloc (states * sizeof(int*));
+  p->DS = (int**) malloc (states * sizeof(int*));
   if (inputs > 0)
     {
       p->IT = (int*) malloc (inputs * sizeof(int));
@@ -121,6 +124,7 @@ CLC_Data (int states, int discretes, int events, int inputs, int algebraics,
 void
 CLC_freeData (CLC_data data)
 {
+  int i, states = data->states;
   free (data->dQMin);
   free (data->dQRel);
   if (data->alg != NULL)
@@ -133,6 +137,13 @@ CLC_freeData (CLC_data data)
     }
   free (data->x);
   free (data->nSD);
+  free (data->nDS);
+  for (i = 0; i < states; i++) {
+      if (data->SD[i] != NULL) 
+	      free (data->SD[i]);
+      if (data->DS[i] != NULL)
+	      free (data->DS[i]);
+	}
   if (data->inputs > 0)
     {
       free (data->IT);
@@ -161,4 +172,13 @@ CLC_freeModel (CLC_model model)
 {
   free (model->events);
   free (model);
+}
+
+void CLC_allocDataMatrix (CLC_data data) {
+  int i, states = data->states, events = data->events, mRHS = 0;
+
+  for (i = 0; i < states; i++) {
+      data->SD[i] = (data->nSD[i] > 0) ?  (int*) malloc (data->nSD[i] * sizeof(int)) : NULL;
+      data->DS[i] = (data->nDS[i] > 0) ?  (int*) malloc (data->nDS[i] * sizeof(int)) : NULL;
+	}
 }
