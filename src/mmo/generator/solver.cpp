@@ -2325,13 +2325,13 @@ Classic_::_init ()
         _writer->print (it->second);
     }
     _writer->print (initData ());
-    _writer->print (WR_INIT_CODE);
     _writer->print (WR_ALLOC_LD);
     _writer->print (WR_ALLOC_LD_DS);
     _writer->print (WR_ALLOC_LD_SD);
     _writer->print (WR_ALLOC_LD_ALG_DS);
     _writer->print (WR_ALLOC_LD_ALG_SD);
     _writer->print (WR_START_CODE);
+    _writer->print (WR_INIT_CODE);
     _writer->print ("CLC_allocDataMatrix(modelData);");
     _common->printSection ("states", _model->states (), WR_INIT_LD_DS);
     if (_writer->isEmpty (WR_INIT_LD_DS))
