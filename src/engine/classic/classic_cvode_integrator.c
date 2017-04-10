@@ -25,7 +25,7 @@
 #include <sundials/sundials_dense.h> /* definitions DlsMat DENSE_ELEM */
 #include <sundials/sundials_types.h> /* definition of type realtype */
 
-//#define USE_JACOBIAN
+#define USE_JACOBIAN
 #ifdef USE_JACOBIAN
 #include <cvode/cvode_superlumt.h>   /* prototype for CVSUPERLUMT */
 #include <sundials/sundials_sparse.h> /* definitions SlsMat */
@@ -57,41 +57,37 @@ int is_sampled;
 
 #ifdef USE_JACOBIAN
 /* Test jacobian */
-#define N 200
-extern double __PAR_CAP[N];
-extern double __PAR_RES[N];
-extern double __PAR_POT[N];
-
 static int Jac(realtype t, N_Vector y, N_Vector fy, SlsMat JacMat, void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3) {
 
-  static int init = 0;
+  static int init = 0, n = 0;
+  int size = clcData->states, nnz, i, m, j;
   realtype *yval;
   int *colptrs = *JacMat->colptrs;
   int *rowvals = *JacMat->rowvals;
 
   yval = N_VGetArrayPointer_Serial(y);
-
   if (!init) {
     SparseSetMatToZero(JacMat);
 
     colptrs[0] = 0;
-    for (int i=1; i<=N; i++) { 
-      colptrs[i] = i+1;
+    n = 0;
+    m = 1;
+    for (i=1; i<=size; i++) { 
+      for (j=0; j <= clcData->nSD[i-1]; j++) {
+       rowvals [n+j] = clcData->SD[i-1][j];
+      }
+      n += clcData->nSD[i-1];
+      colptrs[i] = n;
     }
-    colptrs[N+1] = N;
-
-    for (int i=1; i<=N; i++)
-      rowvals [i] = i;
     init = 1;
   }
   
-  for (int i=1; i<=N; i++) 
-    JacMat->data[i] = 0;//1/__PAR_RES[i-1]/__PAR_CAP[i-1];
-    //JacMat->data[i] = yval[i-1]/__PAR_RES[i-1]/__PAR_CAP[i-1];
+  for (int i=1; i<=n; i++) 
+    JacMat->data[i] = i;
   
 
-  //SparsePrintMat (JacMat, stdout);
-  //abort();
+  SparsePrintMat (JacMat, stdout);
+  abort();
   return 0;
 
 }
@@ -202,7 +198,9 @@ CVODE_integrate (SIM_simulator simulate)
 
 /***************************************************************/
 #ifdef USE_JACOBIAN
-  nnz = size * size;
+  nnz = 0;
+  for (i=0; i < size; i++)
+    nnz += clcData->nSD[i];
   flag = CVSuperLUMT(cvode_mem, 1, size, nnz);
   if (check_flag(&flag, "CVSuperLUMT", 1, simulator)) return;
 
