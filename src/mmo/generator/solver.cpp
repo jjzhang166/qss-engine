@@ -1702,7 +1702,8 @@ QSS_::_init ()
         _writer->print (WR_ALLOC_LD_DH);
     }
     _writer->print (WR_ALLOC_EVENT_LHSST);
-    _writer->print (WR_ALLOC_EVENT_RHSST);    _writer->print ("QSS_allocDataMatrix(modelData);");
+    _writer->print (WR_ALLOC_EVENT_RHSST);
+    _writer->print ("QSS_allocDataMatrix(modelData);");
 
     _writer->print (WR_ALLOC_EVENT_ALG_RHSST);
     _writer->print (WR_ALLOC_EVENT_DSC);
@@ -1915,7 +1916,7 @@ deleteQSS (QSS m)
 
 Classic_::Classic_ (MMO_Model model, MMO_CompileFlags flags, MMO_Writer writer) :
         _flags (flags), _model (model), _writer (writer), _modelVars (), _zcVars (), _handlerPosVars (), _handlerNegVars (), _outputVars (), _initializeVars (), _name (
-                model->name ()), _freeVars ()
+                model->name ()), _freeVars (), _jacobianExps ()
 {
     if (_flags->hasOutputFile ())
     {
@@ -2033,7 +2034,7 @@ Classic_::initializeMatrices ()
         buffer.str ("");
     }
     MMO_EquationTable et = _model->derivatives ();
-    MMO_DependenciesTable _modelDeps = newMMO_DependenciesTable();
+    MMO_DependenciesTable modelDeps = newMMO_DependenciesTable ();
     bool hasInit = false;
     for (MMO_Equation e = et->begin (); !et->end (); e = et->next ())
     {
@@ -2093,12 +2094,13 @@ Classic_::initializeMatrices ()
             _writer->write (&buffer, WR_ALLOC_LD_SD);
             buffer << indent << "modelData->SD[" << sIdx << "][states[" << sIdx << "]++] = " << eqsIdx << ";";
             _writer->write (&buffer, WR_INIT_LD_SD);
+            _jacobianExps[*idx][e->lhs ()] = e->jacobianExp (*idx);
         }
         _common->vectorDependencies (e->lhs (), deps, WR_ALLOC_LD_DS, WR_INIT_LD_DS, "modelData->nDS", "modelData->DS", WR_ALLOC_LD_SD, WR_INIT_LD_SD,
                                      "modelData->nSD", "modelData->SD", "states", "states", true, DEP_STATE_VECTOR, &_initializeVars);
         _common->addAlgebriacDeps (deps, e->lhs (), defStates, "modelData->nDS", "modelData->nSD", "modelData->DS", "modelData->SD",
-                                          WR_ALLOC_LD_ALG_DS, WR_ALLOC_LD_ALG_SD, WR_INIT_LD_ALG_DS, WR_INIT_LD_ALG_SD, "states", "states",
-                                          DEP_ALGEBRAIC_STATE, _modelDeps);
+                                   WR_ALLOC_LD_ALG_DS, WR_ALLOC_LD_ALG_SD, WR_INIT_LD_ALG_DS, WR_INIT_LD_ALG_SD, "states", "states",
+                                   DEP_ALGEBRAIC_STATE, modelDeps);
     }
     if (genericEquation && hasInit)
     {
@@ -2107,6 +2109,7 @@ Classic_::initializeMatrices ()
         _writer->write ("}", WR_INIT_LD_DS);
         _writer->write ("}", WR_INIT_LD_SD);
     }
+    deleteMMO_DependenciesTable (modelDeps);
     genericEquation = false;
     for (MMO_Event e = evt->begin (); !evt->end (); e = evt->next ())
     {
@@ -2220,6 +2223,34 @@ Classic_::model ()
 void
 Classic_::modelDeps ()
 {
+    MMO_EquationTable equations = _model->derivatives ();
+    MMO_EquationTable algebraics = _model->algebraics ();
+    stringstream buffer;
+    string indent = _writer->indent (1);
+    int order = _common->getOrder ();
+    int coeff = _model->annotation ()->order () + 1;
+    map<Index, map<Index, MMO_Expression> >::iterator it;
+    stringstream jac;
+    for (it = _jacobianExps.begin (); it != _jacobianExps.end (); it++)
+    {
+        jac << "j[][]";
+        map<Index, MMO_Expression>::iterator eit;
+        for (eit = it->second.begin (); eit != it->second.end (); eit++)
+        {
+            buffer << indent << jac.str () << " = " << eit->second->print ("i", 0, 0, true, 1, 0) << ";";
+            _writer->write (&buffer, WR_MODEL_DEPS_SIMPLE);
+        }
+    }
+}
+
+void
+Classic_::_jacobian ()
+{
+    _writer->print (_prototype (SOL_DEPS));
+    _writer->beginBlock ();
+    _writer->print (WR_MODEL_DEPS_SIMPLE);
+    _writer->endBlock ();
+    _writer->print ("}");
 }
 
 void
@@ -2409,6 +2440,9 @@ Classic_::print (SOL_Function f)
         case SOL_INIT:
             _init ();
             break;
+        case SOL_DEPS:
+            _jacobian ();
+            break;
         case SOL_OUTPUT:
             _print (f, _outputVars, WR_OUTPUT_SIMPLE, WR_OUTPUT_GENERIC, true);
             break;
@@ -2443,6 +2477,8 @@ Classic_::_prototype (SOL_Function f)
             return ("void\nCLC_initializeDataStructs(CLC_simulator simulator)\n{");
         case SOL_CALLBACK:
             return ("setData(modelData,modelOutput,modelDefinition,modelSettings);");
+        case SOL_DEPS:
+            return ("void\nMOD_jacobian(double *x, double *d, double *alg, double t, double *jac)\n{");
         default:
             break;
     }

@@ -59,6 +59,7 @@ MMO_Equation_::MMO_Equation_ (AST_Expression exp, MMO_ModelData data) :
     {
         _initDerivatives ();
     }
+    _generateJacobianExps();
 }
 
 MMO_Equation_::MMO_Equation_ (MMO_Expression exp, MMO_ModelData data) :
@@ -91,6 +92,22 @@ MMO_Equation_::_initDerivatives ()
     _exp[2] = newMMO_Expression (rd.foldTraverse (exp2), _data);
     AST_Expression exp3 = ed.derivate (exp2, _data->symbols (), _exp[0]);
     _exp[3] = newMMO_Expression (rd.foldTraverse (exp3), _data);
+}
+
+
+void
+MMO_Equation_::_generateJacobianExps()
+{
+    ExpressionDerivator ed;
+    _jacobianExps = ed.generateJacobianExps(_exp[0]->exp(), _data);
+}
+
+MMO_Expression
+MMO_Equation_::jacobianExp (Index idx)
+{
+    cout << "Busca: " << _exp[0]->deps()->identifier(idx, DEP_STATE) << " Indice: " << idx.print("i") << endl;
+    cout << "Encuentra: " << _jacobianExps[_exp[0]->deps()->identifier(idx, DEP_STATE)]->print("i", 0, 1, true, 1, 1) << endl;
+    return (_jacobianExps[_exp[0]->deps()->identifier(idx, DEP_STATE)]);
 }
 
 MMO_Expression

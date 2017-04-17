@@ -460,6 +460,8 @@ private:
 	  WR_Section generic, bool switchGen);
   void
   _init ();
+  void
+  _jacobian ();
   MMO_CompileFlags _flags;
   MMO_Model _model;
   MMO_Writer _writer;
@@ -472,6 +474,7 @@ private:
   SolverCommon _common;
   string _name;
   map<string, string> _freeVars;
+  map<Index, map<Index, MMO_Expression> > _jacobianExps;
 };
 /**
  *
