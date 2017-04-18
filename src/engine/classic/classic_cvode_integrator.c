@@ -71,10 +71,10 @@ static int Jac(realtype t, N_Vector y, N_Vector fy, SlsMat JacMat, void *user_da
 
     for (i=0; i<size; i++) { 
       colptrs[i] = n;
-      printf("Indexes for col %d start at %d.\n", i, n);
+      //printf("Indexes for col %d start at %d.\n", i, n);
       for (j = n, m = 0; j < n + clcData->nSD[i] ; j++, m++) {
         rowvals[j] = clcData->SD[i][m];
-        printf("Non null value at row %d in col %d. Saving it in %d \n", rowvals[j],i, j);
+        //printf("Non null value at row %d in col %d. Saving it in %d \n", rowvals[j],i, j);
       }
       n += clcData->nSD[i];
     }
@@ -198,20 +198,21 @@ CVODE_integrate (SIM_simulator simulate)
   if (check_flag(&flag, "CVodeRootInit", 1, simulator)) return;
 
 /***************************************************************/
-#ifdef USE_JACOBIAN
-  nnz = 0;
-  for (i=0; i < size; i++)
-    nnz += clcData->nSD[i];
-  flag = CVSuperLUMT(cvode_mem, 1, size, nnz);
-  if (check_flag(&flag, "CVSuperLUMT", 1, simulator)) return;
-
-  /* Set the Jacobian routine to Jac (user-supplied) */
-  flag = CVSlsSetSparseJacFn(cvode_mem, Jac);
-  if (check_flag(&flag, "CVSlsSetSparseJacFn", 1, simulator)) return;
-#else
-  flag = CVDense(cvode_mem, size);
-  if (check_flag(&flag, "CVDense", 1, simulator)) return;
-#endif
+  if (clcData->solver == SD_CVODE_BDF_SP) {
+    printf("runing sparse CVODE\n");
+    nnz = 0;
+    for (i=0; i < size; i++)
+      nnz += clcData->nSD[i];
+    flag = CVSuperLUMT(cvode_mem, 1, size, nnz);
+    if (check_flag(&flag, "CVSuperLUMT", 1, simulator)) return;
+    /* Set the Jacobian routine to Jac (user-supplied) */
+    flag = CVSlsSetSparseJacFn(cvode_mem, Jac);
+    if (check_flag(&flag, "CVSlsSetSparseJacFn", 1, simulator)) return;
+  } else { 
+    printf("runing dense CVODE\n");
+    flag = CVDense(cvode_mem, size);
+    if (check_flag(&flag, "CVDense", 1, simulator)) return;
+  }
 
 /***************************************************************/
   getTime (simulator->stats->sTime);

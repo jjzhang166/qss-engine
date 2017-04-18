@@ -557,6 +557,12 @@ MMO_ModelAnnotation_::_getSolver (string s)
       _polyCoeffs = 1;
       return (ANT_CVODE_BDF);
     }
+  else if (!s.compare ("CVODE_BDF_SP"))
+    {
+      _order = 1;
+      _polyCoeffs = 1;
+      return (ANT_CVODE_BDF_SP);
+    }
  
   else if (!s.compare ("CVODE_AM"))
     {

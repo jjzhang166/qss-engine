@@ -50,7 +50,8 @@ typedef enum
   ANT_DASSL,
   ANT_DOPRI,
   ANT_CVODE_BDF,
-  ANT_CVODE_AM
+  ANT_CVODE_AM,
+  ANT_CVODE_BDF_SP
 } ANT_Solver;
 
 typedef enum

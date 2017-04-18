@@ -73,6 +73,10 @@ _getSolver (const char *sol)
     {
       return (SD_CVODE_BDF);
     }
+  else if (!strcmp (sol, "CVODE_BDF_SP"))
+    {
+      return (SD_CVODE_BDF_SP);
+    }
   else if (!strcmp (sol, "CVODE_AM"))
     {
       return (SD_CVODE_AM);

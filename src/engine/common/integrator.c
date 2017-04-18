@@ -51,6 +51,7 @@ INT_Integrator (SIM_simulator simulator)
       }
       break;
     case SD_CVODE_BDF:
+    case SD_CVODE_BDF_SP:
     case SD_CVODE_AM:
       {
 	p->ops->initiliaze = CLC_initialize;
