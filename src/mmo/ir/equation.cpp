@@ -106,7 +106,15 @@ MMO_Expression
 MMO_Equation_::jacobianExp (Index idx)
 {
     cout << "Busca: " << _exp[0]->deps()->identifier(idx, DEP_STATE) << " Indice: " << idx.print("i") << endl;
-    cout << "Encuentra: " << _jacobianExps[_exp[0]->deps()->identifier(idx, DEP_STATE)]->print("i", 0, 1, true, 1, 1) << endl;
+    if (_jacobianExps.find(_exp[0]->deps()->identifier(idx, DEP_STATE)) == _jacobianExps.end())
+      {
+	cout << "No existe el indice!" << endl;
+	return (NULL);
+      }
+    else
+      {
+	cout << "Encuentra el indice: " << endl;
+      }
     return (_jacobianExps[_exp[0]->deps()->identifier(idx, DEP_STATE)]);
 }
 

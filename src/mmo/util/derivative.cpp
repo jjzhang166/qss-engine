@@ -69,9 +69,16 @@ ExpressionDerivator::generateJacobianExps (AST_Expression exp, MMO_ModelData dat
     GiNaC::symbol time = tog.getTime ();
     for (it = dir.begin (); it != dir.end (); it++)
     {
+        VarInfo v = data->symbols()->lookup (it->first);
+        if (v != NULL)
+          {
+        if (v->isState () || v->isAlgebraic ())
+          {
         GiNaC::ex der_exp = dexp.subs (var (GiNaC::wild (), time) == GiNaC::wild ()).diff (it->second);
         cout << "Genera: " << der_exp  << " para: " << it->second << endl;
         jacobianExps[it->first] = newMMO_Expression (rd.foldTraverse (toe.convert (der_exp)), data);
+          }
+          }
     }
     return (jacobianExps);
 }

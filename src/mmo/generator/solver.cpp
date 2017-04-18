@@ -1916,8 +1916,9 @@ deleteQSS (QSS m)
 
 Classic_::Classic_ (MMO_Model model, MMO_CompileFlags flags, MMO_Writer writer) :
         _flags (flags), _model (model), _writer (writer), _modelVars (), _zcVars (), _handlerPosVars (), _handlerNegVars (), _outputVars (), _initializeVars (), _name (
-                model->name ()), _freeVars (), _jacobianExps ()
+                model->name ()), _freeVars ()
 {
+    _modelDeps = newMMO_DependenciesTable ();
     if (_flags->hasOutputFile ())
     {
         _name = _flags->outputFileName ();
@@ -2034,7 +2035,6 @@ Classic_::initializeMatrices ()
         buffer.str ("");
     }
     MMO_EquationTable et = _model->derivatives ();
-    MMO_DependenciesTable modelDeps = newMMO_DependenciesTable ();
     bool hasInit = false;
     for (MMO_Equation e = et->begin (); !et->end (); e = et->next ())
     {
@@ -2094,13 +2094,14 @@ Classic_::initializeMatrices ()
             _writer->write (&buffer, WR_ALLOC_LD_SD);
             buffer << indent << "modelData->SD[" << sIdx << "][states[" << sIdx << "]++] = " << eqsIdx << ";";
             _writer->write (&buffer, WR_INIT_LD_SD);
-            _jacobianExps[*idx][e->lhs ()] = e->jacobianExp (*idx);
+            _common->addModelDeps (deps, dIdx, e->lhs (), _modelDeps);
+            //_jacobianExps[*idx][e->lhs ()] = e->jacobianExp (*idx);
         }
         _common->vectorDependencies (e->lhs (), deps, WR_ALLOC_LD_DS, WR_INIT_LD_DS, "modelData->nDS", "modelData->DS", WR_ALLOC_LD_SD, WR_INIT_LD_SD,
                                      "modelData->nSD", "modelData->SD", "states", "states", true, DEP_STATE_VECTOR, &_initializeVars);
         _common->addAlgebriacDeps (deps, e->lhs (), defStates, "modelData->nDS", "modelData->nSD", "modelData->DS", "modelData->SD",
                                    WR_ALLOC_LD_ALG_DS, WR_ALLOC_LD_ALG_SD, WR_INIT_LD_ALG_DS, WR_INIT_LD_ALG_SD, "states", "states",
-                                   DEP_ALGEBRAIC_STATE, modelDeps);
+                                   DEP_ALGEBRAIC_STATE, _modelDeps);
     }
     if (genericEquation && hasInit)
     {
@@ -2109,7 +2110,6 @@ Classic_::initializeMatrices ()
         _writer->write ("}", WR_INIT_LD_DS);
         _writer->write ("}", WR_INIT_LD_SD);
     }
-    deleteMMO_DependenciesTable (modelDeps);
     genericEquation = false;
     for (MMO_Event e = evt->begin (); !evt->end (); e = evt->next ())
     {
@@ -2221,26 +2221,260 @@ Classic_::model ()
 }
 
 void
-Classic_::modelDeps ()
+Classic_::_printDeps (Dependencies d, Index derivativeIndex, MMO_EquationTable equations, MMO_EquationTable algebraics, string idxStr, WR_Section s,
+                  int i, bool constant)
 {
-    MMO_EquationTable equations = _model->derivatives ();
-    MMO_EquationTable algebraics = _model->algebraics ();
     stringstream buffer;
-    string indent = _writer->indent (1);
+    int indent = i;
+    bool controlRange = (s == WR_MODEL_DEPS_SIMPLE);
     int order = _common->getOrder ();
-    int coeff = _model->annotation ()->order () + 1;
-    map<Index, map<Index, MMO_Expression> >::iterator it;
-    stringstream jac;
-    for (it = _jacobianExps.begin (); it != _jacobianExps.end (); it++)
+    int xCoeff = _model->annotation ()->polyCoeffs ();
+    bool constantPrint = constant;
+    string aux1, aux2;
+    for (Index *dIdx = d->begin (DEP_ALGEBRAIC); !d->end (DEP_ALGEBRAIC); dIdx = d->next (DEP_ALGEBRAIC))
     {
-        jac << "j[][]";
-        map<Index, MMO_Expression>::iterator eit;
-        for (eit = it->second.begin (); eit != it->second.end (); eit++)
+        if (d->isVector (dIdx))
         {
-            buffer << indent << jac.str () << " = " << eit->second->print ("i", 0, 0, true, 1, 0) << ";";
-            _writer->write (&buffer, WR_MODEL_DEPS_SIMPLE);
+            string vn;
+            buffer.str ("");
+            list<MMO_Equation> eqs = algebraics->equation (*dIdx);
+            if (eqs.empty ())
+            {
+                Error::getInstance ()->add (0, EM_CG | EM_NO_EQ, ER_Error, "Print vector algebraic dependencies for index %s.",
+                                            dIdx->print ().c_str ());
+                return;
+            }
+            list<MMO_Equation>::iterator eq;
+            for (eq = eqs.begin (); eq != eqs.end (); eq++)
+            {
+                string iter;
+                Index lhsEq = (*eq)->lhs ();
+                stringstream aLhs;
+                if (lhsEq.hasRange ())
+                {
+                    iter = Util::getInstance ()->newVarName ("j", _model->varTable ());
+                    _common->addLocalVar (iter, &_modelDepsVars);
+                    buffer << _writer->indent (indent) << "for(" << iter << " = " << lhsEq.begin () << "; " << iter << " <= " << lhsEq.end () << "; "
+                            << iter << "++)";
+                    _writer->write (&buffer, s);
+                    _writer->write ("{", s);
+                    aLhs << "alg[(" << (*eq)->lhs ().print (iter) << ")";
+                    aLhs << " * " << xCoeff;
+                }
+                else
+                {
+                    int cte = dIdx->mappedValue ((*eq)->lhs ().constant ());
+                    aLhs << "alg[" << cte * xCoeff;
+                }
+                _common->print ((*eq)->print (_writer->indent (indent), aLhs.str (), iter, false,
+                NULL,
+                                              EQ_ALGEBRAIC, order, false, 0, false, dIdx->low (), 0),
+                                s);
+                if (lhsEq.hasRange ())
+                {
+                    _writer->write ("}", s);
+                }
+            }
+        }
+        else
+        {
+            string vn, vm;
+            string varIdx = "j";
+            list<MMO_Equation> eqs = algebraics->equation (*dIdx);
+            if (eqs.empty ())
+            {
+                Error::getInstance ()->add (0, EM_CG | EM_NO_EQ, ER_Error, "Print algebraic dependencies for index %s.", dIdx->print ().c_str ());
+                return;
+            }
+            Index *algebraicState = d->algebraicState (dIdx);
+            list<MMO_Equation>::iterator eq;
+            for (eq = eqs.begin (); eq != eqs.end (); eq++)
+            {
+                bool range = ((*eq)->lhs ().hasRange () && (*eq)->lhs ().range () != derivativeIndex.range ()) && (dIdx->factor () != 0);
+                if (range)
+                {
+                    if (aux1.empty ())
+                    {
+                        aux1 = Util::getInstance ()->newVarName ("j", _model->varTable ());
+                        _modelDepsVars["int " + aux1 + " = 0;"] = "int " + aux1 + " = 0;";
+                    }
+                    vn = aux1;
+                }
+                else
+                {
+                    vn = varIdx;
+                }
+                bool variableMod = false;
+                constantPrint = constant;
+                stringstream lhs;
+                if (constant && algebraicState && algebraicState->hasRange () && dIdx->hasRange ())
+                {
+                    _common->addLocalVar (varIdx, &_modelDepsVars);
+                    buffer << _writer->indent (indent) << "for(" << varIdx << " = " << algebraicState->begin () << ";" << varIdx << " <= "
+                            << algebraicState->end () << "; " << varIdx << "++)";
+                    _writer->write (&buffer, s);
+                    buffer << _writer->indent (indent) << "{";
+                    _writer->write (&buffer, s);
+                    constantPrint = false;
+                    indent++;
+                }
+                int cte = 0;
+                if ((*eq)->lhs ().factor () == 0)
+                {
+                    cte = (*eq)->lhs ().mappedConstant ();
+                    lhs << "alg[" << cte * xCoeff;
+                    constantPrint = true;
+                }
+                else if (dIdx->factor () == 0)
+                {
+                    if (dIdx->isArray ())
+                    {
+                        cte = dIdx->mappedValue ((*eq)->lhs ().constant ());
+                        lhs << "alg[" << cte * xCoeff;
+                        cte = dIdx->constant ();
+                        constantPrint = true;
+                    }
+                    else
+                    {
+                        lhs << "alg[(" << dIdx->print (varIdx) << ")";
+                    }
+                }
+                else
+                {
+                    if (dIdx->factor () != 1 || dIdx->operConstant () != 0)
+                    {
+                        if (aux2.empty ())
+                        {
+                            aux2 = Util::getInstance ()->newVarName ("j", _model->varTable ());
+                            _modelDepsVars["int " + aux2 + " = 0;"] = "int " + aux2 + " = 0;";
+                        }
+                        vm = aux2;
+                        variableMod = true;
+                        lhs << "alg[(" << (*eq)->lhs ().print (dIdx->definition ("j"), -(*eq)->lhs ().operConstant ()) << ")";
+                        varIdx = vm;
+                    }
+                    else
+                    {
+                        lhs << "alg[(" << (*eq)->lhs ().print ("j", -(*eq)->lhs ().operConstant ()) << ")";
+                        varIdx = vn;
+                    }
+                }
+                if (!constantPrint)
+                {
+                    lhs << " * " << xCoeff;
+                }
+                if (range)
+                {
+                    _writer->write ((*eq)->printRange ("j", vn, _writer->indent (indent), (*eq)->lhs ()), s);
+                }
+                if (variableMod)
+                {
+                    _writer->write ((*eq)->printRange (vn, vm, _writer->indent (indent), *dIdx, true), s);
+                }
+                _common->print ((*eq)->print (_writer->indent (indent), lhs.str (), varIdx, false,
+                NULL,
+                                              EQ_ALGEBRAIC, order, constantPrint, 0, false, dIdx->low (), cte),
+                                s);
+                _common->insertLocalVariables (&_modelDepsVars, (*eq)->getVariables ());
+                if (constant && algebraicState && algebraicState->hasRange () && dIdx->hasRange ())
+                {
+                    indent--;
+                    buffer << _writer->indent (indent) << "}";
+                    _writer->write (&buffer, s);
+                    constantPrint = constant;
+                }
+                if (variableMod)
+                {
+                    buffer << _writer->indent (indent) << "}";
+                    _writer->write (&buffer, s);
+                }
+                if (range)
+                {
+                    buffer << _writer->indent (indent) << "}";
+                    _writer->write (&buffer, s);
+                }
+            }
         }
     }
+    constantPrint = constant;
+    for (Index *dIdx = d->begin (DEP_STATE); !d->end (DEP_STATE); dIdx = d->next (DEP_STATE))
+    {
+        stringstream lhs;
+        list<MMO_Equation> eqs = equations->equation (*dIdx);
+        if (eqs.empty ())
+        {
+            Error::getInstance ()->add (0, EM_CG | EM_NO_EQ, ER_Error, "Print state dependencies for index %s.", dIdx->print ().c_str ());
+            return;
+        }
+        list<MMO_Equation>::iterator eq;
+        for (eq = eqs.begin (); eq != eqs.end (); eq++)
+        {
+            string varIdx = "j";
+            if (dIdx->hasRange () && controlRange)
+            {
+                _common->addLocalVar (varIdx, &_modelDepsVars);
+                buffer << _writer->indent (indent) << "for(" << varIdx << " = " << (*eq)->lhs ().begin () << "; " << varIdx << " <= "
+                        << (*eq)->lhs ().end () << "; " << varIdx << "++)";
+                _writer->write (&buffer, s);
+                buffer << _writer->indent (indent++) << "{";
+                _writer->write (&buffer, s);
+                constantPrint = false;
+            }
+            int constantOffset = 0;
+            stringstream varMap;
+            if (dIdx->hasRange ())
+            {
+                string varIndex = (*eq)->lhs ().print (varIdx);
+                lhs << "jac[(" << varIndex << ")] = ";
+            }
+            else
+            {
+                stringstream varIndex;
+                constantOffset = (*eq)->lhs ().mappedValue (dIdx->constant ());
+                varIndex << constantOffset;
+                lhs << "jac[" << constantOffset << "] = ";
+                constantOffset = dIdx->constant ();
+            }
+            cout << dIdx->print("i") << endl;
+            buffer << lhs.str() << (*eq)->jacobianExp(*dIdx)->print (lhs.str (), dIdx->low(),  order, constantPrint);
+            _writer->write (&buffer, s);
+            _common->insertLocalVariables (&_modelDepsVars, (*eq)->getVariables ());
+            if (dIdx->hasRange () && controlRange)
+            {
+                buffer << _writer->indent (--indent) << "}";
+                _writer->write (&buffer, s);
+                constantPrint = constant;
+            }
+        }
+    }
+}
+
+
+void
+Classic_::modelDeps ()
+{
+  MMO_EquationTable equations = _model->derivatives ();
+  MMO_EquationTable algebraics = _model->algebraics ();
+  stringstream buffer;
+  string indent = _writer->indent (1);
+  int order = _common->getOrder ();
+  int coeff = _model->annotation ()->order () + 1;
+  for (Dependencies d = _modelDeps->begin (); !_modelDeps->end (); d = _modelDeps->next ())
+  {
+      Index idx = _modelDeps->key ();
+      Index eqIdx = equations->equationIndex (idx);
+      if (idx.hasRange ())
+      {
+          _common->genericDefCondition (eqIdx, idx, WR_MODEL_DEPS_GENERIC, &_modelDepsVars);
+          _printDeps (d, eqIdx, equations, algebraics, idx.print ("j"), WR_MODEL_DEPS_GENERIC, 1, false);
+          buffer << "}";
+          _writer->write (&buffer, WR_MODEL_DEPS_GENERIC);
+      }
+      else
+      {
+          _printDeps (d, eqIdx, equations, algebraics, "", WR_MODEL_DEPS_SIMPLE, 2, true);
+      }
+  }
 }
 
 void
@@ -2249,6 +2483,7 @@ Classic_::_jacobian ()
     _writer->print (_prototype (SOL_DEPS));
     _writer->beginBlock ();
     _writer->print (WR_MODEL_DEPS_SIMPLE);
+    _writer->print (WR_MODEL_DEPS_GENERIC);
     _writer->endBlock ();
     _writer->print ("}");
 }

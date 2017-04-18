@@ -461,11 +461,16 @@ private:
   void
   _init ();
   void
+  _printDeps (Dependencies d, Index derivativeIndex, MMO_EquationTable equations,
+	      MMO_EquationTable algebraics, string idxStr, WR_Section s, int i,
+	      bool constant);
+  void
   _jacobian ();
   MMO_CompileFlags _flags;
   MMO_Model _model;
   MMO_Writer _writer;
   map<string, string> _modelVars;
+  map<string, string> _modelDepsVars;
   map<string, string> _zcVars;
   map<string, string> _handlerPosVars;
   map<string, string> _handlerNegVars;
@@ -474,7 +479,7 @@ private:
   SolverCommon _common;
   string _name;
   map<string, string> _freeVars;
-  map<Index, map<Index, MMO_Expression> > _jacobianExps;
+  MMO_DependenciesTable _modelDeps;
 };
 /**
  *
