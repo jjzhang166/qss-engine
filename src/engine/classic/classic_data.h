@@ -117,35 +117,35 @@ typedef struct CLC_data_ *CLC_data;
  */
 struct CLC_data_
 {
-    double *dQMin; //!<
-    double *dQRel; //!<
-    double *d; //!<
-    double *x; //!<
-    double *alg; //!<
-    double it; //!<
-    double ft; //!<
-    int *nSD; //!<
-    int *nDS; //!<
-    int *IT; //!<
-    int **SD; //!<
-    int **DS; //!<
-    int states; //!<
-    int discretes; //!<
-    int events; //!<
-    int inputs; //!<
-    char *fired;
-    unsigned long scalarEvaluations; //!<
-    unsigned long zeroCrossings; //!<
-    unsigned long long funEvaluations; //!<
-    unsigned long totalOutputSteps; //!<
-    unsigned long totalJacobians; //!<
-    unsigned long totalCrossingEvaluations; //!<
-    unsigned long totalStepsDASSL; //!<
-    unsigned long totalSteps; //!<
-    unsigned long totalEvents; //!<
-    SD_Solver solver; //!<
-    SD_eventData event; //!<
-    SD_parameters params; //!<
+  double *dQMin; //!<
+  double *dQRel; //!<
+  double *d; //!<
+  double *x; //!<
+  double *alg; //!<
+  double it; //!<
+  double ft; //!<
+  int *nSD; //!<
+  int *nDS; //!<
+  int **SD; //!<
+  int **DS; //!<
+  int *IT; //!<
+  int states; //!<
+  int discretes; //!<
+  int events; //!<
+  int inputs; //!<
+  char *fired;
+  unsigned long scalarEvaluations; //!<
+  unsigned long zeroCrossings; //!<
+  unsigned long long funEvaluations; //!<
+  unsigned long totalOutputSteps; //!<
+  unsigned long totalJacobians; //!<
+  unsigned long totalCrossingEvaluations; //!<
+  unsigned long totalStepsDASSL; //!<
+  unsigned long totalSteps; //!<
+  unsigned long totalEvents; //!<
+  SD_Solver solver; //!<
+  SD_eventData event; //!<
+  SD_parameters params; //!<
 };
 /**
  *

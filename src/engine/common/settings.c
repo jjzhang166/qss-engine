@@ -135,7 +135,10 @@ _getOrder (SD_Solver sol)
     case SD_DASSL:
     case SD_DOPRI:
     case SD_CVODE_BDF:
+<<<<<<< HEAD
     case SD_IDA:
+=======
+>>>>>>> 4659add65ca0375b57b75e9cfacd93bcded3907d
     case SD_CVODE_AM:
       return (1);
     case SD_QSS2:

@@ -93,6 +93,10 @@ MMO_Files_::makefile ()
         includes << " -L" << *it;
     }
   includes << " -L /home/fbergero/Downloads/SuperLU_MT_3.1/lib ";
+  _writer->print (&includes);
+  _writer->print (_solver->makefile (SOL_LIBRARIES));
+  buffer << _solver->makefile (SOL_INCLUDES);
+  tmp = _model->includeDirectories ();
   for (list<string>::iterator it = tmp.begin (); it != tmp.end (); it++)
     {
         include.insert (pair<string, string> (*it, *it));

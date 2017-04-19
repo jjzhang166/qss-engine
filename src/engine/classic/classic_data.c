@@ -148,7 +148,7 @@ CLC_freeData (CLC_data data)
         {
             free (data->DS[i]);
         }
-    if (data->inputs > 0)
+  if (data->inputs > 0)
     {
         free (data->IT);
     }
@@ -177,4 +177,3 @@ CLC_freeModel (CLC_model model)
     free (model->events);
     free (model);
 }
-

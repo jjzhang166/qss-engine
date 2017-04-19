@@ -563,7 +563,6 @@ MMO_ModelAnnotation_::_getSolver (string s)
       _polyCoeffs = 1;
       return (ANT_IDA);
     }
- 
   else if (!s.compare ("CVODE_AM"))
     {
       _order = 1;
