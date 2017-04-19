@@ -3438,6 +3438,7 @@ SolverCommon_::initialCode (map<string, string> *initializeVars)
   if (_model->annotation ()->solver () == ANT_DASSL
       || _model->annotation ()->solver () == ANT_DOPRI
       || _model->annotation ()->solver () == ANT_CVODE_BDF
+      || _model->annotation ()->solver () == ANT_IDA
       || _model->annotation ()->solver () == ANT_CVODE_AM)
     {
         _model->varTable ()->setPrintEnvironment (VST_CLASSIC_INIT);

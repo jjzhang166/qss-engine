@@ -113,7 +113,7 @@ typedef enum
   SD_DOPRI, //!< SD_DOPRI
   SD_CVODE_BDF,  //!< SD_CVODE_BDF
   SD_CVODE_AM,  //!< SD_CVODE_
-  SD_CVODE_BDF_SP  //!< SD_CVODE_BDF
+  SD_IDA //!< SD_IDA
 } SD_Solver;
 
 /**

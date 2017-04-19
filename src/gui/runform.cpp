@@ -143,6 +143,8 @@ RunDlg::_getSolverIdx (QString str)
     return (10);
   if (str.trimmed () == "CVODE_AM")
     return (11);
+  if (str.trimmed () == "IDA")
+    return (12);
   return (-1);
 }
 
@@ -175,6 +177,8 @@ RunDlg::_getSolverString (int idx)
       return ("CVODE_BDF");
     case 11:
       return ("CVODE_AM");
+    case 12:
+      return ("IDA");
     }
   return (QString ());
 }
