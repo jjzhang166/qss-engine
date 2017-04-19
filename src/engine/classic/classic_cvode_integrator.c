@@ -59,18 +59,13 @@ int is_sampled;
 /* Test jacobian */
 static int Jac(realtype t, N_Vector y, N_Vector fy, SlsMat JacMat, void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3) {
 
-<<<<<<< HEAD
   int n = 0;
-=======
-  static int init = 0, n = 0;
->>>>>>> 4659add65ca0375b57b75e9cfacd93bcded3907d
   int size = clcData->states, nnz, i, m, j;
   realtype *yval;
   int *colptrs = *JacMat->colptrs;
   int *rowvals = *JacMat->rowvals;
 
   yval = N_VGetArrayPointer_Serial(y);
-<<<<<<< HEAD
   SparseSetMatToZero(JacMat);
 
   for (i=0; i<size; i++) { 
@@ -89,30 +84,6 @@ static int Jac(realtype t, N_Vector y, N_Vector fy, SlsMat JacMat, void *user_da
   clcModel->jac (NV_DATA_S(y), clcData->d, clcData->alg, t, JacMat->data);
   //SparsePrintMat (JacMat, stdout);
   //abort();
-=======
-  if (!init) {
-    SparseSetMatToZero(JacMat);
-
-    colptrs[0] = 0;
-    n = 0;
-    m = 1;
-    for (i=1; i<=size; i++) { 
-      for (j=0; j <= clcData->nSD[i-1]; j++) {
-       rowvals [n+j] = clcData->SD[i-1][j];
-      }
-      n += clcData->nSD[i-1];
-      colptrs[i] = n;
-    }
-    init = 1;
-  }
-  
-  for (int i=1; i<=n; i++) 
-    JacMat->data[i] = i;
-  
-
-  SparsePrintMat (JacMat, stdout);
-  abort();
->>>>>>> 4659add65ca0375b57b75e9cfacd93bcded3907d
   return 0;
 
 }
@@ -141,10 +112,6 @@ static int check_flag(void *flagvalue, const char *funcname, int opt, CLC_simula
   /* Check if function returned NULL pointer - no memory allocated */
   else if (opt == 2 && flagvalue == NULL) {
     SD_print (simulator->simulationLog, "\nMEMORY_ERROR: %s() failed - returned NULL pointer\n\n", funcname);
-<<<<<<< HEAD
-    SD_print (simulator->simulationLog, "\nMEMORY_ERROR: %s() failed - returned NULL pointer\n\n", funcname);
-=======
->>>>>>> 4659add65ca0375b57b75e9cfacd93bcded3907d
     return(1); 
   }
 
@@ -221,16 +188,11 @@ CVODE_integrate (SIM_simulator simulate)
   flag = CVodeSVtolerances(cvode_mem, reltol, abstol);
   if (check_flag(&flag, "CVodeInit", 1, simulator)) return;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 4659add65ca0375b57b75e9cfacd93bcded3907d
   flag = CVodeRootInit(cvode_mem, clcData->events, CVODE_events);
   if (check_flag(&flag, "CVodeRootInit", 1, simulator)) return;
 
 /***************************************************************/
 #ifdef USE_JACOBIAN
-<<<<<<< HEAD
     nnz = 0;
     for (i=0; i < size; i++)
       nnz += clcData->nSD[i];
@@ -243,20 +205,6 @@ CVODE_integrate (SIM_simulator simulate)
     printf("runing dense CVODE\n");
     flag = CVDense(cvode_mem, size);
     if (check_flag(&flag, "CVDense", 1, simulator)) return;
-=======
-  nnz = 0;
-  for (i=0; i < size; i++)
-    nnz += clcData->nSD[i];
-  flag = CVSuperLUMT(cvode_mem, 1, size, nnz);
-  if (check_flag(&flag, "CVSuperLUMT", 1, simulator)) return;
-
-  /* Set the Jacobian routine to Jac (user-supplied) */
-  flag = CVSlsSetSparseJacFn(cvode_mem, Jac);
-  if (check_flag(&flag, "CVSlsSetSparseJacFn", 1, simulator)) return;
-#else
-  flag = CVDense(cvode_mem, size);
-  if (check_flag(&flag, "CVDense", 1, simulator)) return;
->>>>>>> 4659add65ca0375b57b75e9cfacd93bcded3907d
 #endif
 
 /***************************************************************/
@@ -283,11 +231,6 @@ CVODE_integrate (SIM_simulator simulate)
     else
       flag = CVode(cvode_mem, tout, y, &t, CV_NORMAL);
     if (flag == CV_SUCCESS) {
-<<<<<<< HEAD
-	    CLC_save_step (simOutput, solution, solution_time, t, clcData->totalOutputSteps,NV_DATA_S(y), clcData->d, clcData->alg);
-	    clcData->totalOutputSteps++;
-=======
->>>>>>> 4659add65ca0375b57b75e9cfacd93bcded3907d
 	    CLC_save_step (simOutput, solution, solution_time, t, totalOutputSteps,NV_DATA_S(y), clcData->d, clcData->alg);
 	    totalOutputSteps++;
       if (is_sampled)
@@ -295,11 +238,7 @@ CVODE_integrate (SIM_simulator simulate)
       // Without this line the cummulative of simulation steps returns bogus values
       flag = CVodeGetNumSteps(cvode_mem, &val);
       check_flag(&flag, "CVodeGetNumSteps", 1, simulator);
-<<<<<<< HEAD
       //nst += val;
-=======
-      nst += val;
->>>>>>> 4659add65ca0375b57b75e9cfacd93bcded3907d
       event_detected = 0;
       if (tout > _ft)
         break;
@@ -375,10 +314,7 @@ CVODE_integrate (SIM_simulator simulate)
       SD_print (simulator->simulationLog, "Miliseconds: %g", getTimeValue (simulator->stats->sTime));
       SD_print (simulator->simulationLog, "Scalar function evaluations: %d", clcData->scalarEvaluations);
       SD_print (simulator->simulationLog, "Individual Zero Crossings : %d", clcData->zeroCrossings);
-<<<<<<< HEAD
-=======
       SD_print (simulator->simulationLog, "Function evaluations: %llu", clcData->funEvaluations);
->>>>>>> 4659add65ca0375b57b75e9cfacd93bcded3907d
       SD_print (simulator->simulationLog, "Function evaluations (reported by CVODE): %ld",nfe);
       SD_print (simulator->simulationLog, "Output steps: %d", totalOutputSteps);
       SD_print (simulator->simulationLog, "Simulation steps: %ld", nst);

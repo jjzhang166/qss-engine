@@ -25,11 +25,6 @@
 /**
  *
  */
-<<<<<<< HEAD
 void CVODE_integrate (SIM_simulator simulator);
-=======
-void
-CVODE_integrate (SIM_simulator simulator);
->>>>>>> 4659add65ca0375b57b75e9cfacd93bcded3907d
 
 #endif  /* CVODE_INTEGRATOR_H_ */
