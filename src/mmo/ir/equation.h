@@ -33,7 +33,15 @@
 
 typedef enum
 {
-    EQ_DERIVATIVE, EQ_DEPENDENCIES, EQ_CLASSIC, EQ_ALGEBRAIC, EQ_OUTPUT, EQ_ZC, EQ_HANDLER, EQ_HANDLER_IF,
+    EQ_DERIVATIVE,
+    EQ_DEPENDENCIES,
+    EQ_CLASSIC,
+    EQ_ALGEBRAIC,
+    EQ_OUTPUT,
+    EQ_ZC,
+    EQ_HANDLER,
+    EQ_HANDLER_IF,
+    EQ_JACOBIAN
 } EQ_Type;
 
 /**
@@ -159,7 +167,7 @@ public:
      */
     set<Index>
     algebraicArguments ();
-    MMO_Expression
+    MMO_Equation
     jacobianExp (Index idx);
 private:
     bool
@@ -167,7 +175,7 @@ private:
     void
     _initDerivatives ();
     void
-    _generateJacobianExps();
+    _generateJacobianExps ();
     string
     _printArguments (int i, string idx, int offset, int cte, int order, int forOffset);
     MMO_ModelData _data;

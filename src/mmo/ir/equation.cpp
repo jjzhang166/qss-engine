@@ -59,7 +59,10 @@ MMO_Equation_::MMO_Equation_ (AST_Expression exp, MMO_ModelData data) :
     {
         _initDerivatives ();
     }
-    _generateJacobianExps();
+    if (_data->annotation()->solver() == ANT_DASSL || _data->annotation()->solver() == ANT_DOPRI)
+    {
+        _generateJacobianExps ();
+    }
 }
 
 MMO_Equation_::MMO_Equation_ (MMO_Expression exp, MMO_ModelData data) :
@@ -94,28 +97,21 @@ MMO_Equation_::_initDerivatives ()
     _exp[3] = newMMO_Expression (rd.foldTraverse (exp3), _data);
 }
 
-
 void
-MMO_Equation_::_generateJacobianExps()
+MMO_Equation_::_generateJacobianExps ()
 {
     ExpressionDerivator ed;
-    _jacobianExps = ed.generateJacobianExps(_exp[0]->exp(), _data);
+    _jacobianExps = ed.generateJacobianExps (_exp[0]->exp (), _data);
 }
 
-MMO_Expression
+MMO_Equation
 MMO_Equation_::jacobianExp (Index idx)
 {
-    cout << "Busca: " << _exp[0]->deps()->identifier(idx, DEP_STATE) << " Indice: " << idx.print("i") << endl;
-    if (_jacobianExps.find(_exp[0]->deps()->identifier(idx, DEP_STATE)) == _jacobianExps.end())
-      {
-	cout << "No existe el indice!" << endl;
-	return (NULL);
-      }
-    else
-      {
-	cout << "Encuentra el indice: " << endl;
-      }
-    return (_jacobianExps[_exp[0]->deps()->identifier(idx, DEP_STATE)]);
+    if (_jacobianExps.find (_exp[0]->deps ()->identifier (idx, DEP_STATE)) == _jacobianExps.end ())
+    {
+        return (NULL);
+    }
+     return (newMMO_Equation (_jacobianExps[_exp[0]->deps ()->identifier (idx, DEP_STATE)], _data));
 }
 
 MMO_Expression
@@ -392,6 +388,10 @@ MMO_Equation_::print (string indent, string lhs, string idx, bool palgs, MMO_Equ
                     {
                         lhsOrder << "[" << i << "]";
                     }
+                }
+                if (type == EQ_JACOBIAN)
+                {
+                    lhsOrder.str("");
                 }
                 if (coeff > 1 && dereq)
                 {

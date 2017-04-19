@@ -495,7 +495,6 @@ Dependencies_::insert (Index idx, string stateId, DEP_Type type)
     if (type == DEP_STATE)
     {
         _stateIds[idx] = stateId;
-        cout << "Inserta Indice: " << idx.print("i") << " clave " << _stateIds[idx] << endl;
     }
     else
     {
@@ -508,16 +507,7 @@ Dependencies_::identifier (Index idx, DEP_Type type)
 {
     if (type == DEP_STATE)
     {
-        cout << "Indice: " << idx.print("i") << " clave " << _stateIds[idx] << endl;
         return (_stateIds[idx]);
-/*        map<string,Index>::iterator it;
-        for (it = _stateIds.begin(); it != _stateIds.end(); it++)
-        {
-            if (it->second == idx)
-            {
-                return (it->first);
-            }
-        }*/
     }
     else
     {

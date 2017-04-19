@@ -109,7 +109,9 @@ public:
     bool
     end();
     map<string, GiNaC::symbol>
-    directory();
+    directory ();
+    string
+    identifier (string str);
 private:
     virtual GiNaC::ex
     foldTraverseElement (AST_Expression);

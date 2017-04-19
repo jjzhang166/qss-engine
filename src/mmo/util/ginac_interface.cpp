@@ -27,7 +27,9 @@
 #include <ginac/power.h>
 #include <ginac/print.h>
 #include <ginac/registrar.h>
+#include <ginac/relational.h>
 #include <ginac/wildcard.h>
+#include <string>
 #include <iostream>
 #include <list>
 #include <sstream>
@@ -163,6 +165,24 @@ ConvertToGiNaC::directory ()
     return (_directory);
 }
 
+string
+ConvertToGiNaC::identifier (string str)
+{
+    std::size_t found = str.find("[");
+    if (found == std::string::npos)
+    {
+        return (str);
+    }
+    else
+    {
+        std::size_t end = str.find("]");
+        string ret = str;
+        ret.erase (found, end);
+        return (ret);
+    }
+    return ("");
+}
+
 ex
 ConvertToGiNaC::foldTraverseElement (ex l, ex r, BinOpType b)
 {
@@ -207,9 +227,14 @@ ConvertToGiNaC::getSymbol (AST_Expression_ComponentReference cr)
     }
     map<string, symbol>::iterator i = _directory.find (s);
     if (i != _directory.end ())
+    {
         return (i->second);
+    }
     else
-        return (_directory.insert (make_pair (s, symbol (s))).first->second);
+    {
+        symbol c = symbol(s);
+        return (_directory.insert (make_pair (s, c)).first->second);
+    }
 }
 
 symbol&
@@ -217,9 +242,14 @@ ConvertToGiNaC::getSymbol (string cr)
 {
     map<string, symbol>::iterator i = _directory.find (cr);
     if (i != _directory.end ())
+    {
         return (i->second);
+    }
     else
-        return (_directory.insert (make_pair (cr, symbol (cr))).first->second);
+    {
+        symbol c = symbol(cr);
+        return (_directory.insert (make_pair (cr, c)).first->second);
+    }
 }
 
 symbol&

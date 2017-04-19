@@ -463,7 +463,7 @@ private:
   void
   _printDeps (Dependencies d, Index derivativeIndex, MMO_EquationTable equations,
 	      MMO_EquationTable algebraics, string idxStr, WR_Section s, int i,
-	      bool constant);
+	      bool constant, Index infIdx);
   void
   _jacobian ();
   MMO_CompileFlags _flags;
