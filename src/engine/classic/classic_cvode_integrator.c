@@ -241,7 +241,7 @@ CVODE_integrate (SIM_simulator simulate)
       // Without this line the cummulative of simulation steps returns bogus values
       flag = CVodeGetNumSteps(cvode_mem, &val);
       check_flag(&flag, "CVodeGetNumSteps", 1, simulator);
-      nst += val;
+      //nst += val;
       event_detected = 0;
       if (tout > _ft)
         break;

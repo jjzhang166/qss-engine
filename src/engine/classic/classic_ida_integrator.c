@@ -56,36 +56,29 @@ int is_sampled;
 
 #ifdef USE_JACOBIAN
 /* Test jacobian */
-static int Jac(realtype t, N_Vector y, N_Vector fy, SlsMat JacMat, void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3) {
+static int Jac(realtype t, realtype cj, N_Vector y,  N_Vector fy, N_Vector resvec, SlsMat JacMat, void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3) {
 
-  static int init = 0, n = 0;
+  int n = 0;
   int size = clcData->states, nnz, i, m, j;
   realtype *yval;
   int *colptrs = *JacMat->colptrs;
   int *rowvals = *JacMat->rowvals;
 
   yval = N_VGetArrayPointer_Serial(y);
-  if (!init) {
-    SparseSetMatToZero(JacMat);
-
-    for (i=0; i<size; i++) { 
-      colptrs[i] = n;
-      //printf("Indexes for col %d start at %d.\n", i, n);
-      for (j = n, m = 0; j < n + clcData->nSD[i] ; j++, m++) {
-        rowvals[j] = clcData->SD[i][m];
-        //printf("Non null value at row %d in col %d. Saving it in %d \n", rowvals[j],i, j);
-      }
-      n += clcData->nSD[i];
-    }
+  SparseSetMatToZero(JacMat);
+  for (i=0; i<size; i++) { 
     colptrs[i] = n;
-    init = 1;
+    //printf("Indexes for col %d start at %d.\n", i, n);
+    for (j = n, m = 0; j < n + clcData->nSD[i] ; j++, m++) {
+      rowvals[j] = clcData->SD[i][m];
+      //printf("Non null value at row %d in col %d. Saving it in %d \n", rowvals[j],i, j);
+    }
+    n += clcData->nSD[i];
   }
-  
-  
-
+  colptrs[i] = n;
   for (int i=0; i < n ; i++) 
     JacMat->data[i] = 0;
-  clcModel->jac (NV_DATA_S(y), clcData->d, clcData->alg, t, JacMat->data);
+//  clcModel->jac (NV_DATA_S(y), clcData->d, clcData->alg, t, JacMat->data);
   //SparsePrintMat (JacMat, stdout);
   //abort();
   return 0;
@@ -124,7 +117,7 @@ static int check_flag(void *flagvalue, const char *funcname, int opt, CLC_simula
 
 int IDA_model   (realtype t, N_Vector y, N_Vector ydot, N_Vector resval, void *user_data) {
   int i;
-  double *res = N_VGetArrayPointer_Serial(resval), *yd = N_VGetArrayPointer_Serial(ydot), *yy = N_VGetArrayPointer_Serial(y);
+  double *res = N_VGetArrayPointer_Serial(resval), *yd = N_VGetArrayPointer_Serial(ydot);
 ;
   double *f = malloc(sizeof(double)*clcData->states);
   clcData->funEvaluations++;
@@ -139,10 +132,10 @@ int IDA_model   (realtype t, N_Vector y, N_Vector ydot, N_Vector resval, void *u
 int IDA_events (realtype t, N_Vector y, N_Vector yp, realtype *gout, void *user_data) {
   double out;
   int i;
-/*  for (i = 0; i < clcData->events; i++) {
+  for (i = 0; i < clcData->events; i++) {
     clcModel->events->zeroCrossing (i, NV_DATA_S(y), clcData->d, clcData->alg, t, &out);
     gout[i] = out + clcData->event[i].zcSign * HIST;
-  }*/
+  }
   return 0;
 }
 
@@ -155,9 +148,8 @@ IDA_integrate (SIM_simulator simulate)
   simOutput = simulator->output;
 
   N_Vector y, yp, abstol;
-  realtype rtol, *yval, *ypval, *atval;
   void *mem;
-  int i;
+  int i, nnz;
   unsigned long totalOutputSteps = 0;
   const double _ft = clcData->ft;
   double dQRel = clcData->dQRel[0];
@@ -173,7 +165,7 @@ IDA_integrate (SIM_simulator simulate)
   double *solution_time = malloc (sizeof(double) * num_steps);
   double **outvar = malloc (sizeof(double) * simOutput->outputs);
   int *jroot = malloc (sizeof(int) * clcData->events), flag;
-  int size = clcData->states, nnz;
+  int size = clcData->states;
   int event_detected = 0;
   double rel_tol = dQRel, abs_tol = dQMin;
   realtype reltol = rel_tol, t = clcData->it, tout;
@@ -197,22 +189,31 @@ IDA_integrate (SIM_simulator simulate)
     Ith(y,i) = _x[i];
     Ith(abstol,i) = abs_tol;
   }
-  
+  clcModel->f (NV_DATA_S(y), clcData->d, clcData->alg, t, NV_DATA_S(yp));
+
   
   flag = IDAInit(mem, IDA_model, t, y, yp);
-  if(check_flag(&flag, "IDAInit", 1, simulator)) return(1);
+  if(check_flag(&flag, "IDAInit", 1, simulator)) return;
 
   flag = IDASVtolerances(mem, reltol, abstol);
-  if(check_flag(&flag, "IDASVtolerances", 1, simulator)) return(1);
+  if(check_flag(&flag, "IDASVtolerances", 1, simulator)) return;
   N_VDestroy_Serial(abstol);
 
 
-  //flag = CVodeRootInit(cvode_mem, clcData->events, IDA_events);
-  //if (check_flag(&flag, "CVodeRootInit", 1, simulator)) return;
+  flag = IDARootInit(mem, clcData->events, IDA_events);
+  if (check_flag(&flag, "IDARootInit", 1, simulator)) return;
 
 #ifndef USE_JACOBIAN
-    flag = IDADense(mem, size);
-    if(check_flag(&flag, "IDADense", 1, simulator)) return(1);
+  flag = IDADense(mem, size);
+  if(check_flag(&flag, "IDADense", 1, simulator)) return;
+#else
+  nnz = 0;
+  for (i=0; i < size; i++)
+    nnz += clcData->nSD[i];
+  flag = IDASuperLUMT(mem, 1, size, nnz);
+  if(check_flag(&flag, "IDASuperLUMT", 1, simulator)) return;
+  flag = IDASlsSetSparseJacFn(mem, Jac);
+  if(check_flag(&flag, "IDASlsSetSparseJacFn", 1, simulator)) return;
 #endif
 
   getTime (simulator->stats->sTime);
@@ -249,22 +250,24 @@ IDA_integrate (SIM_simulator simulate)
         break;
       /*printf("Stepts = %ld\n", val);*/
     } else if (flag == IDA_ROOT_RETURN) {
-      /*flag = CVodeGetRootInfo(cvode_mem, jroot);
-      if (check_flag(&flag, "CVodeGetRootInfo", 1, simulator)) return;
-  	  CLC_handle_event (clcData, clcModel, NV_DATA_S(y), jroot, t, NULL);
-      flag = CVodeGetNumSteps(cvode_mem, &val);
-      check_flag(&flag, "CVodeGetNumSteps", 1, simulator);
+      t = tret;  
+      flag = IDAGetRootInfo(mem, jroot);
+      if(check_flag(&flag, "IDAGetRootInfo", 1, simulator)) return;
+  	  CLC_handle_event (clcData, clcModel, NV_DATA_S(y), jroot, tret, NULL);
+      flag = IDAGetNumSteps(mem, &val);
+      check_flag(&flag, "IDAGetNumSteps", 1, simulator);
       nst += val;
-      flag = CVodeGetNumRhsEvals(cvode_mem, &val);
-      check_flag(&flag, "CVodeGetNumRhsEvals" , 1, simulator);
+      flag = IDAGetNumResEvals(mem, &val);
+      check_flag(&flag, "IDAGetNumResEvals" , 1, simulator);
       nfe += val;
-      flag = CVodeGetNumErrTestFails(cvode_mem, &val);
-      check_flag(&flag, "CVodeGetNumErrTestFails", 1, simulator);
+      flag = IDAGetNumErrTestFails(mem, &val);
+      check_flag(&flag, "IDAGetNumErrTestFails", 1, simulator);
       netf += val;
-      flag = CVodeGetNumNonlinSolvIters(cvode_mem, &val);
-      check_flag(&flag, "CVodeGetNumNonlinSolvIters", 1, simulator);
+      flag = IDAGetNumNonlinSolvIters(mem, &val);
+      check_flag(&flag, "IDAGetNumNonlinSolvIters", 1, simulator);
       nni += val;
-      CVodeReInit(cvode_mem, t, y);
+      clcModel->f (NV_DATA_S(y), clcData->d, clcData->alg, tret, NV_DATA_S(yp));
+      IDAReInit(mem, tret, y, yp);
 	    if (is_sampled) { // If the root was found close to a sample point take this as the actual step and continue with next sample
 	      if (fabs (tout - t) < 1e-12) {
     		  CLC_save_step (simOutput, solution, solution_time, tout, totalOutputSteps, NV_DATA_S(y), clcData->d, clcData->alg);
@@ -276,7 +279,6 @@ IDA_integrate (SIM_simulator simulate)
     		  CLC_save_step (simOutput, solution, solution_time, t, totalOutputSteps, NV_DATA_S(y), clcData->d, clcData->alg);
 		      totalOutputSteps++;
       }
-      */
     } else { 
       SD_print (simulator->simulationLog, "IDA failed at t=%g\n",t);
       break;

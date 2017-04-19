@@ -69,7 +69,7 @@ GRAPHOBJ=$(addprefix $(GRAPHDIR)/$(OBJDIR)/grp_, $(notdir $(GRAPHSRC:.c=.o)))
 # Make dependencies
 DEPS = $(ASTOBJ:.o=.d) $(GENERATOROBJ:.o=.d) $(IROBJ:.o=.d) $(PARSEROBJ:.o=.d) $(UTILOBJ:.o=.d)
 
-all: usr/lib/libginac.a mmoc 
+all: usr/lib/libginac.a $(TARGET)
 
 usr/lib/libginac.a:
 	echo "Building deterministic GiNaC" 
@@ -96,7 +96,7 @@ $(BUILDDIR)/util_%.o : $(UTILDIR)/%.cpp
 	$(CXX) $(INC) $(CXXFLAGS) -MM -MT $@ -MF $(patsubst %.o,%.d,$@) $<
 	$(CXX) $(INC) -c $< -o $@ $(CXXFLAGS) 
 
-mmoc: $(ASTOBJ) $(GENERATOROBJ) $(IROBJ) $(PARSEROBJ) $(UTILOBJ) $(GRAPHOBJ) 
+$(TARGET): $(ASTOBJ) $(GENERATOROBJ) $(IROBJ) $(PARSEROBJ) $(UTILOBJ) $(GRAPHOBJ) 
 	$(CXX) $(INC) $(CXXFLAGS) main.cpp -o $(TARGET) $(ASTOBJ) $(GENERATOROBJ) $(IROBJ) $(PARSEROBJ) $(UTILOBJ) $(GRAPHOBJ) $(LIB) 
 
 ifneq ($(OS),win32)
