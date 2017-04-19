@@ -79,11 +79,7 @@ static int Jac(realtype t, N_Vector y, N_Vector fy, SlsMat JacMat, void *user_da
   }
   colptrs[i] = n;
 
-  for (int i=0; i < n ; i++) 
-    JacMat->data[i] = 0;
   clcModel->jac (NV_DATA_S(y), clcData->d, clcData->alg, t, JacMat->data);
-  //SparsePrintMat (JacMat, stdout);
-  //abort();
   return 0;
 
 }

@@ -2700,9 +2700,9 @@ Classic_::print (SOL_Function f)
     case SOL_OUTPUT:
       _print (f, _outputVars, WR_OUTPUT_SIMPLE, WR_OUTPUT_GENERIC, true);
       break;
-    case SOL_JACOBIAN:
-      _print (f, _modelVars, WR_MODEL_JACOBIAN, WR_MODEL_GENERIC, false);
-      break;
+    case SOL_DEPS:
+       _jacobian ();
+       break;
     default:
       break;
     }
@@ -2734,7 +2734,7 @@ Classic_::_prototype (SOL_Function f)
       return ("void\nCLC_initializeDataStructs(CLC_simulator simulator)\n{");
     case SOL_CALLBACK:
       return ("setData(modelData,modelOutput,modelDefinition,modelSettings);");
-    case SOL_JACOBIAN:
+    case SOL_DEPS:
       return ("void\nMOD_jacobian(double *x, double *d, double *alg, double t, double *jac)\n{");
     default:
       break;
