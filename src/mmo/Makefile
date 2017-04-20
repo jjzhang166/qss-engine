@@ -75,6 +75,7 @@ usr/lib/libginac.a:
 	echo "Building deterministic GiNaC" 
 	cd 3rdParty ; tar xvjf ginac-1.7.0.tar.bz2
 	cd 3rdParty/ginac-1.7.0; ./configure --prefix=`pwd`/../../usr --disable-shared; make -j 4 install
+	rm -rf 3rdParty/ginac-1.7.0
   
 $(BUILDDIR)/ast_%.o : $(ASTDIR)/%.cpp $(ASTDIR)/%.h $(PARSERDIR)/mocc_parser.cpp $(PARSERDIR)/mocc_scanner.cpp
 	$(CXX) $(INC) $(CXXFLAGS) -MM -MT $@ -MF $(patsubst %.o,%.d,$@) $<
