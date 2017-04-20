@@ -2418,7 +2418,7 @@ Classic_::_printDeps (Dependencies d, Index derivativeIndex, MMO_EquationTable e
                 constantPrint = false;
             }
             stringstream varMap;
-            lhs << "jac[jit] ";
+            lhs << "jac[jit++] ";
             _common->print ((*eq)->jacobianExp (infIdx)->print (_writer->indent (indent), lhs.str (), varIdx, false,
                        NULL, EQ_JACOBIAN, order, constantPrint, 0, true, dIdx->low (), constant), s);
             _common->insertLocalVariables (&_modelDepsVars, (*eq)->getVariables ());
@@ -2448,7 +2448,6 @@ Classic_::modelDeps ()
             buffer << indent << "case " << idx.print () << ":";
             _writer->write (&buffer, WR_MODEL_DEPS_SIMPLE);
             _printDeps (d, eqIdx, equations, algebraics, "", WR_MODEL_DEPS_SIMPLE, 3, true, idx);
-            buffer << _writer->indent (1) << "jit++;" << endl;
             if (equations->findGenericDependencies (idx.mappedValue ()))
             {
                 buffer << _writer->indent (3) << "break;";
@@ -2470,7 +2469,6 @@ Classic_::modelDeps ()
             Dependencies d = _modelDeps->val (i);
             _common->genericDefCondition (eqIdx, idx, WR_MODEL_DEPS_GENERIC, &_modelDepsVars);
             _printDeps (d, eqIdx, equations, algebraics, idx.print ("j"), WR_MODEL_DEPS_GENERIC, 2, false, idx);
-            buffer << _writer->indent (1) << "jit++;" << endl;
             buffer << _writer->indent (1) << "}";
             _writer->write (&buffer, WR_MODEL_DEPS_GENERIC);
         }
