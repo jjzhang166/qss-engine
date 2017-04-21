@@ -21,7 +21,7 @@
 
 #define USE_JACOBIAN
 #ifdef USE_JACOBIAN
-#include <cvode/cvode_superlumt.h>   /* prototype for CVSUPERLUMT */
+#include <ida/ida_superlumt.h>   /* prototype for CVSUPERLUMT */
 #include <sundials/sundials_sparse.h> /* definitions SlsMat */
 #endif
 
@@ -56,39 +56,27 @@ int is_sampled;
 
 #ifdef USE_JACOBIAN
 /* Test jacobian */
-static int Jac(realtype t, realtype cj, N_Vector y,  N_Vector fy, N_Vector resvec, SlsMat JacMat, void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3) {
+static int IDA_Jac(realtype t, realtype cj, N_Vector y,  N_Vector fy, N_Vector resvec, SlsMat JacMat, void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3) {
 
-  int n = 0, diag=0;
-  int size = clcData->states, nnz, i, m, j;
-  realtype *yval;
+  int n = 0;
+  int size = clcData->states, i, m;
   int *colptrs = *JacMat->colptrs;
   int *rowvals = *JacMat->rowvals;
 
-  yval = N_VGetArrayPointer_Serial(y);
   SparseSetMatToZero(JacMat);
+  clcModel->jac (NV_DATA_S(y), clcData->d, clcData->alg, t, JacMat->data);
   for (i=0; i<size; i++) { 
     colptrs[i] = n;
-    //printf("Indexes for col %d start at %d.\n", i, n);
-    for (j = n, m = 0; j < n + clcData->nSD[i] ; j++, m++) {
-      rowvals[j] = clcData->SD[i][m];
+    for (m = 0; m < clcData->nSD[i] ; m++) {
+      if (i == clcData->SD[i][m]) // The diagonal derivtive of df/dyp is 1*cj
+        JacMat->data[n+m] += cj;
+      rowvals[m+n] = clcData->SD[i][m];
     }
     n += clcData->nSD[i];
   }
   colptrs[i] = n;
-  clcModel->jac (NV_DATA_S(y), clcData->d, clcData->alg, t, JacMat->data);
-  
-
-  n = 0;
-  for (i=0; i<size; i++) { 
-    for (m = 0; m < clcData->nSD[i] ; m++) {
-      rowvals[n+m] = clcData->SD[i][m];
-      if (i == rowvals[n+m]) // The diagonal derivtive of df/dyp is 1*cj
-        JacMat->data[n+m] += cj;
-    }
-    n += clcData->nSD[i];
-  }
-
-
+  SparsePrintMat(JacMat,stdout);
+  abort();
   return 0;
 }
 #endif
@@ -201,6 +189,7 @@ IDA_integrate (SIM_simulator simulate)
   
   flag = IDAInit(mem, IDA_model, t, y, yp);
   if(check_flag(&flag, "IDAInit", 1, simulator)) return;
+  flag = IDASetErrFile(mem, stdout);
 
   flag = IDASVtolerances(mem, reltol, abstol);
   if(check_flag(&flag, "IDASVtolerances", 1, simulator)) return;
@@ -219,7 +208,7 @@ IDA_integrate (SIM_simulator simulate)
     nnz += clcData->nSD[i];
   flag = IDASuperLUMT(mem, 1, size, nnz);
   if(check_flag(&flag, "IDASuperLUMT", 1, simulator)) return;
-  flag = IDASlsSetSparseJacFn(mem, Jac);
+  flag = IDASlsSetSparseJacFn(mem, IDA_Jac);
   if(check_flag(&flag, "IDASlsSetSparseJacFn", 1, simulator)) return;
 #endif
 
