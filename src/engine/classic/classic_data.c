@@ -140,14 +140,6 @@ CLC_freeData (CLC_data data)
       if (data->DS[i] != NULL)
 	      free (data->DS[i]);
 	}
-   if (data->SD[i] != NULL)
-        {
-            free (data->SD[i]);
-        }
-        if (data->DS[i] != NULL)
-        {
-            free (data->DS[i]);
-        }
   if (data->inputs > 0)
     {
         free (data->IT);
