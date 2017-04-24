@@ -138,7 +138,7 @@ CVODE_integrate (SIM_simulator simulate)
   clcData = simulator->data;
   clcModel = simulator->model;
   simOutput = simulator->output;
-  N_Vector y, abstol;
+  N_Vector y, abstol, temp_y = NULL;
   void *cvode_mem;
   int i;
   unsigned long totalOutputSteps = 0;
@@ -148,15 +148,17 @@ CVODE_integrate (SIM_simulator simulate)
   double *_x = clcData->x;
   double step_size = 1;
   is_sampled = simOutput->commInterval != CI_Step;
+  int size = clcData->states, nnz;
   if (is_sampled) {
       step_size = simOutput->sampled->period[0];
+      temp_y = N_VNew_Serial(size);
   }
   const int num_steps = (is_sampled ? _ft / step_size + 1 : MAX_OUTPUT_POINTS);
   double **solution = malloc (sizeof(double*) * simOutput->outputs);
   double *solution_time = malloc (sizeof(double) * num_steps);
   double **outvar = malloc (sizeof(double) * simOutput->outputs);
   int *jroot = malloc (sizeof(int) * clcData->events), flag;
-  int size = clcData->states, nnz;
+
   int event_detected = 0;
   double rel_tol = dQRel, abs_tol = dQMin;
   realtype reltol = rel_tol, t = clcData->it, tout;
@@ -212,33 +214,29 @@ CVODE_integrate (SIM_simulator simulate)
 #ifdef SYNC_RT
   setInitRealTime();
 #endif
-
+  double last_step=t;
+  tout = _ft;
   while (t < _ft) {
-    if (!is_sampled) 
-	    tout = _ft;
-    else {
-	    if (!event_detected)
-	      tout = t + step_size;
-    }
-    if (tout > _ft)
-	    tout = _ft;
-    if (!is_sampled) 
-      flag = CVode(cvode_mem, tout, y, &t, CV_ONE_STEP);
-    else
-      flag = CVode(cvode_mem, tout, y, &t, CV_NORMAL);
+    flag = CVode(cvode_mem, tout, y, &t, CV_ONE_STEP);
     if (flag == CV_SUCCESS) {
-	    CLC_save_step (simOutput, solution, solution_time, t, totalOutputSteps,NV_DATA_S(y), clcData->d, clcData->alg);
-	    totalOutputSteps++;
-      if (is_sampled)
-		    tout = t + step_size;
+      if (!is_sampled) {
+  	    CLC_save_step (simOutput, solution, solution_time, t, totalOutputSteps,NV_DATA_S(y), clcData->d, clcData->alg);
+  	    totalOutputSteps++;
+      } else {
+        while (last_step+step_size<t) {
+          if (fabs(last_step+step_size-_ft)/step_size < 1)
+            break;
+          flag = CVodeGetDky(cvode_mem, last_step+step_size, 0, temp_y); 
+          check_flag(&flag, "CVodeGetDky", 1, simulator);
+          CLC_save_step (simOutput, solution, solution_time, last_step+step_size, totalOutputSteps, NV_DATA_S(temp_y), clcData->d, clcData->alg);          
+          totalOutputSteps++;
+          last_step+=step_size;
+        }
+      }
       // Without this line the cummulative of simulation steps returns bogus values
       flag = CVodeGetNumSteps(cvode_mem, &val);
       check_flag(&flag, "CVodeGetNumSteps", 1, simulator);
       //nst += val;
-      event_detected = 0;
-      if (tout > _ft)
-        break;
-      /*printf("Stepts = %ld\n", val);*/
     } else if (flag == CV_ROOT_RETURN) {
       flag = CVodeGetRootInfo(cvode_mem, jroot);
       if (check_flag(&flag, "CVodeGetRootInfo", 1, simulator)) return;
@@ -256,18 +254,21 @@ CVODE_integrate (SIM_simulator simulate)
       flag = CVodeGetNumNonlinSolvIters(cvode_mem, &val);
       check_flag(&flag, "CVodeGetNumNonlinSolvIters", 1, simulator);
       nni += val;
-      CVodeReInit(cvode_mem, t, y);
 	    if (is_sampled) { // If the root was found close to a sample point take this as the actual step and continue with next sample
-	      if (fabs (tout - t) < 1e-12) {
-    		  CLC_save_step (simOutput, solution, solution_time, tout, totalOutputSteps, NV_DATA_S(y), clcData->d, clcData->alg);
-		      totalOutputSteps++;
-    		  tout = t + step_size;
-		    }
-        event_detected = 1;
+	      while (last_step+step_size<t) {
+          if (fabs(last_step+step_size-_ft)/step_size < 1)
+            break;
+          flag = CVodeGetDky(cvode_mem, last_step+step_size, 0, temp_y); 
+          check_flag(&flag, "CVodeGetDky", 0, simulator);
+          CLC_save_step (simOutput, solution, solution_time, last_step+step_size, totalOutputSteps, NV_DATA_S(temp_y), clcData->d, clcData->alg);          
+          totalOutputSteps++;
+          last_step+=step_size;
+        }
       } else { // When a root is found and the per-step output is selected, take roots as outputs
     		  CLC_save_step (simOutput, solution, solution_time, t, totalOutputSteps, NV_DATA_S(y), clcData->d, clcData->alg);
 		      totalOutputSteps++;
       }
+      CVodeReInit(cvode_mem, t, y);
     } else { 
       SD_print (simulator->simulationLog, "CVODE failed at t=%g\n",t);
       break;
@@ -332,4 +333,6 @@ CVODE_integrate (SIM_simulator simulate)
   for (i = 0; i < simOutput->outputs; i++)
       free (solution[i]);
   free (solution);
+  if (temp_y)
+    N_VDestroy_Serial(temp_y);
 }

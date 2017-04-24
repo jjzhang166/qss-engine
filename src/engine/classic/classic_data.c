@@ -119,9 +119,7 @@ CLC_Data (int states, int discretes, int events, int inputs, int algebraics, str
     return (p);
 }
 
-void
-CLC_freeData (CLC_data data)
-{
+void CLC_freeData (CLC_data data) {
   int i, states = data->states;
   free (data->dQMin);
   free (data->dQRel);
@@ -139,18 +137,18 @@ CLC_freeData (CLC_data data)
 	      free (data->SD[i]);
       if (data->DS[i] != NULL)
 	      free (data->DS[i]);
-	}
-  if (data->inputs > 0)
-    {
+  }
+  free(data->SD);
+  free(data->DS);
+  if (data->inputs > 0) {
         free (data->IT);
-    }
-    SD_freeEventData (data->event, data->events);
-    SD_freeParameters (data->params);
-    if (data->events)
-    {
-        free (data->fired);
-    }
-    free (data);
+  }
+  SD_freeEventData (data->event, data->events);
+  SD_freeParameters (data->params);
+  if (data->events) {
+      free (data->fired);
+  }
+  free (data);
 }
 
 CLC_model

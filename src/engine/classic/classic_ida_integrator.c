@@ -75,8 +75,11 @@ static int IDA_Jac(realtype t, realtype cj, N_Vector y,  N_Vector fy, N_Vector r
     n += clcData->nSD[i];
   }
   colptrs[i] = n;
-  SparsePrintMat(JacMat,stdout);
-  abort();
+
+//  SparsePrintMat(JacMat,stdout);
+//  printf("%g\n", cj);
+//  abort();
+
   return 0;
 }
 #endif
@@ -142,25 +145,26 @@ IDA_integrate (SIM_simulator simulate)
   clcModel = simulator->model;
   simOutput = simulator->output;
 
-  N_Vector y, yp, abstol;
+  N_Vector y, yp, abstol, temp_y = NULL;
   void *mem;
-  int i, nnz;
+  int i, j, nnz;
   unsigned long totalOutputSteps = 0;
   const double _ft = clcData->ft;
   double dQRel = clcData->dQRel[0];
   double dQMin = clcData->dQMin[0];
   double *_x = clcData->x;
   double step_size = 1;
+  int size = clcData->states;
   is_sampled = simOutput->commInterval != CI_Step;
   if (is_sampled) {
+      temp_y = N_VNew_Serial(size);
       step_size = simOutput->sampled->period[0];
   }
   const int num_steps = (is_sampled ? _ft / step_size + 1 : MAX_OUTPUT_POINTS);
   double **solution = malloc (sizeof(double*) * simOutput->outputs);
-  double *solution_time = malloc (sizeof(double) * num_steps);
+  double *solution_time = malloc (sizeof(double) * (num_steps+1) );
   double **outvar = malloc (sizeof(double) * simOutput->outputs);
   int *jroot = malloc (sizeof(int) * clcData->events), flag;
-  int size = clcData->states;
   int event_detected = 0;
   double rel_tol = dQRel, abs_tol = dQMin;
   realtype reltol = rel_tol, t = clcData->it, tout;
@@ -204,8 +208,18 @@ IDA_integrate (SIM_simulator simulate)
   if(check_flag(&flag, "IDADense", 1, simulator)) return;
 #else
   nnz = 0;
-  for (i=0; i < size; i++)
+  for (i=0; i < size; i++) {
+    int diagonal_found = 0;
+    /*for (m=0; m < clcData->nSD[i]; m++) {
+      if (i==clcData->SD[i][j]) {
+        diagonal_found ++;
+        break;
+      }
+    }*/
+    if (!diagonal_found)
+      nnz++;
     nnz += clcData->nSD[i];
+  }
   flag = IDASuperLUMT(mem, 1, size, nnz);
   if(check_flag(&flag, "IDASuperLUMT", 1, simulator)) return;
   flag = IDASlsSetSparseJacFn(mem, IDA_Jac);
@@ -220,36 +234,33 @@ IDA_integrate (SIM_simulator simulate)
 #ifdef SYNC_RT
   setInitRealTime();
 #endif
-  double tret;
+  double last_step = t;
+  tout = _ft;
   while (t < _ft) {
-    if (!is_sampled) 
-	    tout = _ft;
-    else {
-	    if (!event_detected)
-	      tout = t + step_size;
-    }
-    if (tout > _ft)
-	    tout = _ft;
-    if (!is_sampled) 
-      flag = IDASolve(mem, tout, &tret, y, yp, IDA_ONE_STEP);
-    else
-      flag = IDASolve(mem, tout, &tret, y, yp, IDA_NORMAL);
+    flag = IDASolve(mem, tout, &t, y, yp, IDA_ONE_STEP);
     if (flag == IDA_SUCCESS) {
-	    CLC_save_step (simOutput, solution, solution_time, tret, totalOutputSteps,NV_DATA_S(y), clcData->d, clcData->alg);
-	    totalOutputSteps++;
-      t = tret;
-      if (is_sampled) {
-		    tout = t + step_size;
-      } 
-      event_detected = 0;
-      if (t > _ft)
-        break;
-      /*printf("Stepts = %ld\n", val);*/
+	    if (is_sampled) {
+        while (last_step+step_size<t) {
+            if (fabs(last_step+step_size-_ft)/step_size < 1)
+              break;
+            flag = IDAGetDky(mem, last_step+step_size, 0, temp_y); 
+            check_flag(&flag, "IDAGetDky", 1, simulator);
+            if (IDA_BAD_T == flag) {
+              printf("Interpolation failed at %g. Last_step = %g t=%g\n", last_step+step_size, last_step, t);
+              abort();
+            }
+            CLC_save_step (simOutput, solution, solution_time, last_step+step_size, totalOutputSteps, NV_DATA_S(temp_y), clcData->d, clcData->alg);          
+            totalOutputSteps++;
+            last_step+=step_size;
+          }
+      } else {
+        CLC_save_step (simOutput, solution, solution_time, t, totalOutputSteps,NV_DATA_S(y), clcData->d, clcData->alg);
+  	    totalOutputSteps++;
+      }
     } else if (flag == IDA_ROOT_RETURN) {
-      t = tret;  
       flag = IDAGetRootInfo(mem, jroot);
       if(check_flag(&flag, "IDAGetRootInfo", 1, simulator)) return;
-  	  CLC_handle_event (clcData, clcModel, NV_DATA_S(y), jroot, tret, NULL);
+  	  CLC_handle_event (clcData, clcModel, NV_DATA_S(y), jroot, t, NULL);
       flag = IDAGetNumSteps(mem, &val);
       check_flag(&flag, "IDAGetNumSteps", 1, simulator);
       nst += val;
@@ -262,19 +273,26 @@ IDA_integrate (SIM_simulator simulate)
       flag = IDAGetNumNonlinSolvIters(mem, &val);
       check_flag(&flag, "IDAGetNumNonlinSolvIters", 1, simulator);
       nni += val;
-      clcModel->f (NV_DATA_S(y), clcData->d, clcData->alg, tret, NV_DATA_S(yp));
-      IDAReInit(mem, tret, y, yp);
-	    if (is_sampled) { // If the root was found close to a sample point take this as the actual step and continue with next sample
-	      if (fabs (tout - t) < 1e-12) {
-    		  CLC_save_step (simOutput, solution, solution_time, tout, totalOutputSteps, NV_DATA_S(y), clcData->d, clcData->alg);
-		      totalOutputSteps++;
-    		  tout = t + step_size;
-		    }
-        event_detected = 1;
+      clcModel->f (NV_DATA_S(y), clcData->d, clcData->alg, t, NV_DATA_S(yp));
+      if (is_sampled) {
+        while (last_step+step_size<t) {
+            if (fabs(last_step+step_size-_ft)/step_size < 1)
+              break;
+            flag = IDAGetDky(mem, last_step+step_size, 0, temp_y); 
+            check_flag(&flag, "IDAGetDky", 1, simulator);
+            if (IDA_BAD_T == flag) {
+              printf("Interpolation failed at %g. Last_step = %g t=%g\n", last_step+step_size, last_step, t);
+              abort();
+            }
+            CLC_save_step (simOutput, solution, solution_time, last_step+step_size, totalOutputSteps, NV_DATA_S(temp_y), clcData->d, clcData->alg);          
+            totalOutputSteps++;
+            last_step+=step_size;
+          }
       } else { // When a root is found and the per-step output is selected, take roots as outputs
     		  CLC_save_step (simOutput, solution, solution_time, t, totalOutputSteps, NV_DATA_S(y), clcData->d, clcData->alg);
 		      totalOutputSteps++;
       }
+      IDAReInit(mem, t, y, yp);
     } else { 
       SD_print (simulator->simulationLog, "IDA failed at t=%g\n",t);
       break;
@@ -330,6 +348,9 @@ IDA_integrate (SIM_simulator simulate)
   /* Free y and abstol vectors */
   N_VDestroy_Serial(y);
   N_VDestroy_Serial(yp);
+  if (temp_y)
+    N_VDestroy_Serial(temp_y);
+
   /* Free integrator memory */
   IDAFree(&mem);
 
