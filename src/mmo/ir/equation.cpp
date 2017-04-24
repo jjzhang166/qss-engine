@@ -105,13 +105,14 @@ MMO_Equation_::_generateJacobianExps ()
 }
 
 MMO_Equation
-MMO_Equation_::jacobianExp (Index idx)
+MMO_Equation_::jacobianExp (Index idx, DEP_Type type)
 {
-    if (_jacobianExps.find (_exp[0]->deps ()->identifier (idx, DEP_STATE)) == _jacobianExps.end ())
+    if (_jacobianExps.find (_exp[0]->deps ()->identifier (idx, type)) == _jacobianExps.end ())
     {
+        cout << "NO encuentra identifier para: " << idx.print("i") << " Tipo: " << type << endl;
         return (NULL);
     }
-     return (newMMO_Equation (_jacobianExps[_exp[0]->deps ()->identifier (idx, DEP_STATE)], _data));
+     return (newMMO_Equation (_jacobianExps[_exp[0]->deps ()->identifier (idx, type)], _data));
 }
 
 MMO_Expression

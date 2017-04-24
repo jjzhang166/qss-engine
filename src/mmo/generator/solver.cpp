@@ -2263,10 +2263,8 @@ Classic_::_printDeps (Dependencies d, Index derivativeIndex, MMO_EquationTable e
                     int cte = dIdx->mappedValue ((*eq)->lhs ().constant ());
                     aLhs << "alg[" << cte * xCoeff;
                 }
-                _common->print ((*eq)->jacobianExp (infIdx)->print (_writer->indent (indent), aLhs.str (), iter, false,
-                NULL,
-                                              EQ_ALGEBRAIC, order, false, 0, false, dIdx->low (), 0),
-                                s);
+                _common->print ((*eq)->print (_writer->indent (indent), aLhs.str (), iter, false,
+                NULL, EQ_ALGEBRAIC, order, false, 0, false, dIdx->low (), 0), s);
                 if (lhsEq.hasRange ())
                 {
                     _writer->write ("}", s);
@@ -2368,10 +2366,8 @@ Classic_::_printDeps (Dependencies d, Index derivativeIndex, MMO_EquationTable e
                 {
                     _writer->write ((*eq)->printRange (vn, vm, _writer->indent (indent), *dIdx, true), s);
                 }
-                _common->print ((*eq)->jacobianExp (infIdx)->print (_writer->indent (indent), lhs.str (), varIdx, false,
-                NULL,
-                                              EQ_ALGEBRAIC, order, constantPrint, 0, false, dIdx->low (), cte),
-                                s);
+                _common->print ((*eq)->print (_writer->indent (indent), lhs.str (), varIdx, false,
+                NULL, EQ_ALGEBRAIC, order, constantPrint, 0, false, dIdx->low (), cte), s);
                 _common->insertLocalVariables (&_modelDepsVars, (*eq)->getVariables ());
                 if (constant && algebraicState && algebraicState->hasRange () && dIdx->hasRange ())
                 {
