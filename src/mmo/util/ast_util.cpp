@@ -1219,6 +1219,7 @@ GenerateDeps_::foldTraverseElement (AST_Expression exp)
                     else if (vi->isAlgebraic ())
                     {
                         ret->insert (idx, DEP_ALGEBRAIC_DEF);
+                        cout << "AGREGA: " << identifier << " Para el indice: " << idx.print("i") << endl;
                         ret->insert (idx, identifier, DEP_ALGEBRAIC_DEF);
                     }
                     else if (vi->isDiscrete ())
@@ -1240,6 +1241,7 @@ GenerateDeps_::foldTraverseElement (AST_Expression exp)
                     }
                     else if (vi->isAlgebraic ())
                     {
+                        cout << "AGREGA: " << identifier << " Para el indice: " << idx.print("i") << endl;
                         ret->insert (idx, identifier, DEP_ALGEBRAIC_DEF);
                     }
                 }

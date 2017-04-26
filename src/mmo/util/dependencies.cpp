@@ -174,6 +174,10 @@ Dependencies_::join (Dependencies d, DEP_Type t)
     {
         _stateIds[it->first] = it->second;
     }
+    for (it = d->_algebraicIds.begin(); it != d->_algebraicIds.end(); it++)
+    {
+        _algebraicIds[it->first] = it->second;
+    }
     _autonomous = _autonomous && d->autonomous ();
 }
 
@@ -511,6 +515,7 @@ Dependencies_::identifier (Index idx, DEP_Type type)
     }
     else
     {
+        cout << "Retorna: " << _algebraicIds[idx] << endl;
         return (_algebraicIds[idx]);
     }
     return ("");

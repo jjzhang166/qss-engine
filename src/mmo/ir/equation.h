@@ -28,6 +28,7 @@
 #include "../ast/ast_types.h"
 #include "../util/index.h"
 #include "../util/util_types.h"
+#include "../util/dependencies.h"
 #include "mmo_base.h"
 #include "mmo_types.h"
 
@@ -168,7 +169,7 @@ public:
     set<Index>
     algebraicArguments ();
     MMO_Equation
-    jacobianExp (Index idx);
+    jacobianExp (Index idx, DEP_Type type = DEP_STATE);
 private:
     bool
     _controlAlgebraicArguments (set<Index> *algs, set<Index> eqAlgs);
