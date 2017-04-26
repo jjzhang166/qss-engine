@@ -515,7 +515,6 @@ Dependencies_::identifier (Index idx, DEP_Type type)
     }
     else
     {
-        cout << "Retorna: " << _algebraicIds[idx] << endl;
         return (_algebraicIds[idx]);
     }
     return ("");

@@ -175,6 +175,8 @@ private:
     _controlAlgebraicArguments (set<Index> *algs, set<Index> eqAlgs);
     void
     _initDerivatives ();
+    MMO_Expression
+    _generateChainRule (Index idx);
     void
     _generateJacobianExps ();
     string

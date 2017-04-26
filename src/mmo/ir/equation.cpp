@@ -23,6 +23,7 @@
 #include <map>
 #include <sstream>
 
+#include "../ast/ast_builder.h"
 #include "../ast/expression.h"
 #include "../util/ast_util.h"
 #include "../util/dependencies.h"
@@ -107,12 +108,28 @@ MMO_Equation_::_generateJacobianExps ()
 MMO_Equation
 MMO_Equation_::jacobianExp (Index idx, DEP_Type type)
 {
-    if (_jacobianExps.find (_exp[0]->deps ()->identifier (idx, type)) == _jacobianExps.end ())
+    MMO_Expression chExp = _generateChainRule(idx);
+    map <string, MMO_Expression>::iterator f = _jacobianExps.find (_exp[0]->deps ()->identifier (idx, type));
+
+    if (f == _jacobianExps.end () && chExp == NULL)
     {
-        cout << "NO encuentra identifier para: " << idx.print("i") << " Tipo: " << type << endl;
         return (NULL);
     }
-     return (newMMO_Equation (_jacobianExps[_exp[0]->deps ()->identifier (idx, type)], _data));
+    else if (f != _jacobianExps.end () && chExp == NULL)
+    {
+        return (newMMO_Equation (f->second, _data));
+    }
+    else if (f == _jacobianExps.end () && chExp != NULL)
+    {
+        return (newMMO_Equation (chExp, _data));
+    }
+    else
+    {
+        AST_Expression derExpAST = newAST_Expression_BinOp (f->second->exp(), chExp->exp(), BINOPADD);
+        MMO_Expression derExpMMO = newMMO_Expression(derExpAST, _data);
+        return (newMMO_Equation (derExpMMO, _data));
+    }
+    return (NULL);
 }
 
 MMO_Expression
@@ -538,4 +555,58 @@ set<Index>
 MMO_Equation_::algebraicArguments ()
 {
     return (_algebraicArguments);
+}
+
+MMO_Expression
+MMO_Equation_::_generateChainRule (Index idx)
+{
+    Dependencies deps = _exp[0]->deps();
+    MMO_Expression exp = NULL;
+    for (Index *dIdx = deps->begin (DEP_ALGEBRAIC_DEF); !deps->end (DEP_ALGEBRAIC_DEF); dIdx = deps->next (DEP_ALGEBRAIC_DEF))
+    {
+        map<string, MMO_Expression>::iterator af = _jacobianExps.find (_exp[0]->deps ()->identifier (*dIdx, DEP_ALGEBRAIC_DEF));
+        if (af == _jacobianExps.end ())
+        {
+            return (NULL);
+        }
+        list<MMO_Equation> eqs = _data->algebraics ()->equation (*dIdx);
+        list<MMO_Equation>::iterator eq;
+        MMO_Expression algExp = NULL;
+        for (eq = eqs.begin (); eq != eqs.end (); eq++)
+        {
+            map<string, MMO_Expression>::iterator f = (*eq)->_jacobianExps.find ((*eq)->_exp[0]->deps ()->identifier (idx, DEP_STATE));
+            MMO_Expression derExp = (f == (*eq)->_jacobianExps.end ()) ? NULL : f->second;
+            if (derExp != NULL)
+            {
+                if (algExp == NULL)
+                {
+                    algExp = derExp;
+                }
+                else
+                {
+                    AST_Expression derAST = newAST_Expression_BinOp (algExp->exp (), derExp->exp (), BINOPADD);
+                    algExp = newMMO_Expression (derAST, _data);
+                }
+            }
+            MMO_Expression rExp = (*eq)->_generateChainRule (idx);
+            if (rExp != NULL)
+            {
+                if (algExp == NULL)
+                {
+                    algExp = rExp;
+                }
+                else
+                {
+                    AST_Expression derAST = newAST_Expression_BinOp (algExp->exp (), rExp->exp (), BINOPADD);
+                    algExp = newMMO_Expression (derAST, _data);
+                }
+            }
+        }
+        if (algExp != NULL)
+        {
+            AST_Expression chain = newAST_Expression_BinOp (af->second->exp (), algExp->exp (), BINOPADD);
+            exp = newMMO_Expression (chain, _data);
+        }
+    }
+    return (exp);
 }

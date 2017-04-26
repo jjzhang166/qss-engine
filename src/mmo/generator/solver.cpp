@@ -2415,9 +2415,13 @@ Classic_::_printDeps (Dependencies d, Index derivativeIndex, MMO_EquationTable e
             }
             stringstream varMap;
             lhs << "jac[jit++] ";
-            _common->print ((*eq)->jacobianExp (infIdx)->print (_writer->indent (indent), lhs.str (), varIdx, false,
-                       NULL, EQ_JACOBIAN, order, constantPrint, 0, true, dIdx->low (), constant), s);
-            _common->insertLocalVariables (&_modelDepsVars, (*eq)->getVariables ());
+            MMO_Equation printEq = (*eq)->jacobianExp (infIdx);
+            if (printEq != NULL)
+            {
+                _common->print (printEq->print (_writer->indent (indent), lhs.str (), varIdx, false,
+                NULL, EQ_JACOBIAN, order, constantPrint, 0, true, dIdx->low (), constant), s);
+                _common->insertLocalVariables (&_modelDepsVars, (*eq)->getVariables ());
+            }
             if (dIdx->hasRange () && controlRange)
             {
                 buffer << _writer->indent (--indent) << "}";
@@ -2444,14 +2448,7 @@ Classic_::modelDeps ()
             buffer << indent << "case " << idx.print () << ":";
             _writer->write (&buffer, WR_MODEL_DEPS_SIMPLE);
             _printDeps (d, eqIdx, equations, algebraics, "", WR_MODEL_DEPS_SIMPLE, 3, true, idx);
-            if (equations->findGenericDependencies (idx.mappedValue ()))
-            {
-                buffer << _writer->indent (3) << "break;";
-            }
-            else
-            {
-                buffer << _writer->indent (3) << "return;";
-            }
+            buffer << _writer->indent (3) << "break;";
             _writer->write (&buffer, WR_MODEL_DEPS_SIMPLE);
         }
     }
