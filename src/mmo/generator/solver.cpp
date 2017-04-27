@@ -2444,14 +2444,7 @@ Classic_::modelDeps ()
             buffer << indent << "case " << idx.print () << ":";
             _writer->write (&buffer, WR_MODEL_DEPS_SIMPLE);
             _printDeps (d, eqIdx, equations, algebraics, "", WR_MODEL_DEPS_SIMPLE, 3, true, idx);
-            if (equations->findGenericDependencies (idx.mappedValue ()))
-            {
-                buffer << _writer->indent (3) << "break;";
-            }
-            else
-            {
-                buffer << _writer->indent (3) << "return;";
-            }
+            buffer << _writer->indent (3) << "break;";
             _writer->write (&buffer, WR_MODEL_DEPS_SIMPLE);
         }
     }
