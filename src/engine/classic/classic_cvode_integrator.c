@@ -57,29 +57,120 @@ int is_sampled;
 
 #ifdef USE_JACOBIAN
 /* Test jacobian */
-static int Jac(realtype t, N_Vector y, N_Vector fy, SlsMat JacMat, void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3) {
+extern double __PAR_Cza_0 ;
+extern double __PAR_kout ;
+extern double __PAR_kcw ;
+extern double __PAR_kicw ;
+extern double __PAR_kpcw ;
+extern double __PAR_Tcwsp ;
+extern double __PAR_p1 ;
+extern double __PAR_p2 ;
+extern double __PAR_p3 ;
+extern double __PAR_VolTank ;
+extern double __PAR_VolPipe ;
+extern double __PAR_VolExc ;
+extern double __PAR_rho ;
+extern double __PAR_Cw ;
+extern double __PAR_Ccw ;
+extern double __PAR_Cza[10];
+extern double __PAR_Ctank ;
+extern double __PAR_Cexc ;
+extern double __PAR_q_flow ;
+extern double __PAR_max_flow ;
+extern double __PAR_Qcmax ;
+extern double __PAR_kiz ;
+extern double __PAR_kpz ;
+extern double __PAR_Tzasp ;
+double *d;
 
+static int Jac(realtype t, N_Vector y, N_Vector fy, SlsMat JacMat, void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3) {
   int n = 0;
   int size = clcData->states, nnz, i, m, j;
-  realtype *yval;
+  realtype *x;
   int *colptrs = *JacMat->colptrs;
   int *rowvals = *JacMat->rowvals;
 
-  yval = N_VGetArrayPointer_Serial(y);
+  x = N_VGetArrayPointer_Serial(y);
   SparseSetMatToZero(JacMat);
-
-  for (i=0; i<size; i++) { 
+  j=0;
+  int N = size / 4;
+  for (i=0; i<4*N+2; i++) { 
     colptrs[i] = n;
+    JacMat->data[j] = 0;
     //printf("Indexes for col %d start at %d.\n", i, n);
-    for (j = n, m = 0; j < n + clcData->nSD[i] ; j++, m++) {
-      rowvals[j] = clcData->SD[i][m];
+      if (i >= 0 && i < N) { // Tza
+        JacMat->data[j] = -(1.0/(__PAR_Cza[i]))*(__PAR_kcw+__PAR_kout); // Tza
+        rowvals[j++] = i;
+
+        JacMat->data[j] = __PAR_kcw/__PAR_Cexc + (__PAR_rho*__PAR_Cw*(( ( d[2+i*N]   )*1+(1-(d[2+i*N]))*((1-(d[2+i]))*(__PAR_kpz)))*__PAR_max_flow)*(x [i+2*N] -x[i+N]))/__PAR_Cexc ; // Tex
+        rowvals[j++] = i+N;
+ 
+        JacMat->data[j] = -(__PAR_kcw/__PAR_Cexc + (__PAR_rho*__PAR_Cw*(( ( d[2+i*N]   )*1+(1-(d[2+i*N]))*((1-(d[2+i]))*(__PAR_kpz)))*__PAR_max_flow)*(x [i+2*N] -x[i+N]))/__PAR_Cexc) ; // Tcw
+        rowvals[j++] = i+N*2;
+
+        JacMat->data[j] = __PAR_kiz / __PAR_kpz * ((d[2+i*N]) * 1 + (1 - (d[2+i*N])) * ((d[2+i]) * 0 + (1 - (d[2+i])) * (__PAR_kpz ))); // zc
+        rowvals[j++] = i+N*3;
+        n += 4;
+      }
+      if (i >= N && i < 2*N) { // Texc
+        m = i-N;
+        JacMat->data[j] = (__PAR_kcw)/__PAR_Cza[i-N]; // Tza
+        rowvals[j++] = i-N;
+        
+        JacMat->data[j] = -__PAR_kcw/__PAR_Cexc - (__PAR_rho*__PAR_Cw*(( (d[2+m*N])*1+(1-(d[2+m*N]))*((d[2+m])*0+(1-(d[2+m]))*(__PAR_kpz*(x[m] - __PAR_Tzasp )+x[m+3*N])))*__PAR_max_flow))/__PAR_Cexc; // Texc
+        rowvals[j++] = i;
+
+        JacMat->data[j] = (__PAR_rho*__PAR_Cw*(( (d[2+m*N])*1+(1-(d[2+m*N]))*((d[2+m])*0+(1-(d[2+m]))*(__PAR_kpz*(x[m] - __PAR_Tzasp )+x[m+3*N])))*__PAR_max_flow)) / __PAR_Ccw; // Tcw
+        rowvals[j++] = i+N;
+
+        n += 3;
+      }
+      if (i >= 2*N && i < 3*N) { // Tcw
+        m = i-2*N;
+        
+        JacMat->data[j] = (__PAR_rho*__PAR_Cw*(( (d[2+m*N])*1+(1-(d[2+m*N]))*((d[2+m])*0+(1-(d[2+m]))*(__PAR_kpz*(x[m] - __PAR_Tzasp )+x[m+3*N])))*__PAR_max_flow))/__PAR_Cexc;
+        rowvals[j++] = i-N;
+        
+        JacMat->data[j] = -(__PAR_rho*__PAR_Cw*__PAR_q_flow)/ __PAR_Ccw  - (__PAR_rho*__PAR_Cw*(( (d[2+m*N])*1+(1-(d[2+m*N]))*((d[2+m])*0+(1-(d[2+m]))*(__PAR_kpz*(x[m] - __PAR_Tzasp )+x[m+3*N])))*__PAR_max_flow)) / __PAR_Ccw ;
+        rowvals[j++] = i;
+
+        n += 2;
+      }
+      if (i >= 2*N && i < 3*N-1) { // Tcw
+        m = i-2*N;
+
+        JacMat->data[j] =(__PAR_rho*__PAR_Cw*__PAR_q_flow)/ __PAR_Ccw;
+        rowvals[j++] = i+1;
+        n += 1;
+      }
+      if (i== 3*N-1) { // Tcw [N]
+        JacMat->data[j] =(__PAR_rho*__PAR_Cw*__PAR_q_flow)/ __PAR_Ccw;
+        rowvals[j++] = 4*N+1;
+        n += 1;
+
+      }
+      if (i >= 3*N && i < 4*N) { // zc
+        rowvals[j++] = i;
+        n += 1;
+      }
+      if (i == 4*N) { // zcw
+        rowvals[j++] = i;
+        rowvals[j++] = i+1;
+        n += 2;
+      }
+      if (i == 4*N+1) { // Ttank
+        rowvals[j++] = i-1;
+        rowvals[j++] = i;
+        n += 2;
+      }
       //printf("Non null value at row %d in col %d. Saving it in %d \n", rowvals[j],i, j);
     }
-    n += clcData->nSD[i];
-  }
+    
   colptrs[i] = n;
 
-  clcModel->jac (NV_DATA_S(y), clcData->d, clcData->alg, t, JacMat->data);
+  //clcModel->jac (NV_DATA_S(y), clcData->d, clcData->alg, t, JacMat->data);
+  SparsePrintMat(JacMat, stdout);
+  abort();
   return 0;
 
 }
@@ -194,6 +285,9 @@ CVODE_integrate (SIM_simulator simulate)
     nnz = 0;
     for (i=0; i < size; i++)
       nnz += clcData->nSD[i];
+    int N = size / 4;
+    nnz = 14*N+5;
+    d = clcData->d;
     flag = CVSuperLUMT(cvode_mem, 1, size, nnz);
     if (check_flag(&flag, "CVSuperLUMT", 1, simulator)) return;
     /* Set the Jacobian routine to Jac (user-supplied) */
