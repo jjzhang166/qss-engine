@@ -1291,9 +1291,7 @@ GenerateDeps_::foldTraverseElement (AST_Expression exp)
                         if (_data->disableSymDiff ())
                         {
                             _data->annotation ()->setSymDiff (false);
-                            Error::getInstance ()->add (0,
-                            EM_CG,
-                                                        ER_Warning, "External functions detected, set symbolic differentiation off.");
+                            Error::getInstance ()->add (0, EM_CG, ER_Warning, "External functions detected, set symbolic differentiation off.");
                         }
                         break;
                     }
@@ -1314,9 +1312,7 @@ GenerateDeps_::foldTraverseElement (AST_Expression exp)
                             if (_data->disableSymDiff () && _data->hasExternalFunctions ())
                             {
                                 _data->annotation ()->setSymDiff (false);
-                                Error::getInstance ()->add (0,
-                                EM_CG,
-                                                            ER_Warning, "External functions detected, set symbolic differentiation off.");
+                                Error::getInstance ()->add (0, EM_CG, ER_Warning, "External functions detected, set symbolic differentiation off.");
                             }
                             break;
                         }

@@ -1336,6 +1336,7 @@ QSS_::_printDeps (Dependencies d, Index derivativeIndex, MMO_EquationTable equat
     int xCoeff = _model->annotation ()->polyCoeffs ();
     bool constantPrint = constant;
     string aux1, aux2;
+    set<Index> algebraicArguments;
     for (Index *dIdx = d->begin (DEP_ALGEBRAIC); !d->end (DEP_ALGEBRAIC); dIdx = d->next (DEP_ALGEBRAIC))
     {
         if (d->isVector (dIdx))
@@ -1352,6 +1353,10 @@ QSS_::_printDeps (Dependencies d, Index derivativeIndex, MMO_EquationTable equat
             list<MMO_Equation>::iterator eq;
             for (eq = eqs.begin (); eq != eqs.end (); eq++)
             {
+                if (!(*eq)->controlAlgebraicArguments (&algebraicArguments, (*eq)->algebraicArguments ()))
+                {
+                    continue;
+                }
                 string iter;
                 Index lhsEq = (*eq)->lhs ();
                 stringstream aLhs;
@@ -1395,6 +1400,10 @@ QSS_::_printDeps (Dependencies d, Index derivativeIndex, MMO_EquationTable equat
             list<MMO_Equation>::iterator eq;
             for (eq = eqs.begin (); eq != eqs.end (); eq++)
             {
+                if (!(*eq)->controlAlgebraicArguments (&algebraicArguments, (*eq)->algebraicArguments ()))
+                {
+                    continue;
+                }
                 bool range = ((*eq)->lhs ().hasRange () && (*eq)->lhs ().range () != derivativeIndex.range ()) && (dIdx->factor () != 0);
                 if (range)
                 {

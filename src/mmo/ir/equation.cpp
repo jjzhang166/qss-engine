@@ -48,7 +48,7 @@ MMO_Equation_::MMO_Equation_ (AST_Expression exp, MMO_ModelData data) :
         foreachReverse(it,el)
         {
             MMO_Expression argExp = newMMO_Expression (current_element(it), _data);
-            Index *algIndex = argExp->deps ()->begin (DEP_ALGEBRAIC);
+            Index *algIndex = argExp->deps ()->begin (DEP_ALGEBRAIC_DEF);
             if (algIndex != NULL)
             {
                 _algebraicArguments.insert (*algIndex);
@@ -211,7 +211,7 @@ MMO_Equation_::print (string indent, string lhs, string idx, bool palgs, MMO_Equ
                 list<MMO_Equation>::iterator eq;
                 for (eq = eqs.begin (); eq != eqs.end (); eq++)
                 {
-                    if (_controlAlgebraicArguments (&algebraicArguments, (*eq)->algebraicArguments ()))
+                    if (controlAlgebraicArguments (&algebraicArguments, (*eq)->algebraicArguments ()))
                     {
                         Index lhsEq = (*eq)->lhs ();
                         stringstream aLhs;
@@ -254,7 +254,7 @@ MMO_Equation_::print (string indent, string lhs, string idx, bool palgs, MMO_Equ
                 list<MMO_Equation>::iterator eq;
                 for (eq = eqs.begin (); eq != eqs.end (); eq++)
                 {
-                    if (_controlAlgebraicArguments (&algebraicArguments, (*eq)->algebraicArguments ()))
+                    if (controlAlgebraicArguments (&algebraicArguments, (*eq)->algebraicArguments ()))
                     {
                         bool range = ((*eq)->lhs ().hasRange () && (*eq)->lhs ().range () != _lhs.range ()) && (dIdx->factor () != 0);
                         if (range)
@@ -488,7 +488,7 @@ MMO_Equation_::controlAlgebraicDefinition ()
 }
 
 bool
-MMO_Equation_::_controlAlgebraicArguments (set<Index> *algs, set<Index> eqAlgs)
+MMO_Equation_::controlAlgebraicArguments (set<Index> *algs, set<Index> eqAlgs)
 {
     if (eqAlgs.empty ())
     {
