@@ -713,7 +713,7 @@ output_expression_list:
 
 output_expression_list_more:
     /* empty */                                         { $$ = newAST_ExpressionList(); }          
-  | TOKCOMA opt_expression output_expression_list_more  { $$ = AST_ListPrepend($3,$2); }
+  | TOKCOMA opt_expression output_expression_list_more  { $$ = AST_ListAppend($3,$2); }
 ;
 
 opt_named_arguments:

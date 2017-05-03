@@ -170,11 +170,13 @@ public:
     algebraicArguments ();
     MMO_Equation
     jacobianExp (Index idx, DEP_Type type = DEP_STATE);
-private:
     bool
-    _controlAlgebraicArguments (set<Index> *algs, set<Index> eqAlgs);
+    controlAlgebraicArguments (set<Index> *algs, set<Index> eqAlgs);
+private:
     void
     _initDerivatives ();
+    MMO_Expression
+    _generateChainRule (Index idx);
     void
     _generateJacobianExps ();
     string

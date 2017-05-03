@@ -656,7 +656,7 @@ AST_Expression_Output_::print () const
   foreach (it,_list)
     {
       i++;
-      ret << current_element(it);
+      ret << current_element(it)->print();
       ret << (i == size ? "" : ",");
     }
   ret << ")";
