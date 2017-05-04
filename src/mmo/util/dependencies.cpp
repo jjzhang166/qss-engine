@@ -372,6 +372,13 @@ Dependencies_::key (DEP_Type t)
     return (m->key ());
 }
 
+Index
+Dependencies_::key (DEP_Type t, int at)
+{
+    MMO_IndexTable m = _select (t);
+    return (m->key (at));
+}
+
 Index *
 Dependencies_::next (DEP_Type t)
 {
