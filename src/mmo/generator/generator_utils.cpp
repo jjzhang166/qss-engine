@@ -45,6 +45,12 @@ MMO_MemoryWriter_::setFile (string fname)
 }
 
 void
+MMO_MemoryWriter_::removeFromSection (string str, WR_Section section)
+{
+    _sections[section].remove(str);
+}
+
+void
 MMO_MemoryWriter_::clear (WR_Section section)
 {
     _sections[section].clear ();
@@ -68,20 +74,34 @@ MMO_MemoryWriter_::newLine (WR_Section section)
 }
 
 void
-MMO_MemoryWriter_::write (string str, WR_Section section)
+MMO_MemoryWriter_::write (string str, WR_Section section, WR_InsertType it)
 {
     if (!str.empty ())
     {
-        _sections[section].push_back (str);
+        if (it == WR_PREPEND)
+        {
+            _sections[section].push_back (str);
+        }
+        else
+        {
+            _sections[section].push_front (str);
+        }
     }
 }
 
 void
-MMO_MemoryWriter_::write (stringstream *s, WR_Section section, bool clean)
+MMO_MemoryWriter_::write (stringstream *s, WR_Section section, bool clean, WR_InsertType it)
 {
     if (!s->str ().empty ())
     {
-        _sections[section].push_back (s->str ());
+        if (it == WR_PREPEND)
+        {
+            _sections[section].push_back (s->str ());
+        }
+        else
+        {
+            _sections[section].push_front (s->str ());
+        }
         if (clean)
         {
             s->str ("");
@@ -221,6 +241,12 @@ MMO_FileWriter_::~MMO_FileWriter_ ()
 }
 
 void
+MMO_FileWriter_::removeFromSection (string str, WR_Section section)
+{
+    return;
+}
+
+void
 MMO_FileWriter_::clear (WR_Section section)
 {
     return;
@@ -245,13 +271,13 @@ MMO_FileWriter_::newLine (WR_Section section)
 }
 
 void
-MMO_FileWriter_::write (string str, WR_Section section)
+MMO_FileWriter_::write (string str, WR_Section section, WR_InsertType it)
 {
     _sections[section] << str << endl;
 }
 
 void
-MMO_FileWriter_::write (stringstream *s, WR_Section section, bool clean)
+MMO_FileWriter_::write (stringstream *s, WR_Section section, bool clean, WR_InsertType it)
 {
     _sections[section] << s->str () << endl;
     if (clean)

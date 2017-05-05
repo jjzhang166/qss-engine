@@ -2459,6 +2459,19 @@ Classic_::modelDeps ()
             _printDeps (d, eqIdx, equations, algebraics, "", WR_MODEL_DEPS_SIMPLE, 3, true, idx);
             buffer << _writer->indent (3) << "break;";
             _writer->write (&buffer, WR_MODEL_DEPS_SIMPLE);
+            if (equations->findGenericDependencies (idx.mappedValue ()))
+            {
+                int i = 0, c = d->states() - 1;
+                for (i = c; i >= 0; i--)
+                {
+                    Index stateDep =  d->key(DEP_STATE, i);
+                    string sIdx = idx.print();
+                    string eqsIdx = stateDep.print();
+                    buffer << indent << "modelData->SD[" << sIdx << "][states[" << sIdx << "]++] = " << eqsIdx << ";";
+                    _writer->removeFromSection(buffer.str(), WR_INIT_LD_SD);
+                    _writer->write (&buffer, WR_INIT_LD_SD, true, WR_APPEND);
+                }
+            }
         }
     }
     int i = 0, c = _modelDeps->count () - 1;

@@ -140,6 +140,8 @@ public:
     insert (Index idx, Index dep, DEP_Type t);
     Index
     key (DEP_Type t);
+    Index
+    key (DEP_Type t, int at);
     /**
      *
      * @param t
