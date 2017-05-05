@@ -154,6 +154,8 @@ public:
    *
    */
   ~Util ();
+  string 
+  trimString (string str);
   /**
    *
    * @return
