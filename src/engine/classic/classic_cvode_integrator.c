@@ -23,15 +23,15 @@
 #include <nvector/nvector_serial.h>  /* serial N_Vector types, fcts., macros */
 #include <sundials/sundials_types.h> /* definition of type realtype */
 
-#define USE_JACOBIAN
-#ifdef USE_JACOBIAN
+//#define USE_JACOBIAN
+//#ifdef USE_JACOBIAN
 #include <cvode/cvode_superlumt.h>   /* prototype for CVSUPERLUMT */
-#include <cvode/cvode_klu.h>   /* prototype for CVSUPERLUMT */
 #include <sundials/sundials_sparse.h> /* definitions SlsMat */
-#else
+#include <cvode/cvode_klu.h>   /* prototype for CVSUPERLUMT */
+//#else
 #include <cvode/cvode_dense.h>       /* prototype for CVDense */
 #include <sundials/sundials_dense.h> /* definitions DlsMat DENSE_ELEM */
-#endif
+//#endif
 
 
 #include <classic/classic_cvode_integrator.h>
@@ -57,7 +57,7 @@ static SD_output simOutput = NULL;
 
 int is_sampled;
 
-#ifdef USE_JACOBIAN
+//#ifdef USE_JACOBIAN
 
 static int Jac(realtype t, N_Vector y, N_Vector fy, SlsMat JacMat, void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3) {
   int n = 0;
@@ -79,7 +79,7 @@ static int Jac(realtype t, N_Vector y, N_Vector fy, SlsMat JacMat, void *user_da
   //SparsePrintMat(JacMat,stdout);
   return 0;
 }
-#endif
+//#endif
 
 /* Test jacobian */
 static int check_flag(void *flagvalue, const char *funcname, int opt, CLC_simulator simulator)
@@ -186,23 +186,25 @@ CVODE_integrate (SIM_simulator simulate)
   if (check_flag(&flag, "CVodeRootInit", 1, simulator)) return;
 
 /***************************************************************/
-#ifdef USE_JACOBIAN
+//#ifdef USE_JACOBIAN
+  if (simulator->data->params->jacobian == 0) {
     nnz = 0;
     for (i=0; i < size; i++)
       nnz += clcData->nSD[i];
-    //flag = CVSuperLUMT(cvode_mem, 1, size, nnz);
-    //if (check_flag(&flag, "CVSuperLUMT", 1, simulator)) return;
+    /*flag = CVSuperLUMT(cvode_mem, 1, size, nnz);
+    if (check_flag(&flag, "CVSuperLUMT", 1, simulator)) return;*/
 
     flag = CVKLU(cvode_mem, size, nnz, CSC_MAT);
-    if (check_flag(&flag, "CVKLU", 1, simulator)) return;    
+    if (check_flag(&flag, "CVKLU", 1, simulator)) return;
     /* Set the Jacobian routine to Jac (user-supplied) */
     flag = CVSlsSetSparseJacFn(cvode_mem, Jac);
     if (check_flag(&flag, "CVSlsSetSparseJacFn", 1, simulator)) return;
-#else
-    printf("runing dense CVODE\n");
+//#else
+  } else {
     flag = CVDense(cvode_mem, size);
     if (check_flag(&flag, "CVDense", 1, simulator)) return;
-#endif
+  } 
+//#endif
 
 /***************************************************************/
   getTime (simulator->stats->sTime);

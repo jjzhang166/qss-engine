@@ -101,7 +101,7 @@ CLC_Data (int states, int discretes, int events, int inputs, int algebraics, str
     }
     p->event = SD_EventData (events);
     p->params = SD_Parameters (settings->derdelta, settings->zchyst, settings->minstep, settings->symdiff, settings->lps, settings->nodesize,
-                               settings->pm, settings->dt, settings->dtSynch, settings->partitionerOptions);
+                               settings->pm, settings->dt, settings->dtSynch, settings->partitionerOptions, settings->jacobian);
     p->scalarEvaluations = 0;
     p->zeroCrossings = 0;
     p->funEvaluations = 0;

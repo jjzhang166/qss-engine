@@ -442,6 +442,7 @@ MmomeGui::runDlgClose ()
   Editor::instance ()->setLPS (_runDlg->LPS ());
   Editor::instance ()->setDT (_runDlg->DT ());
   Editor::instance ()->setDtSynch (_runDlg->dtSynch ());
+  Editor::instance ()->setJacobian (_runDlg->jacobian());
   Editor::instance ()->setPartitionMethod (_runDlg->partitionMethod ());
   Editor::instance()->setPatohSettings(_runDlg->patohSettings());
   Editor::instance()->setScotchSettings(_runDlg->scotchSettings());

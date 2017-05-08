@@ -249,6 +249,8 @@ MMO_ModelAnnotation_::MMO_ModelAnnotation_ (MMO_ModelData data) :
   _annotations.insert (
       pair<string, MMO_ModelAnnotation_::type> ("MMO_Period", STEP_SIZE));
   _annotations.insert (
+      pair<string, MMO_ModelAnnotation_::type> ("Jacobian", JACOBIAN));
+  _annotations.insert (
       pair<string, MMO_ModelAnnotation_::type> ("MMO_SymDiff", SYM_DIFF));
   _annotations.insert (
       pair<string, MMO_ModelAnnotation_::type> ("MMO_Scheduler", SCHEDULER));
@@ -644,6 +646,9 @@ MMO_ModelAnnotation_::_processAnnotation (string annot,
     case SCHEDULER:
       _scheduler = av.str ();
       break;
+    case JACOBIAN:
+      _jacobian = ("Sparse"==av.str() ? 0 : 1);
+      break;
     case SYM_DIFF:
       _symDiff = true;
       if (av.integer () == 0)
@@ -874,6 +879,20 @@ MMO_ModelAnnotation_::setLps (int lps)
   _lps = lps;
 }
 
+void
+MMO_ModelAnnotation_::setJacobian (int jacobian)
+{
+  _jacobian = jacobian;
+}
+
+int
+MMO_ModelAnnotation_::jacobian ()
+{
+  return (_jacobian);
+}
+
+
+
 int
 MMO_ModelAnnotation_::lps ()
 {
@@ -1079,8 +1098,9 @@ MMO_EvalAnnotation_::MMO_EvalAnnotation_ (VarSymbolTable st) :
   _tokens.insert (pair<string, string> ("Patoh", "Patoh"));
   _tokens.insert (pair<string, string> ("Manual", "Manual"));
   _tokens.insert (pair<string, string> ("SD_DT_Fixed", "SD_DT_Fixed"));
-  _tokens.insert (
-      pair<string, string> ("SD_DT_Asynchronous", "SD_DT_Asynchronous"));
+  _tokens.insert (pair<string, string> ("Sparse", "Sparse"));
+  _tokens.insert (pair<string, string> ("Dense", "Dense"));
+  _tokens.insert (pair<string, string> ("SD_DT_Asynchronous", "SD_DT_Asynchronous"));
 }
 
 MMO_AnnotationValue

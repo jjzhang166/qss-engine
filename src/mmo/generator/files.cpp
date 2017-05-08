@@ -180,7 +180,7 @@ MMO_Files_::makefile ()
     }
     buffer << " $(TARGET_SRC) $(CFLAGS) -o $@ -lm -lgsl -lconfig -lgfortran";
 #ifdef	__linux__
-  buffer << " -lpthread -lmetis -lscotch -lscotcherr -lpatoh -lrt -lsundials_cvode -lsundials_ida -lsundials_nvecserial -llapack -latlas -lf77blas -lsuperlu_mt_PTHREAD";
+  buffer << " -lpthread -lmetis -lscotch -lscotcherr -lpatoh -lrt -lsundials_cvode -lsundials_ida -lsundials_nvecserial -llapack -latlas -lf77blas -lklu";
 #endif
     buffer << " -lgslcblas" << includes.str ();
     if (_flags->parallel ())
@@ -323,6 +323,8 @@ MMO_Files_::settings (MMO_Annotation annotation)
         _writer->print ("lps=0;");
     }
     buffer << "nodesize=" << annotation->nodeSize () << ";";
+    _writer->print (&buffer);
+    buffer << "jacobian=" << (annotation->jacobian()) << ";";
     _writer->print (&buffer);
     buffer << "it=" << annotation->initialTime () << ";";
     _writer->print (&buffer);

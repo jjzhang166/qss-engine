@@ -211,6 +211,10 @@ public:
   setScotchSettings (string l);
   virtual void
   setMetisSettings (string l);
+  virtual void
+  setJacobian (int l) = 0;
+  virtual int 
+  jacobian () = 0;
 };
 
 /**
@@ -294,6 +298,8 @@ public:
    */
   string
   libraryDirectory ();
+  virtual void setJacobian (int l) {};
+  virtual int jacobian () { return  0; };
 private:
   /**
    *
@@ -650,6 +656,8 @@ public:
   setScotchSettings (string l);
   void
   setMetisSettings (string l);
+  virtual void setJacobian (int l);
+  virtual int jacobian ();
 private:
   /**
    *
@@ -681,7 +689,8 @@ private:
     DELTAT_SYNCH, //!< DT_SYNCH
     PATOH_SETTINGS, //!< PATOH_SETTINGS
     SCOTCH_SETTINGS, //!< SCOTCH_SETTINGS
-    METIS_SETTINGS //!< METIS_SETTINGS
+    METIS_SETTINGS, //!< METIS_SETTINGS
+    JACOBIAN //!< JACOBIAN
   } type;
   void
   _processAnnotation (string annot, AST_Modification_Equal x);
@@ -705,6 +714,7 @@ private:
   bool _symDiff;
   double _minStep;
   int _lps;
+  int _jacobian;
   double _derDelta;
   int _nodeSize;
   double _ZCHyst;

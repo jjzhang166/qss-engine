@@ -252,6 +252,10 @@ SET_Settings (char *fname)
     {
       p->lps = ires;
     }
+  if (config_lookup_int (cf, "jacobian", &ires))
+    {
+      p->jacobian = ires;
+    }
   if (config_lookup_int (cf, "nodesize", &ires))
     {
       if (ires == 0)

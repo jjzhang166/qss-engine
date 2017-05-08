@@ -194,6 +194,19 @@ RunDlg::_getSymDiffIdx (QString str)
 }
 
 QString
+RunDlg::_getJacobianString (int idx)
+{
+  switch (idx)
+    {
+    case 0:
+      return ("Sparse");
+    case 1:
+      return ("Dense");
+    }
+  return ("Sparse");
+}
+
+QString
 RunDlg::_getSymDiffString (int idx)
 {
   switch (idx)
@@ -334,6 +347,16 @@ RunDlg::_getPartitionMethodString (int idx)
       return ("Manual");
     }
   return ("Metis");
+}
+
+int
+RunDlg::_getJacobianIdx (QString str)
+{
+  if (str.trimmed () == "Dense")
+    return (1);
+  if (str.trimmed () == "Sparse")
+    return (0);
+  return (0);
 }
 
 int

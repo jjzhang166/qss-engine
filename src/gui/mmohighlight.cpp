@@ -53,7 +53,7 @@ MmoHighlighter::MmoHighlighter (QTextDocument *parent, h_type file) :
 	  << "\\bLibraryDirectory\\b" << "\\bMMO_NodeSize\\b"
 	  << "\\bMMO_Parallel\\b" << "\\bMMO_PartitionMethod\\b" << "\\bMMO_DT_Min\\b"
 	  << "\\bMMO_DT_Synch\\b" << "\\bMMO_PatohSettings\\b" << "\\bMMO_ScotchSettings\\b" << "\\bMMO_MetisSettings\\b"
-	  << "\\bMMO_StoreData\\b" << "\\bderivative\\b";
+      << "\\bMMO_StoreData\\b" << "\\bderivative\\b" << "\\bJacobian\\b";
 
       foreach (const QString &pattern, keywordPatterns){
       rule.pattern = QRegExp(pattern);
