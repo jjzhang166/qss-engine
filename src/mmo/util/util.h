@@ -143,49 +143,51 @@ private:
 class Util
 {
 public:
-    /**
-     *
-     * @return
-     */
-    static Util *
-    getInstance ();
-    /**
-     *
-     */
-    ~Util ();
-    /**
-     *
-     * @return
-     */
-    string
-    languageEspecification ();
-    /**
-     *
-     * @param t
-     * @return
-     */
-    bool
-    checkTypeString (string t);
-    /**
-     *
-     * @param annotation
-     * @return
-     */
-    bool
-    checkExperimentAnnotations (string *annotation);
-    /**
-     *
-     * @param fname
-     * @return
-     */
-    BIF_NAMES
-    checkBuiltInFunctions (string fname);
-    /**
-     *
-     * @param fname
-     * @return
-     */
-    BIF_NAMES
+  /**
+   *
+   * @return
+   */
+  static Util *
+  getInstance ();
+  /**
+   *
+   */
+  ~Util ();
+  string 
+  trimString (string str);
+  /**
+   *
+   * @return
+   */
+  string
+  languageEspecification ();
+  /**
+   *
+   * @param t
+   * @return
+   */
+  bool
+  checkTypeString (string t);
+  /**
+   *
+   * @param annotation
+   * @return
+   */
+  bool
+  checkExperimentAnnotations (string *annotation);
+  /**
+   *
+   * @param fname
+   * @return
+   */
+  BIF_NAMES
+  checkBuiltInFunctions (string fname);
+  /**
+   *
+   * @param fname
+   * @return
+   */
+  BIF_NAMES
     checkBuiltInReductionFunctions (string fname);
     /**
      *

@@ -120,6 +120,27 @@ Util::getInstance ()
   return (_instance);
 }
 
+
+string 
+Util::trimString (string str)
+{
+  // trim trailing spaces
+  string ret = str;
+  size_t endpos = ret.find_last_not_of(" \t");
+  if( string::npos != endpos )
+  {
+    ret = ret.substr( 0, endpos+1 );
+  }
+
+  // trim leading spaces
+  size_t startpos = ret.find_first_not_of(" \t");
+  if( string::npos != startpos )
+  {
+    ret = ret.substr( startpos );
+  }
+  return (ret);
+}
+
 string
 Util::languageEspecification ()
 {
@@ -515,12 +536,9 @@ BIF::generateCode (string variableMap, string variableIndex,
       code.push_back (buffer.str ());
       buffer.str ("");
       code.push_back ("{");
-/*      for (int j = 0; j < expOrder; j++)
-	{*/
 	  code.push_back (
 	      _reduce (variableMap, variableIndex, 0,variableInterval,
 		       states));
-//	}
       code.push_back ("}");
     }
   return (code);

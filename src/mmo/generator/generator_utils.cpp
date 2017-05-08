@@ -19,7 +19,9 @@
 
 #include <sstream>
 #include <iostream>
+
 #include <generator/generator_utils.h>
+#include "../util/util.h"
 
 #define TAB "\t"
 
@@ -47,7 +49,21 @@ MMO_MemoryWriter_::setFile (string fname)
 void
 MMO_MemoryWriter_::removeFromSection (string str, WR_Section section)
 {
-    _sections[section].remove(str);
+	list<string>::iterator it;
+	list<string> rmv;
+	for (it = _sections[section].begin(); it != _sections[section].end(); it++)
+	{
+      string fi = Util::getInstance ()->trimString (*it);
+      string cmp = Util::getInstance ()->trimString (str);
+      if (fi.compare(cmp) == 0)
+	  {
+		rmv.push_back(*it);
+	  }
+	}
+	for (it = rmv.begin(); it != rmv.end(); it++)
+	{
+      _sections[section].remove(*it);
+	}
 }
 
 void
