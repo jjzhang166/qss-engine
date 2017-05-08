@@ -21,7 +21,6 @@
 
 //#define USE_JACOBIAN
 //#ifdef USE_JACOBIAN
-#include <ida/ida_superlumt.h>   /* prototype for CVSUPERLUMT */
 #include <ida/ida_klu.h>   /* prototype for CVSUPERLUMT */
 #include <sundials/sundials_sparse.h> /* definitions SlsMat */
 //#endif
