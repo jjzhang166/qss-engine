@@ -400,6 +400,8 @@ MmomeGui::_run (QString name)
 	      QDir (_utils->appDir (MMOC_INCLUDE)).absolutePath ()); // Add an environment variable
   env.insert ("MMOC_OUTPUT",
 	      QDir (_utils->appDir (MMOC_OUTPUT)).absolutePath ()); // Add an environment variable
+  env.insert ("LD_LIBRARY_PATH", QDir (_utils->appDir (MMOC_LIBRARIES)).absolutePath () + "/../lib"); // Add an environment variable
+  qDebug() << env.toStringList();
   _proc->setProcessEnvironment (env);
   _proc->start (_utils->appDir (MMOC_BIN) + SLASH + sim, args);
 }

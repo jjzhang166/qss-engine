@@ -34,5 +34,6 @@ echo 'export MMOC_LIBRARIES=$MMOC_PATH/usr/libs' >> ~/.bashrc
 echo 'export MMOC_INCLUDE=$MMOC_PATH/usr/include' >> ~/.bashrc
 echo 'export MMOC_SRC=$MMOC_PATH/src' >> ~/.bashrc
 echo 'export MMOC_DOC=$MMOC_PATH/doc' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=$MMOC_PATH/usr/lib' >> ~/.bashrc
 cd bin
 echo Done.

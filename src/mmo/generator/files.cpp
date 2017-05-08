@@ -85,14 +85,13 @@ MMO_Files_::makefile ()
   _writer->print ("TARGET    := " + _fname);
   _writer->print ("");
   _writer->print ("#Flags, Libraries and Includes");
-  includes << "LDFLAGS    :=-L "
-      << Util::getInstance ()->environmentVariable ("MMOC_LIBS");
+  includes << "LDFLAGS    :=-L " << Util::getInstance ()->environmentVariable ("MMOC_LIBS");
   list<string> tmp = _model->libraryDirectories ();
   for (list<string>::iterator it = tmp.begin (); it != tmp.end (); it++)
     {
         includes << " -L" << *it;
     }
-  includes << " -L /home/fbergero/Downloads/SuperLU_MT_3.1/lib ";
+  includes << " -L " << Util::getInstance ()->environmentVariable ("MMOC_PATH") << "/usr/lib";
   _writer->print (&includes);
   _writer->print (_solver->makefile (SOL_LIBRARIES));
   buffer << _solver->makefile (SOL_INCLUDES);
