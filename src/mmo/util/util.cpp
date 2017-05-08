@@ -71,6 +71,10 @@ Util::Util () :
   _builtInFunctions.insert (pair<string, BIF_NAMES> ("log", BIF_LOG));
   _builtInFunctions.insert (pair<string, BIF_NAMES> ("log10", BIF_LOG10));
   _builtInFunctions.insert (pair<string, BIF_NAMES> ("pre", BIF_PRE));
+  _builtInFunctions.insert (pair<string, BIF_NAMES> ("GQLink_GetB", BIF_GQLINK));
+  _builtInFunctions.insert (pair<string, BIF_NAMES> ("GQLink_GetBx", BIF_GQLINK));
+  _builtInFunctions.insert (pair<string, BIF_NAMES> ("GQLink_GetBy", BIF_GQLINK));
+  _builtInFunctions.insert (pair<string, BIF_NAMES> ("GQLink_GetBz", BIF_GQLINK));
   _builtInFunctionImp.insert (
       pair<BIF_NAMES, BIF*> (BIF_SUM, new BuiltInSumFunction ()));
   _builtInFunctionImp.insert (
@@ -1058,4 +1062,11 @@ Util::builtInReductionFunctions (BIF_NAMES fn)
       return (it->second);
     }
   return (new BuiltInFunction ());
+}
+
+bool
+Util::checkGKLinkFunctions (string name)
+{
+    map<string, BIF_NAMES>::iterator it = _builtInFunctions.find (name);
+    return (it != _builtInFunctions.end ());
 }
