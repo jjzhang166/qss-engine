@@ -435,6 +435,10 @@ ConvertToGiNaC::foldTraverseElement (AST_Expression e)
             {
                 return (exp (convert (AST_ListFirst (c->arguments ()), _replaceDer, _generateIndexes)));
             }
+            else if (Util::getInstance()->checkGKLinkFunctions(toStr(c->name())))
+            {
+                return (ex (0));
+            }
             else
             {
                 cerr << "Function call : " << c->name ()->c_str () << " not converted to GiNaC" << endl;
