@@ -208,7 +208,6 @@ IDA_integrate (SIM_simulator simulate)
     flag = IDADense(mem, size);
     if(check_flag(&flag, "IDADense", 1, simulator)) return;
   } else {
-    printf("Running dense \n");
     nnz = 0;
     for (i=0; i < size; i++) {
        nnz += clcData->nSD[i];
