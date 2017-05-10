@@ -49,21 +49,27 @@ MMO_MemoryWriter_::setFile (string fname)
 void
 MMO_MemoryWriter_::removeFromSection (string str, WR_Section section)
 {
-	list<string>::iterator it;
-	list<string> rmv;
-	for (it = _sections[section].begin(); it != _sections[section].end(); it++)
-	{
-      string fi = Util::getInstance ()->trimString (*it);
-      string cmp = Util::getInstance ()->trimString (str);
-      if (fi.compare(cmp) == 0)
-	  {
-		rmv.push_back(*it);
-	  }
-	}
-	for (it = rmv.begin(); it != rmv.end(); it++)
-	{
-      _sections[section].remove(*it);
-	}
+    list<string>::iterator it;
+    list<string> rmv;
+    _removeIt = _sections[section].end();
+    for (it = _sections[section].begin (); it != _sections[section].end (); it++)
+    {
+        string fi = Util::getInstance ()->trimString (*it);
+        string cmp = Util::getInstance ()->trimString (str);
+        if (fi.compare ("{") == 0)
+        {
+            _removeIt = it;
+        }
+        if (fi.compare (cmp) == 0)
+        {
+            rmv.push_back (*it);
+            break;
+        }
+    }
+    for (it = rmv.begin (); it != rmv.end (); it++)
+    {
+        _sections[section].remove (*it);
+    }
 }
 
 void
@@ -100,7 +106,14 @@ MMO_MemoryWriter_::write (string str, WR_Section section, WR_InsertType it)
         }
         else
         {
-            _sections[section].push_front (str);
+            if (_removeIt == _sections[section].end())
+            {
+                _sections[section].push_front (str);
+            }
+            else
+            {
+                _sections[section].insert(++_removeIt, str);
+            }
         }
     }
 }
@@ -116,7 +129,14 @@ MMO_MemoryWriter_::write (stringstream *s, WR_Section section, bool clean, WR_In
         }
         else
         {
-            _sections[section].push_front (s->str ());
+            if (_removeIt == _sections[section].end ())
+            {
+                _sections[section].push_front (s->str ());
+            }
+            else
+            {
+                _sections[section].insert (++_removeIt, s->str ());
+            }
         }
         if (clean)
         {
