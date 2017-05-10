@@ -451,6 +451,13 @@ public:
     _jacobian = _findValue ("Jacobian", str);
   }
   ;
+  QString 
+  jacobian ()
+  {
+    return _jacobian ;
+  }
+  ;
+ 
   /**
    *
    * @param str

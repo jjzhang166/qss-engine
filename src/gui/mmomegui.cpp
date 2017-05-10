@@ -522,6 +522,7 @@ MmomeGui::on_actionRun_triggered ()
   _runDlg->setSemiStaticPartitioning(Editor::instance()->semiStaticPartitioning());
   _runDlg->setDtSynch (Editor::instance ()->dtSynch ());
   _runDlg->setDescription (Editor::instance ()->description ());
+  _runDlg->setJacobian (Editor::instance ()->jacobian());
   _runDlg->show ();
 }
 

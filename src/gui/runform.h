@@ -370,6 +370,13 @@ public:
     _lps->setText (str);
   }
   ;
+  void
+  setJacobian (QString str)
+  {
+    _jacobian->setCurrentIndex(str == "Sparse" ? 0 : 1);
+  }
+  ;
+ 
   /**
    *
    * @return
