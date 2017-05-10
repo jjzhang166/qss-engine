@@ -374,6 +374,7 @@ private:
   string _block;
   int _indent;
   int _blockIndent;
+  list<string>::iterator _removeIt;
 };
 /**
  *
