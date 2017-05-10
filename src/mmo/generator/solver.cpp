@@ -2442,6 +2442,22 @@ Classic_::_printDeps (Dependencies d, Index derivativeIndex, MMO_EquationTable e
 }
 
 void
+Classic_::_reorderSD (Dependencies d, const Index& idx, const string& indent, stringstream& buffer)
+{
+    int i = 0, c = d->states () - 1;
+    for (i = c; i >= 0; i--)
+    {
+        Index stateDep = d->key (DEP_STATE, i);
+        string sIdx = idx.print ("i");
+        string eqsIdx = stateDep.print ("i");
+        buffer << indent << "modelData->SD[" << sIdx << "][states[" << sIdx << "]++] = " << eqsIdx << ";";
+        _writer->removeFromSection (buffer.str (), WR_INIT_LD_SD);
+        _writer->write (&buffer, WR_INIT_LD_SD, true, WR_APPEND);
+    }
+    return;
+}
+
+void
 Classic_::modelDeps ()
 {
     MMO_EquationTable equations = _model->derivatives ();
@@ -2461,31 +2477,16 @@ Classic_::modelDeps ()
             _writer->write (&buffer, WR_MODEL_DEPS_SIMPLE);
             if (equations->findGenericDependencies (idx.mappedValue ()))
             {
-                int i = 0, c = d->states() - 1;
-                for (i = c; i >= 0; i--)
-                {
-                    Index stateDep =  d->key(DEP_STATE, i);
-                    string sIdx = idx.print();
-                    string eqsIdx = stateDep.print();
-                    buffer << indent << "modelData->SD[" << sIdx << "][states[" << sIdx << "]++] = " << eqsIdx << ";";
-                    _writer->removeFromSection(buffer.str(), WR_INIT_LD_SD);
-                    _writer->write (&buffer, WR_INIT_LD_SD, true, WR_APPEND);
-                }
+               _reorderSD (d, idx, indent, buffer);
             }
         }
-    }
-    int i = 0, c = _modelDeps->count () - 1;
-    for (i = c; i >= 0; i--)
-    {
-        Index idx = _modelDeps->key (i);
-        Index eqIdx = equations->equationIndex (idx);
-        if (idx.hasRange ())
+        else
         {
-            Dependencies d = _modelDeps->val (i);
             _common->genericDefCondition (eqIdx, idx, WR_MODEL_DEPS_GENERIC, &_modelDepsVars);
             _printDeps (d, eqIdx, equations, algebraics, idx.print ("j"), WR_MODEL_DEPS_GENERIC, 2, false, idx);
             buffer << _writer->indent (1) << "}";
             _writer->write (&buffer, WR_MODEL_DEPS_GENERIC);
+            _reorderSD (d, idx, indent, buffer);
         }
     }
 }
