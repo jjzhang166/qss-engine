@@ -2480,8 +2480,15 @@ Classic_::modelDeps ()
                _reorderSD (d, idx, indent, buffer);
             }
         }
-        else
+    }
+    int i = 0, c = _modelDeps->count () - 1;
+    for (i = c; i >= 0; i--)
+    {
+        Index idx = _modelDeps->key (i);
+        Index eqIdx = equations->equationIndex (idx);
+        if (idx.hasRange ())
         {
+            Dependencies d = _modelDeps->val (i);
             _common->genericDefCondition (eqIdx, idx, WR_MODEL_DEPS_GENERIC, &_modelDepsVars);
             _printDeps (d, eqIdx, equations, algebraics, idx.print ("j"), WR_MODEL_DEPS_GENERIC, 2, false, idx);
             buffer << _writer->indent (1) << "}";
