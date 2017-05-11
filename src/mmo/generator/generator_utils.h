@@ -109,7 +109,8 @@ typedef enum
 
 typedef enum
 {
-  WR_APPEND,
+  WR_APPEND_SIMPLE,
+  WR_APPEND_GENERIC,
   WR_PREPEND
 } WR_InsertType;
 
