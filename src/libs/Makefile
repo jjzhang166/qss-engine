@@ -33,6 +33,9 @@ TARGETDIR   := ./
 SRCEXT      := c
 DEPEXT      := d
 OBJEXT      := o
+LIBCVODE    := ../../usr/lib/libsundials_cvode.a
+LIBIDA      := ../../usr/lib/libsundials_ida.a
+ 
 
 #Flags, Libraries and Includes
 CFLAGS 		:= -Wall -msse2 -mfpmath=sse -O2 
@@ -81,19 +84,21 @@ GRAPHOBJ=$(addprefix $(GRAPHDIR)/$(OBJDIR)/grp_, $(notdir $(GRAPHSRC:.c=.o)))
 # Make dependencies
 DEPS = $(COMMONOBJ:.o=.d) $(SEQOBJ:.o=.d) $(PAROBJ:.o=.d) $(CLASSICOBJ:.o=.d)
 
-default: $(TARGET) $(LIBTIMESTEP) sundials
+default: $(LIBCVODE) $(LIBIDA) $(TARGET) $(LIBTIMESTEP) 
 
-sundials:
+$(LIBCVODE):
 	tar xvzf $(ENGINEDIR)/3rdParty/cvode-2.9.0.tar.gz
 	mkdir -p ./cvode-2.9.0/build
 	cd ./cvode-2.9.0/build; cmake .. -DLAPACK_ENABLE=ON -DCMAKE_BUILD_TYPE=Release  -DKLU_ENABLE=ON -DKLU_INCLUDE_DIR=/usr/include/suitesparse -DKLU_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu/  -DCMAKE_INSTALL_PREFIX=/usr
 	make -C ./cvode-2.9.0/build install DESTDIR=`pwd`/../../
+	rm -rf ./cvode-2.9.0
+
+$(LIBIDA):
 	tar xvzf $(ENGINEDIR)/3rdParty/ida-2.9.0.tar.gz
 	mkdir -p ./ida-2.9.0/build
 	cd ./ida-2.9.0/build; cmake .. -DLAPACK_ENABLE=ON -DCMAKE_BUILD_TYPE=Release  -DKLU_ENABLE=ON -DKLU_INCLUDE_DIR=/usr/include/suitesparse -DKLU_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu/ -DCMAKE_INSTALL_PREFIX=/usr
 	make -C ./ida-2.9.0/build install DESTDIR=`pwd`/../../
-	#rm -rf ./ida-2.9.0
-	#rm -rf ./cvode-2.9.0
+	rm -rf ./ida-2.9.0
 
 $(BUILDDIR)/%.o : $(COMMONDIR)/%.c
 	$(CC) $(INC) $(CFLAGS) -MM -MT $@ -MF $(patsubst %.o,%.d,$@) $<
@@ -143,7 +148,7 @@ $(BUILDDIR):
 .PHONY: clean
 
 clean:
-	$(RMS) $(DEPS) $(TARGET) $(COMMONOBJ) $(SEQOBJ) $(PAROBJ) $(CLASSICOBJ) $(DASSLOBJ) $(DOPRIOBJ)
+	$(RMS) $(DEPS) $(TARGET) $(COMMONOBJ) $(SEQOBJ) $(PAROBJ) $(CLASSICOBJ) $(DASSLOBJ) $(DOPRIOBJ) $(LIBCVODE) $(LIBIDA)
 
 help:
 	@echo "make DEBUG=<True|False> OS=<unix|win32|mac>"
