@@ -2442,7 +2442,7 @@ Classic_::_printDeps (Dependencies d, Index derivativeIndex, MMO_EquationTable e
 }
 
 void
-Classic_::_reorderSD (Dependencies d, const Index& idx, const string& indent, stringstream& buffer)
+Classic_::_reorderSD (Dependencies d, const Index& idx, const string& indent, stringstream& buffer, WR_InsertType it)
 {
     int i = 0, c = d->states () - 1;
     for (i = c; i >= 0; i--)
@@ -2452,7 +2452,7 @@ Classic_::_reorderSD (Dependencies d, const Index& idx, const string& indent, st
         string eqsIdx = stateDep.print ("i");
         buffer << indent << "modelData->SD[" << sIdx << "][states[" << sIdx << "]++] = " << eqsIdx << ";";
         _writer->removeFromSection (buffer.str (), WR_INIT_LD_SD);
-        _writer->write (&buffer, WR_INIT_LD_SD, true, WR_APPEND);
+        _writer->write (&buffer, WR_INIT_LD_SD, true, it);
     }
     return;
 }
@@ -2477,7 +2477,7 @@ Classic_::modelDeps ()
             _writer->write (&buffer, WR_MODEL_DEPS_SIMPLE);
             if (equations->findGenericDependencies (idx.mappedValue ()))
             {
-               _reorderSD (d, idx, indent, buffer);
+               _reorderSD (d, idx, indent, buffer, WR_APPEND_SIMPLE);
             }
         }
     }
@@ -2493,7 +2493,7 @@ Classic_::modelDeps ()
             _printDeps (d, eqIdx, equations, algebraics, idx.print ("j"), WR_MODEL_DEPS_GENERIC, 2, false, idx);
             buffer << _writer->indent (1) << "}";
             _writer->write (&buffer, WR_MODEL_DEPS_GENERIC);
-            _reorderSD (d, idx, indent, buffer);
+           _reorderSD (d, idx, indent, buffer, WR_APPEND_GENERIC);
         }
     }
 }

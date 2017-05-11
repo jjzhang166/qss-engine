@@ -104,16 +104,13 @@ MMO_MemoryWriter_::write (string str, WR_Section section, WR_InsertType it)
         {
             _sections[section].push_back (str);
         }
+        else if (it == WR_APPEND_SIMPLE)
+        {
+            _sections[section].push_front (str);
+        }
         else
         {
-            if (_removeIt == _sections[section].end())
-            {
-                _sections[section].push_front (str);
-            }
-            else
-            {
-                _sections[section].insert(++_removeIt, str);
-            }
+            _sections[section].insert (++_removeIt, str);
         }
     }
 }
@@ -127,17 +124,15 @@ MMO_MemoryWriter_::write (stringstream *s, WR_Section section, bool clean, WR_In
         {
             _sections[section].push_back (s->str ());
         }
+        else if (it == WR_APPEND_SIMPLE)
+        {
+            _sections[section].push_front (s->str ());
+        }
         else
         {
-            if (_removeIt == _sections[section].end ())
-            {
-                _sections[section].push_front (s->str ());
-            }
-            else
-            {
-                _sections[section].insert (++_removeIt, s->str ());
-            }
+            _sections[section].insert (++_removeIt, s->str ());
         }
+
         if (clean)
         {
             s->str ("");
