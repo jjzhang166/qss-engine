@@ -378,7 +378,7 @@ MMO_Equation_::print (string indent, string lhs, string idx, bool palgs, MMO_Equ
         }
         else
         {
-            if (_arguments != NULL)
+            if (_arguments != NULL && i == 0)
             {
                 buffer << _printArguments (i, idx, offset, cte, order, forOffset);
             }
