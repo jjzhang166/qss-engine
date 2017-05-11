@@ -29,7 +29,7 @@ static CMD_terminateFn _terminate = NULL;
 void
 CMD_init (SD_simulationSettings settings)
 {
-if (settings->method == SD_DOPRI || settings->method == SD_DASSL)
+if (settings->method == SD_DOPRI || settings->method == SD_DASSL || settings->method == SD_CVODE_BDF || settings->method == SD_CVODE_AM || settings->method == SD_IDA)
   {
     _terminate = CLC_CMD_terminate;
   }

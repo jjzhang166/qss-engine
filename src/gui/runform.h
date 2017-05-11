@@ -175,6 +175,16 @@ public:
    * @return
    */
   QString
+  jacobian ()
+  {
+    return (_getJacobianString (_jacobian->currentIndex ()));
+  }
+  ;
+  /**
+   *
+   * @return
+   */
+  QString
   tolerance ()
   {
     return (_tolerance->text ());
@@ -360,6 +370,13 @@ public:
     _lps->setText (str);
   }
   ;
+  void
+  setJacobian (QString str)
+  {
+    _jacobian->setCurrentIndex(str == "Sparse" ? 0 : 1);
+  }
+  ;
+ 
   /**
    *
    * @return
@@ -491,6 +508,8 @@ private:
   _getSymDiffIdx (QString str);
   QString
   _getSymDiffString (int idx);
+  QString
+  _getJacobianString (int idx);
   int
   _getParallelIdx (QString str);
   QString
@@ -501,6 +520,8 @@ private:
   _getPartitionMethodString (int idx);
   int
   _getDtSynchIdx (QString str);
+  int
+  _getJacobianIdx (QString str);
   QString
   _getDtSynchString (int idx);
   Utils *_utils;

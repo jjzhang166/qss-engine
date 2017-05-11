@@ -76,6 +76,9 @@ MMO_Generator_::generate ()
 	      {
 	      case ANT_DOPRI:
 	      case ANT_DASSL:
+	      case ANT_CVODE_BDF:
+	      case ANT_IDA:
+	      case ANT_CVODE_AM:
 		_solver = newClassic (_model, _flags, _writer);
 		break;
 	      default:
@@ -161,6 +164,7 @@ MMO_Generator_::_generateModel ()
   _writer->print (WR_GLOBAL_VARS);
   _solver->print (SOL_MODEL_SETTINGS);
   _solver->print (SOL_MODEL);
+  //_solver->print (SOL_JACOBIAN);
   _solver->print (SOL_DEPS);
   if (!_writer->isEmpty (WR_ZC_SIMPLE) || !_writer->isEmpty (WR_ZC_GENERIC))
     {
@@ -237,7 +241,10 @@ MMO_Generator_::_variables ()
   VarSymbolTable vt = _model->varTable ();
   vt->setPrintEnvironment (VST_INIT);
   if (_model->annotation ()->solver () == ANT_DASSL
-      || _model->annotation ()->solver () == ANT_DOPRI)
+      || _model->annotation ()->solver () == ANT_DOPRI
+      || _model->annotation ()->solver () == ANT_CVODE_BDF
+      || _model->annotation ()->solver () == ANT_IDA
+      || _model->annotation ()->solver () == ANT_CVODE_AM)
     {
       vt->setPrintEnvironment (VST_CLASSIC_INIT);
     }
@@ -531,7 +538,10 @@ MMO_Generator_::_variablesInitCode ()
   VarSymbolTable vt = _model->varTable ();
   vt->setPrintEnvironment (VST_INIT);
   if (_model->annotation ()->solver () == ANT_DASSL
-      || _model->annotation ()->solver () == ANT_DOPRI)
+      || _model->annotation ()->solver () == ANT_DOPRI
+      || _model->annotation ()->solver () == ANT_CVODE_BDF
+      || _model->annotation ()->solver () == ANT_IDA
+      || _model->annotation ()->solver () == ANT_CVODE_AM)
     {
       vt->setPrintEnvironment (VST_CLASSIC_INIT);
     }

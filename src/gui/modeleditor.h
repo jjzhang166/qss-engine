@@ -446,6 +446,23 @@ public:
    * @param str
    */
   void
+  setJacobian (QString str)
+  {
+    _jacobian = _findValue ("Jacobian", str);
+  }
+  ;
+  QString 
+  jacobian ()
+  {
+    return _jacobian ;
+  }
+  ;
+ 
+  /**
+   *
+   * @param str
+   */
+  void
   setDT (QString str)
   {
     _dt = _findValue ("MMO_DT_Min", str);
@@ -624,6 +641,7 @@ private:
   QString _dt;
   QString _parallel;
   QString _partitionMethod;
+  QString _jacobian;
   QString _patohSettings;
   QString _scotchSettings;
   QString _metisSettings;

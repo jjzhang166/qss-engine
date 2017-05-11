@@ -400,6 +400,7 @@ MmomeGui::_run (QString name)
 	      QDir (_utils->appDir (MMOC_INCLUDE)).absolutePath ()); // Add an environment variable
   env.insert ("MMOC_OUTPUT",
 	      QDir (_utils->appDir (MMOC_OUTPUT)).absolutePath ()); // Add an environment variable
+  env.insert ("LD_LIBRARY_PATH", QDir (_utils->appDir (MMOC_LIBRARIES)).absolutePath () + "/../lib"); // Add an environment variable
   _proc->setProcessEnvironment (env);
   _proc->start (_utils->appDir (MMOC_BIN) + SLASH + sim, args);
 }
@@ -442,6 +443,7 @@ MmomeGui::runDlgClose ()
   Editor::instance ()->setLPS (_runDlg->LPS ());
   Editor::instance ()->setDT (_runDlg->DT ());
   Editor::instance ()->setDtSynch (_runDlg->dtSynch ());
+  Editor::instance ()->setJacobian (_runDlg->jacobian());
   Editor::instance ()->setPartitionMethod (_runDlg->partitionMethod ());
   Editor::instance()->setPatohSettings(_runDlg->patohSettings());
   Editor::instance()->setScotchSettings(_runDlg->scotchSettings());
@@ -520,6 +522,7 @@ MmomeGui::on_actionRun_triggered ()
   _runDlg->setSemiStaticPartitioning(Editor::instance()->semiStaticPartitioning());
   _runDlg->setDtSynch (Editor::instance ()->dtSynch ());
   _runDlg->setDescription (Editor::instance ()->description ());
+  _runDlg->setJacobian (Editor::instance ()->jacobian());
   _runDlg->show ();
 }
 

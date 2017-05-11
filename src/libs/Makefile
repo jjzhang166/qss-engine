@@ -33,6 +33,9 @@ TARGETDIR   := ./
 SRCEXT      := c
 DEPEXT      := d
 OBJEXT      := o
+LIBCVODE    := ../../usr/lib/libsundials_cvode.a
+LIBIDA      := ../../usr/lib/libsundials_ida.a
+ 
 
 #Flags, Libraries and Includes
 CFLAGS 		:= -Wall -msse2 -mfpmath=sse -O2 
@@ -40,7 +43,7 @@ ifeq ($(DEBUG),True)
 CFLAGS 		:= -Wall -msse2 -mfpmath=sse -g -DDEBUG  
 endif
 LIB         := -lm 
-INC         := -I$(COMMONDIR) -I$(ENGINEDIR)
+INC         := -I$(COMMONDIR) -I$(ENGINEDIR) -I$(SRCDIR)/../usr/include
 ifeq ($(OS),win32)
 INC         += -I/GnuWin32/include
 endif
@@ -55,7 +58,7 @@ SEQSRC = $(QSSDIR)/qss_graph.c $(QSSDIR)/qss_biorica.c $(QSSDIR)/qss_data.c $(QS
 
 PARSRC = $(QSSDIR)/qss_file.c $(QSSDIR)/qss_memory.c $(QSSDIR)/qss_sampled.c $(QSSDIR)/qss_step.c $(QSSDIR)/qss_binary.c $(QSSDIR)/qss_linear.c $(QSSDIR)/qss_frw_imp.c $(METHODSDIR)/qss.c $(METHODSDIR)/cqss.c $(METHODSDIR)/qss2.c $(METHODSDIR)/qss3.c $(METHODSDIR)/qss4.c $(METHODSDIR)/liqss.c $(METHODSDIR)/liqss2.c $(METHODSDIR)/liqss3.c $(METHODSDIR)/cqss.c $(QSSDIR)/qss_dt.c $(QSSDIR)/qss_lp.c $(QSSDIR)/qss_partition.c  $(QSSDIR)/qss_parallel.c $(QSSDIR)/qss_sim_steps.c $(QSSDIR)/qss_par_integrator.c  
 
-CLASSICSRC = $(CLASSICDIR)/classic_data.c $(CLASSICDIR)/classic_integrator.c $(CLASSICDIR)/classic_dopri_integrator.c $(CLASSICDIR)/classic_dassl_integrator.c $(CLASSICDIR)/classic_simulator.c $(CLASSICDIR)/classic_commands.c
+CLASSICSRC = $(CLASSICDIR)/classic_data.c $(CLASSICDIR)/classic_integrator.c $(CLASSICDIR)/classic_dopri_integrator.c $(CLASSICDIR)/classic_dassl_integrator.c $(CLASSICDIR)/classic_simulator.c $(CLASSICDIR)/classic_commands.c $(CLASSICDIR)/classic_cvode_integrator.c $(CLASSICDIR)/classic_ida_integrator.c
 
 DASSLSRC = $(DASSLDIR)/daux.f $(DASSLDIR)/ddaskr.f $(DASSLDIR)/dlinpk.f
 
@@ -81,7 +84,21 @@ GRAPHOBJ=$(addprefix $(GRAPHDIR)/$(OBJDIR)/grp_, $(notdir $(GRAPHSRC:.c=.o)))
 # Make dependencies
 DEPS = $(COMMONOBJ:.o=.d) $(SEQOBJ:.o=.d) $(PAROBJ:.o=.d) $(CLASSICOBJ:.o=.d)
 
-default: $(TARGET) $(LIBTIMESTEP) 
+default: $(LIBCVODE) $(LIBIDA) $(TARGET) $(LIBTIMESTEP) 
+
+$(LIBCVODE):
+	tar xvzf $(ENGINEDIR)/3rdParty/cvode-2.9.0.tar.gz
+	mkdir -p ./cvode-2.9.0/build
+	cd ./cvode-2.9.0/build; cmake .. -DLAPACK_ENABLE=ON -DCMAKE_BUILD_TYPE=Release  -DKLU_ENABLE=ON -DKLU_INCLUDE_DIR=/usr/include/suitesparse -DKLU_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu/  -DCMAKE_INSTALL_PREFIX=/usr
+	make -C ./cvode-2.9.0/build install DESTDIR=`pwd`/../../
+	rm -rf ./cvode-2.9.0
+
+$(LIBIDA):
+	tar xvzf $(ENGINEDIR)/3rdParty/ida-2.9.0.tar.gz
+	mkdir -p ./ida-2.9.0/build
+	cd ./ida-2.9.0/build; cmake .. -DLAPACK_ENABLE=ON -DCMAKE_BUILD_TYPE=Release  -DKLU_ENABLE=ON -DKLU_INCLUDE_DIR=/usr/include/suitesparse -DKLU_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu/ -DCMAKE_INSTALL_PREFIX=/usr
+	make -C ./ida-2.9.0/build install DESTDIR=`pwd`/../../
+	rm -rf ./ida-2.9.0
 
 $(BUILDDIR)/%.o : $(COMMONDIR)/%.c
 	$(CC) $(INC) $(CFLAGS) -MM -MT $@ -MF $(patsubst %.o,%.d,$@) $<
@@ -131,7 +148,7 @@ $(BUILDDIR):
 .PHONY: clean
 
 clean:
-	$(RMS) $(DEPS) $(TARGET) $(COMMONOBJ) $(SEQOBJ) $(PAROBJ) $(CLASSICOBJ) $(DASSLOBJ) $(DOPRIOBJ)
+	$(RMS) $(DEPS) $(TARGET) $(COMMONOBJ) $(SEQOBJ) $(PAROBJ) $(CLASSICOBJ) $(DASSLOBJ) $(DOPRIOBJ) $(LIBCVODE) $(LIBIDA)
 
 help:
 	@echo "make DEBUG=<True|False> OS=<unix|win32|mac>"

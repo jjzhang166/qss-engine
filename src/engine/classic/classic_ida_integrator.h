@@ -17,53 +17,14 @@
 
  ******************************************************************************/
 
-#ifndef SETTINGS_H_
-#define SETTINGS_H_
+#ifndef IDA_INTEGRATOR_H_
+#define IDA_INTEGRATOR_H_
 
-#include "data.h"
-
-/**
- *
- */
-typedef struct SET_settings_ *SET_settings;
+#include "../common/simulator.h"
 
 /**
  *
  */
-struct SET_settings_
-{
-  double minstep; //!<
-  double zchyst; //!<
-  double derdelta; //!<
-  double it; //!<
-  double ft; //!<
-  double dt; //!<
-  double *dqmin; //!<
-  double *dqrel; //!<
-  int symdiff; //!<
-  int lps; //!<
-  int nodesize; //!<
-  int order; //!<
-  SD_Solver solver; //!<
-  int nDQMin; //!<
-  int nDQRel; //!<
-  int jacobian;
-  SD_PartitionMethod pm; //!<
-  SD_DtSynch dtSynch; //!< \f $ \delta t $ \f synchronization policy.
-  SD_partitionerOptions partitionerOptions;
-};
-/**
- *
- * @param fname
- * @return
- */
-SET_settings
-SET_Settings (char *fname);
-/**
- *
- * @param settings
- */
-void
-freeSettings (SET_settings settings);
+void IDA_integrate (SIM_simulator simulator);
 
-#endif  /* SETTINGS_H_ */
+#endif  /* IDA_INTEGRATOR_H_ */

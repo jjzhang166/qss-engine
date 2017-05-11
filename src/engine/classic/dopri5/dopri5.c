@@ -613,7 +613,8 @@ dopcor (unsigned n, FcnEqDiff fcn, double x, double* y, double xend,
 	      while (count++ < MAX_ITERATIONS);
 	      if (count > MAX_ITERATIONS)
 		{
-		  fprintf (fileout, "Unable to find root after %d iteartions\n",
+		  fprintf (fileout, "Unable to find root after %d iterations\n",
+
 			   count);
 		  return (-3);
 		}

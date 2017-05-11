@@ -1033,6 +1033,8 @@ if (!_scotchSettings.isEmpty ())
 _setAnnotations ("MMO_ScotchSettings", _scotchSettings, true);
 if (!_metisSettings.isEmpty ())
 _setAnnotations ("MMO_MetisSettings", _metisSettings, true);
+if (!_jacobian.isEmpty ())
+_setAnnotations ("Jacobian", _jacobian, true);
 _setAnnotations ("StartTime", _startTime, true);
 _setAnnotations ("StopTime", _stopTime, true);
 _setAnnotations ("Tolerance", _tolerance, true);

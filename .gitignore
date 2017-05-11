@@ -34,6 +34,7 @@ packages/*.moo
 
 # User packages objects.
 /usr/src/*.o
+*3rdParty*
 
 # Parser generated files.
 /src/mmo/parser/mocc_parser.cpp

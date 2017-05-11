@@ -60,7 +60,11 @@ MMO_Equation_::MMO_Equation_ (AST_Expression exp, MMO_ModelData data) :
     {
         _initDerivatives ();
     }
-    if (_data->annotation()->solver() == ANT_DASSL || _data->annotation()->solver() == ANT_DOPRI)
+    if (_data->annotation()->solver() == ANT_DASSL || 
+        _data->annotation()->solver() == ANT_DOPRI || 
+        _data->annotation()->solver() == ANT_CVODE_BDF || 
+        _data->annotation()->solver() == ANT_CVODE_AM || 
+        _data->annotation()->solver() == ANT_IDA)
     {
         _generateJacobianExps ();
     }

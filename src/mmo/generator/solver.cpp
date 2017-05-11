@@ -1979,7 +1979,7 @@ Classic_::initModel ()
     {
         handlerNeg = "MOD_handlerNeg";
     }
-    buffer << "simulator->model = CLC_Model(MOD_definition," << zeroCrossing << "," << handlerPos << "," << handlerNeg << ");";
+    buffer << "simulator->model = CLC_Model(MOD_definition," << zeroCrossing << "," << handlerPos << "," << handlerNeg << ", MOD_jacobian);";
     return (buffer.str ());
 }
 
@@ -2697,35 +2697,35 @@ Classic_::_init ()
 void
 Classic_::print (SOL_Function f)
 {
-    stringstream buffer;
-    switch (f)
+  stringstream buffer;
+  switch (f)
     {
-        case SOL_MODEL_SETTINGS:
-            _common->settings ();
-            break;
-        case SOL_MODEL:
-            _print (f, _modelVars, WR_MODEL_SIMPLE, WR_MODEL_GENERIC, false);
-            break;
-        case SOL_ZC:
-            _print (f, _zcVars, WR_ZC_SIMPLE, WR_ZC_GENERIC, true);
-            break;
-        case SOL_HANDLER_POS:
-            _print (f, _handlerPosVars, WR_HANDLER_POS_SIMPLE, WR_HANDLER_POS_GENERIC, true);
-            break;
-        case SOL_HANDLER_NEG:
-            _print (f, _handlerNegVars, WR_HANDLER_NEG_SIMPLE, WR_HANDLER_NEG_GENERIC, true);
-            break;
-        case SOL_INIT:
-            _init ();
-            break;
-        case SOL_DEPS:
-            _jacobian ();
-            break;
-        case SOL_OUTPUT:
-            _print (f, _outputVars, WR_OUTPUT_SIMPLE, WR_OUTPUT_GENERIC, true);
-            break;
-        default:
-            break;
+    case SOL_MODEL_SETTINGS:
+      _common->settings ();
+      break;
+    case SOL_MODEL:
+      _print (f, _modelVars, WR_MODEL_SIMPLE, WR_MODEL_GENERIC, false);
+      break;
+    case SOL_ZC:
+      _print (f, _zcVars, WR_ZC_SIMPLE, WR_ZC_GENERIC, true);
+      break;
+    case SOL_HANDLER_POS:
+      _print (f, _handlerPosVars, WR_HANDLER_POS_SIMPLE, WR_HANDLER_POS_GENERIC, true);
+      break;
+    case SOL_HANDLER_NEG:
+      _print (f, _handlerNegVars, WR_HANDLER_NEG_SIMPLE, WR_HANDLER_NEG_GENERIC, true);
+      break;
+    case SOL_INIT:
+      _init ();
+      break;
+    case SOL_OUTPUT:
+      _print (f, _outputVars, WR_OUTPUT_SIMPLE, WR_OUTPUT_GENERIC, true);
+      break;
+    case SOL_DEPS:
+       _jacobian ();
+       break;
+    default:
+      break;
     }
 }
 
@@ -2739,28 +2739,28 @@ Classic_::initialCode ()
 string
 Classic_::_prototype (SOL_Function f)
 {
-    switch (f)
+  switch (f)
     {
-        case SOL_MODEL:
-            return ("void\nMOD_definition(double *x, double *d, double *alg, double t, double *dx)\n{");
-        case SOL_ZC:
-            return ("void\nMOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)\n{");
-        case SOL_HANDLER_POS:
-            return ("void\nMOD_handlerPos(int i, double *x, double *d, double *alg, double t)\n{");
-        case SOL_HANDLER_NEG:
-            return ("void\nMOD_handlerNeg(int i, double *x, double *d, double *alg, double t)\n{");
-        case SOL_OUTPUT:
-            return ("void\nMOD_output(int i, double *x, double *d, double *alg, double t, double *out)\n{");
-        case SOL_INIT:
-            return ("void\nCLC_initializeDataStructs(CLC_simulator simulator)\n{");
-        case SOL_CALLBACK:
-            return ("setData(modelData,modelOutput,modelDefinition,modelSettings);");
-        case SOL_DEPS:
-            return ("void\nMOD_jacobian(double *x, double *d, double *alg, double t, double *jac)\n{");
-        default:
-            break;
+    case SOL_MODEL:
+      return ("void\nMOD_definition(double *x, double *d, double *alg, double t, double *dx)\n{");
+    case SOL_ZC:
+      return ("void\nMOD_zeroCrossing(int i, double *x, double *d, double *alg, double t, double *zc)\n{");
+    case SOL_HANDLER_POS:
+      return ("void\nMOD_handlerPos(int i, double *x, double *d, double *alg, double t)\n{");
+    case SOL_HANDLER_NEG:
+      return ("void\nMOD_handlerNeg(int i, double *x, double *d, double *alg, double t)\n{");
+    case SOL_OUTPUT:
+      return ("void\nMOD_output(int i, double *x, double *d, double *alg, double t, double *out)\n{");
+    case SOL_INIT:
+      return ("void\nCLC_initializeDataStructs(CLC_simulator simulator)\n{");
+    case SOL_CALLBACK:
+      return ("setData(modelData,modelOutput,modelDefinition,modelSettings);");
+    case SOL_DEPS:
+      return ("void\nMOD_jacobian(double *x, double *d, double *alg, double t, double *jac)\n{");
+    default:
+      break;
     }
-    return ("");
+  return ("");
 }
 
 Classic
@@ -3453,10 +3453,14 @@ SolverCommon_::printSection (string var, int size, WR_Section section)
 void
 SolverCommon_::initialCode (map<string, string> *initializeVars)
 {
-    string indent = _writer->indent (1);
-    MMO_StatementTable st = _model->initialCode ();
-    _model->varTable ()->setPrintEnvironment (VST_INIT);
-    if (_model->annotation ()->solver () == ANT_DASSL || _model->annotation ()->solver () == ANT_DOPRI)
+  string indent = _writer->indent (1);
+  MMO_StatementTable st = _model->initialCode ();
+  _model->varTable ()->setPrintEnvironment (VST_INIT);
+  if (_model->annotation ()->solver () == ANT_DASSL
+      || _model->annotation ()->solver () == ANT_DOPRI
+      || _model->annotation ()->solver () == ANT_CVODE_BDF
+      || _model->annotation ()->solver () == ANT_IDA
+      || _model->annotation ()->solver () == ANT_CVODE_AM)
     {
         _model->varTable ()->setPrintEnvironment (VST_CLASSIC_INIT);
     }
