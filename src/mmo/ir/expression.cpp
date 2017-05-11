@@ -859,6 +859,10 @@ MMO_PrintExp_::foldTraverseElement (AST_Expression exp)
                 {
                     name = "fabs";
                 }
+                else if (bif == BIF_GQLINK)
+                {
+                    ret << "__GQLink__";
+                }
                 ret << name << "(";
                 int l = el->size (), i = 1;
                 foreach(it,el)
