@@ -46,12 +46,13 @@ MMO_MemoryWriter_::setFile (string fname)
     }
 }
 
-void
+bool
 MMO_MemoryWriter_::removeFromSection (string str, WR_Section section)
 {
     list<string>::iterator it;
     list<string> rmv;
     _removeIt = _sections[section].end();
+    bool found = false;
     for (it = _sections[section].begin (); it != _sections[section].end (); it++)
     {
         string fi = Util::getInstance ()->trimString (*it);
@@ -63,6 +64,7 @@ MMO_MemoryWriter_::removeFromSection (string str, WR_Section section)
         if (fi.compare (cmp) == 0)
         {
             rmv.push_back (*it);
+            found = true;
             break;
         }
     }
@@ -70,6 +72,7 @@ MMO_MemoryWriter_::removeFromSection (string str, WR_Section section)
     {
         _sections[section].remove (*it);
     }
+    return (found);
 }
 
 void
@@ -271,10 +274,10 @@ MMO_FileWriter_::~MMO_FileWriter_ ()
     }
 }
 
-void
+bool
 MMO_FileWriter_::removeFromSection (string str, WR_Section section)
 {
-    return;
+    return (true);
 }
 
 void

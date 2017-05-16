@@ -153,7 +153,7 @@ public:
    */
   virtual void
   write (stringstream *s, WR_Section section, bool clean = true, WR_InsertType it = WR_PREPEND) = 0;
-  virtual void
+  virtual bool
   removeFromSection (string str, WR_Section section) = 0;
   /**
    *
@@ -282,7 +282,7 @@ public:
    */
   void
   write (stringstream *s, WR_Section section, bool clean = true, WR_InsertType it = WR_PREPEND);
-  void
+  bool
   removeFromSection (string str, WR_Section section);
   /**
    *
@@ -431,7 +431,7 @@ public:
    */
   void
   write (stringstream *s, WR_Section section, bool clean = true, WR_InsertType it = WR_PREPEND);
-  void
+  bool
   removeFromSection (string str, WR_Section section);
   /**
    *
