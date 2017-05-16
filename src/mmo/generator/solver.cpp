@@ -2451,8 +2451,14 @@ Classic_::_reorderSD (Dependencies d, const Index& idx, const string& indent, st
         string sIdx = idx.print ("i");
         string eqsIdx = stateDep.print ("i");
         buffer << indent << "modelData->SD[" << sIdx << "][states[" << sIdx << "]++] = " << eqsIdx << ";";
-        _writer->removeFromSection (buffer.str (), WR_INIT_LD_SD);
-        _writer->write (&buffer, WR_INIT_LD_SD, true, it);
+        if (_writer->removeFromSection (buffer.str (), WR_INIT_LD_SD))
+        {
+            _writer->write (&buffer, WR_INIT_LD_SD, true, it);
+        }
+        if (_writer->removeFromSection (buffer.str (), WR_INIT_LD_ALG_SD))
+        {
+            _writer->write (&buffer, WR_INIT_LD_SD, true, it);
+        }
     }
     return;
 }
@@ -2493,7 +2499,7 @@ Classic_::modelDeps ()
             _printDeps (d, eqIdx, equations, algebraics, idx.print ("j"), WR_MODEL_DEPS_GENERIC, 2, false, idx);
             buffer << _writer->indent (1) << "}";
             _writer->write (&buffer, WR_MODEL_DEPS_GENERIC);
-           _reorderSD (d, idx, indent, buffer, WR_APPEND_GENERIC);
+            _reorderSD (d, idx, indent, buffer, WR_APPEND_GENERIC);
         }
     }
 }
