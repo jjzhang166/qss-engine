@@ -34,5 +34,6 @@ export MMOC_INCLUDE=$MMOC_PATH/usr/include
 export MMOC_TESTS=$MMOC_PATH/tests
 export MMOC_SRC=$MMOC_PATH/src
 export MMOC_DOC=$MMOC_PATH/doc
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MMOC_PATH/usr/lib
 cd bin
 echo Done.
